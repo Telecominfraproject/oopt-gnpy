@@ -13,10 +13,12 @@ from gnpy.tools.json_io import load_network, load_equipment, load_json, _equipme
 from pathlib import Path
 import pytest
 
-TEST_DIR = Path(__file__).parent
+TEST_DIR =  Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 test_network = DATA_DIR / 'test_network.json'
 eqpt_library = DATA_DIR / 'eqpt_config.json'
+extra_configs = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 # TODO in elements.py code: pytests doesn't pass with 1 channel: interpolate fail
 
@@ -39,7 +41,7 @@ def bw():
 def setup_edfa_variable_gain():
     """init edfa class by reading test_network.json file
     remove all gain and nf ripple"""
-    equipment = load_equipment(eqpt_library)
+    equipment = load_equipment(eqpt_library, extra_configs)
     network = load_network(test_network, equipment)
     build_network(network, equipment, 0, 20)
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][0]
@@ -51,7 +53,7 @@ def setup_edfa_variable_gain():
 @pytest.fixture()
 def setup_edfa_fixed_gain():
     """init edfa class by reading the 2nd edfa in test_network.json file"""
-    equipment = load_equipment(eqpt_library)
+    equipment = load_equipment(eqpt_library, extra_configs)
     network = load_network(test_network, equipment)
     build_network(network, equipment, 0, 20)
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][1]
@@ -61,7 +63,7 @@ def setup_edfa_fixed_gain():
 @pytest.fixture()
 def setup_trx():
     """init transceiver class to access snr and osnr calculations"""
-    equipment = load_equipment(eqpt_library)
+    equipment = load_equipment(eqpt_library, extra_configs)
     network = load_network(test_network, equipment)
     build_network(network, equipment, 0, 20)
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)][0]
@@ -144,7 +146,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
             }
         }
     }
-    equipment = load_equipment(eqpt_library)
+    equipment = load_equipment(eqpt_library, extra_configs)
     extra_params = equipment['Edfa']['CienaDB_medium_gain']
     temp = el_config.setdefault('params', {})
     temp = merge_amplifier_restrictions(temp, extra_params.__dict__)
@@ -165,7 +167,7 @@ def test_ase_noise(gain, si, setup_trx, bw):
     2-pout/pase afet propagate
     3-Transceiver osnr_ase_01nm
     => unitary test for Edfa.noise_profile (Edfa.interpol_params, Edfa.propagate)"""
-    equipment = load_equipment(eqpt_library)
+    equipment = load_equipment(eqpt_library, extra_configs)
     network = load_network(test_network, equipment)
     edfa = next(n for n in network.nodes() if n.uid == 'Edfa1')
     span = next(n for n in network.nodes() if n.uid == 'Span1')
@@ -225,7 +227,7 @@ def test_amp_behaviour(tilt_target, delta_p):
         }],
         "connections": []
     }
-    equipment = load_equipment(eqpt_library)
+    equipment = load_equipment(eqpt_library, extra_configs)
     network = network_from_json(json_data, equipment)
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][0]
     fiber = [n for n in network.nodes() if isinstance(n, Fiber)][0]
@@ -310,7 +312,7 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
         }],
         "connections": []
     }
-    equipment = load_equipment(eqpt_library)
+    equipment = load_equipment(eqpt_library, extra_configs)
     network = network_from_json(json_data, equipment)
     edfa = [n for n in network.nodes()][0]
     frequency = 193e12 + array([0, 50e9, 150e9, 225e9, 275e9])
@@ -354,7 +356,7 @@ def test_set_out_voa():
         }],
         "connections": []
     }
-    equipment = load_equipment(eqpt_library)
+    equipment = load_equipment(eqpt_library, extra_configs)
     network = network_from_json(json_data, equipment)
     amp = [n for n in network.nodes()][0]
     print(amp.out_voa)
@@ -408,7 +410,7 @@ def test_multiband():
     ]
     equipment_json['Edfa'].extend(amps)
 
-    equipment = _equipment_from_json(equipment_json, eqpt_library)
+    equipment = _equipment_from_json(equipment_json, extra_configs)
 
     el_config = {
         "uid": "Edfa1",
@@ -510,6 +512,7 @@ def test_multiband():
 def test_user_defined_config():
     """Checks that a user defined config is correctly used instead of DEFAULT_EDFA_CONFIG
     """
+    extra_configs['user_edfa_config.json'] = DATA_DIR / 'user_edfa_config.json'
     user_edfa = {
         "type_variety": "user_defined",
         "type_def": "variable_gain",
@@ -526,7 +529,7 @@ def test_user_defined_config():
     # add the reference to
     json_data = load_json(eqpt_library)
     json_data['Edfa'].append(user_edfa)
-    equipment = _equipment_from_json(json_data, eqpt_library)
+    equipment = _equipment_from_json(json_data, extra_configs)
     json_data = {
         "elements": [{
             "uid": "Edfa1",
@@ -554,6 +557,7 @@ def test_default_config():
     """Checks that a config using a file gives the exact same result as the default config if values are identical
     to DEFAULT_EDFA_CONFIG
     """
+    extra_configs['copy_default_edfa_config.json'] = DATA_DIR / 'copy_default_edfa_config.json'
     user_edfa = {
         "type_variety": "user_defined",
         "type_def": "variable_gain",
@@ -583,7 +587,7 @@ def test_default_config():
     json_data = load_json(eqpt_library)
     json_data['Edfa'].append(user_edfa)
     json_data['Edfa'].append(default_edfa)
-    equipment = _equipment_from_json(json_data, eqpt_library)
+    equipment = _equipment_from_json(json_data, extra_configs)
     json_data = {
         "elements": [{
             "uid": "Edfa1",
@@ -617,7 +621,8 @@ def test_default_config():
     assert_allclose(amp1.params.dgt, amp2.params.dgt, rtol=1e-13)
 
 
-@pytest.mark.parametrize("file", [None, "copy_default_edfa_config.json"])
+@pytest.mark.parametrize("file", [None, {"name": "copy_default_edfa_config.json",
+                                         "path": DATA_DIR / "copy_default_edfa_config.json"}])
 def test_frequency_range(file):
     """Checks that a frequency range is correctly read from the library and pre-empts DEFAULT_EDFA_CONFIG
     """
@@ -635,11 +640,12 @@ def test_frequency_range(file):
         "allowed_for_design": True
     }
     if file:
-        user_edfa["default_config_from_json"] = file
+        user_edfa["default_config_from_json"] = file['name']
+        extra_configs[file['name']] = file['path']
     # add the reference to
     json_data = load_json(eqpt_library)
     json_data['Edfa'].append(user_edfa)
-    equipment = _equipment_from_json(json_data, eqpt_library)
+    equipment = _equipment_from_json(json_data, extra_configs)
     json_data = {
         "elements": [{
             "uid": "Edfa1",

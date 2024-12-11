@@ -18,6 +18,8 @@ TEST_DIR = Path(__file__).parent
 EQPT_FILENAME = TEST_DIR / 'data/eqpt_config.json'
 MULTIBAND_EQPT_FILENAME = TEST_DIR / 'data/eqpt_config_multiband.json'
 DATA_DIR = TEST_DIR / 'data'
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 
 def test_jsonthing(caplog):
@@ -97,7 +99,7 @@ def test_wrong_equipment(caplog, error, equipment, json_data, expected_msg):
 def test_wrong_xls_service(xls_service_filename, xls_topo_filename, expected_msg):
     """
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = load_network(DATA_DIR / xls_topo_filename, equipment)
     with pytest.raises(ServiceError, match=expected_msg):
         _ = load_requests(DATA_DIR / xls_service_filename, equipment, False, network, DATA_DIR / xls_topo_filename)
@@ -293,7 +295,7 @@ def test_json_request(error, json_data, expected_msg):
     """
     Check that a missing key is correctly raisong the logger
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
 
     with pytest.raises(error, match=re.escape(expected_msg)):
         _ = requests_from_json(json_data, equipment)
@@ -387,7 +389,7 @@ def test_json_network(error, json_data, expected_msg):
     """
     Check that a missing key is correctly raisong the logger
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     with pytest.raises(error, match=re.escape(expected_msg)):
         _ = network_from_json(json_data, equipment)
 
@@ -568,7 +570,7 @@ def wrong_configs():
 @pytest.mark.parametrize('el_config, error_type', wrong_configs())
 def test_wrong_multiband(el_config, error_type):
 
-    equipment = load_equipment(MULTIBAND_EQPT_FILENAME)
+    equipment = load_equipment(MULTIBAND_EQPT_FILENAME, EXTRA_CONFIGS)
     fused_config = {
         "uid": "[83/WR-2-4-SIG=>930/WRT-1-2-SIG]-Tl/9300",
         "type": "Fused",

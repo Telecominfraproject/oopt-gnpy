@@ -212,7 +212,7 @@ class Amp(_JsonThing):
         self.update_attr(self.default_values, kwargs, 'Amp')
 
     @classmethod
-    def from_json(cls, filename, **kwargs):
+    def from_json(cls, extra_configs, **kwargs):
         """
         """
         # default EDFA DGT and ripples are defined in parameters DEFAULT_EDFA_CONFIG. copy these values when
@@ -227,7 +227,7 @@ class Amp(_JsonThing):
         if type_def == 'fixed_gain':
             if 'default_config_from_json' in kwargs:
                 # use user defined default instead of DEFAULT_EDFA_CONFIG
-                config = load_json(Path(filename).parent / kwargs.pop('default_config_from_json'))
+                config = load_json(extra_configs[kwargs.pop('default_config_from_json')])
             try:
                 nf0 = kwargs.pop('nf0')
             except KeyError as exc:  # nf0 is expected for a fixed gain amp
@@ -241,11 +241,11 @@ class Amp(_JsonThing):
             nf_def = Model_fg(nf0)
         elif type_def == 'advanced_model':
             # use the user file name define in library instead of default config
-            config = load_json(Path(filename).parent / kwargs.pop('advanced_config_from_json'))
+            config = load_json(extra_configs[kwargs.pop('advanced_config_from_json')])
         elif type_def == 'variable_gain':
             if 'default_config_from_json' in kwargs:
                 # use user defined default instead of DEFAULT_EDFA_CONFIG
-                config = load_json(Path(filename).parent / kwargs.pop('default_config_from_json'))
+                config = load_json(extra_configs[kwargs.pop('default_config_from_json')])
             gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
             try:  # nf_min and nf_max are expected for a variable gain amp
                 nf_min = kwargs.pop('nf_min')
@@ -368,14 +368,14 @@ def _spectrum_from_json(json_data: dict):
     return spectrum
 
 
-def merge_equipment(equipment: dict, additional_filenames: List[Path]):
+def merge_equipment(equipment: dict, additional_filenames: List[Path], extra_configs: Dict[str, Path]):
     """Merge additional equipment libraries into the base equipment dictionary.
     Typical case is the use of third party transceivers which are not part of a the supplier library.
 
     raise warnings if the same reference is used on two different libraries
     """
     for filename in additional_filenames:
-        extra_eqpt = load_equipment(filename)
+        extra_eqpt = load_equipment(filename, extra_configs)
         # populate with default eqpt to streamline loading
         for eqpt_type, extra_items in extra_eqpt.items():
             for type_variety, item in extra_items.items():
@@ -386,11 +386,11 @@ def merge_equipment(equipment: dict, additional_filenames: List[Path]):
                     _logger.warning(msg)
 
 
-def load_equipment(filename: Path) -> dict:
+def load_equipment(filename: Path, extra_configs: Dict[str, Path]) -> dict:
     """Load equipment, returns equipment dict
     """
     json_data = load_json(filename)
-    return _equipment_from_json(json_data, filename)
+    return _equipment_from_json(json_data, extra_configs)
 
 
 def load_initial_spectrum(filename: Path) -> dict:
@@ -494,7 +494,7 @@ def _si_sanity_check(equipment):
         del equipment['SI'][possible_SI[0]]
 
 
-def _equipment_from_json(json_data: dict, filename: Path) -> dict:
+def _equipment_from_json(json_data: dict, extra_configs: Dict[str, Path]) -> dict:
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
     from the eqpt_config.json (filename parameter)
@@ -509,7 +509,7 @@ def _equipment_from_json(json_data: dict, filename: Path) -> dict:
         for entry in entries:
             subkey = entry.get('type_variety', 'default')
             if key == 'Edfa':
-                equipment[key][subkey] = Amp.from_json(filename, **entry)
+                equipment[key][subkey] = Amp.from_json(extra_configs, **entry)
             elif key == 'Fiber':
                 equipment[key][subkey] = Fiber(**entry)
             elif key == 'Span':

@@ -22,8 +22,11 @@ from gnpy.topology.request import PathRequest, compute_constrained_path, propaga
 
 
 TEST_DIR = Path(__file__).parent
-EQPT_FILENAME = TEST_DIR / 'data/eqpt_config.json'
-NETWORK_FILENAME = TEST_DIR / 'data/perdegreemeshTopologyExampleV2_auto_design_expected.json'
+DATA_DIR = TEST_DIR / 'data'
+EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
+NETWORK_FILENAME = DATA_DIR / 'perdegreemeshTopologyExampleV2_auto_design_expected.json'
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 
 def net_setup(equipment):
@@ -71,7 +74,7 @@ def test_gain_mode(req_power, power_dbm):
     in gain mode, whatever the value of equipment power_dbm or request power, the network is unchanged
     and the propagation remains the same as for power mode and 0dBm
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = net_setup(equipment)
     req = create_rq(equipment, 'trx Brest_KLA', 'trx Rennes_STA', False,
                     ['Edfa0_roadm Brest_KLA', 'roadm Lannion_CAS', 'trx Rennes_STA'],

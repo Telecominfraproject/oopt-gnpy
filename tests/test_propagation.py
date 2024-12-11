@@ -18,8 +18,12 @@ from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment, network_from_json
 
 
-network_file_name = Path(__file__).parent.parent / 'tests/LinkforTest.json'
-eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
+TEST_DIR = Path(__file__).parent
+DATA_DIR = TEST_DIR / 'data'
+network_file_name = DATA_DIR / 'LinkforTest.json'
+eqpt_library_name = DATA_DIR / 'eqpt_config.json'
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)],
@@ -31,7 +35,7 @@ def nch_and_spacing(request):
 
 
 def propagation(input_power, con_in, con_out, dest):
-    equipment = load_equipment(eqpt_library_name)
+    equipment = load_equipment(eqpt_library_name, EXTRA_CONFIGS)
     network = load_network(network_file_name, equipment)
 
     # parametrize the network elements with the con losses and adapt gain
@@ -178,7 +182,7 @@ def test_json_element(error, json_data, expected_msg):
     """
     Check that a missing key is correctly raisong the logger
     """
-    equipment = load_equipment(eqpt_library_name)
+    equipment = load_equipment(eqpt_library_name, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     elem = next(e for e in network.nodes() if e.uid == 'Elem')
     si = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
