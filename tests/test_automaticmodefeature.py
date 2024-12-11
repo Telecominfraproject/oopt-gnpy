@@ -26,10 +26,13 @@ from gnpy.tools.json_io import load_network, load_equipment, requests_from_json,
     _equipment_from_json
 
 
-network_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_expected.json'
-service_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testservices.json'
-result_file_name = Path(__file__).parent.parent / 'tests/data/testTopology_testresults.json'
-eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
+data_dir = Path(__file__).parent.parent / 'tests/data'
+network_file_name = data_dir / 'testTopology_expected.json'
+service_file_name = data_dir / 'testTopology_testservices.json'
+result_file_name = data_dir / 'testTopology_testresults.json'
+eqpt_library_name = data_dir / 'eqpt_config.json'
+extra_configs = {"std_medium_gain_advanced_config.json": data_dir / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": data_dir / "Juniper-BoosterHG.json"}
 
 
 @pytest.mark.parametrize("net", [network_file_name])
@@ -39,7 +42,7 @@ eqpt_library_name = Path(__file__).parent.parent / 'tests/data/eqpt_config.json'
                                             'PS_SP64_1', 'mode 3', 'PS_SP64_1', 'PS_SP64_1', '16QAM', 'mode 1',
                                             'PS_SP64_1', 'PS_SP64_1', 'mode 1', 'mode 2', 'mode 1', 'mode 2', 'nok']])
 def test_automaticmodefeature(net, eqpt, serv, expected_mode):
-    equipment = load_equipment(eqpt)
+    equipment = load_equipment(eqpt, extra_configs)
     network = load_network(net, equipment)
     data = load_requests(serv, eqpt, bidir=False, network=network, network_filename=net)
 
@@ -155,7 +158,7 @@ def test_propagate_and_optimize_mode(caplog):
     # change default ROADM PDL so that crossing 2 ROADMs leasd to inifinte penalty for mode 1
     eqpt_roadm = next(r for r in json_data['Roadm'] if 'type_variety' not in r)
     eqpt_roadm['pdl'] = 0.5
-    equipment = _equipment_from_json(json_data, eqpt_library_name)
+    equipment = _equipment_from_json(json_data, extra_configs)
     network = load_network(network_file_name, equipment)
     data = load_requests(filename=Path(__file__).parent.parent / 'tests/data/testTopology_services_expected.json',
                          eqpt=eqpt_library_name, bidir=False, network=network, network_filename=network_file_name)

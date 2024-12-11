@@ -44,14 +44,17 @@ def show_example_data_dir():
     print(f'{_examples_dir}/')
 
 
-def load_common_data(equipment_filename: Path, extra_equipment_filenames: List[Path], topology_filename: Path,
-                     simulation_filename: Path, save_raw_network_filename: Path):
+def load_common_data(equipment_filename: Path, extra_equipment_filenames: List[Path], extra_config_filenames: List[Path],
+                     topology_filename: Path, simulation_filename: Path, save_raw_network_filename: Path):
     """Load common configuration from JSON files, merging additional equipment if provided."""
 
     try:
-        equipment = load_equipment(equipment_filename)
+        extra_configs = {}
+        if extra_config_filenames:
+            extra_configs = {f.name: f for f in extra_config_filenames}
+        equipment = load_equipment(equipment_filename, extra_configs)
         if extra_equipment_filenames:
-            merge_equipment(equipment, extra_equipment_filenames)
+            merge_equipment(equipment, extra_equipment_filenames, extra_configs)
         network = load_network(topology_filename, equipment)
         if save_raw_network_filename is not None:
             save_network(network, save_raw_network_filename)
@@ -110,6 +113,12 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
     parser.add_argument('-x', '--extra-equipment', nargs='+', type=Path,
                         metavar=_help_fname_json, default=None,
                         help='List of additional equipment files to complement the main equipment file.')
+    # Option for additional config files
+    parser.add_argument('-xc', '--extra-config', nargs='+', type=Path,
+                        metavar=_help_fname_json, default=[_examples_dir / "std_medium_gain_advanced_config.json",
+                                                           _examples_dir / "Juniper-BoosterHG.json"],
+                        help='List of additional config files as referenced in equipment files with '
+                             '"advanced_config_from_json" or "default_config_from_json"')
 
 
 def transmission_main_example(args=None):
@@ -133,8 +142,8 @@ def transmission_main_example(args=None):
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
 
-    (equipment, network) = load_common_data(args.equipment, args.extra_equipment, args.topology, args.sim_params,
-                                            args.save_network_before_autodesign)
+    (equipment, network) = load_common_data(args.equipment, args.extra_equipment, args.extra_config, args.topology,
+                                            args.sim_params, args.save_network_before_autodesign)
 
     if args.plot:
         plot_baseline(network)
@@ -322,7 +331,7 @@ def path_requests_run(args=None):
     _logger.info(f'Computing path requests {args.service_filename.name} into JSON format')
 
     (equipment, network) = \
-        load_common_data(args.equipment, args.extra_equipment, args.topology, args.sim_params,
+        load_common_data(args.equipment, args.extra_equipment, args.extra_config, args.topology, args.sim_params,
                          args.save_network_before_autodesign)
 
     # Build the network once using the default power defined in SI in eqpt config

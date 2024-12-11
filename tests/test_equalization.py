@@ -28,8 +28,11 @@ from gnpy.topology.spectrum_assignment import build_oms_list
 
 
 TEST_DIR = Path(__file__).parent
-EQPT_FILENAME = TEST_DIR / 'data/eqpt_config.json'
-NETWORK_FILENAME = TEST_DIR / 'data/testTopology_expected.json'
+DATA_DIR = TEST_DIR / 'data'
+EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
+NETWORK_FILENAME = DATA_DIR / 'testTopology_expected.json'
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 
 @pytest.mark.parametrize('degree, equalization_type, target, expected_pch_out_dbm, expected_si',
@@ -151,7 +154,7 @@ def test_merge_equalization():
             "type": "Roadm"}],
         "connections": []
     }
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     roadm = [n for n in network.nodes()][0]
     assert roadm.target_pch_out_dbm == -20
@@ -352,7 +355,7 @@ def create_voyager_req(equipment, source, dest, bidir, nodes_list, loose_list, m
 def test_initial_spectrum(mode, slot_width, power_dbm):
     """checks that propagation using the user defined spectrum identical to SI, gives same result as SI"""
     # first propagate without any req.initial_spectrum attribute
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
                              mode, slot_width, power_dbm)
     network = net_setup(equipment)
@@ -389,7 +392,7 @@ def test_initial_spectrum_not_identical():
     """checks that user defined spectrum overrides spectrum defined in SI
     """
     # first propagate without any req.initial_spectrum attribute
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
                              'mode 1', 50e9, 0)
     network = net_setup(equipment)
@@ -424,7 +427,7 @@ def test_target_psd_or_psw(power_dbm, equalization, target_value):
     """checks that if target_out_mWperSlotWidth or target_psd_out_mWperGHz is defined, it is used as equalization
     and it gives same result if computed target is the same
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = net_setup(equipment)
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
                              'mode 1', 50e9, power_dbm)
@@ -452,7 +455,7 @@ def test_target_psd_or_psw(power_dbm, equalization, target_value):
 
 def ref_network():
     """Create a network instance with a instance of propagated path"""
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = net_setup(equipment)
     req0 = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
                               'mode 1', 50e9, 0)
@@ -467,7 +470,7 @@ def test_target_psd_out_mwperghz_deltap(deltap):
 
     Power over 1.18dBm saturate amp with this test: TODO add a test on this saturation
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = net_setup(equipment, deltap)
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
                              'mode 1', 50e9, deltap)
@@ -510,7 +513,7 @@ def test_equalization(case, deltap, target, mode, slot_width, equalization):
     - per degree : target_pch_out_db / target_psd_out_mWperGHz
     for these cases with and without power from user
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     setattr(equipment['Roadm']['default'], 'target_pch_out_db', target)
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Rennes_STA', False,
                              ['east edfa in Brest_KLA to Quimper', 'roadm Lannion_CAS', 'trx Rennes_STA'],
@@ -567,7 +570,7 @@ def test_equalization(case, deltap, target, mode, slot_width, equalization):
 def test_power_option(req_power):
     """check that --po option adds correctly power with spectral information
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     setattr(equipment['Roadm']['default'], 'target_pch_out_db', None)
     setattr(equipment['Roadm']['default'], 'target_psd_out_mWperGHz', power_dbm_to_psd_mw_ghz(-20, 32e9))
     network = net_setup(equipment)
@@ -718,7 +721,7 @@ def test_power_offset_trx_equalization_psw(slot_width, value):
     """Check that the equalization with the offset is giving the same result as with reference slot_width
     Check that larger slot width but no offset takes larger slot width for equalization
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     trx = transceiver(slot_width, value)
     equipment['Transceiver'][trx['type_variety']] = Transceiver(**trx)
     setattr(equipment['Roadm']['default'], 'target_pch_out_db', None)
@@ -751,7 +754,7 @@ def test_power_offset_trx_equalization_psw(slot_width, value):
 def test_power_offset_trx_equalization_p(slot_width, value):
     """Check that the constant power equalization with the offset is applied
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     trx = transceiver(slot_width, value)
     equipment['Transceiver'][trx['type_variety']] = Transceiver(**trx)
     setattr(equipment['Roadm']['default'], 'target_pch_out_db', -20)
@@ -777,7 +780,7 @@ def test_power_offset_automatic_mode_selection(slot_width, value, equalization,
     """Check that the same result is obtained if the mode is user defined or if it is
     automatically selected
     """
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     trx = transceiver(slot_width, value)
     equipment['Transceiver'][trx['type_variety']] = Transceiver(**trx)
     setattr(equipment['Roadm']['default'], 'target_pch_out_db', None)
@@ -859,7 +862,7 @@ def test_tx_power(tx_power_dbm):
     for el in json_data['elements']:
         if el['uid'] == 'roadm Lannion_CAS':
             el['type_variety'] = 'example_detailed_impairments'
-    equipment = load_equipment(EQPT_FILENAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     default_spectrum = equipment['SI']['default']
     p_db = default_spectrum.power_dbm

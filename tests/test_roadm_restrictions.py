@@ -28,8 +28,11 @@ from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 
 
 TEST_DIR = Path(__file__).parent
-EQPT_LIBRARY_NAME = TEST_DIR / 'data/eqpt_config.json'
-NETWORK_FILE_NAME = TEST_DIR / 'data/testTopology_expected.json'
+DATA_DIR = TEST_DIR / 'data'
+EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
+NETWORK_FILE_NAME = DATA_DIR / 'testTopology_expected.json'
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 # adding tests to check the roadm restrictions
 
 # mark node_uid amps as fused for testing purpose
@@ -39,7 +42,7 @@ def test_no_amp_feature(node_uid):
     test_parser covers partly this behaviour. This test should guaranty that the
     feature is preserved even if convert is changed
     """
-    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     json_network = load_json(NETWORK_FILE_NAME)
 
     for elem in json_network['elements']:
@@ -82,7 +85,7 @@ def test_no_amp_feature(node_uid):
 @pytest.fixture()
 def equipment():
     """init transceiver class to access snr and osnr calculations"""
-    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     # define some booster and preamps
     restrictions_list = [
         {
@@ -131,7 +134,7 @@ def equipment():
         }]
     # add them to the library
     for entry in restrictions_list:
-        equipment['Edfa'][entry['type_variety']] = Amp.from_json(EQPT_LIBRARY_NAME, **entry)
+        equipment['Edfa'][entry['type_variety']] = Amp.from_json(EXTRA_CONFIGS, **entry)
     return equipment
 
 
@@ -223,7 +226,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
     for the test where the prev_node in ROADM B is either an amplifier or a fused, so that the target
     power can not be met in this last case.
     """
-    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     equipment['SI']['default'].power_dbm = power_dbm
     json_network = load_json(TEST_DIR / 'data/twohops_roadm_power_test.json')
     prev_node = next(n for n in json_network['elements'] if n['uid'] == 'west edfa in node B to ila2')
@@ -448,7 +451,7 @@ def test_compare_design_propagation_settings(power_dbm, req_power, amp_with_delt
         This test also checks all the possible combinations and expected before/after propagation
         gain differences. It also checks delta_p applied due to saturation during design.
     """
-    eqpt = load_equipment(EQPT_LIBRARY_NAME)
+    eqpt = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     eqpt['SI']['default'].power_dbm = power_dbm
     json_network = load_json(NETWORK_FILE_NAME)
     for element in json_network['elements']:
@@ -550,14 +553,14 @@ def test_wrong_restrictions(restrictions, fail):
     """Check that sanity_check correctly raises an error when restriction is incorrect and that library
     correctly includes restrictions.
     """
-    json_data = load_json(EQPT_LIBRARY_NAME)
+    json_data = load_json(EQPT_FILENAME)
     # define wrong restriction
     json_data['Roadm'][0]['restrictions'] = restrictions
     if fail:
         with pytest.raises(ConfigurationError):
-            _ = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
+            _ = _equipment_from_json(json_data, EXTRA_CONFIGS)
     else:
-        equipment = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
+        equipment = _equipment_from_json(json_data, EXTRA_CONFIGS)
         assert equipment['Roadm']['example_test'].restrictions == restrictions
 
 
@@ -574,7 +577,7 @@ def test_roadm_impairments(roadm, from_degree, to_degree, expected_impairment_id
     for el in json_data['elements']:
         if el['uid'] == 'roadm Lannion_CAS':
             el['type_variety'] = 'example_detailed_impairments'
-    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     build_network(network, equipment, 0.0, 20.0)
     roadm = next(n for n in network.nodes() if n.uid == roadm)
@@ -590,7 +593,7 @@ def test_roadm_impairments(roadm, from_degree, to_degree, expected_impairment_id
 def test_roadm_per_degree_impairments(type_variety, from_degree, to_degree, impairment_id, expected_type):
     """Check that impairment type is correct also if per degree impairment is defined
     """
-    json_data = load_json(EQPT_LIBRARY_NAME)
+    json_data = load_json(EQPT_FILENAME)
     assert 'type_variety' not in json_data['Roadm'][2]
     json_data['Roadm'][2]['roadm-path-impairments'] = [
         {
@@ -614,7 +617,7 @@ def test_roadm_per_degree_impairments(type_variety, from_degree, to_degree, impa
                 "roadm-noise-figure": 23
             }]
         }]
-    equipment = _equipment_from_json(json_data, EQPT_LIBRARY_NAME)
+    equipment = _equipment_from_json(json_data, EXTRA_CONFIGS)
     assert equipment['Roadm']['default'].type_variety == 'default'
 
     json_data = load_json(NETWORK_FILE_NAME)
@@ -647,7 +650,7 @@ def test_roadm_per_degree_impairments(type_variety, from_degree, to_degree, impa
 def test_wrong_roadm_per_degree_impairments(from_degree, to_degree, impairment_id, error, message):
     """Check that wrong per degree definitions are correctly catched
     """
-    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     json_data = load_json(NETWORK_FILE_NAME)
     for el in json_data['elements']:
         if el['uid'] == 'roadm Lannion_CAS':
@@ -680,7 +683,7 @@ def test_impairment_initialization(path_type, type_variety, expected_pmd, expect
     - use roadm detailed impairment for the corresponding path_type if roadm type_variety has detailed impairments
     - use roadm per degree impairment if they are defined
     """
-    equipment = load_equipment(EQPT_LIBRARY_NAME)
+    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     extra_params = equipment['Roadm'][type_variety].__dict__
     roadm_config = {
         "uid": "roadm Lannion_CAS",

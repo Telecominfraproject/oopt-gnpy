@@ -23,7 +23,9 @@ DATA_DIR = TEST_DIR / 'data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILENAME = DATA_DIR / 'testTopology_auto_design_expected.json'
 SERVICE_FILENAME = DATA_DIR / 'testTopology_services_expected.json'
-equipment = load_equipment(EQPT_FILENAME)
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
+                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
 
 
 @pytest.fixture()
