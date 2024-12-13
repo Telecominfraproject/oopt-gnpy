@@ -39,6 +39,10 @@ Model_fg = namedtuple('Model_fg', 'nf0')
 Model_openroadm_ila = namedtuple('Model_openroadm_ila', 'nf_coef')
 Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
 Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variety')
+_examples_dir = Path(__file__).parent.parent / 'example-data'
+DEFAULT_EXTRA_CONFIG = {"std_medium_gain_advanced_config.json": _examples_dir / "std_medium_gain_advanced_config.json",
+                        "Juniper-BoosterHG.json": _examples_dir / "Juniper-BoosterHG.json"}
+DEFAULT_EQPT_CONFIG = _examples_dir / "eqpt_config.json"
 
 
 class Model_openroadm_preamp:
@@ -218,6 +222,7 @@ class Amp(_JsonThing):
         # default EDFA DGT and ripples are defined in parameters DEFAULT_EDFA_CONFIG. copy these values when
         # creating a new amplifier
         config = {k: v for k, v in DEFAULT_EDFA_CONFIG.items()}
+        config_filename = 'default'    # default value to display in case of error
         type_variety = kwargs['type_variety']
         type_def = kwargs.get('type_def', 'variable_gain')  # default compatibility with older json eqpt files
         nf_def = None
@@ -227,7 +232,8 @@ class Amp(_JsonThing):
         if type_def == 'fixed_gain':
             if 'default_config_from_json' in kwargs:
                 # use user defined default instead of DEFAULT_EDFA_CONFIG
-                config = load_json(extra_configs[kwargs.pop('default_config_from_json')])
+                config_filename = extra_configs[kwargs.pop('default_config_from_json')]
+                config = load_json(config_filename)
             try:
                 nf0 = kwargs.pop('nf0')
             except KeyError as exc:  # nf0 is expected for a fixed gain amp
@@ -241,11 +247,13 @@ class Amp(_JsonThing):
             nf_def = Model_fg(nf0)
         elif type_def == 'advanced_model':
             # use the user file name define in library instead of default config
-            config = load_json(extra_configs[kwargs.pop('advanced_config_from_json')])
+            config_filename = extra_configs[kwargs.pop('advanced_config_from_json')]
+            config = load_json(config_filename)
         elif type_def == 'variable_gain':
             if 'default_config_from_json' in kwargs:
                 # use user defined default instead of DEFAULT_EDFA_CONFIG
-                config = load_json(extra_configs[kwargs.pop('default_config_from_json')])
+                config_filename = extra_configs[kwargs.pop('default_config_from_json')]
+                config = load_json(config_filename)
             gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
             try:  # nf_min and nf_max are expected for a variable gain amp
                 nf_min = kwargs.pop('nf_min')
@@ -284,7 +292,7 @@ class Amp(_JsonThing):
 
         # raise an error if config does not contain f_min, f_max
         if 'f_min' not in config or 'f_max' not in config:
-            raise EquipmentConfigError('default Edfa config does not contain f_min and f_max values.'
+            raise EquipmentConfigError(f'Config file {config_filename} does not contain f_min and f_max values.'
                                        + ' Please correct file.')
         # use f_min, f_max from kwargs
         if 'f_min' in kwargs:
@@ -386,7 +394,38 @@ def merge_equipment(equipment: dict, additional_filenames: List[Path], extra_con
                     _logger.warning(msg)
 
 
-def load_equipment(filename: Path, extra_configs: Dict[str, Path]) -> dict:
+def load_equipments_and_configs(equipment_filename: Path,
+                                extra_equipment_filenames: List[Path],
+                                extra_config_filenames: List[Path]) -> dict:
+    """Loads equipment configurations and merge with additional equipment and configuration files.
+
+    Args:
+        equipment_filename (Path): The path to the primary equipment configuration file.
+        extra_equipment_filenames (List[Path]): A list of paths to additional equipment configuration files to merge.
+        extra_config_filenames (List[Path]): A list of paths to additional configuration files to include.
+
+    Returns:
+        dict: A dictionary containing the loaded equipment configurations.
+
+    Notes:
+        If no equipment filename is provided, a default equipment configuration will be used.
+        Additional configurations from `extra_config_filenames` will override the default configurations.
+        If `extra_equipment_filenames` are provided, their contents will be merged into the loaded equipment.
+    """
+    extra_configs = DEFAULT_EXTRA_CONFIG
+    if not equipment_filename:
+        equipment_filename = DEFAULT_EQPT_CONFIG
+    if extra_config_filenames:
+        extra_configs = {f.name: f for f in extra_config_filenames}
+        for k, v in DEFAULT_EXTRA_CONFIG.items():
+            extra_configs[k] = v
+    equipment = load_equipment(equipment_filename, extra_configs)
+    if extra_equipment_filenames:
+        merge_equipment(equipment, extra_equipment_filenames, extra_configs)
+    return equipment
+
+
+def load_equipment(filename: Path, extra_configs: Dict[str, Path] = DEFAULT_EXTRA_CONFIG) -> dict:
     """Load equipment, returns equipment dict
     """
     json_data = load_json(filename)

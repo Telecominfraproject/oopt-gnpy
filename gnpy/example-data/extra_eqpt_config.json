@@ -1,4 +1,29 @@
 {
+  "Edfa": [
+    {
+      "type_variety": "user_defined",
+      "type_def": "variable_gain",
+      "f_min": 192.0e12,
+      "f_max": 195.9e12,
+      "gain_flatmax": 25,
+      "gain_min": 15,
+      "p_max": 21,
+      "nf_min": 6,
+      "nf_max": 10,
+      "default_config_from_json": "user_edfa_config.json",
+      "out_voa_auto": false,
+      "allowed_for_design": true
+    }, {
+      "type_variety": "user_high_detail_model_example",
+      "type_def": "advanced_model",
+      "gain_flatmax": 25,
+      "gain_min": 15,
+      "p_max": 21,
+      "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+      "out_voa_auto": false,
+      "allowed_for_design": false
+    }
+  ],
   "Transceiver": [
     {
       "type_variety": "ZR400G",
