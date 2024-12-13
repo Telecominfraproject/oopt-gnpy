@@ -22,14 +22,17 @@ from gnpy.core import exceptions
 from gnpy.core.parameters import SimParams
 from gnpy.core.utils import lin2db, pretty_summary_print, per_label_average, watt2dbm
 from gnpy.topology.request import (ResultElement, jsontocsv, BLOCKING_NOPATH)
-from gnpy.tools.json_io import (load_equipment, load_network, load_json, load_requests, save_network,
-                                requests_from_json, save_json, load_initial_spectrum, merge_equipment)
+from gnpy.tools.json_io import (load_equipments_and_configs, load_network, load_json, load_requests, save_network,
+                                requests_from_json, save_json, load_initial_spectrum, DEFAULT_EQPT_CONFIG)
 from gnpy.tools.plots import plot_baseline, plot_results
 from gnpy.tools.worker_utils import designed_network, transmission_simulation, planning
 
 
 _logger = logging.getLogger(__name__)
 _examples_dir = Path(__file__).parent.parent / 'example-data'
+_default_config_files = ['example-data/std_medium_gain_advanced_config.json',
+                         'example-data/Juniper-BoosterHG.json',
+                         'parameters.DEFAULT_EDFA_CONFIG']
 _help_footer = '''
 This program is part of GNPy, https://github.com/TelecomInfraProject/oopt-gnpy
 
@@ -49,12 +52,7 @@ def load_common_data(equipment_filename: Path, extra_equipment_filenames: List[P
     """Load common configuration from JSON files, merging additional equipment if provided."""
 
     try:
-        extra_configs = {}
-        if extra_config_filenames:
-            extra_configs = {f.name: f for f in extra_config_filenames}
-        equipment = load_equipment(equipment_filename, extra_configs)
-        if extra_equipment_filenames:
-            merge_equipment(equipment, extra_equipment_filenames, extra_configs)
+        equipment = load_equipments_and_configs(equipment_filename, extra_equipment_filenames, extra_config_filenames)
         network = load_network(topology_filename, equipment)
         if save_raw_network_filename is not None:
             save_network(network, save_raw_network_filename)
@@ -98,7 +96,7 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='Increase verbosity (can be specified several times)')
     parser.add_argument('-e', '--equipment', type=Path, metavar=_help_fname_json,
-                        default=_examples_dir / 'eqpt_config.json', help='Equipment library')
+                        default=DEFAULT_EQPT_CONFIG, help='Equipment library')
     parser.add_argument('--sim-params', type=Path, metavar=_help_fname_json,
                         default=None, help='Path to the JSON containing simulation parameters (required for Raman). '
                                            f'Example: {_examples_dir / "sim_params.json"}')
@@ -110,15 +108,15 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                         help='Disable insertion of EDFAs after ROADMs and fibers '
                              'as well as splitting of fibers by auto-design.')
     # Option for additional equipment files
-    parser.add_argument('-x', '--extra-equipment', nargs='+', type=Path,
+    parser.add_argument('--extra-equipment', nargs='+', type=Path,
                         metavar=_help_fname_json, default=None,
                         help='List of additional equipment files to complement the main equipment file.')
     # Option for additional config files
-    parser.add_argument('-xc', '--extra-config', nargs='+', type=Path,
-                        metavar=_help_fname_json, default=[_examples_dir / "std_medium_gain_advanced_config.json",
-                                                           _examples_dir / "Juniper-BoosterHG.json"],
+    parser.add_argument('--extra-config', nargs='+', type=Path,
+                        metavar=_help_fname_json,
                         help='List of additional config files as referenced in equipment files with '
-                             '"advanced_config_from_json" or "default_config_from_json"')
+                             '"advanced_config_from_json" or "default_config_from_json".'
+                             f'Existing configs:\n{_default_config_files}')
 
 
 def transmission_main_example(args=None):

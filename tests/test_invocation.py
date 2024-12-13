@@ -41,7 +41,8 @@ SRC_ROOT = Path(__file__).parent.parent
      ['gnpy/example-data/multiband_example_network.json', 'Site_A', 'Site_D', '-e', 'gnpy/example-data/eqpt_config_multiband.json',
       '--spectrum', 'gnpy/example-data/multiband_spectrum.json', '--show-channels']),
     ('path_requests_run_extra_equipment', 'logs_path_requests_run_extra_equipment', path_requests_run,
-     ['gnpy/example-data/meshTopologyExampleV2.xls', 'gnpy/example-data/service_pluggable.json', '--extra-equipment', 'gnpy/example-data/extra_eqpt_config.json', 'tests/data/extra_eqpt_config.json'])
+     ['gnpy/example-data/meshTopologyExampleV2.xls', 'gnpy/example-data/service_pluggable.json', '--extra-equipment', 'gnpy/example-data/extra_eqpt_config.json', 'tests/data/extra_eqpt_config.json',
+      '--extra-config', 'tests/data/user_edfa_config.json'])
 ))
 def test_example_invocation(capfd, caplog, output, log, handler, args):
     """Make sure that our examples produce useful output"""
