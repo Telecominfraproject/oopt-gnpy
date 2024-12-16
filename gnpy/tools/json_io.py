@@ -439,14 +439,14 @@ def load_initial_spectrum(filename: Path) -> dict:
     return _spectrum_from_json(json_data['spectrum'])
 
 
-def _update_dual_stage(equipment: dict) -> dict:
+def _update_dual_stage(equipment: dict):
     """Update attributes of all dual stage amps with the preamp and booster attributes
     (defined in the equipment dictionary)
 
     Returns the updated equiment dictionary
     """
     if 'Edfa' not in equipment:
-        return equipment
+        return
     edfa_dict = equipment['Edfa']
     for edfa in edfa_dict.values():
         if edfa.type_def == 'dual_stage':
@@ -465,11 +465,11 @@ def _update_dual_stage(equipment: dict) -> dict:
     return equipment
 
 
-def _update_band(equipment: dict) -> dict:
+def _update_band(equipment: dict):
     """Creates a list of bands for this amplifier, and remove other parameters which are not applicable
     """
     if 'Edfa' not in equipment:
-        return equipment
+        return
     amp_dict = equipment['Edfa']
     for amplifier in amp_dict.values():
         if amplifier.type_def != 'multi_band':
@@ -488,8 +488,6 @@ def _update_band(equipment: dict) -> dict:
             for key in ['f_min', 'f_max', 'gain_flatmax', 'gain_min', 'p_max', 'nf_model', 'dual_stage_model',
                         'nf_fit_coeff', 'nf_ripple', 'dgt', 'gain_ripple']:
                 delattr(amplifier, key)
-
-    return equipment
 
 
 def _roadm_restrictions_sanity_check(equipment: dict):
@@ -567,8 +565,8 @@ def _equipment_from_json(json_data: dict, extra_configs: Dict[str, Path]) -> dic
             else:
                 raise EquipmentConfigError(f'Unrecognized network element type "{key}"')
     _check_fiber_vs_raman_fiber(equipment)
-    equipment = _update_dual_stage(equipment)
-    equipment = _update_band(equipment)
+    _update_dual_stage(equipment)
+    _update_band(equipment)
     _roadm_restrictions_sanity_check(equipment)
     _si_sanity_check(equipment)
     return equipment
