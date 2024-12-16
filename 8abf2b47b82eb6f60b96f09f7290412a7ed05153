@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4451bb9_d0dff1b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-12-16T15:56:24Z",
+      "side": 1,
+      "message": "The code looks good. I gave some inputs reviewing the text and asking some clarifications in the tests. This patch is crucial for the next improvement of the edfa class.",
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc322fd8_57ceb454",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-12-16T15:56:24Z",
+      "side": 1,
+      "message": "```suggestion\nDefault values ​​are defined for the frequency range for:\n- noise figure ripple\n- gain ripple\n- dynamic gain tilt\n\nUsers can introduce custom values ​​using ``default_config_from_json`` which should be populated with a file name containing the desired parameters.\n```",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 35
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e74f780_550264da",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-12-16T15:56:24Z",
+      "side": 1,
+      "message": "```suggestion\nHowever, users can define their own custom parameters using the default_config_from_json variable, which should be populated with a file name containing the desired parameter description. This applies to both variable_gain and fixed_gain amplifier types.\n```",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd76faa0_2368da0a",
+        "filename": "tests/test_amplifier.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-12-16T15:56:24Z",
+      "side": 1,
+      "message": "I see that this test and the next one need the spectral information propagation in the EDFA element to compute nf. \n\nSince there are specific tests for the noise figure, is it better to focus here on the params instantiation? Here a possible simplification of the test:\n\nnetwork \u003d network_from_json(json_data, equipment)\namp \u003d [n for n in network.nodes()][0]\nassert_allclose(amp.params.f_min, 193.0e12, rtol\u003d1e-13)\nassert_allclose(amp.params.f_max, 195.0e12, rtol\u003d1e-13)\nassert_allclose(amp.params.gain_ripple[15], 0.01027114740367, rtol\u003d1e-13)\nassert_allclose(amp.params.nf_ripple[15], 0.0, rtol\u003d1e-13)\nassert_allclose(amp.params.dgt[15], 1.847275503201129, rtol\u003d1e-13)",
+      "range": {
+        "startLine": 544,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 70
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03e15f71_53b50f4f",
+        "filename": "tests/test_amplifier.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-12-16T15:56:24Z",
+      "side": 1,
+      "message": "```suggestion\n    \"\"\"Checks that a config using a file gives the exact same result as the default config if values are identical\n```",
+      "range": {
+        "startLine": 558,
+        "startChar": 7,
+        "endLine": 558,
+        "endChar": 118
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff3ef90c_f65b72ee",
+        "filename": "tests/test_amplifier.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2024-12-16T15:56:24Z",
+      "side": 1,
+      "message": "Same observation as for the previous comment.\n\nnetwork \u003d network_from_json(json_data, equipment)\namp1, amp2 \u003d [n for n in network.nodes()]\n    \nassert_allclose(amp1.params.f_min, amp2.params.f_min, rtol\u003d1e-13)\nassert_allclose(amp1.params.f_max, amp2.params.f_max, rtol\u003d1e-13)\nassert_allclose(amp1.params.gain_ripple, amp2.params.gain_ripple, rtol\u003d1e-13)\nassert_allclose(amp1.params.nf_ripple, amp2.params.nf_ripple, rtol\u003d1e-13)\nassert_allclose(amp1.params.dgt, amp2.params.dgt, rtol\u003d1e-13)",
+      "range": {
+        "startLine": 615,
+        "startChar": 4,
+        "endLine": 628,
+        "endChar": 65
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
