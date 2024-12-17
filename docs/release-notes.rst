@@ -15,6 +15,30 @@ However, users can define their own custom parameters using the default_config_f
 This change streamlines the configuration process but requires users to explicitly set parameters through the new
 model if the default values do not suit their needs.
 
+**Upcoming Changes**
+
+- *Resolved ambiguity in GNPy's spectral information*:
+  
+  - Clarified the meaning of signal and noise contributions in spectral power calculations.
+  - Ensures uniformity when comparing measured data with GNPy estimations.
+
+- *Spectral Information Power Calculation*:
+  
+  - The total spectral power is now explicitly defined as the sum of the signal terms in linear units.
+  - Noise contributions (ASE and NLI) are now considered part of the signal power, making the signal power equivalent to the channel power.
+
+- *Signal-to-Noise Ratio (SNR) Adjustment*:
+  
+  - The SNR computation has been modified to exclude noise contributions from the numerator.
+  - Formula example: :math:`\text{SNR} = \frac{\text{signal}}{\text{noise}} - 1`.
+  
+  This ensures consistency between back-to-back transceiver characterization and the SNR estimation in GNPy.
+
+- *Benefits for Users*:
+  
+  - Uniform comparison between measurements and GNPy outputs.
+  - Improved alignment with real-world transceiver characterization.
+
 v2.11
 -----
 

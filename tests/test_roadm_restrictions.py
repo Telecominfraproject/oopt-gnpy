@@ -13,7 +13,7 @@ checks that restrictions in roadms are correctly applied during autodesign
 from pathlib import Path
 import pytest
 from numpy.testing import assert_allclose
-from numpy import ndarray, mean
+from numpy import ndarray, mean, stack
 from copy import deepcopy
 from gnpy.core.utils import lin2db, automatic_nch
 from gnpy.core.elements import Fused, Roadm, Edfa, Transceiver, EdfaOperational, EdfaParams, Fiber
@@ -271,9 +271,9 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
         spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.tx_power)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            power_in_roadm = si.signal + si.ase + si.nli
+            power_in_roadm = stack(si.signal)
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
-            power_out_roadm = si.signal + si.ase + si.nli
+            power_out_roadm = stack(si.signal)
             if el.uid == 'roadm node B':
                 # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
                 # target power (as specified in equipment ie -20 dBm)

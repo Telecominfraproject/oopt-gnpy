@@ -230,7 +230,7 @@ def estimate_raman_gain(node, equipment, power_dbm):
         spectral_info = create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=roll_off,
                                                           baud_rate=baud_rate, tx_power=power, spacing=spacing,
                                                           tx_osnr=tx_osnr)
-        pin = watt2dbm(sum(spectral_info.signal))
+        pin = spectral_info.total_power_dbm()
         attenuation_in_db = node.params.con_in + node.params.att_in
         spectral_info.apply_attenuation_db(attenuation_in_db)
         save_sim_params = {"raman_params": SimParams._shared_dict['raman_params'].to_json(),
@@ -241,7 +241,7 @@ def estimate_raman_gain(node, equipment, power_dbm):
         spectral_info.apply_attenuation_lin(attenuation_fiber)
         attenuation_out_db = node.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
-        pout = watt2dbm(sum(spectral_info.signal))
+        pout = spectral_info.total_power_dbm()
         estimated_loss = pin - pout
         estimated_gain = node.loss - estimated_loss
         node.estimated_gain = estimated_gain

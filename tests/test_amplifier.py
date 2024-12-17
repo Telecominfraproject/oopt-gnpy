@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # @Author: Jean-Luc Auge
 # @Date:   2018-02-02 14:06:55
+from copy import deepcopy
 
-from numpy import zeros, array
+from numpy import zeros, array, argwhere, squeeze
 from numpy.testing import assert_allclose
+from scipy.constants import h
+
 from gnpy.core.elements import Transceiver, Edfa, Fiber
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
 from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
@@ -110,7 +113,7 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
 def test_si(si, nch_and_spacing):
     """basic total power check of the channel comb generation"""
     nb_channel = nch_and_spacing[0]
-    p_tot = sum(si.signal + si.ase + si.nli)
+    p_tot = si.total_power()
     expected_p_tot = si.signal[0] * nb_channel
     assert pytest.approx(expected_p_tot, abs=0.01) == p_tot
 
@@ -163,8 +166,8 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
 @pytest.mark.parametrize("gain", [13, 15, 17, 19, 21, 23, 25, 27])
 def test_ase_noise(gain, si, setup_trx, bw):
     """testing 3 different ways of calculating osnr:
-    1-pin-edfa.nf+58 vs
-    2-pout/pase afet propagate
+    1-pout/pase after propagate
+    2-pin-edfa.nf+58
     3-Transceiver osnr_ase_01nm
     => unitary test for Edfa.noise_profile (Edfa.interpol_params, Edfa.propagate)"""
     equipment = load_equipment(eqpt_library, extra_configs)
@@ -181,22 +184,38 @@ def test_ase_noise(gain, si, setup_trx, bw):
     # propagate in span1 to have si with the correct power level
     si = span(si)
     print(span)
+    
+    ref_bw = 12.5e9
+    ref_frequency = 193.5e12
+    ind_freq_ref = squeeze(argwhere(si.frequency == ref_frequency))
+    bw_ratio = lin2db(ref_bw / bw)
 
-    edfa.interpol_params(si)
-    nf = edfa.nf
-    print('nf', nf)
-    pin = lin2db((si.signal[0] + si.ase[0] + si.nli[0]) * 1e3)
-    osnr_expected = pin - nf[0] + 58
-
-    si = edfa(si)
+    # First Method: pout/pase after propagate (Reference)
+    si_expected = edfa(deepcopy(si))
     print(edfa)
-    osnr = lin2db(si.signal[0] / si.ase[0]) - lin2db(12.5e9 / bw)
-    assert pytest.approx(osnr_expected, abs=0.01) == osnr
+    osnr_expected = lin2db((si_expected.signal[ind_freq_ref] / (si_expected.ase[ind_freq_ref])) - 1) - bw_ratio
+    
+    # Second Method: pin-edfa.nf+58
+    edfa.interpol_params(si)
+    nf = edfa.nf[ind_freq_ref]
+    print('nf', nf)
+    pin = watt2dbm(si.signal[ind_freq_ref])
+    k = watt2dbm(h * ref_frequency * ref_bw)  # ~ -58 dBm
+    p_ase_gen_dbm = nf + k
+    osnr = lin2db(db2lin(pin - p_ase_gen_dbm) - 1)
+    assert pytest.approx(osnr_expected, abs=0.05) == osnr
 
+    # Note: inaccuracy in the computation is given by the change of noise bandwidth (numerical computation error).
+    # Using the following formulas, the computation provides the same result as the expected one:
+    # k = watt2dbm(h * ref_frequency * bw)
+    # p_ase_gen_dbm = nf + k
+    # osnr = lin2db(db2lin(pin - p_ase_gen_dbm) - 1) - bw_ratio
+    
+    # Third Method: Transceiver osnr_ase_01nm
     trx = setup_trx
-    si = trx(si)
-    osnr = trx.osnr_ase_01nm[0]
-    assert pytest.approx(osnr_expected, abs=0.01) == osnr
+    _ = trx(si_expected)
+    osnr = trx.osnr_ase_01nm[ind_freq_ref]
+    assert pytest.approx(osnr_expected, abs=1e-9) == osnr
 
 
 @pytest.mark.parametrize('delta_p', [0, None, 2])
@@ -237,51 +256,50 @@ def test_amp_behaviour(tilt_target, delta_p):
     si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
                                            spacing=75e9, tx_osnr=None, tx_power=1e-3)
     si = fiber(si)
-    total_sig_powerin = sum(si.signal)
+    total_sig_powerin = si.total_power()
     sig_in = lin2db(si.signal)
     si = edfa(si)
     sig_out = lin2db(si.signal)
-    total_sig_powerout = sum(si.signal)
+    total_sig_powerout = si.total_power()
     gain = lin2db(total_sig_powerout / total_sig_powerin)
     expected_total_power_out = total_sig_powerin * 100 * db2lin(delta_p) if delta_p else total_sig_powerin * 100
     assert pytest.approx(total_sig_powerout, abs=1e-6) == min(expected_total_power_out, dbm2watt(21))
     assert pytest.approx(edfa.effective_gain, 1e-5) == gain
-    assert watt2dbm(sum(si.signal + si.nli + si.ase)) <= 21.01
+    assert si.total_power_dbm() <= 21.01
     # If there is no tilt on the amp: the gain is identical for all carriers
     if tilt_target == 0:
         assert_allclose(sig_in + gain, sig_out, rtol=1e-13)
     else:
         if delta_p != 2:
             expected_sig_out = [
-                -31.95025022, -31.88168886, -31.81178634, -31.73838831, -31.66318631,
-                -31.58762141, -31.51156294, -31.43760161, -31.38124626, -31.34245197,
-                -31.30629475, -31.26970711, -31.22566555, -31.17412914, -31.11806869,
-                -31.05122228, -30.97358131, -30.90658619, -30.86616148, -30.83854197,
-                -30.81115028, -30.78403337, -30.7570206, -30.73002834, -30.70088634,
-                -30.66844432, -30.63427939, -30.59364514, -30.54659009, -30.49180643,
-                -30.41406352, -30.31434813, -30.22984104, -30.18249387, -30.1516453,
-                -30.12082034, -30.08970494, -30.05779424, -30.02543415, -29.99309889,
-                -29.96078803, -29.92798594, -29.89002127, -29.84689015, -29.79726968,
-                -29.72927112, -29.64485972, -29.55578693, -29.45569694, -29.35111795,
-                -29.24662471, -29.12148491, -28.94244964, -28.73421833, -28.53930479,
-                -28.36231261, -28.19361236, -28.04376778, -27.91280403, -27.79433658,
-                -27.7065072, -27.64495288, -27.59798975]
-
+                -31.95024777, -31.88168634, -31.81178376, -31.73838567, -31.6631836,
+                -31.58761863, -31.51156009, -31.43759869, -31.38124329, -31.34244897,
+                -31.30629171, -31.26970404, -31.22566244, -31.17412599, -31.11806548,
+                -31.05121901, -30.97357798, -30.90658279, -30.86615805, -30.83853851,
+                -30.8111468, -30.78402986, -30.75701707, -30.73002478, -30.70088276,
+                -30.6684407, -30.63427574, -30.59364146, -30.54658637, -30.49180265,
+                -30.41405967, -30.3143442, -30.22983703, -30.18248981, -30.15164122,
+                -30.12081623, -30.08970081, -30.05779008, -30.02542995, -29.99309466,
+                -29.96078377, -29.92798166, -29.89001695, -29.8468858, -29.79726528,
+                -29.72926666, -29.64485518, -29.55578231, -29.45569223, -29.35111314,
+                -29.24661981, -29.1214799, -28.94244446, -28.73421296, -28.53929925,
+                -28.36230691, -28.1936065, -28.04376179, -27.91279792, -27.79433036,
+                -27.70650091, -27.64494654, -27.59798336]
         else:
             expected_sig_out = [
-                -29.95025022, -29.88168886, -29.81178634, -29.73838831, -29.66318631,
-                -29.58762141, -29.51156294, -29.43760161, -29.38124626, -29.34245197,
-                -29.30629475, -29.26970711, -29.22566555, -29.17412914, -29.11806869,
-                -29.05122228, -28.97358131, -28.90658619, -28.86616148, -28.83854197,
-                -28.81115028, -28.78403337, -28.7570206, -28.73002834, -28.70088634,
-                -28.66844432, -28.63427939, -28.59364514, -28.54659009, -28.49180643,
-                -28.41406352, -28.31434813, -28.22984104, -28.18249387, -28.1516453,
-                -28.12082034, -28.08970494, -28.05779424, -28.02543415, -27.99309889,
-                -27.96078803, -27.92798594, -27.89002127, -27.84689015, -27.79726968,
-                -27.72927112, -27.64485972, -27.55578693, -27.45569694, -27.35111795,
-                -27.24662471, -27.12148491, -26.94244964, -26.73421833, -26.53930479,
-                -26.36231261, -26.19361236, -26.04376778, -25.91280403, -25.79433658,
-                -25.7065072, -25.64495288, -25.59798975]
+                -29.95024777, -29.88168634, -29.81178376, -29.73838567, -29.6631836,
+                -29.58761863, -29.51156009, -29.43759869, -29.38124329, -29.34244897,
+                -29.30629171, -29.26970404, -29.22566244, -29.17412599, -29.11806548,
+                -29.05121901, -28.97357798, -28.90658279, -28.86615805, -28.83853851,
+                -28.8111468, -28.78402986, -28.75701707, -28.73002478, -28.70088276,
+                -28.6684407, -28.63427574, -28.59364146, -28.54658637, -28.49180265,
+                -28.41405967, -28.3143442, -28.22983703, -28.18248981, -28.15164122,
+                -28.12081623, -28.08970081, -28.05779008, -28.02542995, -27.99309466,
+                -27.96078377, -27.92798166, -27.89001695, -27.8468858, -27.79726528,
+                -27.72926666, -27.64485518, -27.55578231, -27.45569223, -27.35111314,
+                -27.24661981, -27.1214799, -26.94244446, -26.73421296, -26.53929925,
+                -26.36230691, -26.1936065, -26.04376179, -25.91279792, -25.79433036,
+                -25.70650091, -25.64494654, -25.59798336]
 
         print(sig_out)
         assert_allclose(sig_out, expected_sig_out, rtol=1e-9)
@@ -323,13 +341,13 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
                                                signal=signal, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
                                                tx_osnr=None, tx_power=None)
-    total_sig_powerin = sum(si.signal)
+    total_sig_powerin = si.total_power()
     sig_in = lin2db(si.signal)
     si = edfa(si)
     sig_out = lin2db(si.signal)
-    total_sig_powerout = sum(si.signal)
+    total_sig_powerout = si.total_power()
     gain = lin2db(total_sig_powerout / total_sig_powerin)
-    assert watt2dbm(sum(si.signal + si.nli + si.ase)) <= 21.02
+    assert si.total_power_dbm() <= 21.02
     assert pytest.approx(edfa.effective_gain, 1e-13) == gain
     assert_allclose(sig_in + gain, sig_out, rtol=1e-13)
 
@@ -476,7 +494,7 @@ def test_multiband():
         '  Power Out (dBm):        21.01',
         '  Delta_P (dB):           0.90',
         '  target pch (dBm):       None',
-        '  actual pch out (dBm):   -1.77',
+        '  actual pch out (dBm):   -1.78',
         '  output VOA (dB):        3.00'])
     assert actual_c_amp == expected_c_amp
     actual_l_amp = amp.amplifiers["LBAND"].__str__()
@@ -493,7 +511,7 @@ def test_multiband():
         '  Power Out (dBm):        19.40',
         '  Delta_P (dB):           3.00',
         '  target pch (dBm):       None',
-        '  actual pch out (dBm):   -1.99',
+        '  actual pch out (dBm):   -2.00',
         '  output VOA (dB):        3.00'])
     assert actual_l_amp == expected_l_amp
 

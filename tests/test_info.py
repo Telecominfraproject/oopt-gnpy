@@ -4,7 +4,7 @@
 import pytest
 from numpy import array, zeros, ones
 from numpy.testing import assert_array_equal
-from gnpy.core.info import create_arbitrary_spectral_information
+from gnpy.core.info import create_arbitrary_spectral_information, create_input_spectral_information
 from gnpy.core.exceptions import SpectrumError
 
 
@@ -54,3 +54,22 @@ def test_create_arbitrary_spectral_information():
                        match='Dimension mismatch in input fields.'):
         create_arbitrary_spectral_information(frequency=[193.25e12, 193.3e12, 193.35e12], signal=[1, 2], baud_rate=49e9,
                                               tx_osnr=40.0, tx_power=1)
+
+
+def test_total_power():
+    """
+    Tests the `total_power` and `total_power_dbm` methods of the `SpectralInformation` class.
+    Verifies that the total power of the spectrum returns the correct result in linear units and dBm.
+    """
+    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
+                                           spacing=75e9, tx_osnr=None, tx_power=1e-3)
+    si.ase = ones(si.number_of_channels) * 1e-5
+    si.nli = ones(si.number_of_channels) * 1e-7
+
+    result_lin = si.total_power()
+    result_dbm = si.total_power_dbm()
+
+    expected_lin = 0.063
+    expected_dbm = 17.993405494535818
+    assert result_lin == expected_lin
+    assert result_dbm == expected_dbm

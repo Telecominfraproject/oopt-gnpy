@@ -45,12 +45,14 @@ network, it will show the transmission of spectral information between Abilene a
 
 This script calculates the average signal OSNR = |OSNR| and SNR = |SNR|.
 
-.. |OSNR| replace:: P\ :sub:`ch`\ /P\ :sub:`ase`
-.. |SNR| replace:: P\ :sub:`ch`\ /(P\ :sub:`nli`\ +\ P\ :sub:`ase`)
+.. |OSNR| replace:: (P\ :sub:`ch`\ /P\ :sub:`ase`) - 1
+.. |SNR| replace:: (P\ :sub:`ch`\ /(P\ :sub:`nli`\ +\ P\ :sub:`ase`)) - 1
 
 |Pase| is the amplified spontaneous emission noise, and |Pnli| the non-linear
-interference noise.
+interference noise. |Pch| is the channel total power. The term -1 removes the noise contribution from |Pch|,
+considering only the information signal power.
 
+.. |Pch| replace:: P\ :sub:`ch`
 .. |Pase| replace:: P\ :sub:`ase`
 .. |Pnli| replace:: P\ :sub:`nli`
 

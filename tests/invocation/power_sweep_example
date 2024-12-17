@@ -14,10 +14,10 @@ Channels propagating: (Input optical power deviation in span = 0.00dB,
                        nb_channels = 95)
 Input optical power reference in span = [1;36;40m-3.00 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          23.73
-  GSNR (signal bw, dB):      19.65
-  OSNR ASE (0.1nm, dB):      23.99
-  OSNR ASE (signal bw, dB):  19.91
+  GSNR (0.1nm, dB):          23.69
+  GSNR (signal bw, dB):      19.61
+  OSNR ASE (0.1nm, dB):      23.96
+  OSNR ASE (signal bw, dB):  19.88
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -25,10 +25,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m-2.50 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.01
-  GSNR (signal bw, dB):      19.93
-  OSNR ASE (0.1nm, dB):      24.37
-  OSNR ASE (signal bw, dB):  20.29
+  GSNR (0.1nm, dB):          23.98
+  GSNR (signal bw, dB):      19.89
+  OSNR ASE (0.1nm, dB):      24.34
+  OSNR ASE (signal bw, dB):  20.26
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -36,10 +36,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m-2.00 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.25
-  GSNR (signal bw, dB):      20.17
-  OSNR ASE (0.1nm, dB):      24.74
-  OSNR ASE (signal bw, dB):  20.66
+  GSNR (0.1nm, dB):          24.22
+  GSNR (signal bw, dB):      20.14
+  OSNR ASE (0.1nm, dB):      24.71
+  OSNR ASE (signal bw, dB):  20.63
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -47,10 +47,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m-1.50 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.44
-  GSNR (signal bw, dB):      20.36
-  OSNR ASE (0.1nm, dB):      25.10
-  OSNR ASE (signal bw, dB):  21.01
+  GSNR (0.1nm, dB):          24.41
+  GSNR (signal bw, dB):      20.33
+  OSNR ASE (0.1nm, dB):      25.07
+  OSNR ASE (signal bw, dB):  20.99
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -58,10 +58,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m-1.00 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.57
-  GSNR (signal bw, dB):      20.49
-  OSNR ASE (0.1nm, dB):      25.44
-  OSNR ASE (signal bw, dB):  21.36
+  GSNR (0.1nm, dB):          24.54
+  GSNR (signal bw, dB):      20.46
+  OSNR ASE (0.1nm, dB):      25.42
+  OSNR ASE (signal bw, dB):  21.34
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -69,10 +69,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m-0.50 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.63
-  GSNR (signal bw, dB):      20.55
-  OSNR ASE (0.1nm, dB):      25.77
-  OSNR ASE (signal bw, dB):  21.69
+  GSNR (0.1nm, dB):          24.60
+  GSNR (signal bw, dB):      20.51
+  OSNR ASE (0.1nm, dB):      25.75
+  OSNR ASE (signal bw, dB):  21.67
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -80,10 +80,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m-0.00 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.60
-  GSNR (signal bw, dB):      20.52
-  OSNR ASE (0.1nm, dB):      26.09
-  OSNR ASE (signal bw, dB):  22.00
+  GSNR (0.1nm, dB):          24.57
+  GSNR (signal bw, dB):      20.49
+  OSNR ASE (0.1nm, dB):      26.07
+  OSNR ASE (signal bw, dB):  21.99
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -91,10 +91,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m0.50 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.42
-  GSNR (signal bw, dB):      20.34
-  OSNR ASE (0.1nm, dB):      26.29
-  OSNR ASE (signal bw, dB):  22.20
+  GSNR (0.1nm, dB):          24.38
+  GSNR (signal bw, dB):      20.30
+  OSNR ASE (0.1nm, dB):      26.27
+  OSNR ASE (signal bw, dB):  22.19
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -102,10 +102,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m1.00 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.16
-  GSNR (signal bw, dB):      20.08
-  OSNR ASE (0.1nm, dB):      26.47
-  OSNR ASE (signal bw, dB):  22.39
+  GSNR (0.1nm, dB):          24.12
+  GSNR (signal bw, dB):      20.03
+  OSNR ASE (0.1nm, dB):      26.46
+  OSNR ASE (signal bw, dB):  22.38
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -113,10 +113,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m1.50 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.02
-  GSNR (signal bw, dB):      19.93
-  OSNR ASE (0.1nm, dB):      26.55
-  OSNR ASE (signal bw, dB):  22.47
+  GSNR (0.1nm, dB):          23.97
+  GSNR (signal bw, dB):      19.89
+  OSNR ASE (0.1nm, dB):      26.54
+  OSNR ASE (signal bw, dB):  22.46
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -124,10 +124,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m2.00 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.02
-  GSNR (signal bw, dB):      19.93
-  OSNR ASE (0.1nm, dB):      26.55
-  OSNR ASE (signal bw, dB):  22.47
+  GSNR (0.1nm, dB):          23.97
+  GSNR (signal bw, dB):      19.89
+  OSNR ASE (0.1nm, dB):      26.54
+  OSNR ASE (signal bw, dB):  22.46
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -135,10 +135,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m2.50 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.02
-  GSNR (signal bw, dB):      19.93
-  OSNR ASE (0.1nm, dB):      26.55
-  OSNR ASE (signal bw, dB):  22.47
+  GSNR (0.1nm, dB):          23.97
+  GSNR (signal bw, dB):      19.89
+  OSNR ASE (0.1nm, dB):      26.54
+  OSNR ASE (signal bw, dB):  22.46
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00
@@ -146,10 +146,10 @@ Transceiver trx Rennes_STA
   Actual pch out (dBm):      3.00
 Input optical power reference in span = [1;36;40m3.00 dBm[0m:
 Transceiver trx Rennes_STA
-  GSNR (0.1nm, dB):          24.02
-  GSNR (signal bw, dB):      19.93
-  OSNR ASE (0.1nm, dB):      26.55
-  OSNR ASE (signal bw, dB):  22.47
+  GSNR (0.1nm, dB):          23.97
+  GSNR (signal bw, dB):      19.89
+  OSNR ASE (0.1nm, dB):      26.54
+  OSNR ASE (signal bw, dB):  22.46
   CD (ps/nm):                3340.00
   PMD (ps):                  0.57
   PDL (dB):                  0.00

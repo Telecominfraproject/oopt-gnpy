@@ -556,11 +556,9 @@ def test_equalization(case, deltap, target, mode, slot_width, equalization):
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
             if case in ['SI', 'nodes', 'degrees']:
                 if equalization == 'target_psd_out_mWperGHz':
-                    assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal + si.ase + si.nli), si.baud_rate),
-                                    target_psd, rtol=1e-3)
+                    assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal), si.baud_rate), target_psd, rtol=1e-3)
                 if equalization == 'target_out_mWperSlotWidth':
-                    assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal + si.ase + si.nli), si.slot_width),
-                                    target_psd, rtol=1e-3)
+                    assert_allclose(power_dbm_to_psd_mw_ghz(watt2dbm(si.signal), si.slot_width), target_psd, rtol=1e-3)
         else:
             si = el(si)
         print(el.uid)
@@ -950,4 +948,4 @@ def test_tx_power(tx_power_dbm):
             si = node(si, path[i + 1], path[i - 1])
         else:
             si = node(si)
-    assert_allclose(watt2dbm(si.signal + si.ase + si.nli), array([-20, -20, -20]), rtol=1e-5)
+    assert_allclose(watt2dbm(si.signal), array([-20, -20, -20]), rtol=1e-5)

@@ -151,10 +151,10 @@ class Transceiver(_Node):
             self.baud_rate = spectral_info.baud_rate
             ratio_01nm = lin2db(12.5e9 / self.baud_rate)
             # set raw values to record original calculation, before update_snr()
-            self.raw_osnr_ase = lin2db(spectral_info.signal / spectral_info.ase)
+            self.raw_osnr_ase = lin2db((spectral_info.signal / spectral_info.ase) - 1)
             self.raw_osnr_ase_01nm = self.raw_osnr_ase - ratio_01nm
-            self.raw_osnr_nli = lin2db(spectral_info.signal / spectral_info.nli)
-            self.raw_snr = lin2db(spectral_info.signal / (spectral_info.ase + spectral_info.nli))
+            self.raw_osnr_nli = lin2db((spectral_info.signal / spectral_info.nli) - 1)
+            self.raw_snr = lin2db((spectral_info.signal / (spectral_info.ase + spectral_info.nli)) - 1)
             self.raw_snr_01nm = self.raw_snr - ratio_01nm
 
             self.osnr_ase = self.raw_osnr_ase
@@ -416,12 +416,12 @@ class Roadm(_Node):
         For the moment propagate operates with spectral info carriers all having the same source or destination.
         """
         # record input powers to compute the actual loss at the end of the process
-        input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        input_power_dbm = watt2dbm(spectral_info.signal)
         # apply min ROADM loss if it exists
         roadm_maxloss_db = self.get_impairment('roadm-maxloss', spectral_info.frequency, from_degree, degree)
         spectral_info.apply_attenuation_db(roadm_maxloss_db)
         # records the total power after applying minimum loss
-        net_input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        net_input_power_dbm = watt2dbm(spectral_info.signal)
         # find the target power for the reference carrier
         ref_per_degree_pch = self.get_per_degree_ref_power(degree)
         # find the target powers for each signal carrier
@@ -473,7 +473,7 @@ class Roadm(_Node):
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + pdl_impairment ** 2)
 
         # Update the per channel power with the result of propagation
-        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal)
 
         # Update the loss per channel and the labels
         self.loss_pch_db = input_power_dbm - self.pch_out_dbm
@@ -827,18 +827,18 @@ class Fiber(_Node):
         # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
-        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal)
         self.propagated_labels = spectral_info.label
 
     def __call__(self, spectral_info):
         # _psig_in records the total signal power of the spectral information before propagation.
-        self._psig_in = sum(spectral_info.signal)
+        self._psig_in = spectral_info.total_power()
         self.propagate(spectral_info)
         # In case of Raman, the resulting loss of the fiber is not equivalent to self.loss
         # because of Raman gain. The resulting loss is:
         # power_out - power_in. We use the total signal power (sum on all channels) to compute
         # this loss.
-        loss = round(lin2db(self._psig_in / sum(spectral_info.signal)), 2)
+        loss = round(lin2db(self._psig_in / spectral_info.total_power()), 2)
         self.pch_out_db = self.ref_pch_in_dbm - loss
         return spectral_info
 
@@ -876,7 +876,7 @@ class RamanFiber(Fiber):
         the CD and PMD accumulation.
         """
         # apply the attenuation due to the input connector loss
-        pin = watt2dbm(sum(spectral_info.signal))
+        pin = spectral_info.total_power_dbm()
         attenuation_in_db = self.params.con_in + self.params.att_in
         spectral_info.apply_attenuation_db(attenuation_in_db)
 
@@ -904,9 +904,9 @@ class RamanFiber(Fiber):
         # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
-        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal)
         self.propagated_labels = spectral_info.label
-        pout = watt2dbm(sum(spectral_info.signal))
+        pout = spectral_info.total_power_dbm()
         self.actual_raman_gain = self.loss + pout - pin
 
 
@@ -1020,7 +1020,7 @@ class Edfa(_Node):
         self.interpol_nf_ripple = interp(spectral_info.frequency, amplifier_freq, self.params.nf_ripple)
 
         self.nch = spectral_info.number_of_channels
-        pin = spectral_info.signal + spectral_info.ase + spectral_info.nli
+        pin = spectral_info.signal
         self.pin_db = watt2dbm(sum(pin))
         # The following should be changed when we have the new spectral information including slot widths.
         # For now, with homogeneous spectrum, we can calculate it as the difference between neighbouring channels.
@@ -1264,7 +1264,7 @@ class Edfa(_Node):
         spectral_info.apply_gain_db(self.gprofile - self.out_voa)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
-        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.pch_out_dbm = watt2dbm(spectral_info.signal)
         self.propagated_labels = spectral_info.label
 
     def __call__(self, spectral_info):

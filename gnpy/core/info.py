@@ -13,7 +13,7 @@ from collections import namedtuple
 from collections.abc import Iterable
 from typing import Union, List, Optional
 from dataclasses import dataclass
-from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
+from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray, sum
 
 from gnpy.core.utils import automatic_nch, db2lin, watt2dbm
 from gnpy.core.exceptions import SpectrumError
@@ -224,6 +224,12 @@ class SpectralInformation(object):
     def apply_gain_db(self, gain_db):
         gain_lin = db2lin(gain_db)
         self.apply_gain_lin(gain_lin)
+
+    def total_power(self):
+        return sum(self.signal)
+
+    def total_power_dbm(self):
+        return watt2dbm(self.total_power())
 
     def __add__(self, other: SpectralInformation):
         try:

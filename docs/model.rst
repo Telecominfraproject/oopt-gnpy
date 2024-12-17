@@ -39,10 +39,10 @@ signal-to-noise ratio (SNR) defined as
 
 .. math::
 
-   {\text{SNR}}= L_F \frac{P_{\text{ch}}}{P_{\text{ASE}}+P_{\text{NLI}}} = L_F \left(\frac{1}{{\text{SNR}}_{\text{LIN}}}+\frac{1}{{\text{SNR}}_{\text{NL}}}\right)^{-1}
+   {\text{SNR}}= L_F \frac{P_{\text{SIG}}}{P_{\text{ASE}}+P_{\text{NLI}}} = L_F \left(\frac{1}{{\text{SNR}}_{\text{LIN}}}+\frac{1}{{\text{SNR}}_{\text{NL}}}\right)^{-1}
 
 
-where :math:`P_{\text{ch}}` is the channel power,
+where :math:`P_{\text{SIG}}` is the information signal power,
 :math:`P_{\text{ASE}}` and :math:`P_{\text{NLI}}` are the power levels of the disturbances 
 in the channel bandwidth for ASE noise and NLI, respectively.
 :math:`L_F` is a parameter assuming values smaller or equal than one
@@ -51,7 +51,7 @@ filtering effects. Note that for state-of-the art equipment, filtering
 effects can be typically neglected over routes with few hops
 :cite:`rahman_mitigation_2014,foggi_overcoming_2015`.
 
-To properly estimate :math:`P_{\text{ch}}` and :math:`P_{\text{ASE}}`
+To properly estimate :math:`P_{\text{SIG}}` and :math:`P_{\text{ASE}}`
 the transmitted power at the beginning of the considered route must be
 known, and losses and amplifiers gain and noise figure, including their
 variation with frequency, must be characterized. So, the evaluation of

@@ -173,7 +173,7 @@ def test_propagate_and_optimize_mode(caplog):
     rqs = correct_json_route_list(network, rqs)
     [path] = compute_path_dsjctn(network, equipment, [rqs[1]], [])
     total_path, mode = propagate_and_optimize_mode(path, rqs[1], equipment)
-    assert round(min(path[-1].snr_01nm), 2) == 22.22
+    assert round(min(path[-1].snr_01nm), 2) == 22.17
     assert mode['format'] == 'mode 1'
     assert rqs[1].blocking_reason == 'NO_FEASIBLE_MODE'
     expected_mesg = '\tWarning! Request 1: no mode satisfies path SNR requirement.'
