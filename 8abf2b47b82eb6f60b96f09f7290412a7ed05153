@@ -41,6 +41,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b94e9aca_72eb5ae3",
+        "filename": "docs/json.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-01-06T09:02:47Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "cc322fd8_57ceb454",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 35
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e74f780_550264da",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-12-16T15:56:24Z",
       "side": 1,
       "message": "```suggestion\nHowever, users can define their own custom parameters using the default_config_from_json variable, which should be populated with a file name containing the desired parameter description. This applies to both variable_gain and fixed_gain amplifier types.\n```",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31a141fb_38ff1884",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-01-06T09:02:47Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "4e74f780_550264da",
       "range": {
         "startLine": 13,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51ab588e_97b6b22a",
+        "filename": "tests/test_amplifier.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-01-06T09:02:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd76faa0_2368da0a",
+      "range": {
+        "startLine": 544,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 70
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03e15f71_53b50f4f",
@@ -110,6 +182,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "915faa5e_30a97581",
+        "filename": "tests/test_amplifier.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-01-06T09:02:47Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "03e15f71_53b50f4f",
+      "range": {
+        "startLine": 558,
+        "startChar": 7,
+        "endLine": 558,
+        "endChar": 118
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff3ef90c_f65b72ee",
@@ -123,6 +219,30 @@
       "writtenOn": "2024-12-16T15:56:24Z",
       "side": 1,
       "message": "Same observation as for the previous comment.\n\nnetwork \u003d network_from_json(json_data, equipment)\namp1, amp2 \u003d [n for n in network.nodes()]\n    \nassert_allclose(amp1.params.f_min, amp2.params.f_min, rtol\u003d1e-13)\nassert_allclose(amp1.params.f_max, amp2.params.f_max, rtol\u003d1e-13)\nassert_allclose(amp1.params.gain_ripple, amp2.params.gain_ripple, rtol\u003d1e-13)\nassert_allclose(amp1.params.nf_ripple, amp2.params.nf_ripple, rtol\u003d1e-13)\nassert_allclose(amp1.params.dgt, amp2.params.dgt, rtol\u003d1e-13)",
+      "range": {
+        "startLine": 615,
+        "startChar": 4,
+        "endLine": 628,
+        "endChar": 65
+      },
+      "revId": "8abf2b47b82eb6f60b96f09f7290412a7ed05153",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6151aa5_717b1c2f",
+        "filename": "tests/test_amplifier.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-01-06T09:02:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff3ef90c_f65b72ee",
       "range": {
         "startLine": 615,
         "startChar": 4,
