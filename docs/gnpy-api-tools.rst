@@ -7,3 +7,4 @@
 .. automodule:: gnpy.tools.json_io
 .. automodule:: gnpy.tools.plots
 .. automodule:: gnpy.tools.service_sheet
+.. automodule:: gnpy.tools.worker_utils
