@@ -496,6 +496,8 @@ If nothing is stated for impairments on roadm-paths, the program identifies the 
 
 On the previous example, all «implicit» express roadm-path are assigned roadm-path-impairment-id = 0
 
+.. _sim-params:
+
 Global parameters
 -----------------
 
