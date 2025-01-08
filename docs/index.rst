@@ -12,6 +12,7 @@ in real-world mesh optical networks. It is based on the Gaussian Noise Model.
    concepts
    install
    cli_options
+   amplifier_models_description
    json
    excel
    extending
