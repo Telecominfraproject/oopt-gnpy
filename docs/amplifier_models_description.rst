@@ -1,18 +1,19 @@
-*********************************************
+.. _amp_models:
+
 Amplifier models and configuration
-*********************************************
+==================================
 
 
 1. Equipment configuration description
-#######################################
+--------------------------------------
 
 Equipment description defines equipment types and parameters.
-It takes place in the default **eqpt_config.json** file. 
+It takes place in the equipment library such as **eqpt_config.json** file defined in example-data folder.
 By default **gnpy-transmission-example** uses **eqpt_config.json** file and that
 can be changed with **-e** or **--equipment** command line parameter.
 
 2. Amplifier parameters and subtypes
-#######################################
+------------------------------------
 
 Several amplifiers can be used by GNpy, so they are defined as an array of equipment parameters in **eqpt_config.json** file.
 
@@ -28,8 +29,15 @@ Several amplifiers can be used by GNpy, so they are defined as an array of equip
     - *"variable_gain"*
     - *"fixed_gain"*
     - *"dual_stage"*
+    - *"multi_band"*
     - *"openroadm"*
         *see next section for a full description of these models*
+
+
+- *"default_config_from_json"*:
+    Use a custom per frequency dynamic gain tilt, gain and noise ripple arrays defined in the file specified with
+    this option, instead of the default values from GNPy.
+
 
 - *"advanced_config_from_json"*:
     **This parameter is only applicable to the _"advanced_model"_ model**
@@ -135,7 +143,7 @@ Several amplifiers can be used by GNpy, so they are defined as an array of equip
 
 
 3. Amplifier models
-#######################################
+-------------------
 
 In an opensource and multi-vendor environnement, it is needed to support different use cases and context. Therefore several models are supported for amplifiers.
 
@@ -179,7 +187,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
 - *"variable_gain"* 
     This model is refered as an operator model because a lower level of knowledge is required. A full polynomial description of the NF cross the gain range is not required. Instead, NF_min and NF_max values are required and used by the code to model a dual stage amplifier with an internal mid stage VOA. NF_min and NF_max values are typically available from equipment suppliers data-sheet.
 
-    There is a default JSON file ”default_edfa_config.json”* to enforce 0 tilt and ripple values because GNpy core algorithm is a multi-carrier propogation.
+    There is a default configuration to enforce 0 tilt and ripple values because GNPy core algorithm is a multi-carrier propagation.
     - gain_ripple =[0,...,0]
     - nf_ripple = [0,...,0]
     - dgt = [...] generic dgt comb
@@ -250,7 +258,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
     
     - gain_min indicates to auto_design when this dual_stage should be used
     
-    But unlike other models the 1st stage input will not be padded: it is always operated to its maximu gain and min NF. Therefore if gain adaptation and padding is needed it will be performed by the 2nd stage.
+    But unlike other models the 1st stage input will not be padded: it is always operated to its maximum gain and min NF. Therefore if gain adaptation and padding is needed it will be performed by the 2nd stage.
 
     .. code-block:: json
 
@@ -263,8 +271,18 @@ In an opensource and multi-vendor environnement, it is needed to support differe
                 "allowed_for_design": true
                 }
 
+
+- *"multiband"*
+    This model enables the definition of multiband amplifiers that consist of multiple single-band
+    amplifier elements, with each amplifier responsible for amplifying a different portion of the spectrum.
+    The types of single-band amplifiers that can be included in these multiband amplifiers are specified,
+    allowing for multiple options to be available for the same spectrum band (for instance, providing
+    several permitted type varieties for both the C-band and the L-band). The actual element utilizing the
+    type_variety must implement only one option for each band.
+
+
 4. advanced_config_from_json 
-#######################################
+----------------------------
 
 The build_oa_json.py library in ``gnpy/example-data/edfa_model/`` can be used to build the json file required for the amplifier advanced_model type_def:
 
