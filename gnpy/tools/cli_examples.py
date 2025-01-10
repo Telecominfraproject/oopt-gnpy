@@ -225,14 +225,14 @@ def transmission_main_example(args=None):
           + '                       transceiver output power = '
           + f'{pretty_summary_print(per_label_average(watt2dbm(infos.tx_power), infos.label))}dBm,\n'
           + f'                       nb_channels = {infos.number_of_channels})')
-    for path, power_dbm in zip(propagations_for_path, powers_dbm):
+    for mypath, power_dbm in zip(propagations_for_path, powers_dbm):
         if power_mode:
             print(f'Input optical power reference in span = {ansi_escapes.cyan}{power_dbm:.2f} '
                   + f'dBm{ansi_escapes.reset}:')
         else:
             print('\nPropagating in {ansi_escapes.cyan}gain mode{ansi_escapes.reset}: power cannot be set manually')
         if len(powers_dbm) == 1:
-            for elem in path:
+            for elem in mypath:
                 print(elem)
             if power_mode:
                 print(f'\nTransmission result for input optical power reference in span = {power_dbm:.2f} dBm:')
@@ -240,7 +240,7 @@ def transmission_main_example(args=None):
                 print('\nTransmission results:')
             print(f'  Final GSNR (0.1 nm): {ansi_escapes.cyan}{mean(destination.snr_01nm):.02f} dB{ansi_escapes.reset}')
         else:
-            print(path[-1])
+            print(mypath[-1])
 
     if args.save_network is not None:
         save_network(network, args.save_network)
