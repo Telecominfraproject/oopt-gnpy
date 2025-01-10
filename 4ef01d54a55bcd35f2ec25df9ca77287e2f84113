@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4b91130_81e2edb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-01-10T10:42:46Z",
+      "side": 1,
+      "message": "I have corrected bug for plot: is it OK for you to merge ?\nOnce merged Can I make a minor v2.11.1 to release this ?",
+      "revId": "4ef01d54a55bcd35f2ec25df9ca77287e2f84113",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
