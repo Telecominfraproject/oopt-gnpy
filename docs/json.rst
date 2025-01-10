@@ -11,9 +11,11 @@ Equipment Library
 
 Design and transmission parameters are defined in a dedicated json file.
 By default, this information is read from `gnpy/example-data/eqpt_config.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/eqpt_config.json>`_.
-This file defines the equipment libraries that can be customized (EDFAs, fibers, and transceivers).
+This file defines the equipment libraries that can be customized (Amplifiers, ROADMs, fibers, and transceivers).
 
-It also defines the simulation parameters (spans, ROADMs, and the spectral information to transmit.)
+It also defines the simulation parameters (spans and the spectral information to transmit.)
+
+Examples of instances are commented here :ref:`json instances examples<json-instance-examples>`.
 
 EDFA
 ~~~~

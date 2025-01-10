@@ -14,6 +14,7 @@ in real-world mesh optical networks. It is based on the Gaussian Noise Model.
    cli_options
    amplifier_models_description
    json
+   json_instance_examples
    excel
    extending
    about-project
