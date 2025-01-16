@@ -18,6 +18,7 @@ in real-world mesh optical networks. It is based on the Gaussian Noise Model.
    model
    gnpy-api
    release-notes
+   publications
 
 Indices and tables
 ==================
