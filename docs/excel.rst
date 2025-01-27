@@ -9,21 +9,22 @@ The file named 'meshTopologyExampleV2.xls' is an example.
 
 In order to work the excel file MUST contain at least 2 sheets:
 
-- Nodes
-- Links
+- `Nodes`
+- `Links`
 
-(In progress) The File MAY contain an additional sheet:
+(In progress) The File MAY contain additional sheets:
 
-- Eqt
-- Service
+- `Eqpt`
+- `Service`
+- `Roadms`
 
 .. _excel-nodes-sheet:
 
-Nodes sheet
------------
+`Nodes` sheet
+-------------
 
-Nodes sheet contains nine columns.
-Each line represents a 'node' (ROADM site or an in line amplifier site ILA or a Fused)::
+`Nodes` sheet contains nine columns.
+Each line represents a 'node' (`ROADM` site or an in line amplifier site `ILA` or a `Fused`)::
 
   City (Mandatory) ; State ; Country ; Region ; Latitude ; Longitude ; Type
 
@@ -54,11 +55,11 @@ Links sheet
 
 Links sheet must contain sixteen columns::
 
-                   <--           east cable from a to z                                   --> <--                  west from z to                                   -->
+                   <--           east cable from a to z                                   --> <--                  west from z to a                                 -->
    NodeA ; NodeZ ; Distance km ; Fiber type ; Lineic att ; Con_in ; Con_out ; PMD ; Cable Id ; Distance km ; Fiber type ; Lineic att ; Con_in ; Con_out ; PMD ; Cable Id
 
 
-Links sheets MUST contain all links between nodes defined in Nodes sheet.
+`Links` sheet MUST contain all links between nodes defined in Nodes sheet.
 Each line represents a 'bidir link' between two nodes. The two directions are represented on a single line with "east cable from a to z" fields and "west from z to a" fields. Values for 'a to z' may be different from values from 'z to a'. 
 Since both direction of a bidir 'a-z' link are described on the same line (east and west), 'z to a' direction MUST NOT be repeated in a different line. If repeated, it will generate another parrallel bidir link between the same end nodes.
 
@@ -85,32 +86,35 @@ and a fiber span from node3 to node6::
 
   - If filled it MUST contain numbers. If empty it is replaced by a default "80" km value. 
   - If value is below 150 km, it is considered as a single (bidirectional) fiber span.
-  - If value is over 150 km the `gnpy-transmission-example`` program will automatically suppose that intermediate span description are required and will generate fiber spans elements with "_1","_2", ... trailing strings which are not visible in the json output. The reason for the splitting is that current edfa usually do not support large span loss. The current assumption is that links larger than 150km will require intermediate amplification. This value will be revisited when Raman amplification is added”
+  - If value is over 150 km or if the loss is greater than 28 dB, the autodesign program
+    will automatically split the span with "_1","_2", ... trailing strings in names.
+    Splitting threshold can be tuned in ["Span"]["max_length"] and ["Span"]["max_loss"] in
+    equipment library.
 
 - **Fiber type** is not mandatory. 
 
   If filled it must contain types listed in `eqpt_config.json <gnpy/example-data/eqpt_config.json>`_ in "Fiber" list "type_variety".
   If not filled it takes "SSMF" as default value.
 
-- **Lineic att** is not mandatory. 
+- **Lineic att** is not mandatory.
 
   It is the lineic attenuation expressed in dB/km.
   If filled it must contain positive numbers.
   If not filled it takes "0.2" dB/km value
 
-- *Con_in*, *Con_out* are not mandatory. 
+- **Con_in**, **Con_out** are not mandatory.
 
   They are the connector loss in dB at ingress and egress of the fiber spans.
   If filled they must contain positive numbers.
   If not filled they take "0.5" dB default value.
 
-- *PMD* is not mandatory and and is not used yet. 
+- **PMD** is not mandatory.
 
   It is the PMD value of the link in ps.
   If filled they must contain positive numbers.
   If not filled, it takes "0.1" ps value.
 
-- *Cable Id* is not mandatory. 
+- **Cable Id** is not mandatory.
   If filled they must contain strings with the same constraint as "City" names. Its value is used to differenate links having the same end points. In this case different Id should be used. Cable Ids are not meant to be unique in general.
 
 
@@ -172,7 +176,7 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 - **Node Z** is mandatory. It is the egress direction from the *Node A* site. Multiple Links between the same Node A and NodeZ is not supported.
 
 - **amp type** is not mandatory. 
-  If filled it must contain types listed in `eqpt_config.json <gnpy/example-data/eqpt_config.json>`_ in "Edfa" list "type_variety".
+  If filled it must contain types listed in the equipment librairie like in the example `eqpt_config.json <gnpy/example-data/eqpt_config.json>`_ in "Edfa" list "type_variety".
   If not filled it takes "std_medium_gain" as default value.
   If filled with fused, a fused element with 0.0 dB loss will be placed instead of an amplifier. This might be used to avoid booster amplifier on a ROADM direction.
 
@@ -180,13 +184,13 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
   If not filled, it will be determined with design rules in the convert.py file.
   If filled, it must contain positive numbers.
 
-- *att_in* and *att_out* are not mandatory and are not used yet. They are the value of the attenuator at input and output of amplifier (in dB).
+- **att_in** and **att_out** are not mandatory. They are the value of the attenuator at input and output of amplifier (in dB).
   If filled they must contain positive numbers.
 
 - **tilt**, in dB, is not mandatory. It is the target gain tilt over the full amplfifier bandwidth and is defined with regard to wavelength, i.e. negative tilt means lower gain
   for higher wavelengths (lower frequencies). If not filled, the default value is 0.
 
-- **delta_p**, in dBm,  is not mandatory. If filled it is used to set the output target power per channel at the output of the amplifier, if power_mode is True. The output power is then set to power_dbm + delta_power.
+- **delta_p**, in dB,  is not mandatory. If filled it is used to set the output target power per channel at the output of the amplifier, if power_mode is True. The output power is then set to power_dbm + delta_power.
 
 
 .. _excel-roadms-sheet:
@@ -244,7 +248,7 @@ Service sheet must contain 11 columns::
 
 - **Destination** is mandatory. It is the name of the destination node (as listed in Nodes sheet). Source MUST be a ROADM node. (TODO: relax this and accept trx entries)
 
-- **TRX type** is mandatory. They are the variety type and selected mode of the transceiver to be used for the propagation simulation. These modes MUST be defined in the equipment library. The format of the mode is used as the name of the mode. (TODO: maybe add another  mode id on Transceiver library ?). In particular the mode selection defines the channel baudrate to be used for the propagation simulation.
+- **TRX type** is mandatory. It is the variety type of the transceiver to be used for the propagation simulation. These modes MUST be defined in the equipment library. The format of the mode is used as the name of the mode. (TODO: maybe add another  mode id on Transceiver library ?). In particular the mode selection defines the channel baudrate to be used for the propagation simulation.
 
 - **mode** is optional. If not specified, the program will search for the mode of the defined transponder with the highest baudrate fitting within the spacing value. 
 

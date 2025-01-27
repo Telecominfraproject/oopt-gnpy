@@ -844,6 +844,17 @@ class Fiber(_Node):
 
 
 class RamanFiber(Fiber):
+    """Class representing a Raman fiber in a network.
+
+    Inherits from the Fiber class and adds specific parameters and methods for Raman amplification.
+
+    :ivar raman_pumps: A tuple of pump parameters for the Raman amplification.
+    :vartype raman_pumps: Tuple[PumpParams]
+    :ivar temperature: The operational temperature of the Raman fiber.
+    :vartype temperature: float
+    :raises NetworkTopologyError: If the fiber is defined as a RamanFiber without operational parameters,
+                                  or if required operational parameters are missing.
+    """
     def __init__(self, *args, params=None, **kwargs):
         super().__init__(*args, params=params, **kwargs)
         if not self.operational:
