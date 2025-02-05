@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c55b9a49_d61b2a93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-05T16:55:52Z",
+      "side": 1,
+      "message": "Thanks !\nFor the record: we agreed on todays coders\u0027 call to evaluate the impact of variable loading before going through this patch.",
+      "revId": "97c5655ebf5bdab9d16043eb0ffde57f7b3bf483",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
