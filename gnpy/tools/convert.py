@@ -667,14 +667,14 @@ def parse_excel(input_filename: Path) -> Tuple[List[Node], List[Link], List[Eqpt
             'amp type': 'east_amp_type',
             'amp gain': 'east_amp_gain',
             'delta p': 'east_amp_dp',
-            'tilt': 'east_tilt',
+            'tilt': 'east_tilt_vs_wavelength',
             'att_out': 'east_att_out'
         },
         'west': {
             'amp type': 'west_amp_type',
             'amp gain': 'west_amp_gain',
             'delta p': 'west_amp_dp',
-            'tilt': 'west_tilt',
+            'tilt': 'west_tilt_vs_wavelength',
             'att_out': 'west_att_out'
         }
     }
