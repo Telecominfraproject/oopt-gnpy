@@ -950,6 +950,16 @@ class Edfa(_Node):
 
     @property
     def to_json(self):
+        """Converts the Edfa's state to a JSON-compatible dictionary.
+        Adapts the json export: scalar or vector.
+
+        :return Dict[str, Any]: JSON representation of the Edfa.
+        """
+        # keep None value for tilt_target and avoid exporting -0.0 values
+        tilt_target = None
+        if self.tilt_target is not None:
+            tilt_target = 0 if self.tilt_target == -0.0 else self.tilt_target
+
         _to_json = {
             'uid': self.uid,
             'type': type(self).__name__,
@@ -957,7 +967,7 @@ class Edfa(_Node):
             'operational': {
                 'gain_target': round(self.effective_gain, 6) if self.effective_gain else None,
                 'delta_p': self.delta_p,
-                'tilt_target': round(self.tilt_target, 5) if self.tilt_target is not None else None,
+                'tilt_target': round(tilt_target, 5) if tilt_target is not None else None,
                 # defined per lambda on the amp band
                 'out_voa': self.out_voa
             },
@@ -988,7 +998,8 @@ class Edfa(_Node):
                           f'  type_variety:           {self.params.type_variety}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
                           '  (before att_in and before output VOA)',
-                          f'  tilt-target(dB)         {self.tilt_target if self.tilt_target else 0:.2f}',
+                          # tilt_target is per lambda on the amp band
+                          f'  tilt-target(dB)         {self.tilt_target if self.tilt_target not in [None, -0.0] else 0:.2f}',
                           # avoids -0.00 value for tilt_target
                           f'  noise figure (dB):      {nf:.2f}',
                           f'  (including att_in)',
