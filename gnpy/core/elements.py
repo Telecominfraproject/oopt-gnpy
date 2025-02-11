@@ -43,7 +43,8 @@ _logger = getLogger(__name__)
 
 
 class Location(namedtuple('Location', 'latitude longitude city region')):
-    def __new__(cls, latitude=0, longitude=0, city=None, region=None):
+    """Represents a geographical location with latitude, longitude, city, and region."""
+    def __new__(cls, latitude: float = 0, longitude: float = 0, city: str = None, region: str = None):
         return super().__new__(cls, latitude, longitude, city, region)
 
 
@@ -52,8 +53,23 @@ class _Node:
 
     This class is just an internal implementation detail; do **not** assume that all network elements
     inherit from :class:`_Node`.
+
+    :ivar uid: Unique identifier for the node.
+    :vartype uid: str
+    :ivar name: Printable name of the node.
+    :vartype name: str
+    :ivar params: Parameters associated with the node.
+    :vartype params: Any
+    :ivar metadata: Metadata including location.
+    :vartype metadata: Dict[str, Any]
+    :ivar operational: Operational parameters.
+    :vartype operational: Any
+    :ivar type_variety: Type variety of the node.
+    :vartype type_variety: str
     """
     def __init__(self, uid, name=None, params=None, metadata=None, operational=None, type_variety=None):
+        """Constructor method
+        """
         if name is None:
             name = uid
         self.uid, self.name = uid, name
@@ -67,22 +83,62 @@ class _Node:
 
     @property
     def location(self):
+        """Returns the location of the node."""
         return self.metadata['location']
     loc = location
 
     @property
     def longitude(self):
+        """Returns the longitude of the node."""
         return self.location.longitude
     lng = longitude
 
     @property
     def latitude(self):
+        """Returns the latitude of the node."""
         return self.location.latitude
     lat = latitude
 
 
 class Transceiver(_Node):
+    """Represents a logical start for propagation in the optical network.
+
+    :ivar osnr_ase_01nm: OSNR in 0.1 nm bandwidth per carrier in the spectrum.
+    :vartype osnr_ase_01nm: numpy.ndarray
+    :ivar osnr_ase: OSNR ASE value per carrier in the spectrum.
+    :vartype osnr_ase: numpy.ndarray
+    :ivar osnr_nli: OSNR NLI value per carrier in the spectrum.
+    :vartype osnr_nli: numpy.ndarray
+    :ivar snr: Generalized Signal-to-noise ratio per carrier in the spectrum.
+    :vartype snr: numpy.ndarray
+    :ivar passive: Indicates if the system is passive (default is False).
+    :vartype passive: bool
+    :ivar baud_rate: Baud rate of each carrier of the emitted spectrum.
+    :vartype baud_rate: numpy.ndarray
+    :ivar chromatic_dispersion: Chromatic dispersion value per carrier in the spectrum.
+    :vartype chromatic_dispersion: numpy.ndarray
+    :ivar pmd: PMD value per carrier in the spectrum.
+    :vartype pmd: numpy.ndarray
+    :ivar pdl: PDL value per carrier in the spectrum.
+    :vartype pdl: numpy.ndarray
+    :ivar latency: Latency value per carrier in the spectrum.
+    :vartype latency: numpy.ndarray
+    :ivar penalties: Penalties for various impairments.
+    :vartype penalties: Dict[str, float]
+    :ivar total_penalty: Total penalty value per carrier in the spectrum.
+    :vartype total_penalty: numpy.ndarray
+    :ivar propagated_labels: Labels propagated by the transceiver.
+    :vartype propagated_labels: numpy.ndarray[str]
+    :ivar tx_power: Transmit power.
+    :vartype tx_power: numpy.ndarray
+    :ivar design_bands: Design bands parameters.
+    :vartype design_bands: list
+    :ivar per_degree_design_bands: Per degree design bands parameters.
+    :vartype per_degree_design_bands: dict
+    """
     def __init__(self, *args, params=None, **kwargs):
+        """Constructor method
+        """
         if not params:
             params = {}
         try:
@@ -134,6 +190,15 @@ class Transceiver(_Node):
         self.latency = spectral_info.latency * 1e3
 
     def _calc_penalty(self, impairment_value, boundary_list):
+        """Computes the SNR penalty given the impairment value.
+
+        :param impairment_value: The impairment value.
+        :type impairment_value: float
+        :param boundary_list: The boundary list for penalties.
+        :type boundary_list: Dict[str, Any]
+
+        :return float: The computed penalty.
+        """
         return interp(impairment_value, boundary_list['up_to_boundary'], boundary_list['penalty_value'],
                       left=float('inf'), right=float('inf'))
 
@@ -183,6 +248,10 @@ class Transceiver(_Node):
 
     @property
     def to_json(self):
+        """Converts the transceiver's state to a JSON-compatible dictionary.
+
+        :return Dict[str, Any]: JSON representation of the transceiver.
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'metadata': {
@@ -191,6 +260,10 @@ class Transceiver(_Node):
                 }
 
     def __repr__(self):
+        """Returns a string representation of the transceiver.
+
+        :return str: String representation of the transceiver.
+        """
         return (f'{type(self).__name__}('
                 f'uid={self.uid!r}, '
                 f'osnr_ase_01nm={self.osnr_ase_01nm!r}, '
@@ -204,6 +277,10 @@ class Transceiver(_Node):
                 f'penalties={self.penalties!r})')
 
     def __str__(self):
+        """Returns a formatted string representation of the transceiver.
+
+        :return str: Formatted string representation of the transceiver.
+        """
         if self.snr is None or self.osnr_ase is None:
             return f'{type(self).__name__} {self.uid}'
 
@@ -241,6 +318,14 @@ class Transceiver(_Node):
         return result
 
     def __call__(self, spectral_info):
+        """Propagates spectral information through the transceiver:
+        i) computes the accumulated impairments and convert them into penalties for each cariier,
+        ii) computes the resulting OSNR and GSNR per carrier and records the values into the attributes
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInfomation)
+        :return SpectralInformation: The updated spectral information object.
+        """
         self.tx_power = spectral_info.tx_power
         self._calc_snr(spectral_info)
         self._calc_cd(spectral_info)
@@ -251,7 +336,52 @@ class Transceiver(_Node):
 
 
 class Roadm(_Node):
+    """Represents a Reconfigurable Optical Add-Drop Multiplexer (ROADM).
+
+    :ivar ref_pch_out_dbm: Reference output power in dBm.
+    :vartype ref_pch_out_dbm: float
+    :ivar loss: Total loss experienced by the ROADM.
+    :vartype loss: float
+    :ivar loss_pch_db: Loss per channel in dB.
+    :vartype loss_pch_db: numpy.ndarray
+    :ivar ref_effective_loss: Effective loss for a reference carrier.
+    :vartype ref_effective_loss: float
+    :ivar passive: True, indicates that the ROADM is passive.
+    :vartype passive: bool
+    :ivar restrictions: Restrictions on the ROADM.
+    :vartype restrictions: dict
+    :ivar propagated_labels: Labels propagated by the ROADM.
+    :vartype propagated_labels: numpy.ndarray[str]
+    :ivar target_pch_out_dbm: Target output power in dBm.
+    :vartype target_pch_out_dbm: float
+    :ivar target_psd_out_mWperGHz: Target PSD output in mW/GHz.
+    :vartype target_psd_out_mWperGHz: float
+    :ivar target_out_mWperSlotWidth: Target output power per slot width.
+    :vartype target_out_mWperSlotWidth: float
+    :ivar per_degree_pch_out_dbm: Per degree target output power.
+    :vartype per_degree_pch_out_dbm: Dict[str, float]
+    :ivar per_degree_pch_psd: Per degree target PSD output.
+    :vartype per_degree_pch_psd: Dict[str, float]
+    :ivar per_degree_pch_psw: Per degree target output per slot width.
+    :vartype per_degree_pch_psw: Dict[str, float]
+    :ivar ref_pch_in_dbm: Reference input power in dBm.
+    :vartype ref_pch_in_dbm: Dict[str, float]
+    :ivar ref_carrier: Reference carrier.
+    :vartype ref_carrier: ReferenceCarrier
+    :ivar roadm_paths: Internal paths for the ROADM.
+    :vartype roadm_paths: Dict[str, Any]
+    :ivar roadm_path_impairments: Impairment profiles for the ROADM paths.
+    :vartype roadm_path_impairments: Dict
+    :ivar per_degree_impairments: Per degree impairments.
+    :vartype per_degree_impairments: Dict[str, Any]
+    :ivar design_bands: Design bands parameters.
+    :vartype design_bands: List[Dict]
+    :ivar per_degree_design_bands: Per degree design bands parameters.
+    :vartype per_degree_design_bands: Dict[str, Dict]
+    """
     def __init__(self, *args, params=None, **kwargs):
+        """Constructor method
+        """
         if not params:
             params = {}
         try:
@@ -303,6 +433,10 @@ class Roadm(_Node):
 
     @property
     def to_json(self):
+        """Converts the ROADM's state to a JSON-compatible dictionary.
+
+        :return Dict[str, Any]: JSON representation of the ROADM.
+        """
         if self.target_pch_out_dbm is not None:
             equalisation, value = 'target_pch_out_db', self.target_pch_out_dbm
         elif self.target_psd_out_mWperGHz is not None:
@@ -341,9 +475,17 @@ class Roadm(_Node):
         return to_json
 
     def __repr__(self):
+        """Returns a string representation of the ROADM.
+
+        :return str: String representation of the ROADM.
+        """
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def __str__(self):
+        """Returns a formatted string representation of the ROADM.
+
+        :return str: Formatted string representation of the ROADM.
+        """
         if self.ref_effective_loss is None:
             return f'{type(self).__name__} {self.uid}'
 
@@ -365,7 +507,12 @@ class Roadm(_Node):
         if target_psd_out_mWperGHz is defined instead with 3.125e-4mW/GHz then it returns
         [-20, -18.819, -16.9897, -18.819, -20]
         if instead a reference_baud_rate is defined, the functions computes the result for a
-        single reference carrier whose baud_rate is reference_baudrate
+        single reference carrier whose baud_rate is reference_baudrate.
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation, optional
+        :return: Target power in dBm.
+        :rtype: Union[float, ndarray]
         """
         if spectral_info:
             if self.target_pch_out_dbm is not None:
@@ -386,6 +533,11 @@ class Roadm(_Node):
     def get_per_degree_ref_power(self, degree):
         """Get the target power in dBm out of ROADM degree for the reference bandwidth
         If no equalization is defined on this degree use the ROADM level one.
+
+        :param degree: The degree identifier.
+        :type degree: str
+
+        :return float: Target power in dBm
         """
         if degree in self.per_degree_pch_out_dbm:
             return self.per_degree_pch_out_dbm[degree]
@@ -398,6 +550,13 @@ class Roadm(_Node):
     def get_per_degree_power(self, degree, spectral_info):
         """Get the target power in dBm out of ROADM degree for the spectral information
         If no equalization is defined on this degree use the ROADM level one.
+
+        :param degree: The degree identifier.
+        :type degree: str
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+
+        :return float: Target power in dBm.
         """
         if degree in self.per_degree_pch_out_dbm:
             return self.per_degree_pch_out_dbm[degree]
@@ -414,6 +573,13 @@ class Roadm(_Node):
         if is exists, because a ROADM doesn't amplify, it can only attenuate.
         There is no difference for add or express : the same target is applied.
         For the moment propagate operates with spectral info carriers all having the same source or destination.
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+        :param degree: The egress degree.
+        :type degree: str
+        :param from_degree: The ingress degree.
+        :type from_degree: str
         """
         # record input powers to compute the actual loss at the end of the process
         input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
@@ -484,6 +650,15 @@ class Roadm(_Node):
 
         If no impairment id is defined, then use the first profile that matches the path_type in the
         profile dictionnary.
+
+        :param from_degree: The ingress degree.
+        :type from_degree: str
+        :param to_degree: The egress degree.
+        :type to_degree: str
+        :param path_type: Type of the path (express, drop, add).-
+        :type path_type: str
+        :param impairment_id: Impairment profile ID. This parameter is optional.
+        :type impairment_id: int, optional
         """
         # initialize impairment with params.pmd, params.cd
         # if more detailed parameters are available for the Roadm, the use them instead
@@ -520,22 +695,44 @@ class Roadm(_Node):
         self.roadm_paths.append(RoadmPath(from_degree=from_degree, to_degree=to_degree, path_type=path_type,
                                           impairment_id=impairment_id, impairment=impairment))
 
-    def get_roadm_path(self, from_degree, to_degree):
-        """Get internal path type impairment"""
+    def get_roadm_path(self, from_degree: str, to_degree: str):
+        """Get internal path type impairment.
+
+        :param from_degree: The ingress degree.
+        :type from_degree: str
+        :param to_degree: The egress degree.
+        :type to_degree: str
+
+        :return Any: The roadm path object.
+        """
         for roadm_path in self.roadm_paths:
             if roadm_path.from_degree == from_degree and roadm_path.to_degree == to_degree:
                 return roadm_path
         msg = f'Could not find from_degree-to_degree {from_degree}-{to_degree} path in ROADM {self.uid}'
         raise NetworkTopologyError(msg)
 
-    def get_per_degree_impairment_id(self, from_degree, to_degree):
-        """returns the id of the impairment if the degrees are in the per_degree tab"""
+    def get_per_degree_impairment_id(self, from_degree: str, to_degree: str) -> Union[int, None]:
+        """returns the id of the impairment if the degrees are in the per_degree tab.
+
+        :param from_degree: The ingress degree.
+        :type from_degree: str
+        :param to_degree: The egress degree.
+        :type to_degree: str
+
+        :return Union[int, None]: The impairment ID or None if not found.
+        """
         if f'{from_degree}-{to_degree}' in self.per_degree_impairments.keys():
             return self.per_degree_impairments[f'{from_degree}-{to_degree}']["impairment_id"]
         return None
 
-    def get_path_type_per_id(self, impairment_id):
-        """returns the path_type of the impairment if the is is defined"""
+    def get_path_type_per_id(self, impairment_id: int) -> Union[str, None]:
+        """returns the path_type of the impairment if the id is defined
+
+        :param impairment_id: The impairment ID.
+        :type impairment_id: int
+
+        :return Union[str, None]: The path type or None if not found.
+        """
         if impairment_id in self.roadm_path_impairments.keys():
             return self.roadm_path_impairments[impairment_id].path_type
         return None
@@ -545,14 +742,16 @@ class Roadm(_Node):
         """
         Retrieves the specified impairment values for the given frequency array.
 
-        Parameters:
-            impairment (str): The type of impairment to retrieve (roadm-pmd, roamd-maxloss...).
-            frequency_array (array): The frequencies at which to check for impairments.
-            from_degree (str): The ingress degree for the roadm internal path.
-            degree (str): The egress degree for the roadm internal path.
+        :param impairment: The type of impairment to retrieve (e.g., roadm-pmd, roadm-maxloss).
+        :type impairment: str
+        :param frequency_array: The frequencies at which to check for impairments.
+        :type frequency_array: numpy.ndarray
+        :param from_degree: The ingress degree for the ROADM internal path.
+        :type from_degree: str
+        :param degree: The egress degree for the ROADM internal path.
+        :type degree: str
 
-        Returns:
-            array: An array of impairment values for the specified frequencies.
+        :return array: An array of impairment values for the specified frequencies.
         """
         result = []
         impairment_per_band = self.get_roadm_path(from_degree, degree).impairment.impairments
@@ -568,13 +767,31 @@ class Roadm(_Node):
         if result:
             return array(result)
 
-    def __call__(self, spectral_info, degree, from_degree):
+    def __call__(self, spectral_info: SpectralInformation, degree: str, from_degree: str) -> SpectralInformation:
+        """Propagate from_degree to degree in the ROADM
+
+        param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+        :param degree: The egress degree.
+        :type degree: str
+        :param from_degree: The ingress degree.
+        :type from_degree: str
+
+        :return SpectralInformation: The updated spectral information object.
+        """
         self.propagate(spectral_info, degree=degree, from_degree=from_degree)
         return spectral_info
 
 
 class Fused(_Node):
+    """Represents a fused optical element in the network.
+
+    :ivar loss (float): Loss experienced by the fused element.
+    :ivar passive (bool): Indicates if the fused element is passive.
+    """
     def __init__(self, *args, params=None, **kwargs):
+        """Constructor method
+        """
         if not params:
             params = {}
         super().__init__(*args, params=FusedParams(**params), **kwargs)
@@ -583,6 +800,10 @@ class Fused(_Node):
 
     @property
     def to_json(self):
+        """Converts the fused element's state to a JSON-compatible dictionary.
+
+        :return Dict[str, Any]: JSON representation of the fused element.
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'params': {
@@ -594,22 +815,53 @@ class Fused(_Node):
                 }
 
     def __repr__(self):
+        """Returns a string representation of the fused element.
+
+        :return str: String representation of the fused element.
+        """
         return f'{type(self).__name__}(uid={self.uid!r}, loss={self.loss!r})'
 
     def __str__(self):
+        """Returns a formatted string representation of the fused element.
+
+        :return str: Formatted string representation of the fused element.
+        """
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  loss (dB): {self.loss:.2f}'])
 
     def propagate(self, spectral_info):
+        """Applies loss to the spectral information.
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+        """
         spectral_info.apply_attenuation_db(self.loss)
 
     def __call__(self, spectral_info):
+        """Propagates spectral information through the fused element.
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+
+        :return SpectralInformation: The updated spectral information object.
+        """
         self.propagate(spectral_info)
         return spectral_info
 
 
 class Fiber(_Node):
+    """Represents an optical fiber element in the network.
+
+    :ivar pch_out_db: Output power per channel in dBm.
+    :vartype pch_out_db: float
+    :ivar passive: Indicates if the fiber is passive.
+    :vartype passive: bool
+    :ivar propagated_labels: Labels propagated by the fiber.
+    :vartype propagated_labels: List[str]
+    """
     def __init__(self, *args, params=None, **kwargs):
+        """Constructor method
+        """
         if not params:
             params = {}
         try:
@@ -633,6 +885,11 @@ class Fiber(_Node):
 
     @property
     def to_json(self):
+        """Converts the fiber's state to a JSON-compatible dictionary.
+        Adapts the json export: scalar or vector.
+
+        :return Dict[str, Any]: JSON representation of the fiber.
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'type_variety': self.type_variety,
@@ -651,11 +908,19 @@ class Fiber(_Node):
                 }
 
     def __repr__(self):
+        """Returns a string representation of the fiber.
+
+        :return str: String representation of the fiber.
+        """
         return f'{type(self).__name__}(uid={self.uid!r}, ' \
-            f'length={round(self.params.length * 1e-3,1)!r}km, ' \
-            f'loss={round(self.loss,1)!r}dB)'
+            f'length={round(self.params.length * 1e-3, 1)!r}km, ' \
+            f'loss={round(self.loss, 1)!r}dB)'
 
     def __str__(self):
+        """Returns a formatted string representation of the fiber.
+
+        :return str: Formatted string representation of the fiber.
+        """
         if self.pch_out_db is None:
             return f'{type(self).__name__} {self.uid}'
 
@@ -671,6 +936,15 @@ class Fiber(_Node):
                           f'  actual pch out (dBm):        {total_pch}'])
 
     def interpolate_parameter_over_spectrum(self, parameter, ref_frequency, spectrum_frequency, name):
+        """Interpolates loss coefficient value given the input frequency.
+
+        :param parameter (ndarray): The parameter to interpolate.
+        :param ref_frequency (ndarray): Reference frequencies.
+        :param spectrum_frequency (ndarray): Frequencies of the spectrum.
+        :param name (str): Name of the parameter for error messages.
+
+        :return ndarray: Interpolated values.
+        """
         try:
             interpolation = interp1d(ref_frequency, parameter)(spectrum_frequency)
             return interpolation
@@ -690,6 +964,23 @@ class Fiber(_Node):
                                 f'{round(ref_frequency[-1] * 1e-12, 2)}')
 
     def loss_coef_func(self, frequency):
+        """
+        Returns the loss coefficient (of a fibre) which can be uniform,
+        or made frequency-dependent defined via a dictionnary-model per instance
+        in the topology-file, or via a list-model ('LUT') in the equipment-file.
+
+        If a list-model is declared, then the legacy 'loss_coef' scalar is used to
+        offset the provided LUT-model for the given self.params.ref_frequency' such
+        that at the 'self.params.ref_frequency' the offset model values the 'loss_coef' scalar;
+        in case the 'loss_coef' scalar is not defined then no offset is applied.
+
+        In case a dictionary-model as well as a list-model are declared, then the legacy
+        dictionary-based model has priority.
+
+        :param frequency (Union[float, ndarray]): Frequency at which to compute the loss coefficient.
+
+        :return ndarray: Loss coefficient values.
+        """
         frequency = asarray(frequency)
         if self.params.loss_coef.size > 1:
             loss_coef = self.interpolate_parameter_over_spectrum(self.params.loss_coef, self.params.f_loss_ref,
@@ -700,7 +991,10 @@ class Fiber(_Node):
 
     @property
     def loss(self):
-        """total loss including padding att_in: useful for polymorphism with roadm loss"""
+        """total loss including padding att_in: useful for polymorphism with roadm loss
+
+        :return float: Total loss in dB.
+        """
         return self.loss_coef_func(self.params.ref_frequency) * self.params.length + \
             self.params.con_in + self.params.con_out + self.params.att_in + sum(lin2db(1 / self.lumped_losses))
 
@@ -831,6 +1125,13 @@ class Fiber(_Node):
         self.propagated_labels = spectral_info.label
 
     def __call__(self, spectral_info):
+        """Propagate through the fiber
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+
+        :return SpectralInformation: The updated spectral information object.
+        """
         # _psig_in records the total signal power of the spectral information before propagation.
         self._psig_in = sum(spectral_info.signal)
         self.propagate(spectral_info)
@@ -856,6 +1157,8 @@ class RamanFiber(Fiber):
                                   or if required operational parameters are missing.
     """
     def __init__(self, *args, params=None, **kwargs):
+        """Constructor method
+        """
         super().__init__(*args, params=params, **kwargs)
         if not self.operational:
             raise NetworkTopologyError(f'Fiber element uid:{self.uid} '
@@ -876,6 +1179,11 @@ class RamanFiber(Fiber):
 
     @property
     def to_json(self):
+        """Converts the RamanFiber's state to a JSON-compatible dictionary.
+        Adapts the json export: scalar or vector.
+
+        :return Dict[str, Any]: JSON representation of the RamanFiber.
+        """
         return dict(super().to_json, operational=self.operational)
 
     def __str__(self):
@@ -922,7 +1230,67 @@ class RamanFiber(Fiber):
 
 
 class Edfa(_Node):
+    """Class representing an Erbium-Doped Fiber Amplifier (EDFA).
+
+    This class models the behavior of an EDFA, including its parameters, operational characteristics,
+    and methods for propagation of spectral information.
+
+    :ivar variety_list: A list of type_variety associated with the amplifier.
+    :vartype variety_list: Union[List[str], None]
+    :ivar interpol_dgt: Interpolated dynamic gain tilt defined per frequency on the amplifier band.
+    :vartype interpol_dgt: numpy.ndarray
+    :ivar interpol_gain_ripple: Interpolated gain ripple.
+    :vartype interpol_gain_ripple: numpy.ndarray
+    :ivar interpol_nf_ripple: Interpolated noise figure ripple.
+    :vartype interpol_nf_ripple: numpy.ndarray
+    :ivar channel_freq: SI channel frequencies.
+    :vartype channel_freq: numpy.ndarray
+    :ivar nf: Noise figure in dB at the operational gain target.
+    :vartype nf: numpy.ndarray
+    :ivar gprofile: Gain profile of the amplifier.
+    :vartype gprofile: numpy.ndarray
+    :ivar pin_db: Input power in dBm.
+    :vartype pin_db: float
+    :ivar nch: Number of channels.
+    :vartype nch: int
+    :ivar pout_db: Output power in dBm.
+    :vartype pout_db: float
+    :ivar target_pch_out_dbm: Target output power per channel in dBm.
+    :vartype target_pch_out_dbm: float
+    :ivar effective_pch_out_db: Effective output power per channel in dBm.
+    :vartype effective_pch_out_db: float
+    :ivar passive: Indicates if the fiber is passive.
+    :vartype passive: bool
+    :ivar att_in: Input attenuation in dB.
+    :vartype att_in: float
+    :ivar effective_gain: Effective gain of the amplifier.
+    :vartype effective_gain: float
+    :ivar delta_p: Delta power defined by the operational parameters.
+    :vartype delta_p: float
+    :ivar _delta_p: Computed delta power during design.
+    :vartype _delta_p: float
+    :ivar tilt_target: Target tilt defined per wavelength on the amplifier band.
+    :vartype tilt_target: float
+    :ivar out_voa: Output variable optical attenuator setting.
+    :vartype out_voa: float
+    :ivar in_voa: Input variable optical attenuator setting.
+    :vartype in_voa: float
+    :ivar propagated_labels: Labels propagated by the amplifier.
+    :vartype propagated_labels: numpy.ndarray
+    :raises ParametersError: If there are conflicting amplifier definitions for the same frequency
+        band during initialization.
+    :raises ValueError: If the input spectral information does not match any defined amplifier bands
+        during propagation.
+    """
     def __init__(self, *args, params=None, operational=None, **kwargs):
+        """Constructor method for initializing the EDFA.
+
+        :param args: Positional arguments for the parent class.
+        :param params: Parameters for the EDFA, defaults to an empty dictionary if None.
+        :type params: dict, optional
+        :param operational: Operational parameters for the EDFA, defaults to an empty dictionary if None.
+        :type operational: dict, optional
+        """
         if params is None:
             params = {}
         if operational is None:
@@ -961,6 +1329,11 @@ class Edfa(_Node):
 
     @property
     def to_json(self):
+        """Converts the Edfa's state to a JSON-compatible dictionary.
+        Adapts the json export: scalar or vector.
+
+        :return Dict[str, Any]: JSON representation of the Edfa.
+        """
         _to_json = {
             'uid': self.uid,
             'type': type(self).__name__,
@@ -1015,8 +1388,9 @@ class Edfa(_Node):
 
     def interpol_params(self, spectral_info):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
-        :param spectral_info: instance of gnpy.core.info.SpectralInformation
-        :return: None
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
         """
         # TODO|jla: read amplifier actual frequencies from additional params in json
 
@@ -1124,8 +1498,8 @@ class Edfa(_Node):
     def noise_profile(self, spectral_info: SpectralInformation):
         """Computes amplifier ASE noise integrated over the signal bandwidth. This is calculated at amplifier input.
 
-        :return: the asepower in W in the signal bandwidth bw for 96 channels
-        :return type: numpy array of float
+        :return: the ASE power in W in the signal bandwidth bw for 96 channels
+        :rtype: numpy.ndarray
 
         ASE power using per channel gain profile inputs:
 
@@ -1265,7 +1639,11 @@ class Edfa(_Node):
         return g1st - voa + array(self.interpol_dgt) * dgts3
 
     def propagate(self, spectral_info):
-        """add ASE noise to the propagating carriers of :class:`.info.SpectralInformation`"""
+        """add ASE noise to the propagating carriers of :class:`.info.SpectralInformation`
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+        """
         # interpolate the amplifier vectors with the carriers freq, calculate nf & gain profile
         self.interpol_params(spectral_info)
 
@@ -1279,6 +1657,13 @@ class Edfa(_Node):
         self.propagated_labels = spectral_info.label
 
     def __call__(self, spectral_info):
+        """Propagate through the amplifier.
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+
+        :return SpectralInformation: The updated spectral information object.
+        """
         # filter out carriers outside the amplifier band
         band = next(b for b in self.params.bands)
         spectral_info = demuxed_spectral_information(spectral_info, band)
@@ -1295,39 +1680,26 @@ class Multiband_amplifier(_Node):
     frequency band. It provides methods for signal propagation through the amplifiers and for exporting
     to JSON format.
 
-    param: amplifiers: list of dict. A list of dictionaries, each containing parameters for setting an
-    individual amplifier.
-    param: params : dict. A dictionary of parameters for the multiband amplifier, which must include
-    necessary configuration settings.
-    param: args, kwargs: Additional positional and keyword arguments passed to the parent class `_Node`.
-
-    Attributes:
-    -----------
-    variety_list : A list of varieties associated with the amplifier.
-    amplifiers : A dictionary mapping band names to their corresponding amplifier instances.
-
-    Methods:
-    --------
-    __call__(spectral_info):
-    Propagates the input spectral information through each amplifier and returns the multiplexed spectrum.
-
-    to_json:
-    Converts the amplifier's state to a JSON-compatible dictionary.
-
-    __repr__():
-    Returns a string representation of the multiband amplifier instance.
-
-    __str__():
-    Returns a formatted string representation of the multiband amplifier and its amplifiers.
-
-    Raises:
-    -------
-    ParametersError: If there are conflicting amplifier definitions for the same frequency band during initialization.
-
-    ValueError: If the input spectral information does not match any defined amplifier bands during propagation.
+    :param amplifiers: list of dictionaries, each containing parameters for setting an individual amplifier.
+    :type amplifiers: List[Dict]
+    :param params: dictionary of parameters for the multiband amplifier, which must include necessary
+        configuration settings.
+    :type params: Dict
+    :param args: Additional positional and keyword arguments passed to the parent class `_Node`.
+    :param kwargs: Additional positional and keyword arguments passed to the parent class `_Node`.
+    :ivar variety_list: A list of varieties associated with the amplifier.
+    :vartype variety_list: list
+    :ivar amplifiers: A dictionary mapping band names to their corresponding amplifier instances.
+    :vartype amplifiers: dict
+    :raises ParametersError: If there are conflicting amplifier definitions for the same frequency
+        band during initialization.
+    :raises ValueError: If the input spectral information does not match any defined amplifier bands
+        during propagation.
     """
     # separate the top level type_variety from kwargs to avoid having multiple type_varieties on each element processing
     def __init__(self, *args, amplifiers: List[dict], params: dict, **kwargs):
+        """Constructor method
+        """
         self.variety_list = kwargs.pop('variety_list', None)
         try:
             super().__init__(params=MultiBandParams(**params), **kwargs)
@@ -1352,6 +1724,11 @@ class Multiband_amplifier(_Node):
 
     def __call__(self, spectral_info: SpectralInformation):
         """propagates in each amp and returns the muxed spectrum
+
+        :param spectral_info: The spectral information object.
+        :type spectral_info: SpectralInformation
+
+        :return SpectralInformation: The updated spectral information object.
         """
         out_si = []
         for _, amp in self.amplifiers.items():
@@ -1366,6 +1743,10 @@ class Multiband_amplifier(_Node):
 
     @property
     def to_json(self):
+        """Converts the MultibandAmplifier's state to a JSON-compatible dictionary.
+
+        :return Dict[str, Any]: JSON representation of the MultibandAmplifier.
+        """
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'type_variety': self.type_variety,
@@ -1384,10 +1765,18 @@ class Multiband_amplifier(_Node):
                 }
 
     def __repr__(self):
+        """Returns a string representation of the MultibandAmplifier.
+
+        :return str: String representation of the MultibandAmplifier.
+        """
         return (f'{type(self).__name__}(uid={self.uid!r}, '
                 f'type_variety={self.type_variety!r}, ')
 
     def __str__(self):
+        """Returns a formatted string representation of the MultibandAmplifier.
+
+        :return str: Formatted string representation of the MultibandAmplifier.
+        """
         amp_str = [f'{type(self).__name__} {self.uid}',
                    f'  type_variety:           {self.type_variety}']
         multi_str_data = []
