@@ -23,18 +23,18 @@ or to run a planning script to check SNR of several services:
    :alt: Running a simple simulation example
 
 By default, the gnpy-transmission-example script operates on a single span network defined in
-`gnpy/example-data/edfa_example_network.json <../gnpy/example-data/edfa_example_network.json>`_
+`gnpy/example-data/edfa_example_network.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/edfa_example_network.json>`_
 
 You can specify a different network at the command line as follows. For
 example, to use the CORONET Global network defined in
-`gnpy/example-data/CORONET_Global_Topology.json <../gnpy/example-data/CORONET_Global_Topology.json>`_:
+`gnpy/example-data/CORONET_Global_Topology.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/CORONET_Global_Topology.json>`_:
 
 .. code-block:: shell-session
 
     $ gnpy-transmission-example $(gnpy-example-data)/CORONET_Global_Topology.json
 
 It is also possible to use an Excel file input (for example
-`gnpy/example-data/CORONET_Global_Topology.xls <../gnpy/example-data/CORONET_Global_Topology.xls>`_).
+`gnpy/example-data/CORONET_Global_Topology.xls <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/CORONET_Global_Topology.xls>`_).
 The Excel file will be processed into a JSON file with the same prefix.
 Further details about the Excel data structure are available `in the documentation <excel.rst>`__.
 
@@ -72,8 +72,8 @@ An experimental support for Raman amplification is available:
        $(gnpy-example-data)/raman_edfa_example_network.json \
        --sim $(gnpy-example-data)/sim_params.json --show-channels
 
-Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <../gnpy/example-data/raman_edfa_example_network.json>`_.
-General numeric parameters for simulation control are provided in the `gnpy/example-data/sim_params.json <../gnpy/example-data/sim_params.json>`_.
+Configuration of Raman pumps (their frequencies, power and pumping direction) is done via the `RamanFiber element in the network topology <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/raman_edfa_example_network.json>`_.
+General numeric parameters for simulation control are provided in the `gnpy/example-data/sim_params.json <https://github.com/Telecominfraproject/oopt-gnpy/blob/master/gnpy/example-data/sim_params.json>`_.
 
 Use ``gnpy-path-request`` to request several paths at once:
 

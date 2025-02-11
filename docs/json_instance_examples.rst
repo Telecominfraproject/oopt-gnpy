@@ -364,13 +364,13 @@ backward compatibility.
 The RamanFiber is a specialized variant of the regular Fiber, where the simulation
 engine incorporates Raman amplification. The actual pump definitions must be
 specified within the RamanFiber instance in the topology
-(refer to the gnpy.core.elements.RamanFiber class).
+(refer to the :mod:`gnpy.core.elements.RamanFiber` class).
 
 More details can be found in :cite:curri_merit_2016.
 
 Raman efficiency is scaled against the effective area using the default Raman
 coefficient profile (g0 * A_ff_overlap), where g0 is a Raman coefficient profile
-defined for a reference effective area (gnpy.core.parameters.DEFAULT_RAMAN_COEFFICIENT).
+defined for a reference effective area (:mod:`gnpy.core.parameters.DEFAULT_RAMAN_COEFFICIENT`).
 
 If a RamanFiber is defined in the library, a corresponding Fiber must also be defined
 with the same type_variety.
