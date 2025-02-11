@@ -19,6 +19,7 @@
 #
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('../'))
 
 # -- General configuration ------------------------------------------------
@@ -36,6 +37,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinxcontrib.bibtex',
               'sphinx.ext.graphviz',
               'myst_parser',
+              'sphinx_rtd_theme',
               ]
 
 myst_enable_extensions = [
@@ -84,11 +86,22 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = "sphinx_rtd_theme"
 html_theme_options = {
     'logo': 'images/GNPy-logo.png',
     'logo_name': False,
+    'prev_next_buttons_location': 'bottom',
+    # Toc options
+    'collapse_navigation': True,
+    'sticky_navigation': True,
+    'navigation_depth': 4,
+    'includehidden': True,
+    'titles_only': False
 }
+html_theme_options = {
+    'navigation_depth': 4,
+}
+html_favicon = 'images/GNPy-logo.png'
 
 html_logo = 'images/GNPy-logo.png'
 
@@ -101,7 +114,10 @@ html_logo = 'images/GNPy-logo.png'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path = ['_static']
+html_css_files = [
+    'custom.css',  # Inclure votre fichier CSS personnalisé
+]
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -118,6 +134,7 @@ html_sidebars = {
     ]
 }
 
+html_secnum_depth = 4
 
 # -- Options for HTMLHelp output ------------------------------------------
 
