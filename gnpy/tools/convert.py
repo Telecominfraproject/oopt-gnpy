@@ -27,8 +27,9 @@ from itertools import chain
 from json import dumps
 from pathlib import Path
 from copy import copy
-from typing import Dict, List, Tuple, DefaultDict
+from typing import Generator, Tuple, List, Dict, DefaultDict
 from xlrd import open_workbook
+from xlrd.sheet import Sheet
 from xlrd.biffh import XLRDError
 from networkx import DiGraph
 
@@ -40,20 +41,49 @@ from gnpy.core.elements import Edfa, Fused, Fiber
 _logger = getLogger(__name__)
 
 
-def all_rows(sh, start=0):
-    """Returns all rows of the xls(x) sheet starting from start row
+def all_rows(sh: Sheet, start: int = 0) -> Generator[list, None, None]:
+    """Returns all rows of the xls(x) sheet starting from start row.
+
+    :param sh: The sheet object from which to retrieve rows.
+    :param start: The starting row index (default is 0).
+    :return: A generator yielding all rows from the specified starting index.
     """
     return (sh.row(x) for x in range(start, sh.nrows))
 
 
 class Node:
-    """Node data class
+    """Node data class representing a network node.
+
+    :ivar city: The city where the node is located.
+    :vartype city: str
+    :ivar state: The state where the node is located.
+    :vartype state: str
+    :ivar country: The country where the node is located.
+    :vartype country: str
+    :ivar region: The region where the node is located.
+    :vartype region: str
+    :ivar latitude: The latitude of the node's location.
+    :vartype latitude: float
+    :ivar longitude: The longitude of the node's location.
+    :vartype longitude: float
+    :ivar node_type: The type of the node (e.g., ILA, ROADM).
+    :vartype node_type: str
+    :ivar booster_restriction: Restrictions on booster amplifiers.
+    :vartype booster_restriction: str
+    :ivar preamp_restriction: Restrictions on preamplifiers.
+    :vartype preamp_restriction: str
     """
     def __init__(self, **kwargs):
+        """Constructor method
+        """
         super().__init__()
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
+        """Updates the attributes of the node based on provided keyword arguments.
+
+        :param kwargs: A dictionary of attributes to update.
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
@@ -73,16 +103,42 @@ class Node:
 
 
 class Link:
-    """attribtes from west parse_ept_headers dict
-    +node_a, node_z, west_fiber_con_in, east_fiber_con_in
+    """Link data class representing a connection between nodes.
+
+    :ivar from_city: The city where the link starts.
+    :vartype from_city: str
+    :ivar to_city: The city where the link ends.
+    :vartype to_city: str
+    :ivar east_distance: The distance of the link in the east direction.
+    :vartype east_distance: float
+    :ivar east_fiber: The type of fiber used in the east direction.
+    :vartype east_fiber: str
+    :ivar east_lineic: The linear attenuation in the east direction.
+    :vartype east_lineic: float
+    :ivar east_con_in: Connection input in the east direction.
+    :vartype east_con_in: str
+    :ivar east_con_out: Connection output in the east direction.
+    :vartype east_con_out: str
+    :ivar east_pmd: Polarization mode dispersion in the east direction.
+    :vartype east_pmd: float
+    :ivar east_cable: The cable identifier in the east direction.
+    :vartype east_cable: str
+    :ivar distance_units: The units of distance (default is 'km').
+    :vartype distance_units: str
     """
 
     def __init__(self, **kwargs):
+        """Constructor method
+        """
         super().__init__()
         self.update_attr(kwargs)
         self.distance_units = 'km'
 
     def update_attr(self, kwargs):
+        """Updates the attributes of the link based on provided keyword arguments.
+
+        :param kwargs: A dictionary of attributes to update.
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
@@ -92,6 +148,14 @@ class Link:
             setattr(self, k, v)
 
     def __eq__(self, link):
+        """Checks if two links are equivalent (same or reversed).
+        Parrallel links are not handled correctly yet.
+
+        :param link: The link to compare with.
+        :return: True if the links are equivalent, False otherwise.
+        """
+        # Disable all the no-member violations in this function
+        # pylint: disable=E1101
         return (self.from_city == link.from_city and self.to_city == link.to_city) \
             or (self.from_city == link.to_city and self.to_city == link.from_city)
 
@@ -109,13 +173,36 @@ class Link:
 
 
 class Eqpt:
-    """
+    """Equipment data class representing amplifiers or other equipment.
+
+    :ivar from_city: The city where the equipment is located.
+    :vartype from_city: str
+    :ivar to_city: The city where the equipment connects to.
+    :vartype to_city: str
+    :ivar east_amp_type: The type of amplifier in the east direction.
+    :vartype east_amp_type: str
+    :ivar east_amp_gain: The gain of the amplifier in the east direction.
+    :vartype east_amp_gain: float
+    :ivar east_amp_dp: The delta power of the amplifier in the east direction.
+    :vartype east_amp_dp: float
+    :ivar east_tilt_vs_wavelength: Tilt of the amplifier versus wavelength in the east direction.
+    :vartype east_tilt_vs_wavelength: float
+    :ivar east_att_out: Output attenuation in the east direction.
+    :vartype east_att_out: float
+    :ivar east_att_in: Input attenuation in the east direction.
+    :vartype east_att_in: float
     """
     def __init__(self, **kwargs):
+        """Constructor method
+        """
         super().__init__()
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
+        """Updates the attributes of the equipment based on provided keyword arguments.
+
+        :param kwargs: A dictionary of attributes to update.
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             v_east = clean_kwargs.get(k, v)
@@ -136,13 +223,32 @@ class Eqpt:
 
 
 class Roadm:
-    """
+    """ROADM data class representing a reconfigurable optical add-drop multiplexer.
+
+    :ivar from_node: The starting node of the ROADM.
+    :vartype from_node: str
+    :ivar to_node: The ending node of the ROADM.
+    :vartype to_node: str
+    :ivar target_pch_out_db: Target output power per channel in dBm.
+    :vartype target_pch_out_db: float
+    :ivar type_variety: The type variety of the ROADM.
+    :vartype type_variety: str
+    :ivar from_degrees: Degrees from the starting node.
+    :vartype from_degrees: str
+    :ivar impairment_ids: Impairment identifiers associated with the ROADM.
+    :vartype impairment_ids: str
     """
     def __init__(self, **kwargs):
+        """Constructor method
+        """
         super().__init__()
         self.update_attr(kwargs)
 
     def update_attr(self, kwargs):
+        """Updates the attributes of the ROADM based on provided keyword arguments.
+
+        :param kwargs: A dictionary of attributes to update.
+        """
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
@@ -157,10 +263,16 @@ class Roadm:
                       }
 
 
-def read_header(my_sheet, line, slice_):
-    """ return the list of headers !:= ''
+def read_header(my_sheet: Sheet, line: int, slice_: Tuple[int, int]) -> List[namedtuple]:
+    """Return the list of headers in a specified range.
+
     header_i = [(header, header_column_index), ...]
     in a {line, slice1_x, slice_y} range
+
+    :param my_sheet: The sheet object from which to read headers.
+    :param line: The row index to read headers from.
+    :param slice_: A tuple specifying the start and end column indices.
+    :return: A list of namedtuples containing headers and their column indices.
     """
     Param_header = namedtuple('Param_header', 'header colindex')
     try:
@@ -173,9 +285,16 @@ def read_header(my_sheet, line, slice_):
     return header_i
 
 
-def read_slice(my_sheet, line, slice_, header):
+def read_slice(my_sheet: Sheet, line: int, slice_: Tuple[int, int], header: str) -> Tuple[int, int]:
     """return the slice range of a given header
-    in a defined range {line, slice_x, slice_y}"""
+    in a defined range {line, slice_x, slice_y}
+
+    :param my_sheet: The sheet object from which to read the header.
+    :param line: The row index to read from.
+    :param slice_: A tuple specifying the start and end column indices.
+    :param header: The header name to search for.
+    :return: A tuple representing the start and end indices of the slice.
+    """
     header_i = read_header(my_sheet, line, slice_)
     slice_range = (-1, -1)
     if header_i != []:
@@ -187,11 +306,21 @@ def read_slice(my_sheet, line, slice_, header):
     return slice_range
 
 
-def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
+def parse_headers(my_sheet: Sheet, input_headers_dict: Dict, headers: Dict[int, str],
+                  start_line: int, slice_in: Tuple[int, int]) -> Dict[int, str]:
     """return a dict of header_slice
-    key = column index
-    value = header name"""
 
+    - key = column index
+    - value = header name
+
+    :param my_sheet: The sheet object from which to read headers.
+    :type my_sheet: Sheet
+    :param input_headers_dict: A dictionary mapping expected headers to internal names.
+    :param headers: A dictionary to store the header slices.
+    :param start_line: The starting line to search for headers.
+    :param slice_in: A tuple specifying the start and end column indices.
+    :return: A dictionary mapping column indices to header names.
+    """
     for h0 in input_headers_dict:
         slice_out = read_slice(my_sheet, start_line, slice_in, h0)
         iteration = 1
@@ -215,14 +344,26 @@ def parse_headers(my_sheet, input_headers_dict, headers, start_line, slice_in):
 
 
 def parse_row(row, headers):
-    """
+    """Parse a row of data into a dictionary based on headers.
+
+    :param row: The row object to parse.
+    :param headers: A dictionary mapping header names to column indices.
+    :return: A dictionary mapping header names to their corresponding values in the row.
     """
     return {f: r.value for f, r in
             zip(list(headers.values()), [row[i] for i in headers])}
 
 
-def parse_sheet(my_sheet, input_headers_dict, header_line, start_line, column):
-    """
+def parse_sheet(my_sheet: Sheet, input_headers_dict: Dict, header_line: int,
+                start_line: int, column: int) -> Generator[Dict[str, str], None, None]:
+    """Parse a sheet and yield rows as dictionaries.
+
+    :param my_sheet: The sheet object to parse.
+    :param input_headers_dict: A dictionary mapping expected headers to internal names.
+    :param header_line: The line number where headers are located.
+    :param start_line: The starting line number for data rows.
+    :param column: The number of columns to read.
+    :return: A generator yielding parsed rows as dictionaries.
     """
     headers = parse_headers(my_sheet, input_headers_dict, {}, header_line, (0, column))
     for row in all_rows(my_sheet, start=start_line):
@@ -230,7 +371,10 @@ def parse_sheet(my_sheet, input_headers_dict, header_line, start_line, column):
 
 
 def _format_items(items: List[str]):
-    """formating utils
+    """Format a list of items into a string.
+
+    :param items: A list of items to format.
+    :return: A formatted string with each item on a new line.
     """
     return '\n'.join(f' - {item}' for item in items)
 
@@ -238,9 +382,17 @@ def _format_items(items: List[str]):
 def sanity_check(nodes: List[Node], links: List[Link],
                  nodes_by_city: Dict[str, Node], links_by_city: DefaultDict[str, List[Link]],
                  eqpts_by_city: DefaultDict[str, List[Eqpt]]) -> Tuple[List[Node], List[Link]]:
-    """Raise correct issues if xls(x) is not correct, Correct type to ROADM if more tha 2-degrees
-    checks duplicate links, unreferenced nodes in links, in eqpts, unreferenced link in eqpts,
-    duplicate items
+    """Perform sanity checks on nodes and links. Raise correct issues if xls(x) is not correct,
+    Correct type to ROADM if more tha 2-degrees, checks duplicate links, unreferenced nodes in links,
+    in eqpts, unreferenced link in eqpts, duplicate items
+
+    :param nodes: A list of Node objects.
+    :param links: A list of Link objects.
+    :param nodes_by_city: A dictionary mapping city names to Node objects.
+    :param links_by_city: A defaultdict mapping city names to lists of Link objects.
+    :param eqpts_by_city: A defaultdict mapping city names to lists of Eqpt objects.
+    :return: A tuple containing the validated lists of nodes and links.
+    :raises NetworkTopologyError: If any issues are found during validation.
     """
     duplicate_links = []
     for l1 in links:
@@ -324,12 +476,18 @@ def sanity_check(nodes: List[Node], links: List[Link],
     return nodes, links
 
 
-def create_roadm_element(node, roadms_by_city):
-    """ create the json element for a roadm node, including the different cases:
-    - if there are restrictions
-    - if there are per degree target power defined on a direction
+def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm]]) -> Dict:
+    """Create the json element for a roadm node, including the different cases:
+
+        - if there are restrictions
+        - if there are per degree target power defined on a direction
+    
     direction is defined by the booster name, so that booster must also be created in eqpt sheet
-    if the direction is defined in roadm
+    if the direction is defined in roadm.
+
+    :param node: The Node object representing the ROADM.
+    :param roadms_by_city: A dictionary mapping city names to lists of ROADM objects.
+    :return: A dictionary representing the ROADM element in JSON format.
     """
     roadm = {'uid': f'roadm {node.city}'}
     if node.preamp_restriction != '' or node.booster_restriction != '':
@@ -371,9 +529,13 @@ def create_roadm_element(node, roadms_by_city):
 
 
 def create_east_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict:
-    """ create amplifiers json elements for the east direction.
+    """Create amplifiers json elements for the east direction.
     this includes the case where the case of a fused element defined instead of an
-    ILA in eqpt sheet
+    ILA in eqpt sheet.
+
+    :param node: The Node object representing the equipment.
+    :param nodes_by_city: A dictionary mapping city names to Node objects.
+    :return: A dictionary representing the east equipment element in JSON format.
     """
     eqpt = {'uid': f'east edfa in {node.from_city} to {node.to_city}',
             'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,
@@ -404,9 +566,13 @@ def create_east_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict
 
 
 def create_west_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict:
-    """ create amplifiers json elements for the west direction.
+    """Create amplifiers json elements for the west direction.
     this includes the case where the case of a fused element defined instead of an
-    ILA in eqpt sheet
+    ILA in eqpt sheet.
+
+    :param node: The Node object representing the equipment.
+    :param nodes_by_city: A dictionary mapping city names to Node objects.
+    :return: A dictionary representing the west equipment element in JSON format.
     """
     eqpt = {'uid': f'west edfa in {node.from_city} to {node.to_city}',
             'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,
@@ -431,9 +597,12 @@ def create_west_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict
     return eqpt
 
 
-def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> Dict:
-    """Read the excel sheets and produces the json dict in GNPy format (legacy)
-    returns json dict
+def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> dict:
+    """Read the Excel sheets and produce the JSON dict in GNPy format (legacy).
+
+    :param input_filename: The path to the input XLS file.
+    :param filter_region: A list of regions to filter the nodes (default is None).
+    :return: A dictionary representing the JSON data.
     """
     if filter_region is None:
         filter_region = []
@@ -543,7 +712,12 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> D
 
 
 def convert_file(input_filename: Path, filter_region: List[str] = None, output_json_file_name: Path = None):
-    """Save the conversion into
+    """Convert the input XLS file to JSON format and save it.
+
+    :param input_filename: The path to the input XLS file.
+    :param filter_region: A list of regions to filter the nodes (default is None).
+    :param output_json_file_name: The path to save the output JSON file (default is None).
+    :return: The path to the saved JSON file.
     """
     if filter_region is None:
         filter_region = []
@@ -557,9 +731,11 @@ def convert_file(input_filename: Path, filter_region: List[str] = None, output_j
 
 
 def corresp_names(input_filename: Path, network: DiGraph):
-    """ a function that builds the correspondance between names given in the excel,
-        and names used in the json, and created by the autodesign.
-        All names are listed
+    """Build the correspondence between names given in the Excel and names used in the JSON.
+
+    :param input_filename: The path to the input XLS file.
+    :param network: The network graph object.
+    :return: A tuple containing dictionaries for ROADMs, fused nodes, and ILAs.
     """
     nodes, links, eqpts, _ = parse_excel(input_filename)
     fused = [n.uid for n in network.nodes() if isinstance(n, Fused)]
@@ -624,8 +800,11 @@ def corresp_names(input_filename: Path, network: DiGraph):
 
 
 def parse_excel(input_filename: Path) -> Tuple[List[Node], List[Link], List[Eqpt], List[Roadm]]:
-    """reads xls(x) sheets among Nodes, Eqpts, Links, Roadms and parse the data in the sheets
-    into internal data structure Node, Link, Eqpt, Roadm, classes
+    """Reads XLS(X) sheets among Nodes, Eqpts, Links, Roadms and parses the data.
+
+    :param input_filename: The path to the input XLS file.
+    :return: A tuple containing lists of Node, Link, Eqpt, and Roadm objects.f
+    :raises NetworkTopologyError: If any issues are found during parsing.
     """
     link_headers = {
         'Node A': 'from_city',
@@ -740,7 +919,13 @@ def parse_excel(input_filename: Path) -> Tuple[List[Node], List[Link], List[Eqpt
 
 def eqpt_connection_by_city(city_name: str, eqpts_by_city: DefaultDict[str, List[Eqpt]],
                             links_by_city: DefaultDict[str, List[Link]], nodes_by_city: Dict[str, Node]) -> list:
-    """
+    """Returns the list of equipment installed in the specified city.
+
+    :param city_name: The name of the city to check for equipment.
+    :param eqpts_by_city: A defaultdict mapping city names to lists of Eqpt objects.
+    :param links_by_city: A defaultdict mapping city names to lists of Link objects.
+    :param nodes_by_city: A dictionary mapping city names to Node objects.
+    :return: A list of connection dictionaries for the specified city.
     """
     other_cities = fiber_dest_from_source(city_name, links_by_city)
     subdata = []
@@ -767,7 +952,12 @@ def eqpt_connection_by_city(city_name: str, eqpts_by_city: DefaultDict[str, List
 
 
 def connect_eqpt(from_: str, in_: str, to_: str) -> List[dict]:
-    """Utils: create the topology connection json dict between in and to
+    """Create the topology connection JSON dict between in and to.
+
+    :param from_: The starting node identifier.
+    :param in_: The intermediate node identifier.
+    :param to_: The ending node identifier.
+    :return: A list of connection dictionaries.
     """
     connections = []
     if in_ != '':
@@ -781,7 +971,14 @@ def connect_eqpt(from_: str, in_: str, to_: str) -> List[dict]:
 def eqpt_in_city_to_city(in_city: str, to_city: str,
                          eqpts_by_city: DefaultDict[str, List[Eqpt]], nodes_by_city: Dict[str, Node],
                          direction: str = 'east') -> str:
-    """Utils: returns the formatted dtring corresponding to in_city types and direction
+    """Returns the formatted string corresponding to in_city types and direction.
+
+    :param in_city: The city where the equipment is located.
+    :param to_city: The city where the equipment connects to.
+    :param eqpts_by_city: A defaultdict mapping city names to lists of Eqpt objects.
+    :param nodes_by_city: A dictionary mapping city names to Node objects.
+    :param direction: The direction of the equipment (default is 'east').
+    :return: A formatted string representing the equipment in the specified direction.
     """
     rev_direction = 'west' if direction == 'east' else 'east'
     return_eqpt = ''
@@ -802,26 +999,39 @@ def eqpt_in_city_to_city(in_city: str, to_city: str,
 
 
 def corresp_next_node(network: DiGraph, corresp_ila: dict, corresp_roadm: dict) -> Tuple[dict, dict]:
-    """ for each name in corresp dictionnaries find the next node in network and its name
-        given by user in excel. for meshTopology_exampleV2.xls:
-        user ILA name Stbrieuc covers the two direction. convert.py creates 2 different ILA
-        with possible names (depending on the direction and if the eqpt was defined in eqpt
-        sheet)
-        for an ILA and if it is defined in eqpt:
-        - east edfa in Stbrieuc to Rennes_STA
-        - west edfa in Stbrieuc to Rennes_STA
-        for an ILA and if it is not defined in eqpt:
-        - east edfa in Stbrieuc
-        - west edfa in Stbrieuc
-        for a roadm
-        "Edfa_preamp_roadm node1_from_fiber (siteE → node1)-CABLES#19"
-        "Edfa_booster_roadm node1_to_fiber (node1 → siteE)-CABLES#19"
-        next_nodes finds the user defined name of next node to be able to map the path constraints
-        - east edfa in Stbrieuc to Rennes_STA      next node = Rennes_STA
-        - west edfa in Stbrieuc to Rennes_STA      next node Lannion_CAS
+    """Find the next node in the network for each name in the correspondence dictionaries.
+    For each name in corresp dictionnaries find the next node in network and its name
+    given by user in excel. for meshTopology_exampleV2.xls:
+    user ILA name Stbrieuc covers the two direction. convert.py creates 2 different ILA
+    with possible names (depending on the direction and if the eqpt was defined in eqpt
+    sheet)
+    for an ILA and if it is defined in eqpt:
 
-        the function supports fiber splitting, fused nodes and shall only be called if
-        excel format is used for both network and service
+    - east edfa in Stbrieuc to Rennes_STA
+    - west edfa in Stbrieuc to Rennes_STA
+
+    for an ILA and if it is notdefined in eqpt:
+
+    - east edfa in Stbrieuc
+    - west edfa in Stbrieuc
+
+    for a roadm
+
+    - "Edfa_preamp_roadm node1_from_fiber (siteE → node1)-CABLES#19"
+    - "Edfa_booster_roadm node1_to_fiber (node1 → siteE)-CABLES#19"
+
+    next_nodes finds the user defined name of next node to be able to map the path constraints
+
+    - east edfa in Stbrieuc to Rennes_STA      next node = Rennes_STA
+    - west edfa in Stbrieuc to Rennes_STA      next node = Lannion_CAS
+
+    the function supports fiber splitting, fused nodes and shall only be called if
+    excel format is used for both network and service
+
+    :param network: The network graph object.
+    :param corresp_ila: A dictionary mapping city names to lists of ILA names.
+    :param corresp_roadm: A dictionary mapping city names to lists of ROADM names.
+    :return: A tuple containing updated correspondence for ILAs and the next node mapping.
     """
     next_node = {}
     # consolidate tables and create next_node table
@@ -860,7 +1070,11 @@ def corresp_next_node(network: DiGraph, corresp_ila: dict, corresp_roadm: dict) 
 
 
 def fiber_dest_from_source(city_name: str, links_by_city: DefaultDict[str, List[Link]]) -> List[str]:
-    """Returns the list of cities city_name is connected to
+    """Returns the list of cities connected to the specified city.
+
+    :param city_name: The name of the city to check for connections.
+    :param links_by_city: A defaultdict mapping city names to lists of Link objects.
+    :return: A list of city names that are connected to the specified city.
     """
     destinations = []
     links_from_city = links_by_city[city_name]
@@ -873,7 +1087,12 @@ def fiber_dest_from_source(city_name: str, links_by_city: DefaultDict[str, List[
 
 
 def fiber_link(from_city: str, to_city: str, links_by_city: DefaultDict[str, List[Link]]) -> str:
-    """utils: returns formatted uid for fibers between from_city and to_city
+    """Returns the formatted UID for fibers between two cities.
+
+    :param from_city: The starting city name.
+    :param to_city: The destination city name.
+    :param links_by_city: A defaultdict mapping city names to lists of Link objects.
+    :return: A formatted string representing the fiber link.
     """
     source_dest = (from_city, to_city)
     links = links_by_city[from_city]
@@ -886,7 +1105,11 @@ def fiber_link(from_city: str, to_city: str, links_by_city: DefaultDict[str, Lis
 
 
 def midpoint(city_a: Node, city_b:Node) -> dict:
-    """Computes mipoint coordinates
+    """Computes the midpoint coordinates between two cities.
+
+    :param city_a: The first Node object representing a city.
+    :param city_b: The second Node object representing a city.
+    :return: A dictionary containing the latitude and longitude of the midpoint.
     """
     lats = city_a.latitude, city_b.latitude
     longs = city_a.longitude, city_b.longitude
