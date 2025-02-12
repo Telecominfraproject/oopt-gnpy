@@ -12,7 +12,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import List
+from typing import Union, List
 from math import ceil
 from numpy import mean
 
@@ -44,13 +44,33 @@ _help_fname_json_csv = 'FILE.(json|csv)'
 
 
 def show_example_data_dir():
+    """Print the example data directory path."""
     print(f'{_examples_dir}/')
 
 
-def load_common_data(equipment_filename: Path, extra_equipment_filenames: List[Path], extra_config_filenames: List[Path],
+def load_common_data(equipment_filename: Path,
+                     extra_equipment_filenames: List[Path], extra_config_filenames: List[Path],
                      topology_filename: Path, simulation_filename: Path, save_raw_network_filename: Path):
-    """Load common configuration from JSON files, merging additional equipment if provided."""
+    """Load common configuration from JSON files, merging additional equipment if provided.
 
+    :param equipment_filename: Path to the main equipment configuration file.
+    :type equipment_filename: Path
+    :param extra_equipment_filenames: List of additional equipment configuration files.
+    :type extra_equipment_filenames: List[Path]
+    :param extra_config_filenames: List of additional configuration files.
+    :type extra_config_filenames: List[Path]
+    :param topology_filename: Path to the network topology file.
+    :type topology_filename: Path
+    :param simulation_filename: Path to the simulation parameters file.
+    :type simulation_filename: Path
+    :param save_raw_network_filename: Path to save the raw network configuration.
+    :type save_raw_network_filename: Path
+    :raises exceptions.EquipmentConfigError: If there is a configuration error in the equipment library.
+    :raises exceptions.NetworkTopologyError: If the network definition is invalid.
+    :raises exceptions.ParametersError: If there is an error with simulation parameters.
+    :raises exceptions.ConfigurationError: If there is a general configuration error.
+    :raises exceptions.ServiceError: If there is a service-related error.
+    """
     try:
         equipment = load_equipments_and_configs(equipment_filename, extra_equipment_filenames, extra_config_filenames)
         network = load_network(topology_filename, equipment)
@@ -85,11 +105,23 @@ def load_common_data(equipment_filename: Path, extra_equipment_filenames: List[P
     return (equipment, network)
 
 
-def _setup_logging(args):
+def _setup_logging(args: argparse.Namespace):
+    """Set up logging based on verbosity level.
+
+    :param args: The parsed command-line arguments.
+    :type args: argparse.Namespace
+    """
     logging.basicConfig(level={2: logging.DEBUG, 1: logging.INFO, 0: logging.WARNING}.get(args.verbose, logging.DEBUG))
 
 
 def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
+    """Add common command-line options to the argument parser.
+
+    :param parser: The argument parser to which options will be added.
+    :type parser: argparse.ArgumentParser
+    :param network_default: The default path for the network topology file.
+    :type network_default: Path
+    """
     parser.add_argument('topology', nargs='?', type=Path, metavar='NETWORK-TOPOLOGY.(json|xls|xlsx)',
                         default=network_default,
                         help='Input network topology')
@@ -119,9 +151,12 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                              f'Existing configs:\n{_default_config_files}')
 
 
-def transmission_main_example(args=None):
+def transmission_main_example(args: Union[List[str], None] = None):
     """Main script running a single simulation. It returns the detailed power across crossed elements and
     average performance accross all channels.
+
+    :param args: Command-line arguments (default is None).
+    :type args: Union[List[str], None]
     """
     parser = argparse.ArgumentParser(
         description='Send a full spectrum load through the network from point A to point B',
@@ -306,6 +341,9 @@ def _path_result_json(pathresult):
 def path_requests_run(args=None):
     """Main script running several services simulations. It returns a summary of the average performance
     for each service.
+
+    :param args: Command-line arguments (default is None).
+    :type args: Union[List[str], None]
     """
     parser = argparse.ArgumentParser(
         description='Compute performance for a list of services provided in a json file or an excel sheet',
