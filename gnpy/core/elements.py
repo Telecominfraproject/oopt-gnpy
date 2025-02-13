@@ -21,14 +21,14 @@ instance as a result.
 """
 
 from copy import deepcopy
-from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, full,\
-    squeeze, zeros, outer, ndarray
-from scipy.constants import h, c
-from scipy.interpolate import interp1d
 from collections import namedtuple
 from typing import Union, List
 from logging import getLogger
 import warnings
+from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, \
+    full, squeeze, zeros, outer, ndarray
+from scipy.constants import h, c
+from scipy.interpolate import interp1d
 
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
     watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str
@@ -382,6 +382,7 @@ class Roadm(_Node):
     def __init__(self, *args, params=None, **kwargs):
         """Constructor method
         """
+        # pylint: disable=C0103
         if not params:
             params = {}
         try:
@@ -541,9 +542,9 @@ class Roadm(_Node):
         """
         if degree in self.per_degree_pch_out_dbm:
             return self.per_degree_pch_out_dbm[degree]
-        elif degree in self.per_degree_pch_psd:
+        if degree in self.per_degree_pch_psd:
             return psd2powerdbm(self.per_degree_pch_psd[degree], self.ref_carrier.baud_rate)
-        elif degree in self.per_degree_pch_psw:
+        if degree in self.per_degree_pch_psw:
             return psd2powerdbm(self.per_degree_pch_psw[degree], self.ref_carrier.slot_width)
         return self.get_roadm_target_power()
 
@@ -560,9 +561,9 @@ class Roadm(_Node):
         """
         if degree in self.per_degree_pch_out_dbm:
             return self.per_degree_pch_out_dbm[degree]
-        elif degree in self.per_degree_pch_psd:
+        if degree in self.per_degree_pch_psd:
             return psd2powerdbm(self.per_degree_pch_psd[degree], spectral_info.baud_rate)
-        elif degree in self.per_degree_pch_psw:
+        if degree in self.per_degree_pch_psw:
             return psd2powerdbm(self.per_degree_pch_psw[degree], spectral_info.slot_width)
         return self.get_roadm_target_power(spectral_info=spectral_info)
 
@@ -931,7 +932,7 @@ class Fiber(_Node):
                           f'  pad att_in (dB):             {self.params.att_in:.2f}',
                           f'  total loss (dB):             {self.loss:.2f}',
                           f'  (includes conn loss (dB) in: {self.params.con_in:.2f} out: {self.params.con_out:.2f})',
-                          f'  (conn loss out includes EOL margin defined in eqpt_config.json)',
+                          '  (conn loss out includes EOL margin defined in eqpt_config.json)',
                           f'  reference pch out (dBm):     {self.pch_out_db:.2f}',
                           f'  actual pch out (dBm):        {total_pch}'])
 
@@ -1038,7 +1039,7 @@ class Fiber(_Node):
         frequency = asarray(self.params.ref_frequency if frequency is None else frequency)
         if self.params.dispersion.size > 1:
             beta3 = polyfit(self.params.f_dispersion_ref - self.params.ref_frequency,
-                            self.beta2(self.params.f_dispersion_ref), 2)[1] / (2*pi)
+                            self.beta2(self.params.f_dispersion_ref), 2)[1] / (2 * pi)
             beta3 = full(frequency.size, beta3)
         else:
             if self.params.dispersion_slope is None:
@@ -1375,7 +1376,7 @@ class Edfa(_Node):
                           f'  tilt-target(dB)         {self.tilt_target if self.tilt_target else 0:.2f}',
                           # avoids -0.00 value for tilt_target
                           f'  noise figure (dB):      {nf:.2f}',
-                          f'  (including att_in)',
+                          '  (including att_in)',
                           f'  pad att_in (dB):        {self.att_in:.2f}',
                           f'  Power In (dBm):         {self.pin_db:.2f}',
                           f'  Power Out (dBm):        {self.pout_db:.2f}',
@@ -1392,8 +1393,6 @@ class Edfa(_Node):
         :param spectral_info: The spectral information object.
         :type spectral_info: SpectralInformation
         """
-        # TODO|jla: read amplifier actual frequencies from additional params in json
-
         self.channel_freq = spectral_info.frequency
         amplifier_freq = arrange_frequencies(len(self.params.dgt), self.params.f_min, self.params.f_max)  # Hz
         self.interpol_dgt = interp(spectral_info.frequency, amplifier_freq, self.params.dgt)
@@ -1411,14 +1410,14 @@ class Edfa(_Node):
         # For now, with homogeneous spectrum, we can calculate it as the difference between neighbouring channels.
         self.slot_width = self.channel_freq[1] - self.channel_freq[0]
 
-        """check power saturation and correct effective gain & power accordingly:"""
+        # check power saturation and correct effective gain & power accordingly:
         # Compute the saturation accounting for actual power at the input of the amp
         self.effective_gain = min(
             self.effective_gain,
             self.params.p_max - self.pin_db
         )
 
-        """check power saturation and correct target_gain accordingly:"""
+        # check power saturation and correct target_gain accordingly:
         self.nf = self._calc_nf()
         self.gprofile = self._gain_profile(pin)
 
@@ -1429,7 +1428,8 @@ class Edfa(_Node):
 
     def _nf(self, type_def, nf_model, nf_fit_coeff, gain_min, gain_flatmax, gain_target):
         # if hybrid raman, use edfa_gain_flatmax attribute, else use gain_flatmax
-        #gain_flatmax = getattr(params, 'edfa_gain_flatmax', params.gain_flatmax)
+        # gain_flatmax = getattr(params, 'edfa_gain_flatmax', params.gain_flatmax)
+        # pylint: disable=C0103
         pad = max(gain_min - gain_target, 0)
         gain_target += pad
         dg = max(gain_flatmax - gain_target, 0)
@@ -1492,8 +1492,7 @@ class Edfa(_Node):
         self.att_in = pad  # not used to attenuate carriers, only used in _repr_ and _str_
         if avg:
             return nf_avg
-        else:
-            return self.interpol_nf_ripple + nf_avg  # input VOA = 1 for 1 NF degradation
+        return self.interpol_nf_ripple + nf_avg  # input VOA = 1 for 1 NF degradation
 
     def noise_profile(self, spectral_info: SpectralInformation):
         """Computes amplifier ASE noise integrated over the signal bandwidth. This is calculated at amplifier input.
@@ -1696,6 +1695,7 @@ class Multiband_amplifier(_Node):
     :raises ValueError: If the input spectral information does not match any defined amplifier bands
         during propagation.
     """
+    # pylint: disable=C0103
     # separate the top level type_variety from kwargs to avoid having multiple type_varieties on each element processing
     def __init__(self, *args, amplifiers: List[dict], params: dict, **kwargs):
         """Constructor method
@@ -1714,10 +1714,10 @@ class Multiband_amplifier(_Node):
             amp = Edfa(**amp_dict, **kwargs)
             band = next(b for b in amp.params.bands)
             band_name = find_band_name(FrequencyBand(f_min=band["f_min"], f_max=band["f_max"]))
-            if band_name not in self.amplifiers.keys() and band not in self.params.bands:
+            if band_name not in self.amplifiers and band not in self.params.bands:
                 self.params.bands.append(band)
                 self.amplifiers[band_name] = amp
-            elif band_name not in self.amplifiers.keys() and band in self.params.bands:
+            elif band_name not in self.amplifiers and band in self.params.bands:
                 self.amplifiers[band_name] = amp
             else:
                 raise ParametersError(f'{kwargs["uid"]}: has more than one amp defined for the same band')

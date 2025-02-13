@@ -274,14 +274,14 @@ def read_header(my_sheet: Sheet, line: int, slice_: Tuple[int, int]) -> List[nam
     :param slice_: A tuple specifying the start and end column indices.
     :return: A list of namedtuples containing headers and their column indices.
     """
-    Param_header = namedtuple('Param_header', 'header colindex')
+    param_header = namedtuple('param_header', 'header colindex')
     try:
         header = [x.value.strip() for x in my_sheet.row_slice(line, slice_[0], slice_[1])]
-        header_i = [Param_header(header, i + slice_[0]) for i, header in enumerate(header) if header != '']
+        header_i = [param_header(header, i + slice_[0]) for i, header in enumerate(header) if header != '']
     except (AttributeError, IndexError):
         header_i = []
     if header_i != [] and header_i[-1].colindex != slice_[1]:
-        header_i.append(Param_header('', slice_[1]))
+        header_i.append(param_header('', slice_[1]))
     return header_i
 
 
@@ -493,9 +493,9 @@ def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm
     if node.preamp_restriction != '' or node.booster_restriction != '':
         roadm['params'] = {
             'restrictions': {
-               'preamp_variety_list': silent_remove(node.preamp_restriction.split(' | '), ''),
-               'booster_variety_list': silent_remove(node.booster_restriction.split(' | '), '')}
-                          }
+                'preamp_variety_list': silent_remove(node.preamp_restriction.split(' | '), ''),
+                'booster_variety_list': silent_remove(node.booster_restriction.split(' | '), '')}
+        }
     if node.city in roadms_by_city.keys():
         if 'params' not in roadm:
             roadm['params'] = {}
@@ -520,9 +520,9 @@ def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm
                                                                       'impairment_id': impairment_id})
             if elem.type_variety is not None:
                 roadm['type_variety'] = elem.type_variety
-    roadm['metadata'] = {'location': {'city':      node.city,
-                                      'region':    node.region,
-                                      'latitude':  node.latitude,
+    roadm['metadata'] = {'location': {'city':      node.city,      # noqa: E241
+                                      'region':    node.region,    # noqa: E241
+                                      'latitude':  node.latitude,  # noqa: E241
                                       'longitude': node.longitude}}
     roadm['type'] = 'Roadm'
     return roadm
@@ -538,23 +538,23 @@ def create_east_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict
     :return: A dictionary representing the east equipment element in JSON format.
     """
     eqpt = {'uid': f'east edfa in {node.from_city} to {node.to_city}',
-            'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,
-                                      'region':    nodes_by_city[node.from_city].region,
-                                      'latitude':  nodes_by_city[node.from_city].latitude,
+            'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,      # noqa: E241
+                                      'region':    nodes_by_city[node.from_city].region,    # noqa: E241
+                                      'latitude':  nodes_by_city[node.from_city].latitude,  # noqa: E241
                                       'longitude': nodes_by_city[node.from_city].longitude}}}
     if node.east_amp_type.lower() != '' and node.east_amp_type.lower() != 'fused':
         eqpt['type'] = 'Edfa'
         eqpt['type_variety'] = f'{node.east_amp_type}'
         eqpt['operational'] = {'gain_target': node.east_amp_gain,
-                               'delta_p':     node.east_amp_dp,
+                               'delta_p':     node.east_amp_dp,   # noqa: E241
                                'tilt_target': node.east_tilt_vs_wavelength,
-                               'out_voa':     node.east_att_out}
+                               'out_voa':     node.east_att_out}  # noqa: E241
     elif node.east_amp_type.lower() == '':
         eqpt['type'] = 'Edfa'
         eqpt['operational'] = {'gain_target': node.east_amp_gain,
-                               'delta_p':     node.east_amp_dp,
+                               'delta_p':     node.east_amp_dp,   # noqa: E241
                                'tilt_target': node.east_tilt_vs_wavelength,
-                               'out_voa':     node.east_att_out}
+                               'out_voa':     node.east_att_out}  # noqa: E241
     elif node.east_amp_type.lower() == 'fused':
         # fused edfa variety is a hack to indicate that there should not be
         # booster amplifier out the roadm.
@@ -575,22 +575,22 @@ def create_west_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict
     :return: A dictionary representing the west equipment element in JSON format.
     """
     eqpt = {'uid': f'west edfa in {node.from_city} to {node.to_city}',
-            'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,
-                                      'region':    nodes_by_city[node.from_city].region,
-                                      'latitude':  nodes_by_city[node.from_city].latitude,
+            'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,      # noqa: E241
+                                      'region':    nodes_by_city[node.from_city].region,    # noqa: E241
+                                      'latitude':  nodes_by_city[node.from_city].latitude,  # noqa: E241
                                       'longitude': nodes_by_city[node.from_city].longitude}},
             'type': 'Edfa'}
     if node.west_amp_type.lower() != '' and node.west_amp_type.lower() != 'fused':
         eqpt['type_variety'] = f'{node.west_amp_type}'
         eqpt['operational'] = {'gain_target': node.west_amp_gain,
-                               'delta_p':     node.west_amp_dp,
+                               'delta_p':     node.west_amp_dp,    # noqa: E241
                                'tilt_target': node.west_tilt_vs_wavelength,
-                               'out_voa':     node.west_att_out}
+                               'out_voa':     node.west_att_out}   # noqa: E241
     elif node.west_amp_type.lower() == '':
         eqpt['operational'] = {'gain_target': node.west_amp_gain,
-                               'delta_p':     node.west_amp_dp,
+                               'delta_p':     node.west_amp_dp,    # noqa: E241
                                'tilt_target': node.west_tilt_vs_wavelength,
-                               'out_voa':     node.west_att_out}
+                               'out_voa':     node.west_att_out}   # noqa: E241
     elif node.west_amp_type.lower() == 'fused':
         eqpt['type'] = 'Fused'
         eqpt['params'] = {'loss': 0}
@@ -610,8 +610,7 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> d
     if filter_region:
         nodes = [n for n in nodes if n.region.lower() in filter_region]
         cities = {n.city for n in nodes}
-        links = [lnk for lnk in links if lnk.from_city in cities and
-                 lnk.to_city in cities]
+        links = [lnk for lnk in links if lnk.from_city in cities and lnk.to_city in cities]
         cities = {lnk.from_city for lnk in links} | {lnk.to_city for lnk in links}
         nodes = [n for n in nodes if n.city in cities]
 
@@ -640,64 +639,64 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> d
                                         'latitude': x.latitude,
                                         'longitude': x.longitude}},
               'type': 'Transceiver'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
-            [create_roadm_element(x, roadms_by_city)
-             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'] +
-            [{'uid': f'west fused spans in {x.city}',
-              'metadata': {'location': {'city': x.city,
-                                        'region': x.region,
-                                        'latitude': x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Fused'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
-            [{'uid': f'east fused spans in {x.city}',
-              'metadata': {'location': {'city': x.city,
-                                        'region': x.region,
-                                        'latitude': x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Fused'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'fused'] +
-            [{'uid': f'fiber ({x.from_city} \u2192 {x.to_city})-{x.east_cable}',
-              'metadata': {'location': midpoint(nodes_by_city[x.from_city],
-                                                nodes_by_city[x.to_city])},
-              'type': 'Fiber',
-              'type_variety': x.east_fiber,
-              'params': {'length': round(x.east_distance, 3),
-                         'length_units': x.distance_units,
-                         'loss_coef': x.east_lineic,
-                         'con_in': x.east_con_in,
-                         'con_out': x.east_con_out}
-              }
-             for x in links] +
-            [{'uid': f'fiber ({x.to_city} \u2192 {x.from_city})-{x.west_cable}',
-              'metadata': {'location': midpoint(nodes_by_city[x.from_city],
-                                                nodes_by_city[x.to_city])},
-              'type': 'Fiber',
-              'type_variety': x.west_fiber,
-              'params': {'length': round(x.west_distance, 3),
-                         'length_units': x.distance_units,
-                         'loss_coef': x.west_lineic,
-                         'con_in': x.west_con_in,
-                         'con_out': x.west_con_out}
-              } for x in links] +
-            [{'uid': f'west edfa in {x.city}',
-              'metadata': {'location': {'city': x.city,
-                                        'region': x.region,
-                                        'latitude': x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Edfa',
-              'operational': {'gain_target': None,
-                              'tilt_target': None}
-              } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] +
-            [{'uid': f'east edfa in {x.city}',
-              'metadata': {'location': {'city': x.city,
-                                        'region': x.region,
-                                        'latitude': x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Edfa',
-              'operational': {'gain_target': None,
-                              'tilt_target': None}
-              } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city]
+             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm']
+            + [create_roadm_element(x, roadms_by_city)
+               for x in nodes_by_city.values() if x.node_type.lower() == 'roadm']
+            + [{'uid': f'west fused spans in {x.city}',
+                'metadata': {'location': {'city': x.city,
+                                          'region': x.region,
+                                          'latitude': x.latitude,
+                                          'longitude': x.longitude}},
+                'type': 'Fused'}
+               for x in nodes_by_city.values() if x.node_type.lower() == 'fused']
+            + [{'uid': f'east fused spans in {x.city}',
+                'metadata': {'location': {'city': x.city,
+                                          'region': x.region,
+                                          'latitude': x.latitude,
+                                          'longitude': x.longitude}},
+                'type': 'Fused'}
+               for x in nodes_by_city.values() if x.node_type.lower() == 'fused']
+            + [{'uid': f'fiber ({x.from_city} \u2192 {x.to_city})-{x.east_cable}',
+                'metadata': {'location': midpoint(nodes_by_city[x.from_city],
+                                                  nodes_by_city[x.to_city])},
+                'type': 'Fiber',
+                'type_variety': x.east_fiber,
+                'params': {'length': round(x.east_distance, 3),
+                           'length_units': x.distance_units,
+                           'loss_coef': x.east_lineic,
+                           'con_in': x.east_con_in,
+                           'con_out': x.east_con_out}
+                }
+               for x in links]
+            + [{'uid': f'fiber ({x.to_city} \u2192 {x.from_city})-{x.west_cable}',
+                'metadata': {'location': midpoint(nodes_by_city[x.from_city],
+                                                  nodes_by_city[x.to_city])},
+                'type': 'Fiber',
+                'type_variety': x.west_fiber,
+                'params': {'length': round(x.west_distance, 3),
+                           'length_units': x.distance_units,
+                           'loss_coef': x.west_lineic,
+                           'con_in': x.west_con_in,
+                           'con_out': x.west_con_out}
+                } for x in links]
+            + [{'uid': f'west edfa in {x.city}',
+                'metadata': {'location': {'city': x.city,
+                                          'region': x.region,
+                                          'latitude': x.latitude,
+                                          'longitude': x.longitude}},
+                'type': 'Edfa',
+                'operational': {'gain_target': None,
+                                'tilt_target': None}
+                } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city]
+            + [{'uid': f'east edfa in {x.city}',
+                'metadata': {'location': {'city': x.city,
+                                          'region': x.region,
+                                          'latitude': x.latitude,
+                                          'longitude': x.longitude}},
+                'type': 'Edfa',
+                'operational': {'gain_target': None,
+                                'tilt_target': None}
+                } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city]
             + [create_east_eqpt_element(e, nodes_by_city) for e in eqpts]
             + [create_west_eqpt_element(e, nodes_by_city) for e in eqpts],
         'connections':
@@ -1104,7 +1103,7 @@ def fiber_link(from_city: str, to_city: str, links_by_city: DefaultDict[str, Lis
     return fiber
 
 
-def midpoint(city_a: Node, city_b:Node) -> dict:
+def midpoint(city_a: Node, city_b: Node) -> dict:
     """Computes the midpoint coordinates between two cities.
 
     :param city_a: The first Node object representing a city.
