@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ff8e6a9_59772c73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-14T18:46:59Z",
+      "side": 1,
+      "message": "Can you have a look to the series of patch on the documentation ?\nThe rendering can be seen here https://gnpy.readthedocs.io/en/improve-documentation-master/model.html",
+      "revId": "8bbad58a9d5ad99dc00c59d28fdc0b0e03f6aa4a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
