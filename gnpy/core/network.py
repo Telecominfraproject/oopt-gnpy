@@ -12,7 +12,7 @@ from operator import attrgetter
 from collections import namedtuple
 from functools import reduce
 from logging import getLogger
-from typing import Tuple, List, Optional, Union, Dict
+from typing import Tuple, List, Optional, Union, Dict, Iterator
 from networkx import DiGraph
 from numpy import allclose
 import warnings
@@ -29,6 +29,10 @@ from gnpy.core.science_utils import RamanSolver
 
 logger = getLogger(__name__)
 
+ELEMENT_TYPES = Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                      elements.Transceiver, elements.Transceiver]
+PASSIVE_ELEMENT_TYPES = Union[elements.Fiber, elements.Roadm, elements.Fused]
+
 
 def edfa_nf(gain_target: float, amp_params) -> float:
     """Calculates the noise figure (NF) of an EDFA (Erbium-Doped Fiber Amplifier)
@@ -37,17 +41,15 @@ def edfa_nf(gain_target: float, amp_params) -> float:
     This function creates an EDFA instance with the given parameters and
     computes its noise figure using the internal calculation method.
 
-    Parameters:
-    -----------
-    gain_target : float
-        The target gain for which the noise figure is to be calculated.
-    amp_params : object
-        An object containing the amplifier parameters.
+    :param gain_target: The target gain for which the noise figure is to be calculated.
+    :type gain_target: float
+    :param amp_params: An object containing the amplifier parameters.
+    :type amp_params: gnpy.tools.json_io.Amp
 
-    Returns:
-    --------
-    float
-        The calculated noise figure (NF) of the EDFA in dB.
+    :return: The calculated noise figure (NF) of the EDFA in dB.
+    :rtype: float
+
+    :raises ValueError: If the gain_target is not achievable with the given parameters.
     """
     amp = elements.Edfa(
         uid='calc_NF',
@@ -73,35 +75,27 @@ def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, ed
     edfa_eqpt dict has already filtered out the amplifiers that do not match any other restrictions
     such as ROADM booster or preamp restrictions or frequency constraints.
 
-    Parameters:
-    -----------
-    raman_allowed : bool
-        Indicates whether Raman amplifiers are permitted in the selection.
-    gain_target : float
-        The target gain that the selected amplifier should achieve.
-    power_target : float
-        The target power level for the amplifier.
-    edfa_eqpt : dict
-        A dictionary containing available EDFA equipment, where keys are
-        amplifier names and values are amplifier objects.
-    uid : str
-        A unique identifier for the node where the amplifier will be used.
-    target_extended_gain : float
-        The extended gain target derived from configuration settings.
-    verbose : Optional[bool], default=True
-        If True, enables verbose logging of warnings and information.
+    :param raman_allowed: Indicates whether Raman amplifiers are permitted in the selection.
+    :type raman_allowed: bool
+    :param gain_target: The target gain that the selected amplifier should achieve.
+    :type gain_target: float
+    :param power_target: The target power level for the amplifier.
+    :type power_target: float
+    :param edfa_eqpt: A dictionary containing available EDFA equipment, where keys are
+                      amplifier names and values are amplifier objects.
+    :type edfa_eqpt: dict
+    :param uid: A unique identifier for the node where the amplifier will be used.
+    :type uid: str
+    :param target_extended_gain: The extended gain target derived from configuration settings.
+    :type target_extended_gain: float
+    :param verbose: If True, enables verbose logging of warnings and information.
+    :type verbose: Optional[bool], default=True
 
-    Returns:
-    --------
-    Tuple[str, float]
-        A tuple containing the selected amplifier's variety and the power
-        reduction applied (if any).
+    :return: A tuple containing the selected amplifier's variety and the power
+             reduction applied (if any).
+    :rtype: Tuple[str, float]
 
-    Raises:
-    -------
-    ConfigurationError
-        If no amplifiers meet the minimum gain requirement for the specified
-        node.
+    :raises ConfigurationError: If no amplifiers meet the minimum gain requirement for the specified node.
 
     Notes:
     ------
@@ -138,10 +132,31 @@ def select_edfa(raman_allowed: bool, gain_target: float, power_target: float, ed
     return selected_edfa.variety, power_reduction
 
 
-def target_power(network, node, equipment, deviation_db):  # get_fiber_dp
-    """Computes target power using J. -L. Auge, V. Curri and E. Le Rouzic,
-    Open Design for Multi-Vendor Optical Networks, OFC 2019.
-    equation 4
+def target_power(network: DiGraph, node: PASSIVE_ELEMENT_TYPES,
+                 equipment: Dict, deviation_db: float) -> float:  # get_fiber_dp
+    """Computes the target power for a given node in the network.
+
+    This function uses the methodology described by J. -L. Auge, V. Curri, and E. Le Rouzic
+    in "Open Design for Multi-Vendor Optical Networks," OFC 2019, specifically equation 4.
+
+    :param network: The network object containing the topology and elements.
+    :type network: DiGraph
+    :param node: The node for which the target power is being calculated.
+    :type node: elements.Fiber
+    :param equipment: A dictionary containing equipment parameters and configurations.
+    :type equipment: dict
+    :param deviation_db: The deviation in dB to be applied to the calculated power.
+    :type deviation_db: float
+
+    :return: The computed target power in dB.
+    :rtype: float
+
+    :raises ConfigurationError: If the delta power range is not defined correctly in the equipment configuration.
+
+    Notes:
+    ------
+    - If the node is a ROADM, the function returns 0.
+    - The target power is calculated based on the span loss and adjusted by the specified deviation.
     """
     if isinstance(node, elements.Roadm):
         return 0
@@ -165,9 +180,27 @@ def target_power(network, node, equipment, deviation_db):  # get_fiber_dp
 _fiber_fused_types = (elements.Fused, elements.Fiber)
 
 
-def prev_node_generator(network, node):
-    """fused spans interest:
-    iterate over all predecessors while they are either Fused or Fibers succeeded by Fused"""
+def prev_node_generator(network: DiGraph, node: ELEMENT_TYPES) -> Iterator[Union[elements.Fiber, elements.Fused]]:
+    """Generates predecessor nodes in the network that are either Fused or Fibers succeeded by Fused.
+
+    This function iterates over all predecessors of the specified node, yielding nodes that meet the criteria
+    of being either a Fused element or a Fiber that is succeeded by a Fused element.
+
+    :param network: The directed graph representing the network topology.
+    :type network: DiGraph
+    :param node: The current node for which predecessors are being generated.
+    :type node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                      elements.Transceiver, elements.Transceiver]
+
+    :yield: The predecessor nodes that are either Fused or Fibers succeeded by Fused.
+    :rtype: Iterator[Union[elements.Fiber, elements.Fused]
+
+    :raises NetworkTopologyError: If the node is not properly connected in the network topology.
+
+    Notes:
+    ------
+    - If the node is a Transceiver and has no predecessors, the function will return without yielding any nodes.
+    """
     try:
         prev_node = next(network.predecessors(node))
     except StopIteration:
@@ -180,9 +213,27 @@ def prev_node_generator(network, node):
         yield from prev_node_generator(network, prev_node)
 
 
-def next_node_generator(network, node):
-    """fused spans interest:
-    iterate over all predecessors while they are either Fused or Fibers preceded by Fused"""
+def next_node_generator(network: DiGraph, node: ELEMENT_TYPES) -> Iterator[Union[elements.Fiber, elements.Fused]]:
+    """Generates successor nodes in the network that are either Fused or Fibers preceded by Fused.
+
+    This function iterates over all successors of the specified node, yielding nodes that meet the criteria
+    of being either a Fused element or a Fiber that is preceded by a Fused element.
+
+    :param network: The directed graph representing the network topology.
+    :type network: DiGraph
+    :param node: The current node for which successors are being generated.
+    :type node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                      elements.Transceiver, elements.Transceiver]
+
+    :yield: The successor nodes that are either Fused or Fibers preceded by Fused.
+    :rtype: Iterator[Union[elements.Fiber, elements.Fused]
+
+    :raises NetworkTopologyError: If the node is not properly connected in the network topology.
+
+    Notes:
+    ------
+    - If the node is a Transceiver and has no successors, the function will return without yielding any nodes.
+    """
     try:
         next_node = next(network.successors(node))
     except StopIteration:
@@ -190,16 +241,36 @@ def next_node_generator(network, node):
             return
         raise NetworkTopologyError(f'Node {node.uid} is not properly connected, please check network topology')
 
-    if ((isinstance(next_node, elements.Fused) and isinstance(node, _fiber_fused_types)) or
-            (isinstance(next_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
+    if ((isinstance(next_node, elements.Fused) and isinstance(node, _fiber_fused_types))
+            or (isinstance(next_node, _fiber_fused_types) and isinstance(node, elements.Fused))):
         yield next_node
         yield from next_node_generator(network, next_node)
 
 
-def estimate_raman_gain(node, equipment, power_dbm):
-    """If node is RamanFiber, then estimate the possible Raman gain if any
-    for this purpose computes stimulated_raman_scattering loss_profile. This may be time consuming.
+def estimate_raman_gain(node: ELEMENT_TYPES, equipment: DiGraph, power_dbm: float) -> float:
+    """Estimates the possible Raman gain for a given node if it is a RamanFiber.
+
+    This function computes the stimulated Raman scattering loss profile to estimate the gain.
+    Note that this computation may be time-consuming.
+
+    :param node: The node for which the Raman gain is to be estimated.
+    :type node: elements
+    :param equipment: A dictionary containing equipment parameters and configurations.
+    :type equipment: dict
+    :param power_dbm: The input power in dBm to be used for the gain estimation.
+    :type power_dbm: float
+
+    :return: The estimated Raman gain in dB, or 0.0 if the node is not a RamanFiber.
+    :rtype: float
+
+    :raises ValueError: If the node is not properly configured or if required parameters are missing.
+
+    Notes:
+    ------
+    - If the node is a RamanFiber and has already estimated gain, it will return the cached value.
+    - The function applies various parameters from the equipment configuration to compute the gain.
     """
+
     if isinstance(node, elements.RamanFiber):
         if hasattr(node, "estimated_gain"):
             return node.estimated_gain
@@ -250,9 +321,34 @@ def estimate_raman_gain(node, equipment, power_dbm):
     return 0.0
 
 
-def span_loss(network, node, equipment, input_power=None):
-    """Total loss of a span (Fiber and Fused nodes) which contains the given node
-    Do not recompute, if it was already computed: records it in design_span_loss"""
+def span_loss(network: DiGraph, node: Union[elements.Fiber, elements.Fused], equipment: Dict,
+              input_power: Union[float, None] = None) -> float:
+    """Calculates the total loss of a span (Fiber and Fused nodes) containing the specified node.
+
+    This function computes the total loss by considering the losses of the node itself,
+    its predecessors, and successors in the network. It also accounts for any Raman gain
+    that may be present in the span.
+
+    :param network: The directed graph representing the network topology.
+    :type network: DiGraph
+    :param node: The node for which the span loss is being calculated.
+    :type node: Union[elements.Fiber, elements.Fused]
+    :param equipment: A dictionary containing equipment parameters and configurations.
+    :type equipment: dict
+    :param input_power: The input power in dBm, used for estimating Raman gain (optional).
+    :type input_power: float, optional
+
+    :return: The total span loss in dB.
+    :rtype: float
+
+    :raises ValueError: If the node is not properly configured or if required parameters are missing.
+
+    Notes:
+    ------
+    - The function caches the computed span loss in the `design_span_loss` attribute of the node
+      to avoid redundant calculations.
+    - If the node is passive, its loss is considered; otherwise, it is treated as zero.
+    """
     if hasattr(node, "design_span_loss"):
         return node.design_span_loss
     loss = node.loss if node.passive else 0
@@ -265,23 +361,36 @@ def span_loss(network, node, equipment, input_power=None):
     return loss - gain
 
 
-def estimate_srs_power_deviation(network: DiGraph, last_node, equipment: dict, design_bands: dict, input_powers: dict) \
-        -> List[dict]:
+def estimate_srs_power_deviation(network: DiGraph, last_node, equipment: Dict, design_bands: Dict, input_powers: Dict) \
+        -> List[Dict]:
     """Estimate tilt of power accross the design bands.
-    If Raman flag is on (sim-params), then estimate the bands center frequency power and the
-    power tilt within each band.
-    Uses stimulated_raman_scattering loss_profile. This may be time consuming.
 
-    Args:
-        network: The network object.
-        last_node: The last node (Fiber or RamanFiber) of the considered span. The span may be made of
-        a succession of fiber and fused elements
-        equipment: The equipment parameters dictionary.
-        design_bands: The dictionary of design bands.
-        input_powers: The dictionary of input powers in the fiber span for each design band.
+    If Raman flag is on (sim-params), this function estimates the center frequency power and the
+    power tilt within each design band using the stimulated Raman scattering loss profile.
+    Note that this computation may be time-consuming.
 
-    Returns:
-        A list of dictionnary containing the power at band centers and the tilt within each band.
+    :param network: The network object representing the topology.
+    :type network: DiGraph
+    :param last_node: The last node (Fiber or RamanFiber) of the considered span, which may consist of
+                      a succession of fiber and fused elements.
+    :type last_node: elements
+    :param equipment: A dictionary containing equipment parameters.
+    :type equipment: dict
+    :param design_bands: A dictionary of design bands with frequency ranges.
+    :type design_bands: dict
+    :param input_powers: A dictionary of input powers in the fiber span for each design band.
+    :type input_powers: dict
+
+    :return: A list of dictionaries containing the power at band centers and the tilt within each band.
+    :rtype: List[dict]
+
+    :raises ValueError: If an unexpected type is encountered for nodes during processing.
+
+    Notes:
+    ------
+    - The function collects preceding nodes (Fiber and Fused) and computes the stimulated Raman scattering
+      for each fiber span to estimate the power deviation.
+    - The results include center frequency powers normalized to the input powers and the in-band power deviation in dB.
     """
     # Get reference channel parameters
     roll_off = equipment['SI']['default'].roll_off
@@ -340,16 +449,30 @@ def estimate_srs_power_deviation(network: DiGraph, last_node, equipment: dict, d
     return srs_power_deviation
 
 
-def compute_band_power_deviation_and_tilt(srs_power_deviation, design_bands: dict, ratio: float = 0.8):
-    """Compute the power difference between bands (at center frequency) and the power tilt within each
-    band.
+def compute_band_power_deviation_and_tilt(srs_power_deviation: List[Dict], design_bands: Dict, ratio: float = 0.8):
+    """Computes the power difference between bands at center frequency and the power tilt within each band.
 
-    Args:
-        srs_power_deviation: The list of dictionnary containing the power at band centers and the tilt within each band.
-        ratio: the ratio applied to compute the band tilt
-    Returns:
-        A tupple of dict containing the relative power deviation with respect to max value, per band in dB and the tilt
-        target to apply for each band.
+    This function calculates the relative power deviation with respect to the maximum value for each band
+    and determines the tilt target to apply for each band based on the stimulated Raman scattering (SRS) power
+    deviation.
+
+    :param srs_power_deviation: A list of dictionaries containing the power at band centers and the tilt within
+                                each band.
+    :type srs_power_deviation: List[dict]
+    :param design_bands: A dictionary of design bands with frequency ranges.
+    :type design_bands: dict
+    :param ratio: The ratio applied to compute the band tilt (default is 0.8).
+    :type ratio: float
+
+    :return: A tuple containing:
+             - A dictionary with the relative power deviation in dB for each band.
+             - A dictionary with the tilt target to apply for each band.
+    :rtype: Tuple[dict, dict]
+
+    Notes:
+    ------
+    - If there is no SRS computed, the tilt estimation will be zero for all bands.
+    - The function uses the maximum center frequency power to compute the deviations and tilt targets.
     """
     # if there is no SRS computed, there is no tilt, and the result should be zero for tilt estimation
     # else, let's use the power difference between bands (due to SRS) to estimate the tilt between bands,
@@ -358,8 +481,8 @@ def compute_band_power_deviation_and_tilt(srs_power_deviation, design_bands: dic
     tilt_target = {}
     max_center_frequency_powers = max([e['center_frequency_power'] for e in srs_power_deviation])
     for band_name, tilt_elem in zip(design_bands.keys(), srs_power_deviation):
-        deviation_db[band_name] = watt2dbm(ratio * max_center_frequency_powers) \
-                                  - watt2dbm(tilt_elem['center_frequency_power'])
+        deviation_db[band_name] = \
+            watt2dbm(ratio * max_center_frequency_powers) - watt2dbm(tilt_elem['center_frequency_power'])
         tilt_target[band_name] = tilt_elem['in_band_power_deviation_db']
     if allclose([t['in_band_power_deviation_db'] for t in srs_power_deviation], 0, atol=1e-9):
         for band_name in design_bands.keys():
@@ -368,29 +491,45 @@ def compute_band_power_deviation_and_tilt(srs_power_deviation, design_bands: dic
     return deviation_db, tilt_target
 
 
-def compute_tilt_using_previous_and_next_spans(prev_node, next_node, design_bands: Dict[str, float],
-        input_powers: Dict[str, float], equipment: dict, network: DiGraph, prev_weight: float = 1.0,
+def compute_tilt_using_previous_and_next_spans(
+        prev_node: ELEMENT_TYPES, next_node: ELEMENT_TYPES,
+        design_bands: Dict[str, float], input_powers: Dict[str, float], equipment: dict,
+        network: DiGraph, prev_weight: float = 1.0,
         next_weight: float = 0) -> Tuple[Dict[str, float], Dict[str, float]]:
-    """Compute the power deviation per band and the tilt target based on previous and next spans.
+    """Computes the power deviation per band and the tilt target based on previous and next spans.
 
-    This function estimates the power deviation between center frequencies due to previous span and
-    the tilt within each band using the previous and next fiber spans with a weight (default ony uses
-    previous span contribution).
+    This function estimates the power deviation between center frequencies due to the previous span and
+    the tilt within each band using the previous and next fiber spans, applying specified weights.
 
-    Args:
-        prev_node: The previous node in the network.
-        next_node: The next node in the network.
-        design_bands (List[str]): A list of design bands for which the tilt is computed.
-        input_powers (Dict[str, float]): A dictionary of input powers for each design band.
-        equipment (dict): Equipment specifications.
-        network (DiGraph): The network graph.
-        prev_weight (float): Weight for the previous tilt in the target calculation (default is 1.0).
-        next_weight (float): Weight for the next tilt in the target calculation (default is 0.0).
+    :param prev_node: The previous node in the network (Fiber or Fused).
+    :type prev_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param next_node: The next node in the network (Fiber or Fused).
+    :type next_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param design_bands: A dictionary of design bands for which the tilt is computed.
+    :type design_bands: Dict[str, float]
+    :param input_powers: A dictionary of input powers for each design band.
+    :type input_powers: Dict[str, float]
+    :param equipment: Equipment specifications.
+    :type equipment: dict
+    :param network: The network graph representing the topology.
+    :type network: DiGraph
+    :param prev_weight: Weight for the previous tilt in the target calculation (default is 1.0).
+    :type prev_weight: float
+    :param next_weight: Weight for the next tilt in the target calculation (default is 0.0).
+    :type next_weight: float
 
-    Returns:
-        Tuple[Dict[str, float], Dict[str, float]]:
-            - A dictionary containing the tilt estimation for each design band.
-            - A dictionary containing the tilt target for each design band.
+    :return: A tuple containing:
+             - A dictionary with the tilt estimation for each design band.
+             - A dictionary with the tilt target for each design band.
+    :rtype: Tuple[Dict[str, float], Dict[str, float]]
+
+    Notes:
+    ------
+    - The function computes the tilt based on the estimated stimulated Raman scattering (SRS) power deviation
+      from the previous and next spans.
+    - If either node is not a Fiber, the corresponding tilt estimation will not be computed.
     """
     tilt_estimation = {band: 0 for band in design_bands}
     prev_tilt_target = {band: 0 for band in design_bands}
@@ -414,9 +553,19 @@ def compute_tilt_using_previous_and_next_spans(prev_node, next_node, design_band
 
 
 def find_first_node(network, node):
-    """Fused node interest:
-    returns the 1st node at the origin of a succession of fused nodes
-    (aka no amp in between)"""
+    """Finds the first node at the origin of a succession of fused nodes.
+
+    This function traverses the network in reverse to locate the first node
+    in a sequence of fused nodes, ensuring that there are no amplifiers in between.
+
+    :param network: The network object representing the topology.
+    :type network: Any
+    :param node: The starting node from which to find the first fused node.
+    :type node: elements
+
+    :return: The first node in the succession of fused nodes.
+    :rtype: elements
+    """
     this_node = node
     for this_node in prev_node_generator(network, node):
         pass
@@ -424,16 +573,47 @@ def find_first_node(network, node):
 
 
 def find_last_node(network, node):
-    """Fused node interest:
-    returns the last node in a succession of fused nodes
-    (aka no amp in between)"""
+    """Finds the last node in a succession of fused nodes.
+
+    This function traverses the network to locate the last node in a sequence
+    of fused nodes, ensuring that there are no amplifiers in between.
+
+    :param network: The network object representing the topology.
+    :type network: Any
+    :param node: The starting node from which to find the last fused node.
+    :type node: elements
+
+    :return: The last node in the succession of fused nodes.
+    :rtype: elements
+    """
     this_node = node
     for this_node in next_node_generator(network, node):
         pass
     return this_node
 
 
-def set_amplifier_voa(amp, power_target, power_mode):
+def set_amplifier_voa(amp: elements.Edfa, power_target: float, power_mode: bool):
+    """Sets the output variable optical attenuator (VOA) for the amplifier.
+
+    This function adjusts the VOA based on the target power and the operating mode
+    of the amplifier. It ensures that the VOA is not maximized beyond a certain margin.
+
+    :param amp: The amplifier object for which the VOA is being set.
+    :type amp: elements.Edfa
+    :param power_target: The target output power level for the amplifier.
+    :type power_target: float
+    :param power_mode: The mode of operation for the amplifier (e.g., gain mode).
+    :type power_mode: bool
+
+    :return: None
+
+    Notes:
+    ------
+    - If the amplifier's output VOA is set to None and the power mode is active,
+      the function calculates the appropriate VOA value based on the amplifier's
+      parameters and the target power.
+    - If the amplifier is in gain mode, the output VOA optimization is not applied.
+    """
     VOA_MARGIN = 1  # do not maximize the VOA optimization
     if amp.out_voa is None:
         if power_mode and amp.params.out_voa_auto:
@@ -509,31 +689,54 @@ def check_oms_single_type(oms_edges: List[Tuple]) -> List[str]:
     return list(types)
 
 
-def compute_gain_power_and_tilt_target(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
-                                       pref_total_db: float, network: DiGraph, equipment: dict, deviation_db: float, tilt_target: float) \
+def compute_gain_power_and_tilt_target(node: elements.Edfa, prev_node: ELEMENT_TYPES, next_node: ELEMENT_TYPES,
+                                       power_mode: bool, prev_voa: float,
+                                       prev_dp: float, pref_total_db: float, network: DiGraph, equipment: dict,
+                                       deviation_db: float, tilt_target: float) \
         -> Tuple[float, float, float, float, float]:
     """Computes the gain and power targets for a given EDFA node.
 
-    Args:
-        node (elements.Edfa): The current EDFA node.
-        prev_node (elements)): Previous node in the network.
-        next_node (elements): Next node in the network.
-        power_mode (bool): Indicates if the computation is in power mode.
-        prev_voa (float): The previous amplifier variable optical attenuation.
-        prev_dp (float): The previous amplifier delta power.
-        pref_total_db (float): The reference total power in dB.
-        network (DiGraph): The network.
-        equipment (dict): A dictionary containing equipment specifications.
-        deviation_db (float): Power deviation due to band tilt during propagation before crossing this node.
-        tilt_target (float) : Tilt target to be configured on this amp for its amplification band.
+    This function calculates the gain target, power target, delta power, output variable optical attenuation (VOA),
+    and span loss for the specified EDFA node based on the network configuration and previous amplifier settings.
 
-    Returns:
-        Tuple[float, float, float, float, float]: A tuple containing:
-            - gain_target (float): The computed gain target.
-            - power_target (float): The computed power target.
-            - dp (float): The computed delta power.
-            - voa (float): The output variable optical attenuation.
-            - node_loss (float): The span loss previous from this amp.
+    :param node: The current EDFA node for which the targets are being computed.
+    :type node: elements.Edfa
+    :param prev_node: The previous node in the network.
+    :type prev_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param next_node: The next node in the network.
+    :type next_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param power_mode: Indicates if the computation is in power mode.
+    :type power_mode: bool
+    :param prev_voa: The previous amplifier variable optical attenuation.
+    :type prev_voa: float
+    :param prev_dp: The previous amplifier delta power.
+    :type prev_dp: float
+    :param pref_total_db: The reference total power in dB.
+    :type pref_total_db: float
+    :param network: The network graph representing the topology.
+    :type network: DiGraph
+    :param equipment: A dictionary containing equipment specifications.
+    :type equipment: dict
+    :param deviation_db: Power deviation due to band tilt during propagation before crossing this node.
+    :type deviation_db: float
+    :param tilt_target: Tilt target to be configured on this amplifier for its amplification band.
+    :type tilt_target: float
+
+    :return: A tuple containing:
+             - gain_target (float): The computed gain target.
+             - power_target (float): The computed power target.
+             - tilt_target (float): The tilt target to be configured on this amplifier.
+             - dp (float): The computed delta power.
+             - voa (float): The output variable optical attenuation.
+             - node_loss (float): The span loss from the previous amplifier.
+    :rtype: Tuple[float, float, float, float, float]
+
+    Notes:
+    ------
+    - The function considers both power mode and gain mode when calculating the gain target and delta power.
+    - If the operational parameters are not set, default values are used for calculations.
     """
     node_loss = span_loss(network, prev_node, equipment)
     voa = node.out_voa if node.out_voa else 0
@@ -559,19 +762,38 @@ def compute_gain_power_and_tilt_target(node: elements.Edfa, prev_node, next_node
 def filter_edfa_list_based_on_targets(uid: str, edfa_eqpt: dict, power_target: float, gain_target: float,
                                       tilt_target: float, target_extended_gain: float,
                                       raman_allowed: bool = True, verbose: bool = False):
-    """Filter the amplifiers based on power, gain, and tilt targets.
+    """Filters amplifiers based on power, gain, and tilt targets.
 
-    Args:
-    edfa_eqpt (dict): A dictionary containing the amplifiers equipment.
-    power_target (float): The target power.
-    gain_target (float): The target gain.
-    tilt_target (float): The target tilt.
-    target_extended_gain (float): The extended gain target.
-    raman_allowed (bool): include or not raman amplifier in the selection
-    verbose (bool): Flag for verbose logging.
+    This function evaluates a list of EDFA amplifiers and filters them according to specified power,
+    gain, and tilt targets. It considers both standard and Raman amplifiers based on the provided parameters.
 
-    Returns:
-    list: A list of amplifiers that satisfy the power, gain, and tilt targets.
+    :param uid: The unique identifier for the node being processed.
+    :type uid: str
+    :param edfa_eqpt: A dictionary containing the amplifiers' equipment specifications.
+    :type edfa_eqpt: dict
+    :param power_target: The target power level for the amplifiers.
+    :type power_target: float
+    :param gain_target: The target gain level for the amplifiers.
+    :type gain_target: float
+    :param tilt_target: The target tilt level for the amplifiers.
+    :type tilt_target: float
+    :param target_extended_gain: The extended gain target for the amplifiers.
+    :type target_extended_gain: float
+    :param raman_allowed: Flag indicating whether to include Raman amplifiers in the selection (default is True).
+    :type raman_allowed: bool
+    :param verbose: Flag for enabling verbose logging (default is False).
+    :type verbose: bool
+
+    :return: A list of amplifiers that satisfy the specified power, gain, and tilt targets.
+    :rtype: list
+
+    :raises ConfigurationError: If no amplifiers meet the minimum gain requirement.
+
+    Notes:
+    ------
+    - The function creates two lists of amplifiers: one for standard EDFAs and another for Raman amplifiers,
+      applying different criteria for each.
+    - If no amplifiers meet the minimum gain requirement, a warning is issued, and the function raises an error.
     """
     Edfa_list = namedtuple('Edfa_list', 'variety power gain_min nf f_min f_max')
     edfa_dict = {name: amp for (name, amp) in edfa_eqpt.items()}
@@ -645,34 +867,54 @@ def filter_edfa_list_based_on_targets(uid: str, edfa_eqpt: dict, power_target: f
     return acceptable_power_list
 
 
-def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node, next_node, power_mode: bool, prev_voa: dict, prev_dp: dict,
+def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node: ELEMENT_TYPES, next_node: ELEMENT_TYPES,
+                             power_mode: bool, prev_voa: dict, prev_dp: dict,
                              pref_total_db: float, network: DiGraph, equipment: dict, restrictions: List,
                              _design_bands: dict, deviation_db: dict, tilt_target: dict):
-    """Preselect multiband amplifiers that are eligible with respect to power, gain and tilt target
-    on all the bands.
+    """Preselects multiband amplifiers eligible based on power, gain, and tilt targets across all bands.
 
-    At this point, the restrictions list already includes constraint related to variety_list,
-    allowed_for_design, and compliance to design band. so the function only concentrates on
-    these targets.
+    This function filters multiband amplifiers according to specified constraints, ensuring that they meet
+    the power, gain, and tilt targets for each design band.
 
-    Args:
-        _amplifiers (dict): A dictionary containing the amplifiers of the multiband amplifier.
-        prev_node (element): The previous node.
-        next_node (element): The next node.
-        power_mode: The power mode.
-        prev_voa (dict): A dictionary containing the previous amplifier out VOA settings per band.
-        prev_dp (dict): A dictionary containing the previous amplifier delta_p settings per band.
-        pref_ch_db: The reference power per channel in dB.
-        pref_total_db: The total power used for design in dB.
-        network (digraph): The network.
-        equipment: The equipment.
-        restrictions (list of equipment name): The restrictions.
-        _design_bands (dict): The design bands.
-        deviation_db (dict): The tilt power per band.
-        tilt_target (dict): The tilt target in each band.
+    :param uid: The unique identifier for the node being processed.
+    :type uid: str
+    :param _amplifiers: A dictionary containing the amplifiers of the multiband amplifier.
+    :type _amplifiers: dict
+    :param prev_node: The previous node in the network.
+    :type prev_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param next_node: The next node in the network.
+    :type next_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param power_mode: Indicates if the computation is in power mode.
+    :type power_mode: bool
+    :param prev_voa: A dictionary containing the previous amplifier output VOA settings per band.
+    :type prev_voa: dict
+    :param prev_dp: A dictionary containing the previous amplifier delta power settings per band.
+    :type prev_dp: dict
+    :param pref_total_db: The total power used for design in dB.
+    :type pref_total_db: float
+    :param network: The network graph representing the topology.
+    :type network: DiGraph
+    :param equipment: A dictionary containing equipment specifications.
+    :type equipment: dict
+    :param restrictions: A list of restrictions related to amplifier selection.
+    :type restrictions: List
+    :param _design_bands: A dictionary of design bands with frequency ranges.
+    :type _design_bands: dict
+    :param deviation_db: A dictionary of tilt power per band.
+    :type deviation_db: dict
+    :param tilt_target: A dictionary of tilt targets for each band.
+    :type tilt_target: dict
 
-    Returns:
-        list: A list of preselected multiband amplifiers that are eligible for all the bands.
+    :return: A list of preselected multiband amplifiers that are eligible for all the bands.
+    :rtype: list
+
+    Notes:
+    ------
+    - The function iteratively filters amplifiers based on the constraints and updates the selection
+      based on the results from each band.
+    - If no amplifiers meet the criteria, an empty list is returned.
     """
     # Initialize the list for the loop
     target_extended_gain = equipment['Span']['default'].target_extended_gain
@@ -690,8 +932,8 @@ def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node, next_node, 
             compute_gain_power_and_tilt_target(amp, prev_node, next_node, power_mode, prev_voa[band], prev_dp[band],
                                                pref_total_db, network, equipment, deviation_db[band], tilt_target[band])
         _selection = [a.variety
-                      for a in filter_edfa_list_based_on_targets(uid, edfa_eqpt, power_target, gain_target, _tilt_target,
-                                                                 target_extended_gain)]
+                      for a in filter_edfa_list_based_on_targets(uid, edfa_eqpt, power_target, gain_target,
+                                                                 _tilt_target, target_extended_gain)]
         listes = find_type_varieties(_selection, equipment)
         _selected_type_varieties = []
         if listes:
@@ -701,32 +943,57 @@ def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node, next_node, 
     return [t for m in _selected_type_varieties for t in equipment['Edfa'][m].multi_band]
 
 
-def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: bool, prev_voa: float, prev_dp: float,
-                      pref_ch_db: float, pref_total_db: float, network: DiGraph,  restrictions: List[str],
+def set_one_amplifier(node: elements.Edfa, prev_node: ELEMENT_TYPES, next_node: ELEMENT_TYPES,
+                      power_mode: bool, prev_voa: float, prev_dp: float,
+                      pref_ch_db: float, pref_total_db: float, network: DiGraph, restrictions: List[str],
                       equipment: dict, verbose: bool, deviation_db: float = 0.0, tilt_target: float = 0.0) \
         -> Tuple[float, float]:
-    """Set the EDFA amplifier configuration based on power targets:
+    """Sets the EDFA amplifier configuration based on power targets.
 
-    This function adjusts the amplifier settings according to the specified parameters and
-    ensures compliance with power and gain targets. It handles both cases where the
-    amplifier type is specified or needs to be selected based on restrictions.
+    This function adjusts the amplifier settings according to specified parameters and ensures compliance
+    with power and gain targets. It handles both cases where the amplifier type is specified or needs
+    to be selected based on restrictions.
 
-    Args:
-        node (elements.Edfa): The EDFA amplifier node to configure.
-        prev_node (elements.Node): The previous node in the network.
-        next_node (elements.Node): The next node in the network.
-        power_mode (bool): Indicates if the amplifier is in power mode.
-        prev_voa (float): The previous amplifier variable optical attenuator value.
-        prev_dp (float): The previous amplifier delta power.
-        pref_ch_db (float): reference per channel power in dB.
-        pref_total_db (float): reference total power in dB.
-        network (DiGraph): The network graph.
-        restrictions: (List[str]): The list of amplifiers authorized for this configuration.
-        equipment (dict): Equipment library.
-        verbose (bool): Flag for verbose logging.
+    :param node: The EDFA amplifier node to configure.
+    :type node: elements.Edfa
+    :param prev_node: The previous node in the network.
+    :type prev_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param next_node: The next node in the network.
+    :type next_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param power_mode: Indicates if the amplifier is in power mode.
+    :type power_mode: bool
+    :param prev_voa: The previous amplifier variable optical attenuator value.
+    :type prev_voa: float
+    :param prev_dp: The previous amplifier delta power.
+    :type prev_dp: float
+    :param pref_ch_db: Reference per channel power in dB.
+    :type pref_ch_db: float
+    :param pref_total_db: Reference total power in dB.
+    :type pref_total_db: float
+    :param network: The network graph representing the topology.
+    :type network: DiGraph
+    :param restrictions: A list of amplifiers authorized for this configuration.
+    :type restrictions: List[str]
+    :param equipment: Equipment library containing amplifier specifications.
+    :type equipment: dict
+    :param verbose: Flag for verbose logging.
+    :type verbose: bool
+    :param deviation_db: Tilt power per band (default is 0.0).
+    :type deviation_db: float
+    :param tilt_target: Tilt target in each band (default is 0.0).
+    :type tilt_target: float
 
-    Returns:
-        tuple[float, float]: The updated delta power and variable optical attenuator values.
+    :return: A tuple containing the updated delta power and variable optical attenuator values.
+    :rtype: Tuple[float, float]
+
+    Notes:
+    ------
+    - The function computes the gain and power targets based on previous amplifier settings and the network state.
+    - It selects the appropriate amplifier type based on the specified restrictions and updates the amplifier
+      parameters accordingly.
+    - Warnings are logged if the effective gain exceeds the specified amplifier limits.
     """
     gain_target, power_target, _tilt_target, dp, voa, node_loss = \
         compute_gain_power_and_tilt_target(node, prev_node, next_node, power_mode, prev_voa, prev_dp,
@@ -807,21 +1074,34 @@ def set_one_amplifier(node: elements.Edfa, prev_node, next_node, power_mode: boo
     return dp, voa
 
 
-def get_node_restrictions(node: Union[elements.Edfa, elements.Multiband_amplifier], prev_node,
-                          next_node, equipment: dict, _design_bands: dict) -> List:
+def get_node_restrictions(node: Union[elements.Edfa, elements.Multiband_amplifier],
+                          prev_node: ELEMENT_TYPES, next_node: ELEMENT_TYPES,
+                          equipment: dict, _design_bands: dict) -> List:
     """Returns a list of eligible amplifiers that comply with restrictions and design bands.
 
     If the node is a multiband amplifier, only multiband amplifiers will be considered.
 
-    Args:
-        node (Union[elements.Edfa, elements.Multiband_amplifier]): The current amplifier node.
-        prev_node: The previous node in the network.
-        next_node: The next node in the network.
-        equipment (Dict): A dictionary containing equipment specifications.
-        _design_bands (Dict): A dictionary of design bands with frequency limits.
+    :param node: The current amplifier node, which can be either an EDFA or a multiband amplifier.
+    :type node: Union[elements.Edfa, elements.Multiband_amplifier]
+    :param prev_node: The previous node in the network.
+    :type prev_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param next_node: The next node in the network.
+    :type next_node: Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
+                           elements.Transceiver, elements.Transceiver]
+    :param equipment: A dictionary containing equipment specifications.
+    :type equipment: dict
+    :param _design_bands: A dictionary of design bands with frequency limits.
+    :type _design_bands: dict
 
-    Returns:
-        List[str]: A list of eligible amplifier types that meet the specified restrictions.
+    :return: A list of eligible amplifier types that meet the specified restrictions.
+    :rtype: List[str]
+
+    Notes:
+    ------
+    - If the amplifier node has a specified type variety, that variety takes precedence over other restrictions.
+    - The function checks for restrictions based on the previous and next nodes if applicable.
+    - For multiband amplifiers, it filters the available amplifiers to ensure they are eligible for all design bands.
     """
     if node.params.type_variety != '' and node.params.type_variety:
         # type_variety takes precedence over any other restrictions
@@ -863,25 +1143,39 @@ def get_node_restrictions(node: Union[elements.Edfa, elements.Multiband_amplifie
 
 def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elements.Transceiver], equipment: dict,
                          pref_ch_db: float, pref_total_db: float, verbose: bool):
-    """This node can be a transceiver or a ROADM (same function called in both cases).
+    """Configures the egress amplifiers for a given node in the network.
 
     Go through each link starting from this_node until next Roadm or Transceiver and
     set the amplifiers (Edfa and multiband) according to configurations set by user.
     Computes the gain for Raman finers and records it as the gain for reference design.
-    power_mode = True, set amplifiers delta_p and effective_gain
-    power_mode = False, set amplifiers effective_gain and ignore delta_p config: set it to None.
-    records the computed dp in an internal variable for autodesign purpose.
+    
+    - power_mode = True, set amplifiers delta_p and effective_gain
+    - power_mode = False, set amplifiers effective_gain and ignore delta_p config: set it to None.
+    
+    Records the computed dp in an internal variable for autodesign purpose.
 
-    Args:
-        network (DiGraph): The network graph containing nodes and links.
-        this_node (Union[elements.Roadm, elements.Transceiver]): The starting node for OMS link configuration.
-        equipment (dict): Equipment specifications.
-        pref_ch_db (float): Reference channel power in dB.
-        pref_total_db (float): Reference total power in dB.
-        verbose (bool): Flag for verbose logging.
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param this_node: The starting node for OMS link configuration, which can be a ROADM or Transceiver.
+    :type this_node: Union[elements.Roadm, elements.Transceiver]
+    :param equipment: Equipment specifications.
+    :type equipment: dict
+    :param pref_ch_db: Reference channel power in dB.
+    :type pref_ch_db: float
+    :param pref_total_db: Reference total power in dB.
+    :type pref_total_db: float
+    :param verbose: Flag for verbose logging.
+    :type verbose: bool
 
-    Raises:
-        NetworkTopologyError: If a loop is detected in the network topology.
+    :raises NetworkTopologyError: If a loop is detected in the network topology.
+    :raises ConfigurationError: If no amplifiers are found that match the design bands and restrictions.
+
+    Notes:
+    ------
+    - The function initializes power and VOA settings for each design band and updates them as it traverses
+      through the network nodes.
+    - It handles different types of nodes (EDFA, RamanFiber, Multiband_amplifier) and applies appropriate
+      configurations based on their characteristics.
     """
     power_mode = equipment['Span']['default'].power_mode
     next_oms = (n for n in network.successors(this_node) if not isinstance(n, elements.Transceiver))
@@ -1010,13 +1304,14 @@ def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver]
     node.params.x contains the values initially defined by user (with x in design_bands,
     per_degree_design_bands). node.x contains the autodesign values.
 
-    Parameters:
-        node (Node): The node for which design bands are being set.
-        network (Network): The network containing the node and its connections.
-        equipment (dict): A dictionary containing equipment data, including spectral information.
+    :param node: The node for which design bands are being set (ROADM or Transceiver).
+    :type node: Union[elements.Roadm, elements.Transceiver]
+    :param network: The network containing the node and its connections.
+    :type network: DiGraph
+    :param equipment: A dictionary containing equipment data, including spectral information.
+    :type equipment: dict
 
-    Raises:
-        NetworkTopologyError: If there is an inconsistency in band definitions or unsupported configurations.
+    :raises NetworkTopologyError: If there is an inconsistency in band definitions or unsupported configurations.
 
     Notes:
         - The function prioritizes user-defined bands in `node.params` if available.
@@ -1076,21 +1371,53 @@ def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver]
                                            + f"{list(node.per_degree_design_bands.keys())}")
 
 
-def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
-    """Set reference powers at ROADM input for a reference channel and based on the adjacent OMS.
-    This supposes that there is no dependency on path. For example, the succession:
-    node                             power out of element
-    roadm A (target power -10dBm)   -10dBm
-    fiber A (16 dB loss)            -26dBm
-    roadm B (target power -12dBm)   -26dBm
-    fiber B (10 dB loss)            -36dBm
-    roadm C (target power -14dBm)   -36dBm
+def set_roadm_input_powers(network: DiGraph, roadm: elements.Roadm, equipment: dict, pref_ch_db: float):
+    """Sets the reference powers at the input of a ROADM for a specified reference channel based on adjacent OMS.
+
+    This function calculates the input power for the ROADM based on the losses incurred through connected nodes.
+    It assumes that there is no dependency on the path, meaning that the power output from one element may not
+    be consistent with the target powers of subsequent elements. If the target powers cannot be met, a warning is
+    raised.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param roadm: The ROADM node for which the input powers are being set.
+    :type roadm: elements.Roadm
+    :param equipment: A dictionary containing equipment specifications.
+    :type equipment: dict
+    :param pref_ch_db: The preferred channel power in dBm to be used as a reference.
+    :type pref_ch_db: float
+
+    :return: None
+
+    :raises ConfigurationError: If no target power, PSD, or PSW can be found in the ROADM.
+
+    Notes:
+    ------
+    - The function traverses the network to calculate the cumulative loss from the predecessor nodes.
+    - It sets the reference power based on the type of the preceding node, adjusting for losses accordingly.
+    - If the calculated input power is below the maximum target power, a warning is logged to inform the user.
+    - This value is primarily used for visualization purposes to compute resulting ROADM loss in elements.
+
+    Example:
+    --------
+    For a ROADM with the following configuration:
+
+    ::
+        ``
+        node                             power out of element
+        roadm A (target power -10dBm)   -10dBm
+        fiber A (16 dB loss)            -26dBm
+        roadm B (target power -12dBm)   -26dBm
+        fiber B (10 dB loss)            -36dBm
+        roadm C (target power -14dBm)   -36dBm
+        ``
+
     is not consistent because target powers in roadm B and roadm C can not be met.
-    input power for the reference channel will be set -26 dBm in roadm B and -22dBm in roadm C,
-    because at design time we can not know about path.
-    The function raises a warning if target powers can not be met with the design.
-    User should be aware that design was not successfull and that power reduction was applied.
-    Note that this value is only used for visualisation purpose (to compute ROADM loss in elements).
+    The input power for the reference channel will be set to -26 dBm in roadm B and -22 dBm in roadm C,
+    because at design time we cannot know about the path. The function raises a warning if target powers
+    cannot be met with the design, indicating that the user should be aware that the design was not successful
+    and that power reduction was applied.
     """
     previous_elements = [n for n in network.predecessors(roadm)]
     roadm.ref_pch_in_dbm = {}
@@ -1140,10 +1467,29 @@ def set_roadm_input_powers(network, roadm, equipment, pref_ch_db):
             )
 
 
-def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
-    """Set reference powers at fiber input for a reference channel.
-    Supposes that target power out of ROADMs and amplifiers are consistent.
-    This is only for visualisation purpose
+def set_fiber_input_power(network: DiGraph, fiber: elements.Fiber, equipment: dict, pref_ch_db: float):
+    """Sets the reference power at the input of a fiber for a specified reference channel.
+
+    This function calculates the input power for a fiber based on the losses incurred through connected nodes,
+    including ROADMs, amplifiers, and other fibers. It assumes that the target power out of ROADMs and amplifiers
+    is consistent. This is primarily for visualization purposes.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param fiber: The fiber node for which the input power is being set.
+    :type fiber: elements.Fiber
+    :param equipment: A dictionary containing equipment specifications.
+    :type equipment: dict
+    :param pref_ch_db: The preferred channel power in dBm to be used as a reference.
+    :type pref_ch_db: float
+
+    :return: None
+
+    Notes:
+    ------
+    - The function traverses the network to calculate the cumulative loss from the predecessor nodes.
+    - It sets the reference power based on the type of the preceding node, adjusting for losses accordingly.
+    - The function handles various node types, including fibers, ROADMs, EDFAs, transceivers, and multiband amplifiers.
     """
     loss = 0.0
     node = next(network.predecessors(fiber))
@@ -1168,10 +1514,28 @@ def set_fiber_input_power(network, fiber, equipment, pref_ch_db):
         fiber.ref_pch_in_dbm = min([pref_ch_db + amp._delta_p - amp.out_voa - loss for amp in node.amplifiers.values()])
 
 
-def set_roadm_internal_paths(roadm, network):
-    """Set ROADM path types (express, add, drop)
+def set_roadm_internal_paths(roadm: elements.Roadm, network: DiGraph):
+    """Sets the internal path types (express, add, drop) for a ROADM.
 
-    Uses implicit guess if no information is set in ROADM
+    This function determines the path types for the ROADM based on its connections to other nodes in the network.
+    It uses implicit assumptions if no specific information is provided for the ROADM's paths.
+
+    :param roadm: The ROADM node for which the internal paths are being set.
+    :type roadm: elements.Roadm
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+
+    :return: None
+
+    :raises NetworkTopologyError: If the path types are inconsistent with the expected types based on the connections.
+
+    Notes:
+    ------
+    - The function identifies the next and previous nodes connected to the ROADM, distinguishing between
+      transceivers and other elements.
+    - It sets the path types based on the connections and raises errors if any inconsistencies are found.
+    - The function ensures that paths connected to transceivers are marked as 'add' or 'drop', while other
+      paths can be 'express', 'add', or 'drop'.
     """
     next_oms = [n.uid for n in network.successors(roadm) if not isinstance(n, elements.Transceiver)]
     previous_oms = [n.uid for n in network.predecessors(roadm) if not isinstance(n, elements.Transceiver)]
@@ -1224,7 +1588,28 @@ def set_roadm_internal_paths(roadm, network):
             raise NetworkTopologyError(msg)
 
 
-def add_roadm_booster(network, roadm):
+def add_roadm_booster(network: DiGraph, roadm: elements.Roadm):
+    """Adds a booster amplifier to the specified ROADM in the network.
+
+    This function identifies the successor nodes of the ROADM that are not transceivers, fused elements, or amplifiers.
+    For each valid successor, it removes the existing edge to the ROADM and adds a booster amplifier (either a
+    multiband amplifier or an EDFA) based on the type of the connected nodes and the design bands of the ROADM.
+    The amplifier is positioned at the location of the ROADM.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param roadm: The ROADM node to which the booster amplifier will be added.
+    :type roadm: elements.Roadm
+
+    :return: None
+
+    Notes:
+    ------
+    - The function determines the type of amplifier to add based on the connected nodes and the design bands
+      of the ROADM.
+    - It updates the network by adding the amplifier node and connecting it to the ROADM and the successor node.
+    - The amplifier's location metadata is set to the location of the ROADM.
+    """
     next_nodes = [n for n in network.successors(roadm)
                   if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa,
                                         elements.Multiband_amplifier))]
@@ -1269,7 +1654,28 @@ def add_roadm_booster(network, roadm):
         network.add_edge(amp, next_node, weight=0.01)
 
 
-def add_roadm_preamp(network, roadm):
+def add_roadm_preamp(network: DiGraph, roadm: elements.Roadm):
+    """Adds a preamplifier to the specified ROADM in the network.
+
+    This function identifies the predecessor nodes of the ROADM that are not transceivers,
+    fused elements, or amplifiers.
+    For each valid predecessor, it removes the existing edge to the ROADM and adds a preamplifier
+    (either a multiband amplifier or an EDFA) based on the type of the connected nodes. The amplifier
+    is positioned at the location of the ROADM.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param roadm: The ROADM node to which the preamplifier will be added.
+    :type roadm: elements.Roadm
+
+    :return: None
+
+    Notes:
+    ------
+    - The function determines the type of amplifier to add based on the connected nodes.
+    - It updates the network by adding the amplifier node and connecting it to the predecessor node and the ROADM.
+    - The amplifier's location metadata is set to the location of the ROADM.
+    """
     prev_nodes = [n for n in network.predecessors(roadm)
                   if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa,
                                         elements.Multiband_amplifier))]
@@ -1316,7 +1722,27 @@ def add_roadm_preamp(network, roadm):
         network.add_edge(amp, roadm, weight=0.01)
 
 
-def add_inline_amplifier(network, fiber):
+def add_inline_amplifier(network: DiGraph, fiber: elements.Fiber):
+    """Adds an inline amplifier to the network between a fiber and its next node.
+
+    This function checks the next node connected to the specified fiber. If the next node is a fiber or a Raman
+    fiber, it removes the existing edge and adds an inline amplifier (either a multiband amplifier or an EDFA)
+    based on the type of the connected nodes. The amplifier is positioned at the midpoint between the fiber and
+    the next node.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param fiber: The fiber node to which the inline amplifier will be added.
+    :type fiber: elements.Fiber
+
+    :return: None
+
+    Notes:
+    ------
+    - The function determines the type of amplifier to add based on the connected nodes.
+    - It updates the network by adding the amplifier node and connecting it to the fiber and the next node.
+    - The amplifier's location metadata is calculated as the midpoint between the fiber and the next node.
+    """
     next_node = get_next_node(fiber, network)
     if isinstance(next_node, elements.Fiber) or isinstance(next_node, elements.RamanFiber):
         # no amplification for fused spans or TRX
@@ -1370,9 +1796,9 @@ def calculate_new_length(fiber_length, bounds, target_length):
     length1 = fiber_length / n_spans1
     length2 = fiber_length / n_spans2
 
-    if (bounds.start <= length1 <= bounds.stop) and not(bounds.start <= length2 <= bounds.stop):
+    if (bounds.start <= length1 <= bounds.stop) and not (bounds.start <= length2 <= bounds.stop):
         return (length1, n_spans1)
-    elif (bounds.start <= length2 <= bounds.stop) and not(bounds.start <= length1 <= bounds.stop):
+    elif (bounds.start <= length2 <= bounds.stop) and not (bounds.start <= length1 <= bounds.stop):
         return (length2, n_spans2)
     elif length2 - target_length <= target_length - length1 and length2 <= bounds.stop:
         return (length2, n_spans2)
@@ -1403,8 +1829,28 @@ def get_previous_node(node, network):
 
 
 def split_fiber(network, fiber, bounds, target_length):
-    """If fiber length exceeds boundary then assume this is a link "intent", and replace this one-span link
-    with an n_spans link, with identical fiber types.
+    """Splits a fiber into multiple spans if its length exceeds specified boundaries.
+
+    If the length of the fiber exceeds the defined bounds, this function replaces the single span link
+    with multiple spans of identical fiber types. It calculates the new lengths and positions for each span.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param fiber: The fiber node to be split into multiple spans.
+    :type fiber: elements.Fiber
+    :param bounds: The range of lengths to determine if the fiber should be split.
+    :type bounds: range
+    :param target_length: The target length for each span after splitting.
+    :type target_length: float
+
+    :return: None
+
+    :raises NetworkTopologyError: If the fiber is not properly connected in the network topology.
+
+    Notes:
+    ------
+    - The function calculates the number of spans required and their respective lengths.
+    - It updates the network by removing the original fiber and adding the new spans with updated positions.
     """
     new_length, n_spans = calculate_new_length(fiber.params.length, bounds, target_length)
     if n_spans == 1:
@@ -1423,17 +1869,15 @@ def split_fiber(network, fiber, bounds, target_length):
     xpos = [prev_node.lng + (next_node.lng - prev_node.lng) * (n + 0.5) / n_spans for n in range(n_spans)]
     ypos = [prev_node.lat + (next_node.lat - prev_node.lat) * (n + 0.5) / n_spans for n in range(n_spans)]
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
-        new_span = elements.Fiber(uid=f'{fiber.uid}_({span+1}/{n_spans})',
-                         type_variety=fiber.type_variety,
-                         metadata={
-                              'location': {
-                                  'latitude': lat,
-                                  'longitude': lng,
-                                  'city': fiber.loc.city,
-                                  'region': fiber.loc.region,
-                              }
-                         },
-                         params=fiber.params.asdict())
+        new_span = elements.Fiber(uid=f'{fiber.uid}_({span + 1}/{n_spans})',
+                                  type_variety=fiber.type_variety,
+                                  metadata={'location': {
+                                            'latitude': lat,
+                                            'longitude': lng,
+                                            'city': fiber.loc.city,
+                                            'region': fiber.loc.region, }
+                                            },
+                                  params=fiber.params.asdict())
         if isinstance(prev_node, elements.Fiber):
             edgeweight = prev_node.params.length
         else:
@@ -1447,8 +1891,31 @@ def split_fiber(network, fiber, bounds, target_length):
     network.add_edge(prev_node, next_node, weight=edgeweight)
 
 
-def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
-    """Add default connector loss if no loss are defined. EOL repair margin is added as a connector loss
+def add_connector_loss(network: DiGraph, fibers: List[elements.Fiber], default_con_in: float, 
+                       default_con_out: float, EOL: float):
+    """Adds default connector loss to fibers in the network if not already defined.
+
+    This function sets the input and output connector losses for each fiber. If no connector loss is defined,
+    it assigns default values. Additionally, it adds an end-of-line (EOL) repair margin as a connector loss
+    unless the next node is a fused element.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param fibers: A list of fiber nodes to which connector losses will be added.
+    :type fibers: List[elements.Fiber]
+    :param default_con_in: The default input connector loss to apply if not defined.
+    :type default_con_in: float
+    :param default_con_out: The default output connector loss to apply if not defined.
+    :type default_con_out: float
+    :param EOL: The end-of-line repair margin to be added as connector loss.
+    :type EOL: float
+
+    :return: None
+
+    Notes:
+    ------
+    - The function checks each fiber's parameters and updates them accordingly.
+    - It skips adding EOL loss if the next node is a fused element.
     """
     for fiber in fibers:
         next_node = get_next_node(fiber, network)
@@ -1460,8 +1927,27 @@ def add_connector_loss(network, fibers, default_con_in, default_con_out, EOL):
             fiber.params.con_out += EOL
 
 
-def add_fiber_padding(network, fibers, padding, equipment):
-    """Add a padding att_in at the input of the 1st fiber of a succession of fibers and fused
+def add_fiber_padding(network: DiGraph, fibers: List[elements.Fiber], padding: float, equipment: dict):
+    """Adds padding attenuation at the input of the first fiber in a succession of fibers.
+
+    This function checks each fiber in the network and adds a specified padding loss at the input of the 
+    first fiber in a series of connected fibers if the calculated span loss is less than the specified padding.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param fibers: A list of fiber nodes to which padding will be added.
+    :type fibers: List[elements.Fiber]
+    :param padding: The amount of padding attenuation to apply.
+    :type padding: float
+    :param equipment: A dictionary containing equipment specifications, including span loss data.
+    :type equipment: dict
+
+    :return: None
+
+    Notes:
+    ------
+    - The function skips padding for Raman fibers and fused elements.
+    - It updates the design span loss for each fiber accordingly.
     """
     for fiber in fibers:
         next_node = get_next_node(fiber, network)
@@ -1483,9 +1969,23 @@ def add_fiber_padding(network, fibers, padding, equipment):
                 fiber.design_span_loss += first_fiber.params.att_in
 
 
-def add_missing_elements_in_network(network, equipment):
-    """Autodesign network: add missing elements. split fibers if their length is too big
-    add ROADM preamp or booster and inline amplifiers between fibers
+def add_missing_elements_in_network(network: DiGraph, equipment: dict):
+    """Autodesigns the network by adding missing elements.
+
+    This function splits fibers that are too long, adds ROADM preamplifiers or boosters,
+    and inserts inline amplifiers between fibers to ensure proper network design.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param equipment: A dictionary containing equipment specifications, including span data.
+    :type equipment: dict
+
+    :return: None
+
+    Notes:
+    ------
+    - The function calculates the maximum and minimum lengths for fibers based on equipment specifications.
+    - It processes all fiber nodes to ensure they are within acceptable length limits and adds necessary amplifiers.
     """
     default_span_data = equipment['Span']['default']
     max_length = int(convert_length(default_span_data.max_length, default_span_data.length_units))
@@ -1504,9 +2004,23 @@ def add_missing_elements_in_network(network, equipment):
         add_inline_amplifier(network, fiber)
 
 
-def add_missing_fiber_attributes(network, equipment):
-    """Fill in connector loss with default values. Add the padding loss is required.
-    EOL is added as a connector loss
+def add_missing_fiber_attributes(network: DiGraph, equipment: dict):
+    """Fills in missing connector loss attributes for fibers in the network.
+
+    This function sets default connector loss values for fibers and adds padding loss where required.
+    It also includes end-of-line (EOL) losses as part of the connector loss configuration.
+
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :param equipment: A dictionary containing equipment specifications, including default span data.
+    :type equipment: dict
+
+    :return: None
+
+    Notes:
+    ------
+    - The function processes all fiber nodes in the network to ensure they have the necessary attributes.
+    - It separates the addition of connector losses and padding losses for clarity in the code.
     """
     default_span_data = equipment['Span']['default']
     fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
@@ -1516,8 +2030,33 @@ def add_missing_fiber_attributes(network, equipment):
     add_fiber_padding(network, fibers, default_span_data.padding, equipment)
 
 
-def build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_losses=True, verbose=True):
-    """Set roadm equalization target and amplifier gain and power
+def build_network(network: DiGraph, equipment: dict, pref_ch_db: float, pref_total_db: float,
+                  set_connector_losses: bool = True, verbose: bool = True):
+    """Sets the ROADM equalization targets and amplifier gain and power.
+
+    This function configures the network by setting the equalization targets for ROADMs,
+    configuring the design bands for each node, and adjusting the gain, delta power, and output
+    variable optical attenuation (VOA) for amplifiers along the optical paths.
+
+    :param network: The network graph representing the topology to be configured.
+    :type network: DiGraph
+    :param equipment: A dictionary containing equipment specifications and configurations.
+    :type equipment: dict
+    :param pref_ch_db: The reference channel power in dBm.
+    :type pref_ch_db: float
+    :param pref_total_db: The reference total power in dB.
+    :type pref_total_db: float
+    :param set_connector_losses: Flag indicating whether to set connector losses (default is True).
+    :type set_connector_losses: bool
+    :param verbose: Flag indicating whether to print warnings and information (default is True).
+    :type verbose: bool
+
+    :return: None
+
+    Notes:
+    ------
+    - The function processes ROADMs and transceivers to set their design bands and equalization targets.
+    - It also configures amplifiers and sets input powers for fibers in the network.
     """
     roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
     transceivers = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
@@ -1541,9 +2080,30 @@ def build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_l
         set_fiber_input_power(network, fiber, equipment, pref_ch_db)
 
 
-def design_network(reference_channel, network, equipment, set_connector_losses=True, verbose=True):
-    """Network is designed according to reference channel. Verbose indicate if the function should
-    print all warnings or not
+def design_network(reference_channel, network: DiGraph, equipment: Dict, set_connector_losses: bool = True,
+                   verbose: bool = True):
+    """Designs the network according to the specified reference channel.
+
+    This function configures the network based on the properties of the reference channel, including
+    the number of channels and their power levels. It also allows for the setting of connector losses
+    and controls the verbosity of logging for warnings and information.
+
+    :param reference_channel: The reference channel used for designing the network.
+    :type reference_channel: gnpy.topology.request.PathRequest
+    :param network: The network graph representing the topology to be designed.
+    :type network: DiGraph
+    :param equipment: A dictionary containing equipment specifications and configurations.
+    :type equipment: Dict
+    :param set_connector_losses: Flag indicating whether to set connector losses (default is True).
+    :type set_connector_losses: bool
+    :param verbose: Flag indicating whether to print warnings and information (default is True).
+    :type verbose: bool
+
+    :return: None
+
+    Notes:
+    ------
+    - The function calculates the reference total power based on the number of channels and their power levels.
     """
     pref_ch_db = watt2dbm(reference_channel.power)  # reference channel power
     # reference total power (limited to C band till C+L autodesign is not solved)
