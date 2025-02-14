@@ -1,7 +1,8 @@
 .. _publications:
 
+************
 Publications
-============
+************
 
 Below is a chronological list of notable publications that emerged from the PSE group's collaborative work.
 These articles detail the evolution of GNPy and confirm its performance through experimental trials:

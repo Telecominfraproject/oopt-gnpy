@@ -1,7 +1,8 @@
 .. _extending:
 
+****************************************
 Extending GNPy with vendor-specific data
-========================================
+****************************************
 
 GNPy ships with an :ref:`equipment library<concepts-equipment>` containing machine-readable datasheets of networking equipment.
 Vendors who are willing to contribute descriptions of their supported products are encouraged to `submit a patch <https://review.gerrithub.io/Documentation/intro-gerrit-walkthrough-github.html>`__ -- or just :ref:`get in touch with us directly<contributing>`.
@@ -11,7 +12,7 @@ This chapter discusses option for modeling performance of :ref:`EDFA amplifiers<
 .. _extending-edfa:
 
 EDFAs
------
+=====
 
 An accurate description of the :abbr:`EDFA (Erbium-Doped Fiber Amplifier)` and especially its noise characteristics is required.
 GNPy describes this property in terms of the **Noise Figure (NF)** of an amplifier model as a function of its operating point.
@@ -20,7 +21,7 @@ GNPy supports several different :ref:`noise models<concepts-nf-model>`, and vend
 .. _ext-nf-model-polynomial-NF:
 
 Polynomial NF
-*************
+-------------
 
 This model computes the NF as a function of the difference between the optimal gain and the current gain.
 The NF is expressed as a third-degree polynomial:
@@ -43,7 +44,7 @@ In that case, use:
 .. _ext-nf-model-polynomial-OSNR-OpenROADM:
 
 Polynomial OSNR (OpenROADM-style for inline amplifier)
-******************************************************
+------------------------------------------------------
 
 This model is useful for amplifiers compliant to the OpenROADM specification for ILA (an in-line amplifier).
 The amplifier performance is evaluated via its incremental OSNR, which is a function of the input power.
@@ -55,7 +56,7 @@ The amplifier performance is evaluated via its incremental OSNR, which is a func
 .. _ext-nf-model-noise-mask-OpenROADM:
 
 Noise mask (OpenROADM-style for combined preamp and booster)
-************************************************************
+------------------------------------------------------------
 
 Unlike GNPy which simluates the preamplifier and the booster separately as two amplifiers for best accuracy, the OpenROADM specification mandates a certain performance level for a combination of these two amplifiers.
 For the express path, the effective noise mask comprises the preamplifier and the booster.
@@ -70,7 +71,7 @@ GNPy emulates this specification via two special NF models:
 .. _ext-nf-model-min-max-NF:
 
 Min-max NF
-**********
+----------
 
 When the vendor prefers not to share the amplifier description in full detail, GNPy also supports describing the NF characteristics via the *minimal* and *maximal NF*.
 This approximates a more accurate polynomial description reasonably well for some models of a dual-coil EDFA with a VOA in between.
@@ -80,7 +81,7 @@ The worst (maximal) NF applies  when the EDFA operates at the minimal gain.
 .. _ext-nf-model-dual-stage-amplifier:
 
 Dual-stage
-**********
+----------
 
 Dual-stage amplifier combines two distinct amplifiers.
 Vendors which provide an accurate description of their preamp and booster stages separately can use the dual-stage model for an aggregate description of the whole amplifier.
@@ -88,7 +89,7 @@ Vendors which provide an accurate description of their preamp and booster stages
 .. _ext-nf-model-advanced:
 
 Advanced Specification
-**********************
+----------------------
 
 The amplifier performance can be further described in terms of gain ripple, NF ripple, and the dynamic gain tilt.
 When provided, the amplifier characteristic is fine-tuned as a function of carrier frequency. Note that in this advanced
@@ -97,7 +98,7 @@ specification tilt is defined vs frequency while tilt_target specified in EDFA i
 .. _extending-raman:
 
 Raman Amplifiers
-----------------
+================
 
 An accurate simulation of Raman amplification requires knowledge of:
 
@@ -113,7 +114,7 @@ This is also useful to quickly approximate a hybrid EDFA+Raman amplifier.
 .. _extending-transponder:
 
 Transponders
-------------
+============
 
 Since transponders are usually capable of operating in a variety of modes, these are described separately.
 A *mode* usually refers to a particular performance point that is defined by a combination of the symbol rate, modulation format, and :abbr:`FEC (Forward Error Correction)`.
@@ -152,7 +153,7 @@ GNPy does not directly track the FEC performance, so the type of chosen FEC is l
 .. _extending-roadm:
 
 ROADMs
-------
+======
 
 In a :abbr:`ROADM (Reconfigurable Add/Drop Multiplexer)`, GNPy simulates the impairments of the preamplifiers and boosters of line degrees :ref:`separately<topo-roadm-preamp-booster>`.
 The set of parameters for each ROADM model therefore includes:

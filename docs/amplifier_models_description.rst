@@ -1,11 +1,12 @@
 .. _amp_models:
 
-Amplifier models and configuration
-==================================
+**********************************
+Amplifier models and Configuration
+**********************************
 
 
 1. Equipment configuration description
---------------------------------------
+======================================
 
 Equipment description defines equipment types and parameters.
 It takes place in the equipment library such as **eqpt_config.json** file defined in example-data folder.
@@ -13,7 +14,7 @@ By default **gnpy-transmission-example** uses **eqpt_config.json** file and that
 can be changed with **-e** or **--equipment** command line parameter.
 
 2. Amplifier parameters and subtypes
-------------------------------------
+====================================
 
 Several amplifiers can be used by GNpy, so they are defined as an array of equipment parameters in **eqpt_config.json** file.
 
@@ -143,7 +144,7 @@ Several amplifiers can be used by GNpy, so they are defined as an array of equip
 
 
 3. Amplifier models
--------------------
+===================
 
 In an opensource and multi-vendor environnement, it is needed to support different use cases and context. Therefore several models are supported for amplifiers.
 
@@ -282,7 +283,7 @@ In an opensource and multi-vendor environnement, it is needed to support differe
 
 
 4. advanced_config_from_json 
-----------------------------
+============================
 
 The build_oa_json.py library in ``gnpy/example-data/edfa_model/`` can be used to build the json file required for the amplifier advanced_model type_def:
 
@@ -315,4 +316,3 @@ the json input file should have the following fields:
             "gain_ripple": "DFG_filename.txt",
             "dgt": "DGT_filename.txt"
         }
-

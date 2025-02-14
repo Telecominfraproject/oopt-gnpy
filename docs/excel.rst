@@ -1,7 +1,8 @@
 .. _excel:
 
+*****************************
 Excel (XLS, XLSX) input files
-=============================
+*****************************
 
 ``gnpy-transmission-example`` gives the possibility to use an excel input file instead of a json file. The program then will generate the corresponding json file for you.
 
@@ -21,7 +22,7 @@ In order to work the excel file MUST contain at least 2 sheets:
 .. _excel-nodes-sheet:
 
 `Nodes` sheet
--------------
+=============
 
 `Nodes` sheet contains nine columns.
 Each line represents a 'node' (`ROADM` site or an in line amplifier site `ILA` or a `Fused`)::
@@ -51,7 +52,7 @@ Each line represents a 'node' (`ROADM` site or an in line amplifier site `ILA` o
 .. _excel-links-sheet:
 
 Links sheet
------------
+===========
 
 Links sheet must contain sixteen columns::
 
@@ -121,7 +122,7 @@ and a fiber span from node3 to node6::
 .. _excel-equipment-sheet:
 
 Eqpt sheet 
-----------
+==========
 
 The equipment sheet (named "Eqpt") is optional.
 If provided, it specifies types of boosters and preamplifiers for all ROADM degrees of all ROADM nodes, and for all ILA nodes.
@@ -196,7 +197,7 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 .. _excel-roadms-sheet:
 
 Roadms sheet 
-------------
+============
 
 The ROADM sheet (named "Roadms") is optional.
 If provided, it can be used to specify:
@@ -234,7 +235,7 @@ This sheet contains six columns:
 .. _excel-service-sheet:
 
 Service sheet 
--------------
+=============
 
 Service sheet is optional. It lists the services for which path and feasibility must be computed with ``gnpy-path-request``.
 

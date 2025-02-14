@@ -1,7 +1,8 @@
 .. _intro:
 
+************
 Introduction
-============
+************
 
 ``gnpy`` is a library for building route planning and optimization tools.
 
@@ -55,7 +56,7 @@ interference noise.
 .. |Pnli| replace:: P\ :sub:`nli`
 
 Further Instructions for Use
-----------------------------
+============================
 
 Simulations are driven by a set of `JSON <json.rst>`__ or `XLS <excel.rst>`__ files.
 
