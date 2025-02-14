@@ -1,7 +1,8 @@
 .. _concepts:
 
+*****************************
 Simulating networks with GNPy
-=============================
+*****************************
 
 Running simulations with GNPy requires three pieces of information:
 
@@ -12,7 +13,7 @@ Running simulations with GNPy requires three pieces of information:
 .. _concepts-topology:
 
 Network Topology
-----------------
+================
 
 The *topology* acts as a "digital self" of the simulated network.
 When given a network topology, GNPy can either run a specific simulation as-is, or it can *optimize* the topology before performing the simulation.
@@ -34,7 +35,7 @@ The topology is specified via :ref:`XLS files<excel>` or via :ref:`JSON<legacy-j
 .. _complete-vs-incomplete:
 
 Fully Specified vs. Partially Designed Networks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------------------
 
 Let's consider a simple triangle topology with three :abbr:`PoPs (Points of Presence)` covering three cities:
 
@@ -208,7 +209,7 @@ In other cases where the location of amplifier huts is already known, but the sp
 .. _concepts-equipment:
 
 The Equipment Library
----------------------
+=====================
 
 In order to produce an accurate simulation, GNPy needs to know the physical properties of each entity which affects the optical signal.
 Entries in the equipment library correspond to actual real-world, tangible entities.
@@ -231,7 +232,7 @@ GNPy currently does not take into consideration the spectrum filtering penalties
 .. _concepts-nf-model:
 
 Amplifier Noise Figure Models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
 One of the key parameters of an amplifier is the method to use for computing the Noise Figure (NF).
 GNPy supports several different noise models with varying level of accuracy.
@@ -244,7 +245,7 @@ For scenarios where the vendor has not yet contributed an accurate EDFA NF descr
 .. _nf-model-min-max-NF:
 
 Min-max NF
-**********
+^^^^^^^^^^
 
 This is an operator-focused model where performance is defined by the *minimal* and *maximal NF*.
 These are especially suited to model a dual-coil EDFA with a VOA in between.
@@ -254,7 +255,7 @@ The worst (maximal) NF applies  when the EDFA operates at its minimal gain.
 This model is suitable for use when the vendor has not provided a more accurate performance description of the EDFA.
 
 Raman Approximation
-*******************
+^^^^^^^^^^^^^^^^^^^
 
 While GNPy is fully Raman-aware, under certain scenarios it is useful to be able to run a simulation without an accurate Raman description.
 For these purposes the :ref:`polynomial NF<ext-nf-model-polynomial-NF>` model with :math:`\text{a} = \text{b} = \text{c} = 0`, and :math:`\text{d} = NF` can be used.
@@ -262,7 +263,7 @@ For these purposes the :ref:`polynomial NF<ext-nf-model-polynomial-NF>` model wi
 .. _concepts-simulation:
 
 Simulation
-----------
+==========
 
 When the network model has been instantiated and the physical properties and operational settings of the actual physical devices are known, GNPy can start simulating how the signal propagate through the optical fiber.
 

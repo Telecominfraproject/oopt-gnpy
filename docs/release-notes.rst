@@ -1,7 +1,8 @@
 .. _release-notes:
 
+******************
 Release change log
-==================
+******************
 
 Each release introduces some changes and new features.
 
@@ -16,7 +17,7 @@ This change streamlines the configuration process but requires users to explicit
 model if the default values do not suit their needs.
 
 v2.11
------
+=====
 
 **New feature**
 
@@ -206,7 +207,7 @@ Additionally, they have been experimentally validated in a laboratory setup comp
 
 
 v2.10
------
+=====
 
 ROADM impairments can be defined per degree and roadm-path type (add, drop or express).
 Minimum loss when crossing a ROADM is no more 0 dB. It can be set per ROADM degree with roadm-path-impairments.
@@ -314,7 +315,7 @@ can now be set using a different parameter. It can be set as:
       }
 
 v2.9
-----
+====
 
 The revision introduces a major refactor that separates design and propagation. Most of these changes have no impact
 on the user experience, except the following ones:
@@ -359,7 +360,7 @@ contribution). Note that "actual pch out (dBm)" is the actual propagated total p
 band definition at the output of the amplifier element, including noises and out VOA contribution.
 
 v2.8
-----
+====
 
 **Spectrum assignment**: requests can now support multiple slots.
 The definition in service file supports multiple assignments (unchanged syntax):
@@ -468,4 +469,4 @@ the deviation from the general equalisation strategy defined in ROADMs.
             ]
 
 v2.7
-----
+====

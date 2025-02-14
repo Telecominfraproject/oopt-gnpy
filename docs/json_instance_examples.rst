@@ -1,11 +1,11 @@
 .. _json-instance-examples:
 
-*********************************************
-Equipment and Network description definitions
-*********************************************
+*************
+JSON examples
+*************
 
 1. Equipment description
-########################
+========================
 
 Equipment description defines equipment types and those parameters.
 Description is made in JSON file with predefined structure. By default
@@ -17,10 +17,10 @@ Parsing of JSON file is made with
 value is a dictionary of format **dict[`equipment type`][`subtype`]=object**
 
 1.1. Structure definition
-*************************
+-------------------------
 
 1.1.1. Equipment types
-**********************
+^^^^^^^^^^^^^^^^^^^^^^
 
 Every equipment type is defined in JSON equipment library root with according name and
 array of parameters as value.
@@ -41,7 +41,7 @@ possible types:
 
 
 1.1.2. Equipment parameters and subtypes
-*****************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 Array of parameters is a list of objects with unordered parameter name
@@ -88,10 +88,10 @@ it will be marked with **”default”** value.
 
 
 1.2. Equipment parameters by type
-*********************************
+---------------------------------
 
 1.2.1. Amplifier types
-**********************
+^^^^^^^^^^^^^^^^^^^^^^
 
 Several types of amplfiers definition are possible:
 
@@ -219,7 +219,7 @@ Several types of amplfiers definition are possible:
     ]
 
 Composed amplifier types
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 - `multiband`
    This type enables the definition of multiband amplifiers that consist of multiple
@@ -332,7 +332,7 @@ Composed amplifier types
     }
 
 1.2.2. Fiber and RamanFiber types
-*********************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Fiber type with its parameters:
 
@@ -383,7 +383,7 @@ is only available in RamanFiber, which requires the flag to be set to True, maki
 use of the --sim-params option mandatory.
 
 1.2.3 Roadm types
-*****************
+^^^^^^^^^^^^^^^^^
 
 Roadm element with its parameters:
 
@@ -491,7 +491,7 @@ CCAMP optical impairment topology <https://github.com/ietf-ccamp-wg/draft-ietf-c
   ]
 
 1.2.5. Transceiver type
-**************************
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Transceiver element with its parameters. **”mode”** can contain multiple
 Transceiver operation formats.
@@ -532,7 +532,7 @@ Note that ``OSNR`` parameter refers to the receiver's minimal OSNR threshold for
     ]
 
 1.2.3. Spans element
-********************
+^^^^^^^^^^^^^^^^^^^^
 
 Spans element with its parameters:
 
@@ -553,7 +553,7 @@ Spans element with its parameters:
 
 
 1.2.4. Spectral Information
-***************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Spectral information with its parameters:
 
@@ -576,7 +576,7 @@ Spectral information with its parameters:
 
 
 2. Network description
-######################
+======================
 
 Network description defines network elements with additional to
 equipment description parameters, metadata and elements interconnection.
@@ -590,10 +590,10 @@ equipment_description)** and return value is **DiGraph** object which
 mimics network description.
 
 2.1. Structure definition
-##########################
+-------------------------
 
 2.1.1. File root structure
-***************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Network description JSON file root consist of three unordered parts:
 
@@ -618,7 +618,7 @@ Network description JSON file root consist of three unordered parts:
 
 
 2.1.2. Elements parameters and subtypes
-****************************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The list of network element objects consist of unordered parameter names
 and those values. In case of **"type_variety"** absence, the
@@ -626,10 +626,10 @@ and those values. In case of **"type_variety"** absence, the
 **"type_variety"** must be defined in equipment library.
 
 2.2. Element parameters by type
-*********************************
+-------------------------------
 
 2.2.1. Transceiver element
-***************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Transceiver element with its parameters.
 
@@ -657,7 +657,7 @@ Without any definition, default :ref:`SI<spectral_info>` values of the library a
 
 
 2.2.2. ROADM element
-*********************
+^^^^^^^^^^^^^^^^^^^^
 
 ROADM element with its parameters. **“params”** is optional, if nothing is defined,
 it uses default values from equipment library.
@@ -707,7 +707,7 @@ it uses default values from equipment library.
 
 
 2.2.3. Fused element
-*********************
+^^^^^^^^^^^^^^^^^^^^
 
 Fused element with its parameters. **“params”** is optional, if not used
 default loss value of 1dB is used.
@@ -732,7 +732,7 @@ default loss value of 1dB is used.
 
 
 2.2.4. Fiber element
-*********************
+^^^^^^^^^^^^^^^^^^^^
 
 Fiber element with its parameters.
 
@@ -782,7 +782,7 @@ Fiber element with its parameters.
 
 
 2.2.5. RamanFiber element
-*************************
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: json
 
@@ -826,7 +826,7 @@ Fiber element with its parameters.
 
 
 2.2.6. EDFA element
-********************
+^^^^^^^^^^^^^^^^^^^
 
 EDFA element with its parameters.
 
@@ -851,7 +851,7 @@ EDFA element with its parameters.
     }
 
 2.3. Connections objects
-*************************
+------------------------
 
 Each unidirectional connection object in connections array consist of
 two unordered **”from_node”** and **”to_node”** name pair with values
@@ -866,7 +866,7 @@ corresponding to element **”uid”**
 
 
 3. Simulation Parameters
-########################
+========================
 
 Additional details of the simulation are controlled via ``sim_params.json``:
 
@@ -888,19 +888,19 @@ Additional details of the simulation are controlled via ``sim_params.json``:
 
 
 4. Services file
-################
+================
 
 **gnpy-path-request** requires a second positional file that contains a list of services to be computed.
 
 
 4.1. Service Excel format
-*************************
+-------------------------
 
 Services can be defined either via a :ref:`XLS files<excel-service-sheet>`.
 
 
 4.2. Service JSON format
-************************
+------------------------
 
 The JSON format is derived from draft-ietf-teas-yang-path-computation-01.txt.
 
@@ -915,7 +915,7 @@ to define disjunctions among services.
     }
 
 4.2.1. requests
-***************
+^^^^^^^^^^^^^^^
 
 **path-request** contains the path and transceiver details.
 See :ref:`services<service>` for a detailed description of each parameter.
@@ -985,7 +985,7 @@ See :ref:`services<service>` for a detailed description of each parameter.
     }
 
 4.2.2. synchronization
-**********************
+^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: json
 
@@ -1002,9 +1002,8 @@ See :ref:`services<service>` for a detailed description of each parameter.
     }
 
 
-****************
-1. Spectrum file
-****************
+5. Spectrum file
+================
 
 **gnpy-transmission-example** supports a `--spectrum` option to specify non identical type
 of channels derailed in a JSON file (details :ref:`here<mixed-rate>`). Note that **gnpy-path-request**
