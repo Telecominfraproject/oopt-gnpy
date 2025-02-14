@@ -2,8 +2,8 @@
 API Reference Documentation
 ***************************
 
-``gnpy`` package
-================
+GNPy package
+============
 
 .. automodule:: gnpy
 

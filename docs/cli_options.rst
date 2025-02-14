@@ -1,13 +1,14 @@
 .. _cli-options:
 
-Options Documentation for `gnpy-path-request` and `gnpy-transmission-example`
-=============================================================================
+***********************************************************
+`gnpy-path-request` and `gnpy-transmission-example` scripts
+***********************************************************
 
 Common options
---------------
+==============
 
 **Option**: `--no-insert-edfas`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 **Purpose**: Disables the automatic insertion of EDFAs after ROADMs and fibers, as well as the splitting
 of fibers during the auto-design process.
@@ -37,7 +38,7 @@ When the `--no-insert-edfas` option is specified:
 
 
 **Option**: `--equipment`, `-e`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 **Description**: Specifies the equipment library file.
 
@@ -52,7 +53,7 @@ When the `--no-insert-edfas` option is specified:
 **Functionality**: This option allows users to load a specific equipment configuration that defines the characteristics of the network elements.
 
 **Option**: `--extra-equipment` and `--extra-config`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------------------
 
 The `--extra-equipment` and `--extra-config` options allow users to extend the default equipment library and configuration
 settings used by the GNPy program. This feature is particularly useful for users who need to incorporate additional
@@ -98,8 +99,6 @@ equipment types or specific configurations that are not included in the standard
   The program will load the configurations from the specified files and consider them instead of the
   default configurations for the amplifiers that use the "default_config_from_json" or "advanced_config_from_json" keywords.
 
-Example
--------
 To run the program with additional equipment and configuration files, you can use the following command:
 
 .. code-block:: shell-session
@@ -116,7 +115,7 @@ In this example:
 
 
 **Option**: `--save-network`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 **Description**: Saves the final network configuration to a specified JSON file.
 
@@ -130,7 +129,7 @@ In this example:
 
 
 **Option**: `--save-network-before-autodesign`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------------
 
 **Description**: Dumps the network into a JSON file prior to autodesign.
 
@@ -144,7 +143,7 @@ In this example:
 
 
 **Option**: `--sim-params`
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 **Description**: Path to the JSON file containing simulation parameters.
 
@@ -163,10 +162,10 @@ The tuning of the parameters is detailed here: :ref:`json input sim-params<sim-p
 
 
 `gnpy-transmission-example` options
------------------------------------
+===================================
 
 **Option**: `--show-channels`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
 **Description**: Displays the final per-channel OSNR and GSNR summary.
 
@@ -181,7 +180,7 @@ and generalized signal-to-noise ratio (GSNR) for each channel after the simulati
 
 
 **Option**: `-pl`, `--plot`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
 **Description**: Generates plots of the results.
 
@@ -195,7 +194,7 @@ and generalized signal-to-noise ratio (GSNR) for each channel after the simulati
 
 
 **Option**: `-l`, `--list-nodes`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------
 
 **Description**: Lists all transceiver nodes in the network.
 
@@ -208,7 +207,7 @@ and generalized signal-to-noise ratio (GSNR) for each channel after the simulati
 **Functionality**: This option provides a quick way to view all transceiver nodes present in the network topology.
 
 **Option**: `-po`, `--power`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 **Description**: Specifies the reference channel power in span in dBm.
 
@@ -223,7 +222,7 @@ It replaces the value specified in the `SI` section of the equipment library (:r
 
 
 **Option**: `--spectrum`
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 **Description**: Specifies a user-defined mixed rate spectrum JSON file for propagation.
 
@@ -238,7 +237,7 @@ include varying channel rates and configurations. More details here: :ref:`mixed
 
 
 Options for `path_requests_run`
--------------------------------
+===============================
 
 The `gnpy-path-request` script provides a simple path computation function that supports routing, transceiver mode selection, and spectrum assignment.
 
@@ -254,7 +253,7 @@ The `gnpy-path-request` computes:
 
 
 **Option**: `-bi`, `--bidir`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 **Description**: Indicates that all demands are bidirectional.
 
@@ -270,7 +269,7 @@ attribute to true in the service file, possibly affecting feasibility if one dir
 
 
 **Option**: `-o`, `--output`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 **Description**: Stores computation results requests into a JSON or CSV file.
 
@@ -285,7 +284,7 @@ for further analysis.
 
 
 **Option**: `--redesign-per-request`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------
 
 **Description**: Redesigns the network for each request using the request as the reference channel
 (replaces the `SI` section of the equipment library with the request specifications).

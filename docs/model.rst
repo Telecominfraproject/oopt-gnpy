@@ -1,10 +1,11 @@
 .. _physical-model:
 
+***************************
 Physical Model used in GNPy
-===========================
+***************************
 
 QoT-E including ASE noise and NLI accumulation 
-----------------------------------------------
+==============================================
 
 The operations of PSE simulative framework are based on the capability to
 estimate the QoT of one or more channels operating lightpaths over a given
@@ -83,7 +84,7 @@ ps/nm/km, the analytical approximation ensures an excellent accuracy
 with a computational time compatible with real-time operations.
 
 The Gaussian Noise Model to evaluate the NLI
---------------------------------------------
+============================================
 
 As previously stated, fiber propagation of multilevel modulation formats
 relying on the polarization-division-multiplexing  generates impairments that

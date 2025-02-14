@@ -1,5 +1,6 @@
+***************
 Installing GNPy
----------------
+***************
 
 There are several methods on how to obtain GNPy.
 The easiest option for a non-developer is probably going via our :ref:`Docker images<install-docker>`.
@@ -9,7 +10,7 @@ Note that this needs a :ref:`working installation of Python<install-python>`, fo
 .. _install-docker:
 
 Using prebuilt Docker images
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+============================
 
 Our `Docker images <https://hub.docker.com/r/telecominfraproject/oopt-gnpy>`_ contain everything needed to run all examples from this guide.
 Docker transparently fetches the image over the network upon first use.
@@ -35,7 +36,7 @@ Remove that directory if you want to start from scratch.
 .. _install-python:
 
 Using Python on your computer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=============================
 
    **Note**: `gnpy` supports Python 3 only. Python 2 is not supported.
    `gnpy` requires Python ≥3.8
@@ -89,7 +90,7 @@ exact version of Python you are using.
 .. _install-pip:
 
 Installing the Python package
-*****************************
+-----------------------------
 
 From within your Anaconda Python 3 environment, you can clone the master branch
 of the `gnpy` repo and install it with:
