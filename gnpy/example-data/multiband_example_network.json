@@ -52,7 +52,7 @@
                     "preamp_variety_list": [],
                     "booster_variety_list": []
                 },
-                "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12}]
+                "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12, "spacing": 50e9}]
             },
             "metadata": {
                 "location": {
@@ -71,7 +71,7 @@
                     "preamp_variety_list": [],
                     "booster_variety_list": []
                 },
-                "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12}]
+                "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12, "spacing": 50e9}]
             },
             "metadata": {
                 "location": {
@@ -90,7 +90,7 @@
                     "preamp_variety_list": [],
                     "booster_variety_list": []
                 },
-                "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12}]
+                "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12, "spacing": 50e9}]
             },
             "metadata": {
                 "location": {
@@ -109,7 +109,7 @@
                     "preamp_variety_list": [],
                     "booster_variety_list": []
                 },
-                "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12}]
+                "design_bands": [{"f_min": 191.3e12, "f_max": 195.1e12, "spacing": 50e9}]
             },
             "metadata": {
                 "location": {

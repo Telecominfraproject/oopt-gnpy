@@ -26,7 +26,7 @@ from gnpy.core import elements
 from gnpy.core.equipment import find_type_variety, find_type_varieties
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt, automatic_nch, \
-    find_common_range
+    find_common_range, get_spacing_from_band, reorder_per_degree_design_bands
 from gnpy.core.info import ReferenceCarrier, create_input_spectral_information
 from gnpy.core.parameters import SimParams, EdfaParams, find_band_name, FrequencyBand, MultiBandParams
 from gnpy.core.science_utils import RamanSolver
@@ -1330,8 +1330,11 @@ def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver]
     """
     next_oms = (n for n in network.successors(node))
     if len(node.design_bands) == 0:
-        node.design_bands = [{'f_min': si.f_min, 'f_max': si.f_max} for si in equipment['SI'].values()]
-
+        node.design_bands = [{'f_min': si.f_min, 'f_max': si.f_max, 'spacing': si.spacing}
+                             for si in equipment['SI'].values()]
+    # complete node.per_degree_design_bands with node.design_bands spacing when it is missing.
+    # Use the spacing from SI if nothing is specified.
+    update_design_bands_spacing(node, equipment['SI']['default'].spacing)
     default_is_single_band = len(node.design_bands) == 1
     for next_node in next_oms:
         # get all the elements from the OMS and retrieve their amps types and bands
@@ -1347,14 +1350,14 @@ def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver]
         if oms_is_single_band == default_is_single_band:
             amp_bands.append(node.design_bands)
 
-        common_range = find_common_range(amp_bands, None, None)
+        common_range = find_common_range(amp_bands, None, None, equipment['SI']['default'].spacing, node.design_bands)
         # node.per_degree_design_bands has already been populated with node.params.per_degree_design_bands loaded
         # from the json.
         # let's complete the dict with the design band of degrees for which there was no definition
         if next_node.uid not in node.per_degree_design_bands:
             if common_range:
                 # if degree design band was not defined, then use the common_range computed with the oms amplifiers
-                # already defined
+                # already defined.
                 node.per_degree_design_bands[next_node.uid] = common_range
             elif oms_is_single_band is None or (oms_is_single_band == default_is_single_band):
                 # else if no amps are defined (no bands) then use default ROADM bands
@@ -1364,14 +1367,42 @@ def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver]
                 # unsupported case: single band OMS with default multiband design band
                 raise NetworkTopologyError(f"in {node.uid} degree {next_node.uid}: inconsistent design multiband/"
                                            + " single band definition on a single band/ multiband OMS")
-        if next_node.uid in node.params.per_degree_design_bands:
-            # order bands per min frequency in params.per_degree_design_bands for those degree that are defined there
-            node.params.per_degree_design_bands[next_node.uid] = \
-                sorted(node.params.per_degree_design_bands[next_node.uid], key=lambda x: x['f_min'])
-        # order the bands per min frequency in .per_degree_design_bands (all degrees must exist there)
-        node.per_degree_design_bands[next_node.uid] = \
-            sorted(node.per_degree_design_bands[next_node.uid], key=lambda x: x['f_min'])
+    # reorder per_degree_design_bands.
+    reorder_per_degree_design_bands(node.per_degree_design_bands)
+    reorder_per_degree_design_bands(node.params.per_degree_design_bands)
     # check node.params.per_degree_design_bands keys
+    check_per_degree_design_bands_keys(node, network)
+
+
+def update_design_bands_spacing(node: Union[elements.Roadm, elements.Transceiver],
+                                default_spacing: float):
+    """
+    Update the spacing of design bands for a given node.
+
+    This function iterates through the design bands associated with the node and updates
+    their spacing based on the frequency range defined by 'f_min' and 'f_max'. If a specific
+    spacing cannot be determined from the design bands, the default spacing is used.
+
+    :param node: The node object which can be either a Roadm or Transceiver instance.
+    :type node: Union[elements.Roadm, elements.Transceiver]
+    :param default_spacing: The default spacing to use if no specific spacing can be determined.
+    :type default_spacing: float
+    """
+    for design_bands in node.per_degree_design_bands.values():
+        for design_band in design_bands:
+            temp = get_spacing_from_band(node.design_bands, design_band['f_min'], design_band['f_max'])
+            default_spacing = temp if temp is not None else default_spacing
+            design_band['spacing'] = design_band.get('spacing', default_spacing)
+
+
+def check_per_degree_design_bands_keys(node: Union[elements.Roadm, elements.Transceiver], network: DiGraph):
+    """Checks that per_degree_design_bands keys are existing uid of elements in the network
+
+    :param node: a ROADM or a Transceiver element
+    :type node: Union[elements.Roadm, elements.Transceiver]
+    :param network: the network containing the node and its connections
+    :type network: DiGraph
+    """
     if node.params.per_degree_design_bands:
         next_oms_uid = [n.uid for n in network.successors(node)]
         for degree in node.params.per_degree_design_bands.keys():
