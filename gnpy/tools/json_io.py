@@ -13,7 +13,7 @@ from pathlib import Path
 import json
 from collections import namedtuple
 from copy import deepcopy
-from typing import Union, Dict, List
+from typing import Union, Dict, List, Tuple
 from networkx import DiGraph
 from numpy import arange
 
@@ -25,7 +25,7 @@ from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.info import Carrier
 from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt
 from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT, EdfaParams, MultiBandParams, DEFAULT_EDFA_CONFIG
-from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth
+from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth, ResultElement
 from gnpy.topology.spectrum_assignment import mvalue_to_slots
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
@@ -975,3 +975,30 @@ def merge_equalization(params: dict, extra_params: dict) -> Union[dict, None]:
         # If ROADM config doesn't contain any equalization type, keep the default one
         return extra_params
     return None
+
+
+def results_to_json(pathresults: List[ResultElement]):
+    """Converts a list of `ResultElement` objects into a JSON-compatible dictionary.
+
+    :param pathresults: List of `ResultElement` objects to be converted.
+    :return: A dictionary with a single key `"response"`, containing a list of
+             the `json` attributes of the provided `ResultElement` objects.
+    """
+    return {'response': [n.json for n in pathresults]}
+
+
+def load_eqpt_topo_from_json(eqpt: dict, topology: dict) -> Tuple[dict, DiGraph]:
+    """Loads equipment configuration and network topology from JSON data.
+
+    :param eqpt: Dictionary containing the equipment configuration in JSON format.
+                 It includes details about the devices to be processed and structured.
+    :param topology: Dictionary representing the network topology in JSON format,
+                     defining the structure of the network and its connections.
+    :return: A tuple containing:
+             - A dictionary with the processed equipment configuration.
+             - A directed graph (DiGraph) representing the network topology, where nodes
+               correspond to equipment and edges define their connections.
+    """
+    equipment = _equipment_from_json(eqpt, DEFAULT_EXTRA_CONFIG)
+    network = network_from_json(topology, equipment)
+    return equipment, network
