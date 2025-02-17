@@ -142,7 +142,7 @@ BLOCKING_NOSPECTRUM = ['NO_SPECTRUM', 'NOT_ENOUGH_RESERVED_SPECTRUM']
 
 
 class ResultElement:
-    def __init__(self, path_request, computed_path, reversed_computed_path=None):
+    def __init__(self, path_request: PathRequest, computed_path: List, reversed_computed_path=None):
         self.path_id = path_request.request_id
         self.path_request = path_request
         self.computed_path = computed_path
