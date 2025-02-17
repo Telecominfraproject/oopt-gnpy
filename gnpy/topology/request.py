@@ -1305,4 +1305,5 @@ def find_elements_common_range(el_list: list, equipment: dict) -> List[dict]:
     If there are no amplifiers in the path, then use the SI
     """
     amp_bands = [n.params.bands for n in el_list if isinstance(n, (Edfa, Multiband_amplifier))]
-    return find_common_range(amp_bands, equipment['SI']['default'].f_min, equipment['SI']['default'].f_max)
+    return find_common_range(amp_bands, equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
+                             equipment['SI']['default'].spacing)
