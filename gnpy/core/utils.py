@@ -17,7 +17,7 @@ from csv import writer
 from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, array
 from scipy import constants
 from copy import deepcopy
-from typing import List, Union
+from typing import List, Union, Dict
 
 from gnpy.core.exceptions import ConfigurationError
 
@@ -628,49 +628,124 @@ def nice_column_str(data: List[List[str]], max_length: int = 30, padding: int = 
     return '\n'.join(nice_str)
 
 
-def find_common_range(amp_bands: List[List[dict]], default_band_f_min: float, default_band_f_max: float) \
-        -> List[dict]:
-    """Find the common frequency range of bands
-    If there are no amplifiers in the path, then use default band
+def filter_valid_amp_bands(amp_bands: List[List[dict]]) -> List[List[dict]]:
+    """Filter out invalid amplifier bands that lack f_min or f_max.
 
-    >>> amp_bands = [[{'f_min': 191e12, 'f_max' : 195e12}, {'f_min': 186e12, 'f_max' : 190e12} ], \
-        [{'f_min': 185e12, 'f_max' : 189e12}, {'f_min': 192e12, 'f_max' : 196e12}], \
-        [{'f_min': 186e12, 'f_max': 193e12}]]
-    >>> find_common_range(amp_bands, 190e12, 195e12)
-    [{'f_min': 186000000000000.0, 'f_max': 189000000000000.0}, {'f_min': 192000000000000.0, 'f_max': 193000000000000.0}]
-    >>> amp_bands = [[{'f_min': 191e12, 'f_max' : 195e12}, {'f_min': 186e12, 'f_max' : 190e12} ], \
-        [{'f_min': 185e12, 'f_max' : 189e12}, {'f_min': 192e12, 'f_max' : 196e12}], \
-        [{'f_min': 186e12, 'f_max': 192e12}]]
-    >>> find_common_range(amp_bands, 190e12, 195e12)
-    [{'f_min': 186000000000000.0, 'f_max': 189000000000000.0}]
-
+    :param amp_bands: A list of lists containing amplifier band dictionaries.
+    :type amp_bands: List[List[dict]]
+    :return: A filtered list of amplifier bands that contain valid f_min and f_max.
+    :rtype: List[List[dict]]
     """
-    _amp_bands = [sorted(amp, key=lambda x: x['f_min']) for amp in amp_bands]
-    _temp = []
-    # remove None bands
-    for amp in _amp_bands:
-        is_band = True
-        for band in amp:
-            if not (is_band and band['f_min'] and band['f_max']):
-                is_band = False
-        if is_band:
-            _temp.append(amp)
+    return [amp for amp in amp_bands if all(band.get('f_min') is not None and band.get('f_max') is not None
+                                            for band in amp)]
 
-    # remove duplicate
+
+def remove_duplicates(amp_bands: List[List[dict]]) -> List[List[dict]]:
+    """Remove duplicate amplifier bands.
+
+    :param amp_bands: A list of lists containing amplifier band dictionaries.
+    :type amp_bands: List[List[dict]]
+    :return: A list of unique amplifier bands.
+    :rtype: List[List[dict]]
+    """
     unique_amp_bands = []
-    for amp in _temp:
+    for amp in amp_bands:
         if amp not in unique_amp_bands:
             unique_amp_bands.append(amp)
+    return unique_amp_bands
+
+
+def calculate_spacing(first: dict, second: dict, default_spacing: float, default_design_bands: Union[List[Dict], None],
+                      f_min: float, f_max: float) -> float:
+    """Calculate the spacing for the given frequency range.
+
+    :param first: The first amplifier band dictionary.
+    :type first: dict
+    :param second: The second amplifier band dictionary.
+    :type second: dict
+    :param default_spacing: The default spacing to use if no specific spacing can be determined.
+    :type default_spacing: float
+    :param default_design_bands: Optional list of design bands to determine spacing from.
+    :type default_design_bands: Union[List[Dict], None]
+    :param f_min: The minimum frequency of the range.
+    :type f_min: float
+    :param f_max: The maximum frequency of the range.
+    :type f_max: float
+    :return: The calculated spacing for the given frequency range.
+    :rtype: float
+    """
+    if first.get('spacing') is not None and second.get('spacing') is not None:
+        return max(first['spacing'], second['spacing'])
+    elif first.get('spacing') is not None:
+        return first['spacing']
+    elif second.get('spacing') is not None:
+        return second['spacing']
+    elif default_design_bands:
+        temp = get_spacing_from_band(default_design_bands, f_min, f_max)
+        return temp if temp is not None else default_spacing
+    return default_spacing
+
+
+def find_common_range(amp_bands: List[List[dict]], default_band_f_min: Union[float, None],
+                      default_band_f_max: Union[float, None], default_spacing: float,
+                      default_design_bands: Union[List[Dict], None] = None) -> List[dict]:
+    """
+    Find the common frequency range of amplifier bands.
+
+    If there are no amplifiers in the path, then use the default band parameters.
+
+    :param amp_bands: A list of lists containing amplifier band dictionaries, each with 'f_min', 'f_max',
+                      and optionally 'spacing'.
+    :type amp_bands: List[List[dict]]
+    :param default_band_f_min: The minimum frequency of the default band.
+    :type default_band_f_min: Union[float, None]
+    :param default_band_f_max: The maximum frequency of the default band.
+    :type default_band_f_max: Union[float, None]
+    :param default_spacing: The default spacing to use if no specific spacing can be determined.
+    :type default_spacing: float
+    :param default_design_bands: Optional list of design bands to determine spacing from.
+    :type default_design_bands: Union[List[Dict], None]
+    :return: A list of dictionaries representing the common frequency ranges with their respective spacings.
+    :rtype: List[dict]
+
+    >>> amp_bands = [[{'f_min': 191e12, 'f_max' : 195e12, 'spacing': 70e9}, {'f_min': 186e12, 'f_max' : 190e12}], \
+                     [{'f_min': 185e12, 'f_max' : 189e12}, {'f_min': 192e12, 'f_max' : 196e12}], \
+                     [{'f_min': 186e12, 'f_max': 193e12}]]
+    >>> find_common_range(amp_bands, 190e12, 195e12, 50e9)
+    [{'f_min': 186000000000000.0, 'f_max': 189000000000000.0, 'spacing': 50000000000.0}, \
+{'f_min': 192000000000000.0, 'f_max': 193000000000000.0, 'spacing': 70000000000.0}]
+
+    >>> amp_bands = [[{'f_min': 191e12, 'f_max' : 195e12}, {'f_min': 186e12, 'f_max' : 190e12}], \
+                     [{'f_min': 185e12, 'f_max' : 189e12}, {'f_min': 192e12, 'f_max' : 196e12}], \
+                     [{'f_min': 186e12, 'f_max': 192e12}]]
+    >>> find_common_range(amp_bands, 190e12, 195e12, 50e9)
+    [{'f_min': 186000000000000.0, 'f_max': 189000000000000.0, 'spacing': 50000000000.0}]
+    """
+    # Step 1: Filter and sort amplifier bands
+    _amp_bands = [sorted(amp, key=lambda x: x['f_min']) for amp in filter_valid_amp_bands(amp_bands)]
+    unique_amp_bands = remove_duplicates(_amp_bands)
+
+    # Step 2: Handle cases with no valid bands
     if unique_amp_bands:
         common_range = unique_amp_bands[0]
     else:
         if default_band_f_min is None or default_band_f_max is None:
             return []
-        common_range = [{'f_min': default_band_f_min, 'f_max': default_band_f_max}]
+        return [{'f_min': default_band_f_min, 'f_max': default_band_f_max, 'spacing': None}]
+
+    # Step 3: Calculate common frequency range
     for bands in unique_amp_bands:
-        common_range = [{'f_min': max(first['f_min'], second['f_min']), 'f_max': min(first['f_max'], second['f_max'])}
-                        for first in common_range for second in bands
-                        if max(first['f_min'], second['f_min']) < min(first['f_max'], second['f_max'])]
+        new_common_range = []
+        for first in common_range:
+            for second in bands:
+                f_min = max(first['f_min'], second['f_min'])
+                f_max = min(first['f_max'], second['f_max'])
+                if f_min < f_max:
+                    spacing = calculate_spacing(first, second, default_spacing, default_design_bands, f_min, f_max)
+                    new_common_range.append({'f_min': f_min, 'f_max': f_max, 'spacing': spacing})
+
+        common_range = new_common_range
+
     return sorted(common_range, key=lambda x: x['f_min'])
 
 
@@ -715,3 +790,36 @@ def convert_pmd_lineic(pmd: Union[float, None], length: float, length_unit: str)
     if pmd:
         return pmd * 1e-12 / sqrt(convert_length(length, length_unit))
     return None
+def get_spacing_from_band(design_bands: List[Dict], f_min, f_max):
+    """Retrieve the spacing for a frequency range based on design bands.
+
+    This function checks if the midpoint of the provided frequency range (f_min, f_max)
+    falls within any of the design bands. If it does, the corresponding spacing is returned.
+
+    :param design_bands: A list of design band dictionaries, each containing 'f_min', 'f_max', and 'spacing'.
+    :type design_bands: List[Dict]
+    :param f_min: The minimum frequency of the range.
+    :type f_min: float
+    :param f_max: The maximum frequency of the range.
+    :type f_max: float
+    :return: The spacing corresponding to the design band that contains the midpoint of the range,
+             or None if no such band exists.
+    :rtype: Union[float, None]
+    """
+    midpoint = (f_min + f_max) / 2
+    for band in design_bands:
+        if midpoint >= band['f_min'] and midpoint <= band['f_max']:
+            return band['spacing']
+    return None
+
+
+def reorder_per_degree_design_bands(per_degree_design_bands: dict):
+    """Sort the design bands for each degree by their minimum frequency (f_min).
+
+    This function modifies the input dictionary in place, sorting the design bands for each unique identifier.
+
+    :param per_degree_design_bands: A dictionary where keys are unique identifiers and values are lists of design band dictionaries.
+    :type per_degree_design_bands: Dict[str, List[Dict]]
+    """
+    for uid, design_bands in per_degree_design_bands.items():
+        per_degree_design_bands[uid] = sorted(design_bands, key=lambda x: x['f_min'])

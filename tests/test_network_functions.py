@@ -619,14 +619,14 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
     elif case == 'monoband_roadm':
         roadm1['params'] = {
             'design_bands': [
-                {'f_min': 192.3e12, 'f_max': 196.0e12}
+                {'f_min': 192.3e12, 'f_max': 196.0e12, 'spacing': 50e9}
             ]
         }
     elif case == 'monoband_per_degree':
         roadm1['params'] = {
             'per_degree_design_bands': {
                 'east edfa in SITE1 to ILA1': [
-                    {'f_min': 191.5e12, 'f_max': 195.0e12}
+                    {'f_min': 191.5e12, 'f_max': 195.0e12, 'spacing': 50e9}
                 ]
             }
         }
@@ -670,19 +670,19 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
 
 @pytest.mark.parametrize('case, site_type, amplifier_type, expected_design_bands, expected_per_degree_design_bands', [
     ('monoband_no_design_band', 'Edfa', 'Edfa',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12}], [{'f_min': 191.3e12, 'f_max': 196.1e12}]),
+     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}]),
     ('monoband_roadm', 'Edfa', 'Edfa',
-     [{'f_min': 192.3e12, 'f_max': 196.0e12}], [{'f_min': 192.3e12, 'f_max': 196.0e12}]),
+     [{'f_min': 192.3e12, 'f_max': 196.0e12, 'spacing': 50e9}], [{'f_min': 192.3e12, 'f_max': 196.0e12, 'spacing': 50e9}]),
     ('monoband_per_degree', 'Edfa', 'Edfa',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12}], [{'f_min': 191.5e12, 'f_max': 195.0e12}]),
+     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.5e12, 'f_max': 195.0e12, 'spacing': 50e9}]),
     ('monoband_design', 'Edfa', 'Edfa',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12}], [{'f_min': 191.3e12, 'f_max': 196.1e12}]),
+     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}]),
     ('design', 'Fused', 'Multiband_amplifier',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12}],
-     [{'f_min': 186.55e12, 'f_max': 190.05e12}, {'f_min': 191.25e12, 'f_max': 196.15e12}]),
+     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}],
+     [{'f_min': 186.55e12, 'f_max': 190.05e12, 'spacing': 50e9}, {'f_min': 191.25e12, 'f_max': 196.15e12, 'spacing': 50e9}]),
     ('no_design', 'Fused', 'Multiband_amplifier',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12}],
-     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}])])
+     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}],
+     [{'f_min': 187.0e12, 'f_max': 190.0e12, 'spacing': 50e9}, {'f_min': 191.3e12, 'f_max': 196.0e12, 'spacing': 50e9}])])
 def test_design_band(case, site_type, amplifier_type, expected_design_bands, expected_per_degree_design_bands):
     """Check design_band is the one defined:
     - in SI if nothing is defined,
@@ -964,20 +964,20 @@ def network_wo_booster(site_type, bands):
 
 @pytest.mark.parametrize('site_type, expected_type, bands, expected_bands', [
     ('Multiband_amplifier', Multiband_amplifier,
-     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}],
-     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}]),
+     [{'f_min': 187.0e12, 'f_max': 190.0e12, "spacing": 50e9}, {'f_min': 191.3e12, 'f_max': 196.0e12, "spacing": 50e9}],
+     [{'f_min': 187.0e12, 'f_max': 190.0e12, "spacing": 50e9}, {'f_min': 191.3e12, 'f_max': 196.0e12, "spacing": 50e9}]),
     ('Edfa', Edfa,
-     [{'f_min': 191.4e12, 'f_max': 196.1e12}],
-     [{'f_min': 191.4e12, 'f_max': 196.1e12}]),
+     [{'f_min': 191.4e12, 'f_max': 196.1e12, "spacing": 50e9}],
+     [{'f_min': 191.4e12, 'f_max': 196.1e12, "spacing": 50e9}]),
     ('Edfa', Edfa,
-     [{'f_min': 191.2e12, 'f_max': 196.0e12}],
+     [{'f_min': 191.2e12, 'f_max': 196.0e12, "spacing": 50e9}],
      []),
     ('Fused', Multiband_amplifier,
-     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}],
-     [{'f_min': 187.0e12, 'f_max': 190.0e12}, {'f_min': 191.3e12, 'f_max': 196.0e12}]),
+     [{'f_min': 187.0e12, 'f_max': 190.0e12, "spacing": 50e9}, {'f_min': 191.3e12, 'f_max': 196.0e12, "spacing": 50e9}],
+     [{'f_min': 187.0e12, 'f_max': 190.0e12, "spacing": 50e9}, {'f_min': 191.3e12, 'f_max': 196.0e12, "spacing": 50e9}]),
     ('Fused', Edfa,
-     [{'f_min': 191.3e12, 'f_max': 196.0e12}],
-     [{'f_min': 191.3e12, 'f_max': 196.0e12}])])
+     [{'f_min': 191.3e12, 'f_max': 196.0e12, "spacing": 50e9}],
+     [{'f_min': 191.3e12, 'f_max': 196.0e12, "spacing": 50e9}])])
 def test_insert_amp(site_type, expected_type, bands, expected_bands):
     """Check:
     - if amplifiers are defined in multiband they are used for design,
