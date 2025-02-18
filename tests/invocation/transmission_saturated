@@ -6,7 +6,7 @@ There are 3 fiber spans over 130 km between trx Lannion_CAS and trx Lorient_KMA
 Now propagating between trx Lannion_CAS and trx Lorient_KMA:
 Reference used for design: (Input optical power reference in span = 3.00dBm,
                             spacing = 50.00GHz
-                            nb_channels = 96)
+                            nb_channels = None)
 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
