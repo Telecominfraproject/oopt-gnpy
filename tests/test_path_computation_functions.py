@@ -16,8 +16,8 @@ test path computation functions
 from pathlib import Path
 import pytest
 from gnpy.core.network import build_network
-from gnpy.core.utils import lin2db, automatic_nch
-from gnpy.topology.request import explicit_path
+from gnpy.core.utils import automatic_nch, dbm2watt
+from gnpy.topology.request import explicit_path, PathRequest
 from gnpy.topology.spectrum_assignment import build_oms_list
 from gnpy.tools.json_io import load_equipment, load_network, requests_from_json
 
@@ -32,6 +32,40 @@ EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_
 equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
 
 
+def pathrequest(pch_dbm, nb_channels):
+    """create ref channel for defined power settings
+    """
+    params = {
+        "power": dbm2watt(pch_dbm),
+        "tx_power": dbm2watt(pch_dbm),
+        "nb_channel": nb_channels,
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
+    return PathRequest(**params)
+
+
 @pytest.fixture()
 def setup_without_oms():
     """ common setup for tests: builds network, equipment and oms only once
@@ -39,8 +73,8 @@ def setup_without_oms():
     network = load_network(NETWORK_FILENAME, equipment)
     spectrum = equipment['SI']['default']
     p_db = spectrum.power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(spectrum.f_min, spectrum.f_max, spectrum.spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(spectrum.f_min, spectrum.f_max, spectrum.spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels))
     return network
 
 

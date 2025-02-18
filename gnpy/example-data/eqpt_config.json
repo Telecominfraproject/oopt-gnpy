@@ -357,7 +357,8 @@
       "tx_power_dbm": 0,
       "roll_off": 0.15,
       "tx_osnr": 40,
-      "sys_margins": 2
+      "sys_margins": 2,
+      "use_si_channel_count_for_design": true
     }
   ],
   "Transceiver": [
