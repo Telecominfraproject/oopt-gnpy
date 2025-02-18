@@ -1,0 +1,44 @@
+WARNING  gnpy.tools.json_io:json_io.py 
+	WARNING missing type_variety attribute in eqpt_config.json[Roadm]
+	default value is type_variety = default
+
+WARNING  gnpy.tools.convert:convert.py missing header delta p
+WARNING  gnpy.tools.convert:convert.py missing header delta p
+INFO     gnpy.tools.cli_examples:cli_examples.py source = Transceiver(uid='trx Lorient_KMA', osnr_ase_01nm=None, osnr_ase=None, osnr_nli=None, snr=None, chromatic_dispersion=None, pmd=None, pdl=None, latency=None, penalties={})
+INFO     gnpy.tools.cli_examples:cli_examples.py destination = Transceiver(uid='trx Brest_KLA', osnr_ase_01nm=None, osnr_ase=None, osnr_nli=None, snr=None, chromatic_dispersion=None, pmd=None, pdl=None, latency=None, penalties={})
+INFO     gnpy.core.network:network.py 
+Reference used for design: (Input optical power reference in span = 0.00dBm
+                            spacing = 50.000GHz
+                            nb_channels = None
+WARNING  gnpy.core.network:network.py 
+	WARNING: effective gain in Node east edfa in Lannion_CAS to Stbrieuc
+	is above user specified amplifier std_low_gain
+	max flat gain: 16dB ; required gain: 20.0dB. Please check amplifier type.
+
+WARNING  gnpy.core.network:network.py 
+	WARNING: effective gain in Node east edfa in Stbrieuc to Rennes_STA
+	is below user specified amplifier std_medium_gain
+	min gain: 15dB ; required gain: 12.0dB. Please check amplifier type.
+
+WARNING  gnpy.core.network:network.py 
+	WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix
+	is above user specified amplifier std_low_gain
+	max flat gain: 16dB ; required gain: 20.5dB. Please check amplifier type.
+
+WARNING  gnpy.core.network:network.py 
+	WARNING: effective gain in Node west edfa in Lannion_CAS to Corlay
+	is above user specified amplifier test
+	max flat gain: 25dB ; required gain: 28.0dB. Please check amplifier type.
+
+WARNING  gnpy.core.network:network.py 
+	WARNING: effective gain in Node east edfa in Brest_KLA to Quimper
+	is above user specified amplifier std_low_gain
+	max flat gain: 16dB ; required gain: 20.0dB. Please check amplifier type.
+
+INFO     gnpy.tools.orange_worker_utils:orange_worker_utils.py Power mode is set to True=> it can be modified in eqpt_config.json - Span
+INFO     gnpy.tools.orange_worker_utils:orange_worker_utils.py Now propagating between trx Lorient_KMA and trx Brest_KLA
+INFO     gnpy.tools.orange_worker_utils:orange_worker_utils.py 
+Channels propagating: (Input optical power deviation in span = 0.00dB,
+                       spacing = 50.00GHz,
+                       transceiver output power = 0.00dBm,
+                       nb_channels = 96)

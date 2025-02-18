@@ -6,7 +6,7 @@ There are 6 fiber spans over 500 km between trx_Stockholm and trx_Gothenburg
 Now propagating between trx_Stockholm and trx_Gothenburg:
 Reference used for design: (Input optical power reference in span = 2.00dBm,
                             spacing = 50.00GHz
-                            nb_channels = 96)
+                            nb_channels = None)
 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,

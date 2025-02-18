@@ -37,6 +37,42 @@ EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILE_NAME = DATA_DIR / 'testTopology_expected.json'
 EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
                  "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+
+
+def pathrequest(pch_dbm: float, p_tot_dbm: float = None, nb_channels: int = None):
+    """create ref channel for defined power settings
+    """
+    params = {
+        "power": dbm2watt(pch_dbm),
+        "tx_power": dbm2watt(pch_dbm),
+        "nb_channel": nb_channels if nb_channels else round(dbm2watt(p_tot_dbm) / dbm2watt(pch_dbm), 0),
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
+    return PathRequest(**params)
+
+
 # adding tests to check the roadm restrictions
 
 # mark node_uid amps as fused for testing purpose
@@ -67,10 +103,10 @@ def test_no_amp_feature(node_uid):
     # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
 
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
 
     node = next(nd for nd in network.nodes() if nd.uid == node_uid)
     next_node = next(network.successors(node))
@@ -179,10 +215,10 @@ def test_restrictions(restrictions, equipment):
     # power density : db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
 
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
 
     amp_nodes = [nd for nd in network.nodes()
                  if isinstance(nd, Edfa) and isinstance(next(network.predecessors(nd)), Roadm)
@@ -246,9 +282,8 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
     network = network_from_json(json_network, equipment)
     nb_channel = automatic_nch(equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
                                equipment['SI']['default'].spacing)
-    p_total_db = power_dbm + lin2db(nb_channel)
 
-    build_network(network, equipment, power_dbm, p_total_db)
+    build_network(network, equipment, pathrequest(power_dbm, nb_channels=nb_channel))
 
     params = {'request_id': 0,
               'trx_type': '',
@@ -470,10 +505,10 @@ def test_compare_design_propagation_settings(power_dbm, req_power, amp_with_delt
     network = network_from_json(json_network, eqpt)
     # Build the network once using the default power defined in SI in eqpt config
     p_db = power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(eqpt['SI']['default'].f_min,
-                                             eqpt['SI']['default'].f_max,
-                                             eqpt['SI']['default'].spacing))
-    build_network(network, eqpt, p_db, p_total_db, verbose=False)
+    nb_channels = automatic_nch(eqpt['SI']['default'].f_min,
+                                eqpt['SI']['default'].f_max,
+                                eqpt['SI']['default'].spacing)
+    build_network(network, eqpt, pathrequest(p_db, nb_channels=nb_channels), verbose=False)
     # record network settings before propagating
     # propagate on each oms
     req_list = create_per_oms_request(network, eqpt, req_power)
@@ -583,7 +618,7 @@ def test_roadm_impairments(roadm, from_degree, to_degree, expected_impairment_id
             el['type_variety'] = 'example_detailed_impairments'
     equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
-    build_network(network, equipment, 0.0, 20.0)
+    build_network(network, equipment, pathrequest(0.0, 20.0))
     roadm = next(n for n in network.nodes() if n.uid == roadm)
     assert roadm.get_roadm_path(from_degree, to_degree).path_type == expected_type
     assert roadm.get_roadm_path(from_degree, to_degree).impairment_id == expected_impairment_id
@@ -637,7 +672,7 @@ def test_roadm_per_degree_impairments(type_variety, from_degree, to_degree, impa
                     }]
             }
     network = network_from_json(json_data, equipment)
-    build_network(network, equipment, 0.0, 20.0)
+    build_network(network, equipment, pathrequest(0.0, 20.0))
     roadm = next(n for n in network.nodes() if n.uid == 'roadm Lannion_CAS')
     assert roadm.get_roadm_path(from_degree, to_degree).path_type == expected_type
     assert roadm.get_roadm_path(from_degree, to_degree).impairment_id == impairment_id
@@ -669,7 +704,7 @@ def test_wrong_roadm_per_degree_impairments(from_degree, to_degree, impairment_i
             }
     network = network_from_json(json_data, equipment)
     with pytest.raises(error, match=message):
-        build_network(network, equipment, 0.0, 20.0)
+        build_network(network, equipment, pathrequest(0.0, 20.0))
 
 
 @pytest.mark.parametrize('path_type, type_variety, expected_pmd, expected_pdl, expected_osnr, freq', [
