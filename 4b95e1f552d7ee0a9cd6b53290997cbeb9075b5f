@@ -136,6 +136,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5eedc7ad_cd00eddb",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-18T08:39:49Z",
+      "side": 1,
+      "message": "remove one blank",
+      "range": {
+        "startLine": 1010,
+        "startChar": 15,
+        "endLine": 1010,
+        "endChar": 16
+      },
+      "revId": "4b95e1f552d7ee0a9cd6b53290997cbeb9075b5f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "637f68d5_a74823e5",
         "filename": "gnpy/topology/request.py",
         "patchSetId": 1
