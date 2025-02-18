@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be940a32_0fe7a8e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-18T08:23:12Z",
+      "side": 1,
+      "message": "suggestion:\nDefine functions for results conversion and load eqpt/topology from dict",
+      "revId": "4b95e1f552d7ee0a9cd6b53290997cbeb9075b5f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4c8886_d657e15b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-18T08:23:12Z",
+      "side": 1,
+      "message": "Thanks! looks almost good to me: I have minor comments that could improve a bit. Can you see if they make sense for you ?",
+      "revId": "4b95e1f552d7ee0a9cd6b53290997cbeb9075b5f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d1f6fb3_99dce450",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-18T08:23:12Z",
+      "side": 1,
+      "message": "Can you please use the :param, :type, :return, :rtype notation in the docstring (as agreed on last coders call) ?",
+      "range": {
+        "startLine": 984,
+        "startChar": 4,
+        "endLine": 989,
+        "endChar": 65
+      },
+      "revId": "4b95e1f552d7ee0a9cd6b53290997cbeb9075b5f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d652cac4_fbf60b06",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-18T08:23:12Z",
+      "side": 1,
+      "message": "could you please add a parameter for extraconfig here ?  we will nee to support extra_config from user different from the default one:\nload_eqpt_topo_from_json(eqpt: dict, topology: dict, extra_config: Dict[str, Path] \u003d DEFAULT_EXTRA_CONFIG) -\u003e Tuple[dict, DiGraph]:",
+      "revId": "4b95e1f552d7ee0a9cd6b53290997cbeb9075b5f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0630f5e3_4eeee1bb",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-18T08:23:12Z",
+      "side": 1,
+      "message": "same comment on using the :param, :type... I am trying to harmonize all docstrings and this format has a better rendering on readthedocs",
+      "range": {
+        "startLine": 998,
+        "startChar": 4,
+        "endLine": 1008,
+        "endChar": 59
+      },
+      "revId": "4b95e1f552d7ee0a9cd6b53290997cbeb9075b5f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637f68d5_a74823e5",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-18T08:23:12Z",
+      "side": 1,
+      "message": "although I agree with this change it seems not correlated to the commit purpose. Would you mind putting that in a different commit ?",
+      "revId": "4b95e1f552d7ee0a9cd6b53290997cbeb9075b5f",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
