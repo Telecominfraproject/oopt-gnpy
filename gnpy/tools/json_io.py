@@ -70,7 +70,8 @@ class _JsonThing:
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
-            if k not in clean_kwargs and name != 'Amp' and v is not None and v != []:
+            disable_warning_keys = ['use_si_channel_count_for_design']
+            if k not in clean_kwargs and name != 'Amp' and v is not None and v != [] and k not in disable_warning_keys:
                 # do not show this warning if the default value is None
                 msg = f'\n\tWARNING missing {k} attribute in eqpt_config.json[{name}]' \
                     + f'\n\tdefault value is {k} = {v}\n'
@@ -90,7 +91,8 @@ class SI(_JsonThing):
         "roll_off": 0.15,
         "tx_osnr": 45,
         "sys_margins": 0,
-        "tx_power_dbm": None  # optional value in SI
+        "tx_power_dbm": None,  # optional value in SI
+        "use_si_channel_count_for_design": False  # optional value in SI
     }
 
     def __init__(self, **kwargs):

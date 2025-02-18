@@ -4,6 +4,10 @@ WARNING  gnpy.tools.json_io:json_io.py
 
 INFO     gnpy.tools.cli_examples:cli_examples.py source = 'trx Lannion_CAS'
 INFO     gnpy.tools.cli_examples:cli_examples.py destination = 'trx Lorient_KMA'
+INFO     gnpy.core.network:network.py 
+Reference used for design: (Input optical power reference in span = 3.00dBm
+                            spacing = 50.000GHz
+                            nb_channels = None
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Lorient_KMA to Loudeac
 	is beyond all available amplifiers capabilities and/or extended_gain_range:

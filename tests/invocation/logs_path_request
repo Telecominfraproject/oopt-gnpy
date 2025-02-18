@@ -3,6 +3,10 @@ WARNING  gnpy.tools.json_io:json_io.py
 	WARNING missing type_variety attribute in eqpt_config.json[Roadm]
 	default value is type_variety = default
 
+INFO     gnpy.core.network:network.py 
+Reference used for design: (Input optical power reference in span = 0.00dBm
+                            spacing = 50.000GHz
+                            nb_channels = 76
 INFO     gnpy.tools.json_io:json_io.py Automatically converting requests from XLS to JSON
 INFO     gnpy.tools.worker_utils:worker_utils.py List of disjunctions:
 [Disjunction 3

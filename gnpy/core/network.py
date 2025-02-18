@@ -878,7 +878,7 @@ def filter_edfa_list_based_on_targets(uid: str, edfa_eqpt: dict, power_target: f
 
 def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node: ELEMENT_TYPES, next_node: ELEMENT_TYPES,
                              power_mode: bool, prev_voa: dict, prev_dp: dict,
-                             pref_total_db: float, network: DiGraph, equipment: dict, restrictions: List,
+                             pref_total_db: dict, network: DiGraph, equipment: dict, restrictions: List,
                              _design_bands: dict, deviation_db: dict, tilt_target: dict):
     """Preselects multiband amplifiers eligible based on power, gain, and tilt targets across all bands.
 
@@ -939,7 +939,7 @@ def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node: ELEMENT_TYP
         # get the target gain, power and tilt based on previous propagation
         gain_target, power_target, _tilt_target, _, _, _ = \
             compute_gain_power_and_tilt_target(amp, prev_node, next_node, power_mode, prev_voa[band], prev_dp[band],
-                                               pref_total_db, network, equipment, deviation_db[band], tilt_target[band])
+                                               pref_total_db[band], network, equipment, deviation_db[band], tilt_target[band])
         _selection = [a.variety
                       for a in filter_edfa_list_based_on_targets(uid, edfa_eqpt, power_target, gain_target,
                                                                  _tilt_target, target_extended_gain)]
@@ -1151,7 +1151,7 @@ def get_node_restrictions(node: Union[elements.Edfa, elements.Multiband_amplifie
 
 
 def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elements.Transceiver], equipment: dict,
-                         pref_ch_db: float, pref_total_db: float, verbose: bool):
+                         pref_ch_db: float, verbose: bool, reference_channel):
     """Configures the egress amplifiers for a given node in the network.
 
     Go through each link starting from this_node until next Roadm or Transceiver and
@@ -1200,9 +1200,10 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
         prev_dp = {}
         voa = {}
         prev_voa = {}
+        pref_total_db = {}
         for band_name, band in _design_bands.items():
+            this_node_out_power = None
             if isinstance(this_node, elements.Transceiver):
-                # todo change pref to a ref channel
                 if equipment['SI']['default'].tx_power_dbm is not None:
                     this_node_out_power = equipment['SI']['default'].tx_power_dbm
                 else:
@@ -1215,6 +1216,9 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
             dp[band_name] = prev_dp[band_name]
             prev_voa[band_name] = 0
             voa[band_name] = 0
+            nb_channels_per_band = reference_channel.nb_channel if reference_channel.nb_channel \
+                else automatic_nch(band['f_min'], band['f_max'], band['spacing'])
+            pref_total_db[band_name] = pref_ch_db + lin2db(nb_channels_per_band)
 
         for node, next_node in oms_nodes:
             # go through all nodes in the OMS
@@ -1232,7 +1236,7 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                                              + 'and the restrictions (roadm or amplifier restictions)')
                 dp[band_name], voa[band_name] = set_one_amplifier(node, prev_node, next_node, power_mode,
                                                                   prev_voa[band_name], prev_dp[band_name],
-                                                                  pref_ch_db, pref_total_db,
+                                                                  pref_ch_db, pref_total_db[band_name],
                                                                   network, restrictions, equipment, verbose)
             elif isinstance(node, elements.RamanFiber):
                 # this is to record the expected gain in Raman fiber in its .estimated_gain attribute.
@@ -1259,8 +1263,8 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                                      and equipment['Edfa'][n].f_max >= _design_bands[band_name]['f_max']]
                     dp[band_name], voa[band_name] = \
                         set_one_amplifier(amp, prev_node, next_node, power_mode,
-                                          prev_voa[band_name], prev_dp[band_name],
-                                          pref_ch_db, pref_total_db, network, _restrictions, equipment, verbose,
+                                          prev_voa[band_name], prev_dp[band_name], pref_ch_db, pref_total_db[band_name],
+                                          network, _restrictions, equipment, verbose,
                                           deviation_db=deviation_db[band_name], tilt_target=tilt_target[band_name])
                 amps_type_varieties = [a.type_variety for a in node.amplifiers.values()]
                 try:
@@ -2070,7 +2074,7 @@ def add_missing_fiber_attributes(network: DiGraph, equipment: dict):
     add_fiber_padding(network, fibers, default_span_data.padding, equipment)
 
 
-def build_network(network: DiGraph, equipment: dict, pref_ch_db: float, pref_total_db: float,
+def build_network(network: DiGraph, equipment: dict, reference_channel,
                   set_connector_losses: bool = True, verbose: bool = True):
     """Sets the ROADM equalization targets and amplifier gain and power.
 
@@ -2111,8 +2115,9 @@ def build_network(network: DiGraph, equipment: dict, pref_ch_db: float, pref_tot
     for transceiver in transceivers:
         set_per_degree_design_band(transceiver, network, equipment)
     # then set amplifiers gain, delta_p and out_voa on each OMS
+    pref_ch_db = watt2dbm(reference_channel.power)
     for roadm in roadms + transceivers:
-        set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db, verbose)
+        set_egress_amplifier(network, roadm, equipment, pref_ch_db, verbose, reference_channel)
     for roadm in roadms:
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
         set_roadm_internal_paths(roadm, network)
@@ -2145,10 +2150,9 @@ def design_network(reference_channel, network: DiGraph, equipment: Dict, set_con
     ------
     - The function calculates the reference total power based on the number of channels and their power levels.
     """
-    pref_ch_db = watt2dbm(reference_channel.power)  # reference channel power
-    # reference total power (limited to C band till C+L autodesign is not solved)
-    designed_nb_channel = min(reference_channel.nb_channel,
-                              automatic_nch(191.0e12, 196.2e12, reference_channel.spacing))
-    pref_total_db = pref_ch_db + lin2db(designed_nb_channel)
-    build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_losses=set_connector_losses,
+    if verbose:
+        logger.info(f'\nReference used for design: (Input optical power reference in span = {watt2dbm(reference_channel.power):.2f}dBm\n'   # noqa E501
+                    + f'                            spacing = {reference_channel.spacing * 1e-9:.3f}GHz\n'
+                    + f'                            nb_channels = {reference_channel.nb_channel}')
+    build_network(network, equipment, reference_channel, set_connector_losses=set_connector_losses,
                   verbose=verbose)

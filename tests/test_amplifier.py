@@ -13,6 +13,7 @@ from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_rest
 from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
 from gnpy.core.network import build_network, set_amplifier_voa
 from gnpy.tools.json_io import load_network, load_equipment, load_json, _equipment_from_json, network_from_json
+from gnpy.topology.request import PathRequest
 from pathlib import Path
 import pytest
 
@@ -40,13 +41,47 @@ def bw():
     return 45e9
 
 
+def pathrequest(pch_dbm, p_tot_dbm):
+    """create ref channel for defined power settings
+    """
+    params = {
+        "power": dbm2watt(pch_dbm),
+        "tx_power": dbm2watt(pch_dbm),
+        "nb_channel": round(dbm2watt(p_tot_dbm) / dbm2watt(pch_dbm), 0),
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
+    return PathRequest(**params)
+
+
 @pytest.fixture()
 def setup_edfa_variable_gain():
     """init edfa class by reading test_network.json file
     remove all gain and nf ripple"""
     equipment = load_equipment(eqpt_library, extra_configs)
     network = load_network(test_network, equipment)
-    build_network(network, equipment, 0, 20)
+    build_network(network, equipment, pathrequest(0, 20))
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][0]
     edfa.gain_ripple = zeros(96)
     edfa.interpol_nf_ripple = zeros(96)
@@ -58,7 +93,7 @@ def setup_edfa_fixed_gain():
     """init edfa class by reading the 2nd edfa in test_network.json file"""
     equipment = load_equipment(eqpt_library, extra_configs)
     network = load_network(test_network, equipment)
-    build_network(network, equipment, 0, 20)
+    build_network(network, equipment, pathrequest(0, 20))
     edfa = [n for n in network.nodes() if isinstance(n, Edfa)][1]
     yield edfa
 
@@ -68,7 +103,7 @@ def setup_trx():
     """init transceiver class to access snr and osnr calculations"""
     equipment = load_equipment(eqpt_library, extra_configs)
     network = load_network(test_network, equipment)
-    build_network(network, equipment, 0, 20)
+    build_network(network, equipment, pathrequest(0, 20))
     trx = [n for n in network.nodes() if isinstance(n, Transceiver)][0]
     return trx
 
@@ -178,7 +213,7 @@ def test_ase_noise(gain, si, setup_trx, bw):
     # updating span 1  avoids to overload amp
     span.params.length = gain * 1e3 / 0.2
     edfa.operational.gain_target = gain
-    build_network(network, equipment, 0, 20)
+    build_network(network, equipment, pathrequest(0, 20))
     edfa.gain_ripple = zeros(96)
     edfa.interpol_nf_ripple = zeros(96)
     # propagate in span1 to have si with the correct power level

@@ -90,12 +90,12 @@ def designed_network(equipment: dict, network: DiGraph, source: str = None, dest
         'format': '',
         'path_bandwidth': 0,
         'effective_freq_slot': None,
-        'nb_channel': automatic_nch(equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
-                                    equipment['SI']['default'].spacing),
+        'nb_channel': None if equipment['SI']['default'].use_si_channel_count_for_design is False
+                      else automatic_nch(equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
+                                         equipment['SI']['default'].spacing),
         'power': dbm2watt(equipment['SI']['default'].power_dbm),
-        'tx_power': None
+        'tx_power': dbm2watt(equipment['SI']['default'].power_dbm)
     }
-    params['tx_power'] = dbm2watt(equipment['SI']['default'].power_dbm)
     if equipment['SI']['default'].tx_power_dbm is not None:
         # use SI tx_power if present
         params['tx_power'] = dbm2watt(equipment['SI']['default'].tx_power_dbm)
@@ -110,14 +110,14 @@ def designed_network(equipment: dict, network: DiGraph, source: str = None, dest
 
     # use si as reference channel
     reference_channel = PathRequest(**params)
-    # temporary till multiband design feat is available: do not design for L band
-    reference_channel.nb_channel = min(params['nb_channel'], automatic_nch(191.2e12, 196.0e12, params['spacing']))
 
     if service_req:
         # use service_req as reference channel with si tx_power if service_req tx_power is None
         if service_req.tx_power is None:
             service_req.tx_power = params['tx_power']
-        reference_channel = service_req
+        reference_channel = deepcopy(service_req)
+    if equipment['SI']['default'].use_si_channel_count_for_design is False:
+        reference_channel.nb_channel = None
 
     design_network(reference_channel, network, equipment, set_connector_losses=True, verbose=True)
 
