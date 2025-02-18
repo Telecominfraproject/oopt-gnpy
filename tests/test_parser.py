@@ -26,7 +26,7 @@ from pandas import read_csv
 from xlrd import open_workbook
 import pytest
 from copy import deepcopy
-from gnpy.core.utils import automatic_nch, lin2db
+from gnpy.core.utils import automatic_nch, dbm2watt
 from gnpy.core.network import build_network, add_missing_elements_in_network
 from gnpy.core.exceptions import ServiceError, ConfigurationError
 from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path_dsjctn, deduplicate_disjunctions,
@@ -43,6 +43,40 @@ EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
                  "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+
+
+def pathrequest(pch_dbm: float, p_tot_dbm: float = None, nb_channels: int = None):
+    """create ref channel for defined power settings
+    """
+    params = {
+        "power": dbm2watt(pch_dbm),
+        "tx_power": dbm2watt(pch_dbm),
+        "nb_channel": nb_channels if nb_channels else round(dbm2watt(p_tot_dbm) / dbm2watt(pch_dbm), 0),
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
+    return PathRequest(**params)
 
 
 @pytest.mark.parametrize('xls_input,expected_json_output', {
@@ -83,9 +117,9 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
     # Build the network once using the default power defined in SI in eqpt config
 
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     actual_json_output = tmpdir / xls_input.with_name(xls_input.stem + '_auto_design').with_suffix('.json').name
     save_network(network, actual_json_output)
     actual = load_json(actual_json_output)
@@ -113,10 +147,10 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     # Build the network once using the default power defined in SI in eqpt config
 
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
     add_missing_elements_in_network(network, equipment)
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     actual_json_output = tmpdir / json_input.with_name(json_input.stem + '_auto_design').with_suffix('.json').name
     save_network(network, actual_json_output)
     actual = load_json(actual_json_output)
@@ -136,9 +170,9 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
     network = load_network(DATA_DIR / 'testTopology.xls', equipment)
     # Build the network once using the default power defined in SI in eqpt config
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     from_xls = read_service_sheet(xls_input, equipment, network, network_filename=DATA_DIR / 'testTopology.xls')
     assert from_xls == load_json(expected_json_output)
 
@@ -222,9 +256,9 @@ def test_json_response_generation(xls_input, expected_response_file):
     network = load_network(xls_input, equipment)
     p_db = equipment['SI']['default'].power_dbm
 
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
 
     data = read_service_sheet(xls_input, equipment, network)
     # change one of the request with bidir option to cover bidir case as well
@@ -325,8 +359,8 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     next(node for node in network.nodes() if node.uid == 'fiber (Quimper → Brest_KLA)-').length = 200000
     default_si = equipment['SI']['default']
     p_db = default_si.power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(default_si.f_min, default_si.f_max, default_si.spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(default_si.f_min, default_si.f_max, default_si.spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     # create params for a xls request based on input (note that this not the same type as PathRequest)
     params = {
         'request_id': '0',
@@ -377,8 +411,8 @@ def test_excel_ila_constraints2(route_list, hoptype, expected_amp_route):
     add_missing_elements_in_network(network, equipment)
     default_si = equipment['SI']['default']
     p_db = default_si.power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(default_si.f_min, default_si.f_max, default_si.spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(default_si.f_min, default_si.f_max, default_si.spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     # create params for a request based on input
 
     params = {
@@ -437,10 +471,10 @@ def test_target_pch_out_db_global(case):
     # power density: db2linp(ower_dbm": 0)/power_dbm": 0 * nb channels as defined by
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max,
-                                             equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max,
+                                equipment['SI']['default'].spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
 
     data = network_to_json(network)
     for elem in data['elements']:

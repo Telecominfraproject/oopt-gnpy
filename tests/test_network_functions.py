@@ -19,10 +19,11 @@ from gnpy.core.exceptions import NetworkTopologyError, ConfigurationError
 from gnpy.core.network import span_loss, build_network, select_edfa, get_node_restrictions, \
     estimate_srs_power_deviation, add_missing_elements_in_network, get_next_node
 from gnpy.tools.json_io import load_equipment, load_network, network_from_json, load_json
-from gnpy.core.utils import lin2db, watt2dbm, automatic_nch, merge_amplifier_restrictions
+from gnpy.core.utils import watt2dbm, automatic_nch, merge_amplifier_restrictions, dbm2watt
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.elements import Fiber, Edfa, Roadm, Multiband_amplifier, Transceiver
 from gnpy.core.parameters import SimParams, EdfaParams, MultiBandParams
+from gnpy.topology.request import PathRequest
 
 
 TEST_DIR = Path(__file__).parent
@@ -158,6 +159,39 @@ def in_voa_json_data(gain, delta_p, in_voa, out_voa):
         }]
     }
 
+def pathrequest(pch_dbm: float, p_tot_dbm: float = None, nb_channels: int = None):
+    """create ref channel for defined power settings
+    """
+    params = {
+        "power": dbm2watt(pch_dbm),
+        "tx_power": dbm2watt(pch_dbm),
+        "nb_channel": nb_channels if nb_channels else round(dbm2watt(p_tot_dbm) / dbm2watt(pch_dbm), 0),
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
+    return PathRequest(**params)
+
 
 @pytest.mark.parametrize('out_voa', [None, 0, 1, 2])
 @pytest.mark.parametrize('in_voa', [None, 0, 1, 2])
@@ -170,8 +204,7 @@ def test_invoa(in_voa, out_voa):
     network = network_from_json(json_data, equipment)
     # Build the network
     p_db = 0
-    p_total_db = p_db + lin2db(96)
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=96))
     [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
     [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
@@ -213,8 +246,7 @@ def test_invoa_gainmode(in_voa, out_voa):
     network = network_from_json(json_data, equipment)
     # Build the network
     p_db = 0
-    p_total_db = p_db + lin2db(96)
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=96))
     [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
     [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
@@ -253,8 +285,7 @@ def test_too_small_gain():
     network = network_from_json(json_data, equipment)
     # Build the network
     p_db = 0
-    p_total_db = p_db + lin2db(96)
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=96))
     [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
     [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
@@ -283,8 +314,7 @@ def test_invoa_nf():
     equipment['Span']['default'].power_mode = False
     network = network_from_json(json_data, equipment)
     p_db = 0
-    p_total_db = p_db + lin2db(50)
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=50))
     [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
     [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
@@ -305,8 +335,7 @@ def test_invoa_nf():
     network = network_from_json(json_data, equipment)
     # Build the network
     p_db = 0
-    p_total_db = p_db + lin2db(50)
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=50))
     [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
     [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
@@ -422,10 +451,10 @@ def test_eol(typ, expected_loss):
     equipment['Span']['default'].EOL = 1
     network = network_from_json(json_data, equipment)
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
 
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     fibers = [f for f in network.nodes() if isinstance(f, Fiber)]
     for i in range(2):
         assert fibers[i].loss == expected_loss[i]
@@ -493,7 +522,7 @@ def test_design_non_amplified_link(elem1, elem2, expected_gain, expected_delta_p
     edfa.params.out_voa_auto = True
     p_total_db = p_db + 20.0
 
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, p_total_db))
     amps = [a for a in network.nodes() if isinstance(a, Edfa)]
     for amp in amps:
         assert amp.out_voa == expected_voa
@@ -698,9 +727,9 @@ def test_design_band(case, site_type, amplifier_type, expected_design_bands, exp
     equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     roadm1 = next(n for n in network.nodes() if n.uid == 'roadm SITE1')
     assert roadm1.design_bands == expected_design_bands
     assert roadm1.per_degree_design_bands['east edfa in SITE1 to ILA1'] == expected_per_degree_design_bands
@@ -827,12 +856,12 @@ def test_multiband(case, site_type, band, expected_gain, expected_tilt, expected
     equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
 
     if sim_params:
         SimParams.set_params(load_json(TEST_DIR / 'data' / 'sim_params.json'))
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     amp2 = next(n for n in network.nodes() if n.uid == 'east edfa in ILA2')
     # restore simParams
     save_sim_params = {"raman_params": SimParams._shared_dict['raman_params'].to_json(),
@@ -991,14 +1020,14 @@ def test_insert_amp(site_type, expected_type, bands, expected_bands):
     equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     p_db = equipment['SI']['default'].power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
     add_missing_elements_in_network(network, equipment)
     if not expected_bands:
         with pytest.raises(ConfigurationError):
-            build_network(network, equipment, p_db, p_total_db)
+            build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
     else:
-        build_network(network, equipment, p_db, p_total_db)
+        build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
         roadm1 = next(n for n in network.nodes() if n.uid == 'roadm SITE1')
         amp1 = get_next_node(roadm1, network)
         assert isinstance(amp1, expected_type)

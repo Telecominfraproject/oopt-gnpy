@@ -17,7 +17,7 @@ import pytest
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.network import build_network
 from gnpy.core.exceptions import ServiceError, DisjunctionError
-from gnpy.core.utils import automatic_nch, lin2db
+from gnpy.core.utils import automatic_nch, dbm2watt
 from gnpy.core.elements import Roadm
 from gnpy.topology.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
                                    correct_json_route_list, requests_aggregation, Disjunction)
@@ -54,10 +54,37 @@ def test_setup():
     # power density : db2linp(ower_dbm': 0)/power_dbm': 0 * nb channels as defined by
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
+    params = {
+        "power": dbm2watt(p_db),
+        "tx_power": dbm2watt(p_db),
+        "nb_channel": automatic_nch(equipment['SI']['default'].f_min,
+                                    equipment['SI']['default'].f_max, equipment['SI']['default'].spacing),
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
 
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    build_network(network, equipment, PathRequest(**params))
     build_oms_list(network, equipment)
 
     return network, equipment

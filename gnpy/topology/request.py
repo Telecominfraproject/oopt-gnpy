@@ -38,13 +38,17 @@ from copy import deepcopy
 from csv import writer
 from math import ceil
 
+
 LOGGER = getLogger(__name__)
+
 
 RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type'
                            ' trx_mode nodes_list loose_list spacing power nb_channel f_min'
                            ' f_max format baud_rate OSNR penalties bit_rate'
                            ' roll_off tx_osnr min_spacing cost path_bandwidth effective_freq_slot'
                            ' equalization_offset_db, tx_power')
+
+
 DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link_diverse'
                                ' node_diverse disjunctions_req')
 
@@ -384,7 +388,6 @@ def propagate(path, req, equipment):
     path[-1].update_snr(*roadm_osnr)
     path[-1].calc_penalties(req.penalties)
     return si
-
 
 def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the

@@ -16,7 +16,7 @@ import json
 from math import ceil
 import pytest
 from gnpy.core.network import build_network
-from gnpy.core.utils import lin2db, automatic_nch
+from gnpy.core.utils import automatic_nch, dbm2watt
 from gnpy.core.elements import Roadm, Transceiver
 from gnpy.core.exceptions import ServiceError, SpectrumError
 from gnpy.topology.request import compute_path_dsjctn, find_reversed_path, deduplicate_disjunctions, PathRequest
@@ -47,14 +47,48 @@ def equipment():
     return equipment
 
 
+def pathrequest(pch_dbm, nb_channels):
+    """create ref channel for defined power settings
+    """
+    params = {
+        "power": dbm2watt(pch_dbm),
+        "tx_power": dbm2watt(pch_dbm),
+        "nb_channel": nb_channels,
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
+    return PathRequest(**params)
+
+
 @pytest.fixture()
 def setup(equipment):
     """common setup for tests: builds network, equipment and oms only once"""
     network = load_network(NETWORK_FILENAME, equipment)
     spectrum = equipment['SI']['default']
     p_db = spectrum.power_dbm
-    p_total_db = p_db + lin2db(automatic_nch(spectrum.f_min, spectrum.f_max, spectrum.spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(spectrum.f_min, spectrum.f_max, spectrum.spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels))
     oms_list = build_oms_list(network, equipment)
     return network, oms_list
 

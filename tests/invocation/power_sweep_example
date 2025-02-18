@@ -6,7 +6,7 @@ There are 4 fiber spans over 200 km between trx Brest_KLA and trx Rennes_STA
 Now propagating between trx Brest_KLA and trx Rennes_STA:
 Reference used for design: (Input optical power reference in span = 3.00dBm,
                             spacing = 50.00GHz
-                            nb_channels = 95)
+                            nb_channels = None)
 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
