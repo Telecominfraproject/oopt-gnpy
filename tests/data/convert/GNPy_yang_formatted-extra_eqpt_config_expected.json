@@ -1,0 +1,37 @@
+{
+  "gnpy-eqpt-config:equipment": {
+    "Transceiver": [
+      {
+        "type_variety": "ZR400G",
+        "frequency": {
+          "min": "191350000000000.0",
+          "max": "196100000000000.0"
+        },
+        "mode": [
+          {
+            "format": "400G",
+            "baud_rate": "60000000000.0",
+            "OSNR": "24.0",
+            "bit_rate": "400000000000.0",
+            "roll_off": "0.2",
+            "tx_osnr": "38.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          }
+        ]
+      }
+    ],
+    "Edfa": [
+      {
+        "type_variety": "user_defined_default_amplifier",
+        "type_def": "advanced_model",
+        "gain_flatmax": "25.0",
+        "gain_min": "15.0",
+        "p_max": "21.0",
+        "advanced_config_from_json": "default_edfa_config.json",
+        "out_voa_auto": false,
+        "allowed_for_design": false
+      }
+    ]
+  }
+}
