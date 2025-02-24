@@ -52,8 +52,8 @@
       "explicit-route-objects": {
         "route-object-include-exclude": [
           {
-            "explicit-route-usage": "route-include-ero",
             "index": 0,
+            "explicit-route-usage": "route-include-ero",
             "num-unnum-hop": {
               "node-id": "roadm Brest_KLA",
               "link-tp-id": "link-tp-id is not used",
@@ -61,8 +61,8 @@
             }
           },
           {
-            "explicit-route-usage": "route-include-ero",
             "index": 1,
+            "explicit-route-usage": "route-include-ero",
             "num-unnum-hop": {
               "node-id": "roadm Lannion_CAS",
               "link-tp-id": "link-tp-id is not used",
@@ -70,8 +70,8 @@
             }
           },
           {
-            "explicit-route-usage": "route-include-ero",
             "index": 2,
+            "explicit-route-usage": "route-include-ero",
             "num-unnum-hop": {
               "node-id": "roadm Lorient_KMA",
               "link-tp-id": "link-tp-id is not used",
@@ -79,8 +79,8 @@
             }
           },
           {
-            "explicit-route-usage": "route-include-ero",
             "index": 3,
+            "explicit-route-usage": "route-include-ero",
             "num-unnum-hop": {
               "node-id": "roadm Vannes_KBE",
               "link-tp-id": "link-tp-id is not used",
