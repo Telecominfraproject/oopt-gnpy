@@ -23,7 +23,7 @@
             "allowed_for_design": true
         },
         {
-            "type_variety": "std_low_gain",
+            "type_variety": "std_low_gain_reduced",
             "type_def": "variable_gain",
             "gain_flatmax": 16,
             "gain_min": 8,
@@ -295,7 +295,7 @@
             "allowed_for_design": true
         },
         {
-            "type_variety": "std_low_gain_multiband_reduced",
+            "type_variety": "std_low_gain_multiband_reduced_bis",
             "type_def": "multi_band",
             "amplifiers": [
                 "std_low_gain_bis",

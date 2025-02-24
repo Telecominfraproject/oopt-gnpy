@@ -1,0 +1,3644 @@
+{
+  "gnpy-network-topology:topology": {
+    "elements": [
+      {
+        "uid": "trx Lannion_CAS",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.0,
+            "city": "Lannion_CAS",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "trx Lorient_KMA",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.0,
+            "city": "Lorient_KMA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "trx Vannes_KBE",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 4.0,
+            "city": "Vannes_KBE",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "trx Rennes_STA",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 0.0,
+            "city": "Rennes_STA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "trx Brest_KLA",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "city": "Brest_KLA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "trx a",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 0.0,
+            "city": "a",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "trx b",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 0.0,
+            "city": "b",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "trx c",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 1.0,
+            "city": "c",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "trx d",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 4.0,
+            "city": "d",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "trx e",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 4.0,
+            "city": "e",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "trx f",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.0,
+            "city": "f",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "trx g",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 3.0,
+            "city": "g",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "trx h",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 2.0,
+            "city": "h",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "roadm Lannion_CAS",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in Lannion_CAS to Corlay",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in Lannion_CAS to Stbrieuc",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in Lannion_CAS to Morlaix",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.0,
+            "city": "Lannion_CAS",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "roadm Lorient_KMA",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in Lorient_KMA to Loudeac",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in Lorient_KMA to Vannes_KBE",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in Lorient_KMA to Quimper",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.0,
+            "city": "Lorient_KMA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "roadm Vannes_KBE",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in Vannes_KBE to Lorient_KMA",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in Vannes_KBE to Ploermel",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 4.0,
+            "city": "Vannes_KBE",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "roadm Rennes_STA",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in Rennes_STA to Stbrieuc",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in Rennes_STA to Ploermel",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 0.0,
+            "city": "Rennes_STA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "roadm Brest_KLA",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in Brest_KLA to Morlaix",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in Brest_KLA to Quimper",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "city": "Brest_KLA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "roadm a",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": [
+              "std_booster"
+            ]
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in a to b",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in a to c",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 0.0,
+            "city": "a",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "roadm b",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [
+              "std_low_gain"
+            ],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in b to a",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in b to f",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 0.0,
+            "city": "b",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "roadm c",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in c to a",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in c to d",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in c to f",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 1.0,
+            "city": "c",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "roadm d",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in d to c",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in d to e",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 4.0,
+            "city": "d",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "roadm e",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in e to d",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in e to g",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 4.0,
+            "city": "e",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "roadm f",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in f to c",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in f to b",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in f to h",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.0,
+            "city": "f",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "roadm g",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in g to e",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in g to h",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 3.0,
+            "city": "g",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "roadm h",
+        "type": "Roadm",
+        "type_variety": "default",
+        "params": {
+          "target_pch_out_db": -20.0,
+          "restrictions": {
+            "preamp_variety_list": [],
+            "booster_variety_list": []
+          },
+          "per_degree_power_targets": [
+            {
+              "degree_uid": "east edfa in h to f",
+              "per_degree_pch_out_db": -20.0
+            },
+            {
+              "degree_uid": "east edfa in h to g",
+              "per_degree_pch_out_db": -20.0
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 2.0,
+            "city": "h",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west fused spans in Corlay",
+        "type": "Fused",
+        "params": {
+          "loss": 1.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 1.0,
+            "city": "Corlay",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west fused spans in Loudeac",
+        "type": "Fused",
+        "params": {
+          "loss": 1.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 2.0,
+            "city": "Loudeac",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west fused spans in Morlaix",
+        "type": "Fused",
+        "params": {
+          "loss": 1.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 1.0,
+            "longitude": 0.0,
+            "city": "Morlaix",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east fused spans in Corlay",
+        "type": "Fused",
+        "params": {
+          "loss": 1.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 1.0,
+            "city": "Corlay",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east fused spans in Loudeac",
+        "type": "Fused",
+        "params": {
+          "loss": 1.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 2.0,
+            "city": "Loudeac",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east fused spans in Morlaix",
+        "type": "Fused",
+        "params": {
+          "loss": 1.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 1.0,
+            "longitude": 0.0,
+            "city": "Morlaix",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "fiber (Lannion_CAS → Corlay)-F061",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 20.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Corlay → Loudeac)-F010",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 50.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 1.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Loudeac → Lorient_KMA)-F054",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 60.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 2.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 10.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 8.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Lannion_CAS → Stbrieuc)-F056",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 60.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Stbrieuc → Rennes_STA)-F057",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 65.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 3.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Lannion_CAS → Morlaix)-F059",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 40.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 1.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Morlaix → Brest_KLA)-F060",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 35.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Brest_KLA → Quimper)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 75.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 1.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Quimper → Lorient_KMA)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 70.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 1.0,
+            "longitude": 3.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Ploermel → Vannes_KBE)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 50.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 3.0,
+            "longitude": 4.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Ploermel → Rennes_STA)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 55.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 2.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (a → b)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 30.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 4.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (a → c)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 30.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 4.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 0.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (c → d)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 10.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 2.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (c → f)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 60.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.5,
+            "longitude": 1.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (b → f)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 70.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 0.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (e → d)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 80.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.5,
+            "longitude": 4.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (e → g)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 90.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 3.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (f → h)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 100.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (h → g)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 110.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 2.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Corlay → Lannion_CAS)-F061",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 20.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Loudeac → Corlay)-F010",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 50.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 1.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Lorient_KMA → Loudeac)-F054",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 60.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 2.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Vannes_KBE → Lorient_KMA)-F055",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 10.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 8.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Stbrieuc → Lannion_CAS)-F056",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 60.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Rennes_STA → Stbrieuc)-F057",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 65.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 3.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Morlaix → Lannion_CAS)-F059",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 40.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 1.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Brest_KLA → Morlaix)-F060",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 35.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Quimper → Brest_KLA)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 75.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 1.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Lorient_KMA → Quimper)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 70.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 1.0,
+            "longitude": 3.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Vannes_KBE → Ploermel)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 50.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 3.0,
+            "longitude": 4.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (Rennes_STA → Ploermel)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 55.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 2.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (b → a)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 30.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 4.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.5,
+            "longitude": 0.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (c → a)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 30.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 4.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 0.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (d → c)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 10.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 8.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 2.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (f → c)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 60.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.5,
+            "longitude": 1.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (f → b)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 70.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 0.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (d → e)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 80.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.5,
+            "longitude": 4.0,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (g → e)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 90.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 3.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (h → f)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 100.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "fiber (g → h)-",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": 110.0,
+          "loss_coef": 0.2,
+          "length_units": "km",
+          "att_in": 0.0,
+          "con_in": 0.0,
+          "con_out": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 2.5,
+            "city": [
+              null
+            ],
+            "region": [
+              null
+            ]
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Lannion_CAS to Corlay",
+        "type": "Edfa",
+        "type_variety": "test",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.0,
+            "city": "Lannion_CAS",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Lannion_CAS to Stbrieuc",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.0,
+            "city": "Lannion_CAS",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Lannion_CAS to Morlaix",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 20.5,
+          "delta_p": 0.5,
+          "tilt_target": -1.0,
+          "out_voa": 0.5
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.0,
+            "city": "Lannion_CAS",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Lorient_KMA to Vannes_KBE",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.0,
+            "city": "Lorient_KMA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Lorient_KMA to Loudeac",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.0,
+            "city": "Lorient_KMA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Lorient_KMA to Quimper",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.0,
+            "city": "Lorient_KMA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Vannes_KBE to Lorient_KMA",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 4.0,
+            "city": "Vannes_KBE",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Vannes_KBE to Ploermel",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 4.0,
+            "city": "Vannes_KBE",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Stbrieuc to Rennes_STA",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "gain_target": 12.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 3.0,
+            "longitude": 0.0,
+            "city": "Stbrieuc",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Rennes_STA to Stbrieuc",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 0.0,
+            "city": "Rennes_STA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Rennes_STA to Ploermel",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 0.0,
+            "city": "Rennes_STA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Brest_KLA to Morlaix",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "city": "Brest_KLA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Brest_KLA to Quimper",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "city": "Brest_KLA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Quimper to Lorient_KMA",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 15.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 3.0,
+            "city": "Quimper",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in Ploermel to Vannes_KBE",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 11.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 4.0,
+            "city": "Ploermel",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in a to b",
+        "type": "Edfa",
+        "type_variety": "std_booster",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 0.0,
+            "city": "a",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in a to c",
+        "type": "Edfa",
+        "type_variety": "std_booster",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 0.0,
+            "city": "a",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in b to a",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 0.0,
+            "city": "b",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in b to f",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 0.0,
+            "city": "b",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in c to a",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 1.0,
+            "city": "c",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in c to d",
+        "type": "Fused",
+        "params": {
+          "loss": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 1.0,
+            "city": "c",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in c to f",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 1.0,
+            "city": "c",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in d to c",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 4.0,
+            "city": "d",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in d to e",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 4.0,
+            "city": "d",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in f to c",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.0,
+            "city": "f",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in f to b",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.0,
+            "city": "f",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in f to h",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.0,
+            "city": "f",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in e to d",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 4.0,
+            "city": "e",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in e to g",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 4.0,
+            "city": "e",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in g to e",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 3.0,
+            "city": "g",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in g to h",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 3.0,
+            "city": "g",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in h to f",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 2.0,
+            "city": "h",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "east edfa in h to g",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 2.0,
+            "city": "h",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Lannion_CAS to Corlay",
+        "type": "Edfa",
+        "type_variety": "test",
+        "operational": {
+          "gain_target": 28.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.0,
+            "city": "Lannion_CAS",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Lannion_CAS to Stbrieuc",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 12.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.0,
+            "city": "Lannion_CAS",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Lannion_CAS to Morlaix",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 16.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 0.0,
+            "city": "Lannion_CAS",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Lorient_KMA to Vannes_KBE",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.0,
+            "city": "Lorient_KMA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Lorient_KMA to Loudeac",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "gain_target": 28.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.0,
+            "city": "Lorient_KMA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Lorient_KMA to Quimper",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 14.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 3.0,
+            "city": "Lorient_KMA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Vannes_KBE to Lorient_KMA",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 4.0,
+            "city": "Vannes_KBE",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Vannes_KBE to Ploermel",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 2.0,
+            "longitude": 4.0,
+            "city": "Vannes_KBE",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Stbrieuc to Rennes_STA",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 13.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 3.0,
+            "longitude": 0.0,
+            "city": "Stbrieuc",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Rennes_STA to Stbrieuc",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 13.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 0.0,
+            "city": "Rennes_STA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Rennes_STA to Ploermel",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 11.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 0.0,
+            "city": "Rennes_STA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Brest_KLA to Morlaix",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 16.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "city": "Brest_KLA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Brest_KLA to Quimper",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 15.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "city": "Brest_KLA",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Quimper to Lorient_KMA",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 14.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 0.0,
+            "longitude": 3.0,
+            "city": "Quimper",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in Ploermel to Vannes_KBE",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 4.0,
+            "longitude": 4.0,
+            "city": "Ploermel",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in a to b",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 0.0,
+            "city": "a",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in a to c",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 0.0,
+            "city": "a",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in b to a",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 0.0,
+            "city": "b",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in b to f",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 14.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 0.0,
+            "city": "b",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in c to a",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 1.0,
+            "city": "c",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in c to d",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 10.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 1.0,
+            "city": "c",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in c to f",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 12.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 1.0,
+            "city": "c",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in d to c",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 22.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 4.0,
+            "city": "d",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in d to e",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 16.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 6.0,
+            "longitude": 4.0,
+            "city": "d",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in f to c",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 12.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.0,
+            "city": "f",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in f to b",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 14.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.0,
+            "city": "f",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in f to h",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 1.0,
+            "city": "f",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in e to d",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 16.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 4.0,
+            "city": "e",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in e to g",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 18.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 4.0,
+            "city": "e",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in g to e",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": 18.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 3.0,
+            "city": "g",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in g to h",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 22.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 3.0,
+            "city": "g",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in h to f",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 20.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 2.0,
+            "city": "h",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "west edfa in h to g",
+        "type": "Edfa",
+        "type_variety": "test_fixed_gain",
+        "operational": {
+          "gain_target": 22.0,
+          "delta_p": 0,
+          "tilt_target": 0,
+          "out_voa": 0.0
+        },
+        "metadata": {
+          "location": {
+            "latitude": 5.0,
+            "longitude": 2.0,
+            "city": "h",
+            "region": ""
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from_node": "trx Lannion_CAS",
+        "to_node": "roadm Lannion_CAS"
+      },
+      {
+        "from_node": "trx Lorient_KMA",
+        "to_node": "roadm Lorient_KMA"
+      },
+      {
+        "from_node": "trx Vannes_KBE",
+        "to_node": "roadm Vannes_KBE"
+      },
+      {
+        "from_node": "trx Rennes_STA",
+        "to_node": "roadm Rennes_STA"
+      },
+      {
+        "from_node": "trx Brest_KLA",
+        "to_node": "roadm Brest_KLA"
+      },
+      {
+        "from_node": "trx a",
+        "to_node": "roadm a"
+      },
+      {
+        "from_node": "trx b",
+        "to_node": "roadm b"
+      },
+      {
+        "from_node": "trx c",
+        "to_node": "roadm c"
+      },
+      {
+        "from_node": "trx d",
+        "to_node": "roadm d"
+      },
+      {
+        "from_node": "trx e",
+        "to_node": "roadm e"
+      },
+      {
+        "from_node": "trx f",
+        "to_node": "roadm f"
+      },
+      {
+        "from_node": "trx g",
+        "to_node": "roadm g"
+      },
+      {
+        "from_node": "trx h",
+        "to_node": "roadm h"
+      },
+      {
+        "from_node": "roadm Lannion_CAS",
+        "to_node": "east edfa in Lannion_CAS to Corlay"
+      },
+      {
+        "from_node": "roadm Lannion_CAS",
+        "to_node": "east edfa in Lannion_CAS to Stbrieuc"
+      },
+      {
+        "from_node": "roadm Lannion_CAS",
+        "to_node": "east edfa in Lannion_CAS to Morlaix"
+      },
+      {
+        "from_node": "roadm Lannion_CAS",
+        "to_node": "trx Lannion_CAS"
+      },
+      {
+        "from_node": "roadm Lorient_KMA",
+        "to_node": "east edfa in Lorient_KMA to Loudeac"
+      },
+      {
+        "from_node": "roadm Lorient_KMA",
+        "to_node": "east edfa in Lorient_KMA to Vannes_KBE"
+      },
+      {
+        "from_node": "roadm Lorient_KMA",
+        "to_node": "east edfa in Lorient_KMA to Quimper"
+      },
+      {
+        "from_node": "roadm Lorient_KMA",
+        "to_node": "trx Lorient_KMA"
+      },
+      {
+        "from_node": "roadm Vannes_KBE",
+        "to_node": "east edfa in Vannes_KBE to Lorient_KMA"
+      },
+      {
+        "from_node": "roadm Vannes_KBE",
+        "to_node": "east edfa in Vannes_KBE to Ploermel"
+      },
+      {
+        "from_node": "roadm Vannes_KBE",
+        "to_node": "trx Vannes_KBE"
+      },
+      {
+        "from_node": "roadm Rennes_STA",
+        "to_node": "east edfa in Rennes_STA to Stbrieuc"
+      },
+      {
+        "from_node": "roadm Rennes_STA",
+        "to_node": "east edfa in Rennes_STA to Ploermel"
+      },
+      {
+        "from_node": "roadm Rennes_STA",
+        "to_node": "trx Rennes_STA"
+      },
+      {
+        "from_node": "roadm Brest_KLA",
+        "to_node": "east edfa in Brest_KLA to Morlaix"
+      },
+      {
+        "from_node": "roadm Brest_KLA",
+        "to_node": "east edfa in Brest_KLA to Quimper"
+      },
+      {
+        "from_node": "roadm Brest_KLA",
+        "to_node": "trx Brest_KLA"
+      },
+      {
+        "from_node": "roadm a",
+        "to_node": "east edfa in a to b"
+      },
+      {
+        "from_node": "roadm a",
+        "to_node": "east edfa in a to c"
+      },
+      {
+        "from_node": "roadm a",
+        "to_node": "trx a"
+      },
+      {
+        "from_node": "roadm b",
+        "to_node": "east edfa in b to a"
+      },
+      {
+        "from_node": "roadm b",
+        "to_node": "east edfa in b to f"
+      },
+      {
+        "from_node": "roadm b",
+        "to_node": "trx b"
+      },
+      {
+        "from_node": "roadm c",
+        "to_node": "east edfa in c to a"
+      },
+      {
+        "from_node": "roadm c",
+        "to_node": "east edfa in c to d"
+      },
+      {
+        "from_node": "roadm c",
+        "to_node": "east edfa in c to f"
+      },
+      {
+        "from_node": "roadm c",
+        "to_node": "trx c"
+      },
+      {
+        "from_node": "roadm d",
+        "to_node": "east edfa in d to c"
+      },
+      {
+        "from_node": "roadm d",
+        "to_node": "east edfa in d to e"
+      },
+      {
+        "from_node": "roadm d",
+        "to_node": "trx d"
+      },
+      {
+        "from_node": "roadm e",
+        "to_node": "east edfa in e to d"
+      },
+      {
+        "from_node": "roadm e",
+        "to_node": "east edfa in e to g"
+      },
+      {
+        "from_node": "roadm e",
+        "to_node": "trx e"
+      },
+      {
+        "from_node": "roadm f",
+        "to_node": "east edfa in f to c"
+      },
+      {
+        "from_node": "roadm f",
+        "to_node": "east edfa in f to b"
+      },
+      {
+        "from_node": "roadm f",
+        "to_node": "east edfa in f to h"
+      },
+      {
+        "from_node": "roadm f",
+        "to_node": "trx f"
+      },
+      {
+        "from_node": "roadm g",
+        "to_node": "east edfa in g to e"
+      },
+      {
+        "from_node": "roadm g",
+        "to_node": "east edfa in g to h"
+      },
+      {
+        "from_node": "roadm g",
+        "to_node": "trx g"
+      },
+      {
+        "from_node": "roadm h",
+        "to_node": "east edfa in h to f"
+      },
+      {
+        "from_node": "roadm h",
+        "to_node": "east edfa in h to g"
+      },
+      {
+        "from_node": "roadm h",
+        "to_node": "trx h"
+      },
+      {
+        "from_node": "west fused spans in Corlay",
+        "to_node": "fiber (Corlay → Loudeac)-F010"
+      },
+      {
+        "from_node": "west fused spans in Loudeac",
+        "to_node": "fiber (Loudeac → Lorient_KMA)-F054"
+      },
+      {
+        "from_node": "west fused spans in Morlaix",
+        "to_node": "fiber (Morlaix → Brest_KLA)-F060"
+      },
+      {
+        "from_node": "east fused spans in Corlay",
+        "to_node": "fiber (Corlay → Lannion_CAS)-F061"
+      },
+      {
+        "from_node": "east fused spans in Loudeac",
+        "to_node": "fiber (Loudeac → Corlay)-F010"
+      },
+      {
+        "from_node": "east fused spans in Morlaix",
+        "to_node": "fiber (Morlaix → Lannion_CAS)-F059"
+      },
+      {
+        "from_node": "fiber (Lannion_CAS → Corlay)-F061",
+        "to_node": "west fused spans in Corlay"
+      },
+      {
+        "from_node": "fiber (Corlay → Loudeac)-F010",
+        "to_node": "west fused spans in Loudeac"
+      },
+      {
+        "from_node": "fiber (Loudeac → Lorient_KMA)-F054",
+        "to_node": "west edfa in Lorient_KMA to Loudeac"
+      },
+      {
+        "from_node": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+        "to_node": "west edfa in Vannes_KBE to Lorient_KMA"
+      },
+      {
+        "from_node": "fiber (Lannion_CAS → Stbrieuc)-F056",
+        "to_node": "east edfa in Stbrieuc to Rennes_STA"
+      },
+      {
+        "from_node": "fiber (Stbrieuc → Rennes_STA)-F057",
+        "to_node": "west edfa in Rennes_STA to Stbrieuc"
+      },
+      {
+        "from_node": "fiber (Lannion_CAS → Morlaix)-F059",
+        "to_node": "west fused spans in Morlaix"
+      },
+      {
+        "from_node": "fiber (Morlaix → Brest_KLA)-F060",
+        "to_node": "west edfa in Brest_KLA to Morlaix"
+      },
+      {
+        "from_node": "fiber (Brest_KLA → Quimper)-",
+        "to_node": "east edfa in Quimper to Lorient_KMA"
+      },
+      {
+        "from_node": "fiber (Quimper → Lorient_KMA)-",
+        "to_node": "west edfa in Lorient_KMA to Quimper"
+      },
+      {
+        "from_node": "fiber (Ploermel → Vannes_KBE)-",
+        "to_node": "west edfa in Vannes_KBE to Ploermel"
+      },
+      {
+        "from_node": "fiber (Ploermel → Rennes_STA)-",
+        "to_node": "west edfa in Rennes_STA to Ploermel"
+      },
+      {
+        "from_node": "fiber (a → b)-",
+        "to_node": "west edfa in b to a"
+      },
+      {
+        "from_node": "fiber (a → c)-",
+        "to_node": "west edfa in c to a"
+      },
+      {
+        "from_node": "fiber (c → d)-",
+        "to_node": "west edfa in d to c"
+      },
+      {
+        "from_node": "fiber (c → f)-",
+        "to_node": "west edfa in f to c"
+      },
+      {
+        "from_node": "fiber (b → f)-",
+        "to_node": "west edfa in f to b"
+      },
+      {
+        "from_node": "fiber (e → d)-",
+        "to_node": "west edfa in d to e"
+      },
+      {
+        "from_node": "fiber (e → g)-",
+        "to_node": "west edfa in g to e"
+      },
+      {
+        "from_node": "fiber (f → h)-",
+        "to_node": "west edfa in h to f"
+      },
+      {
+        "from_node": "fiber (h → g)-",
+        "to_node": "west edfa in g to h"
+      },
+      {
+        "from_node": "fiber (Corlay → Lannion_CAS)-F061",
+        "to_node": "west edfa in Lannion_CAS to Corlay"
+      },
+      {
+        "from_node": "fiber (Loudeac → Corlay)-F010",
+        "to_node": "east fused spans in Corlay"
+      },
+      {
+        "from_node": "fiber (Lorient_KMA → Loudeac)-F054",
+        "to_node": "east fused spans in Loudeac"
+      },
+      {
+        "from_node": "fiber (Vannes_KBE → Lorient_KMA)-F055",
+        "to_node": "west edfa in Lorient_KMA to Vannes_KBE"
+      },
+      {
+        "from_node": "fiber (Stbrieuc → Lannion_CAS)-F056",
+        "to_node": "west edfa in Lannion_CAS to Stbrieuc"
+      },
+      {
+        "from_node": "fiber (Rennes_STA → Stbrieuc)-F057",
+        "to_node": "west edfa in Stbrieuc to Rennes_STA"
+      },
+      {
+        "from_node": "fiber (Morlaix → Lannion_CAS)-F059",
+        "to_node": "west edfa in Lannion_CAS to Morlaix"
+      },
+      {
+        "from_node": "fiber (Brest_KLA → Morlaix)-F060",
+        "to_node": "east fused spans in Morlaix"
+      },
+      {
+        "from_node": "fiber (Quimper → Brest_KLA)-",
+        "to_node": "west edfa in Brest_KLA to Quimper"
+      },
+      {
+        "from_node": "fiber (Lorient_KMA → Quimper)-",
+        "to_node": "west edfa in Quimper to Lorient_KMA"
+      },
+      {
+        "from_node": "fiber (Vannes_KBE → Ploermel)-",
+        "to_node": "west edfa in Ploermel to Vannes_KBE"
+      },
+      {
+        "from_node": "fiber (Rennes_STA → Ploermel)-",
+        "to_node": "east edfa in Ploermel to Vannes_KBE"
+      },
+      {
+        "from_node": "fiber (b → a)-",
+        "to_node": "west edfa in a to b"
+      },
+      {
+        "from_node": "fiber (c → a)-",
+        "to_node": "west edfa in a to c"
+      },
+      {
+        "from_node": "fiber (d → c)-",
+        "to_node": "west edfa in c to d"
+      },
+      {
+        "from_node": "fiber (f → c)-",
+        "to_node": "west edfa in c to f"
+      },
+      {
+        "from_node": "fiber (f → b)-",
+        "to_node": "west edfa in b to f"
+      },
+      {
+        "from_node": "fiber (d → e)-",
+        "to_node": "west edfa in e to d"
+      },
+      {
+        "from_node": "fiber (g → e)-",
+        "to_node": "west edfa in e to g"
+      },
+      {
+        "from_node": "fiber (h → f)-",
+        "to_node": "west edfa in f to h"
+      },
+      {
+        "from_node": "fiber (g → h)-",
+        "to_node": "west edfa in h to g"
+      },
+      {
+        "from_node": "east edfa in Lannion_CAS to Corlay",
+        "to_node": "fiber (Lannion_CAS → Corlay)-F061"
+      },
+      {
+        "from_node": "east edfa in Lannion_CAS to Stbrieuc",
+        "to_node": "fiber (Lannion_CAS → Stbrieuc)-F056"
+      },
+      {
+        "from_node": "east edfa in Lannion_CAS to Morlaix",
+        "to_node": "fiber (Lannion_CAS → Morlaix)-F059"
+      },
+      {
+        "from_node": "east edfa in Lorient_KMA to Vannes_KBE",
+        "to_node": "fiber (Lorient_KMA → Vannes_KBE)-F055"
+      },
+      {
+        "from_node": "east edfa in Lorient_KMA to Loudeac",
+        "to_node": "fiber (Lorient_KMA → Loudeac)-F054"
+      },
+      {
+        "from_node": "east edfa in Lorient_KMA to Quimper",
+        "to_node": "fiber (Lorient_KMA → Quimper)-"
+      },
+      {
+        "from_node": "east edfa in Vannes_KBE to Lorient_KMA",
+        "to_node": "fiber (Vannes_KBE → Lorient_KMA)-F055"
+      },
+      {
+        "from_node": "east edfa in Vannes_KBE to Ploermel",
+        "to_node": "fiber (Vannes_KBE → Ploermel)-"
+      },
+      {
+        "from_node": "east edfa in Stbrieuc to Rennes_STA",
+        "to_node": "fiber (Stbrieuc → Rennes_STA)-F057"
+      },
+      {
+        "from_node": "east edfa in Rennes_STA to Stbrieuc",
+        "to_node": "fiber (Rennes_STA → Stbrieuc)-F057"
+      },
+      {
+        "from_node": "east edfa in Rennes_STA to Ploermel",
+        "to_node": "fiber (Rennes_STA → Ploermel)-"
+      },
+      {
+        "from_node": "east edfa in Brest_KLA to Morlaix",
+        "to_node": "fiber (Brest_KLA → Morlaix)-F060"
+      },
+      {
+        "from_node": "east edfa in Brest_KLA to Quimper",
+        "to_node": "fiber (Brest_KLA → Quimper)-"
+      },
+      {
+        "from_node": "east edfa in Quimper to Lorient_KMA",
+        "to_node": "fiber (Quimper → Lorient_KMA)-"
+      },
+      {
+        "from_node": "east edfa in Ploermel to Vannes_KBE",
+        "to_node": "fiber (Ploermel → Vannes_KBE)-"
+      },
+      {
+        "from_node": "east edfa in a to b",
+        "to_node": "fiber (a → b)-"
+      },
+      {
+        "from_node": "east edfa in a to c",
+        "to_node": "fiber (a → c)-"
+      },
+      {
+        "from_node": "east edfa in b to a",
+        "to_node": "fiber (b → a)-"
+      },
+      {
+        "from_node": "east edfa in b to f",
+        "to_node": "fiber (b → f)-"
+      },
+      {
+        "from_node": "east edfa in c to a",
+        "to_node": "fiber (c → a)-"
+      },
+      {
+        "from_node": "east edfa in c to d",
+        "to_node": "fiber (c → d)-"
+      },
+      {
+        "from_node": "east edfa in c to f",
+        "to_node": "fiber (c → f)-"
+      },
+      {
+        "from_node": "east edfa in d to c",
+        "to_node": "fiber (d → c)-"
+      },
+      {
+        "from_node": "east edfa in d to e",
+        "to_node": "fiber (d → e)-"
+      },
+      {
+        "from_node": "east edfa in f to c",
+        "to_node": "fiber (f → c)-"
+      },
+      {
+        "from_node": "east edfa in f to b",
+        "to_node": "fiber (f → b)-"
+      },
+      {
+        "from_node": "east edfa in f to h",
+        "to_node": "fiber (f → h)-"
+      },
+      {
+        "from_node": "east edfa in e to d",
+        "to_node": "fiber (e → d)-"
+      },
+      {
+        "from_node": "east edfa in e to g",
+        "to_node": "fiber (e → g)-"
+      },
+      {
+        "from_node": "east edfa in g to e",
+        "to_node": "fiber (g → e)-"
+      },
+      {
+        "from_node": "east edfa in g to h",
+        "to_node": "fiber (g → h)-"
+      },
+      {
+        "from_node": "east edfa in h to f",
+        "to_node": "fiber (h → f)-"
+      },
+      {
+        "from_node": "east edfa in h to g",
+        "to_node": "fiber (h → g)-"
+      },
+      {
+        "from_node": "west edfa in Lannion_CAS to Corlay",
+        "to_node": "roadm Lannion_CAS"
+      },
+      {
+        "from_node": "west edfa in Lannion_CAS to Stbrieuc",
+        "to_node": "roadm Lannion_CAS"
+      },
+      {
+        "from_node": "west edfa in Lannion_CAS to Morlaix",
+        "to_node": "roadm Lannion_CAS"
+      },
+      {
+        "from_node": "west edfa in Lorient_KMA to Vannes_KBE",
+        "to_node": "roadm Lorient_KMA"
+      },
+      {
+        "from_node": "west edfa in Lorient_KMA to Loudeac",
+        "to_node": "roadm Lorient_KMA"
+      },
+      {
+        "from_node": "west edfa in Lorient_KMA to Quimper",
+        "to_node": "roadm Lorient_KMA"
+      },
+      {
+        "from_node": "west edfa in Vannes_KBE to Lorient_KMA",
+        "to_node": "roadm Vannes_KBE"
+      },
+      {
+        "from_node": "west edfa in Vannes_KBE to Ploermel",
+        "to_node": "roadm Vannes_KBE"
+      },
+      {
+        "from_node": "west edfa in Stbrieuc to Rennes_STA",
+        "to_node": "fiber (Stbrieuc → Lannion_CAS)-F056"
+      },
+      {
+        "from_node": "west edfa in Rennes_STA to Stbrieuc",
+        "to_node": "roadm Rennes_STA"
+      },
+      {
+        "from_node": "west edfa in Rennes_STA to Ploermel",
+        "to_node": "roadm Rennes_STA"
+      },
+      {
+        "from_node": "west edfa in Brest_KLA to Morlaix",
+        "to_node": "roadm Brest_KLA"
+      },
+      {
+        "from_node": "west edfa in Brest_KLA to Quimper",
+        "to_node": "roadm Brest_KLA"
+      },
+      {
+        "from_node": "west edfa in Quimper to Lorient_KMA",
+        "to_node": "fiber (Quimper → Brest_KLA)-"
+      },
+      {
+        "from_node": "west edfa in Ploermel to Vannes_KBE",
+        "to_node": "fiber (Ploermel → Rennes_STA)-"
+      },
+      {
+        "from_node": "west edfa in a to b",
+        "to_node": "roadm a"
+      },
+      {
+        "from_node": "west edfa in a to c",
+        "to_node": "roadm a"
+      },
+      {
+        "from_node": "west edfa in b to a",
+        "to_node": "roadm b"
+      },
+      {
+        "from_node": "west edfa in b to f",
+        "to_node": "roadm b"
+      },
+      {
+        "from_node": "west edfa in c to a",
+        "to_node": "roadm c"
+      },
+      {
+        "from_node": "west edfa in c to d",
+        "to_node": "roadm c"
+      },
+      {
+        "from_node": "west edfa in c to f",
+        "to_node": "roadm c"
+      },
+      {
+        "from_node": "west edfa in d to c",
+        "to_node": "roadm d"
+      },
+      {
+        "from_node": "west edfa in d to e",
+        "to_node": "roadm d"
+      },
+      {
+        "from_node": "west edfa in f to c",
+        "to_node": "roadm f"
+      },
+      {
+        "from_node": "west edfa in f to b",
+        "to_node": "roadm f"
+      },
+      {
+        "from_node": "west edfa in f to h",
+        "to_node": "roadm f"
+      },
+      {
+        "from_node": "west edfa in e to d",
+        "to_node": "roadm e"
+      },
+      {
+        "from_node": "west edfa in e to g",
+        "to_node": "roadm e"
+      },
+      {
+        "from_node": "west edfa in g to e",
+        "to_node": "roadm g"
+      },
+      {
+        "from_node": "west edfa in g to h",
+        "to_node": "roadm g"
+      },
+      {
+        "from_node": "west edfa in h to f",
+        "to_node": "roadm h"
+      },
+      {
+        "from_node": "west edfa in h to g",
+        "to_node": "roadm h"
+      }
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "ietf-yang-library:modules-state": {
+    "module-set-id": "gnpy-library",
+    "module": [
+      {
+        "name": "gnpy-network-topology",
+        "namespace": "gnpy:gnpy-network-topology",
+        "revision": "2025-03-01",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "gnpy-path-computation",
+        "namespace": "gnpy:gnpy-path-computation",
+        "revision": "2025-01-20",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "gnpy-sim-params",
+        "namespace": "gnpy:gnpy-sim-params",
+        "revision": "2025-04-10",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "gnpy-eqpt-config",
+        "namespace": "gnpy:gnpy-eqpt",
+        "revision": "2025-05-26",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "gnpy-edfa-config",
+        "namespace": "gnpy:gnpy-edfa-config",
+        "revision": "2025-04-10",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "gnpy-sim-params",
+        "namespace": "gnpy:gnpy-sim-params",
+        "revision": "2025-04-10",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "gnpy-spectrum",
+        "namespace": "gnpy:gnpy-spectrum",
+        "revision": "2025-04-10",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-optical-impairment-topology",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-optical-impairment-topology",
+        "revision": "2024-05-21",
+        "conformance-type": "implement"
+      },
+      {
+        "name": "ietf-layer0-types",
+        "namespace": "urn:ietf:params:xml:ns:yang:ietf-layer0-types",
+        "revision": "2024-03-04",
+        "conformance-type": "implement"
+      }
+    ]
+  }
+}

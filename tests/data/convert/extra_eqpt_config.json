@@ -23,13 +23,11 @@
   "Edfa": [
     {
       "type_variety": "user_defined_default_amplifier",
-      "type_def": "variable_gain",
+      "type_def": "advanced_model",
       "gain_flatmax": 25,
       "gain_min": 15,
       "p_max": 21,
-      "nf_min": 6,
-      "nf_max": 10,
-      "default_config_from_json": "user_edfa_config.json",
+      "advanced_config_from_json": "default_edfa_config.json",
       "out_voa_auto": false,
       "allowed_for_design": false
     }
