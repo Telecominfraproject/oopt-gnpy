@@ -34,6 +34,7 @@ from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slo
 from gnpy.topology.spectrum_assignment import mvalue_to_slots
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
+from gnpy.tools.convert_legacy_yang import yang_to_legacy, legacy_to_yang
 
 
 _logger = getLogger(__name__)
@@ -433,14 +434,14 @@ def load_equipments_and_configs(equipment_filename: Path,
 def load_equipment(filename: Path, extra_configs: Dict[str, Path] = DEFAULT_EXTRA_CONFIG) -> dict:
     """Load equipment, returns equipment dict
     """
-    json_data = load_json(filename)
+    json_data = load_gnpy_json(filename)
     return _equipment_from_json(json_data, extra_configs)
 
 
 def load_initial_spectrum(filename: Path) -> dict:
     """Load spectrum to propagate, returns spectrum dict
     """
-    json_data = load_json(filename)
+    json_data = load_gnpy_json(filename)
     return _spectrum_from_json(json_data['spectrum'])
 
 
@@ -586,7 +587,7 @@ def load_network(filename: Path, equipment: dict) -> DiGraph:
     if filename.suffix.lower() in ('.xls', '.xlsx'):
         json_data = xls_to_json_data(filename)
     elif filename.suffix.lower() == '.json':
-        json_data = load_json(filename)
+        json_data = load_gnpy_json(filename)
     else:
         raise ValueError(f'unsupported topology filename extension {filename.suffix.lower()}')
     return network_from_json(json_data, equipment)
@@ -747,17 +748,33 @@ def network_to_json(network: DiGraph) -> dict:
 
 
 def load_json(filename: Path) -> dict:
-    """load json data, convert from the yang to the legacy
-    supports both legacy ang yang formatted inputs based on yang models
+    """load json data
+
+    :param filename: Path to the file to convert
+    :type filemname: Path
+    :return: json data in a dictionnary
+    :rtype: Dict
     """
     with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data
 
 
-def save_json(obj: Dict, filename: Path):
-    """Save in json format. Use yang formatted data for Topo and Services
+def load_gnpy_json(filename: Path) -> dict:
+    """load json data. It supports both legacy ang yang formatted inputs based on yang models.
+
+    :param filename: Path to the file to convert
+    :type filemname: Path
+    :return: json data in a dictionnary
+    :rtype: Dict
     """
+    return yang_to_legacy(load_json(filename))
+
+
+def save_json(obj: dict, filename: Path):
+    """Save in json format. Export yang formatted data (RFC7951)
+    """
+    data = legacy_to_yang(obj)
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
 
