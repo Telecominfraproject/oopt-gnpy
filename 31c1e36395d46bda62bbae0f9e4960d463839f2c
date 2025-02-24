@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49c819e8_91ded251",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "The documentation has been largely improved. \n\nI highlighted some typos and the need to change the unit of the reference channel absolute power from dB to dBm.",
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ca87ecf_c76fab9c",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    :return: The computed target power in dBm.\n```",
+      "range": {
+        "startLine": 151,
+        "startChar": 13,
+        "endLine": 151,
+        "endChar": 44
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c67e6ad_7793c79f",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    :param power_mode: The mode of operation for the amplifier (e.g., constant gain mode).\n```",
+      "range": {
+        "startLine": 605,
+        "startChar": 70,
+        "endLine": 605,
+        "endChar": 79
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be18c944_a20c944a",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    - If the amplifier is in constant gain mode, the output VOA optimization is not applied.\n```",
+      "range": {
+        "startLine": 615,
+        "startChar": 29,
+        "endLine": 615,
+        "endChar": 38
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15b34c80_8b1e5864",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    :param pref_total_db: The total power used for design in dBm.\n```",
+      "range": {
+        "startLine": 895,
+        "startChar": 61,
+        "endLine": 895,
+        "endChar": 63
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2953782b_c3c44b3b",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 971,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    :param pref_ch_db: Reference per channel power in dBm.\n```",
+      "range": {
+        "startLine": 971,
+        "startChar": 54,
+        "endLine": 971,
+        "endChar": 56
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08bea460_13eaf41f",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    :param pref_total_db: Reference total power in dBm.\n```",
+      "range": {
+        "startLine": 973,
+        "startChar": 51,
+        "endLine": 973,
+        "endChar": 53
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3eab5488_761ce33f",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1163,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    :param pref_ch_dbm: Reference channel power in dB.\n```\n\nIf the reference channel power represents an absolute power, it has to be expressed in dBm.",
+      "range": {
+        "startLine": 1163,
+        "startChar": 19,
+        "endLine": 1163,
+        "endChar": 21
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "668444db_b4d77941",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1163,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    :param pref_ch_db: Reference channel power in dBm.\n```",
+      "range": {
+        "startLine": 1163,
+        "startChar": 50,
+        "endLine": 1163,
+        "endChar": 52
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc2ae17d_761cd8d5",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1165,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "```suggestion\n    :param pref_total_db: Reference total power in dBm.\n```",
+      "range": {
+        "startLine": 1165,
+        "startChar": 51,
+        "endLine": 1165,
+        "endChar": 53
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "916f5cdd_ce7c177f",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "The same correction should be applied here: db --\u003e dbm.",
+      "range": {
+        "startLine": 1483,
+        "startChar": 4,
+        "endLine": 1484,
+        "endChar": 27
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e3c1705_56c069b9",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2048,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-02-24T13:56:20Z",
+      "side": 1,
+      "message": "db --\u003e dbm",
+      "range": {
+        "startLine": 2045,
+        "startChar": 4,
+        "endLine": 2048,
+        "endChar": 30
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
