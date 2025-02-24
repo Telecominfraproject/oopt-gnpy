@@ -1,0 +1,381 @@
+{
+  "gnpy-eqpt-config:equipment": {
+    "Edfa": [
+      {
+        "type_variety": "CienaDB_medium_gain",
+        "type_def": "advanced_model",
+        "gain_flatmax": "25.0",
+        "gain_min": "15.0",
+        "p_max": "21.0",
+        "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "std_medium_gain",
+        "type_def": "variable_gain",
+        "gain_flatmax": "26.0",
+        "gain_min": "15.0",
+        "p_max": "21.0",
+        "nf_min": "6.0",
+        "nf_max": "10.0",
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "std_low_gain",
+        "type_def": "variable_gain",
+        "gain_flatmax": "16.0",
+        "gain_min": "8.0",
+        "p_max": "21.0",
+        "nf_min": "7.0",
+        "nf_max": "11.0",
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "test",
+        "type_def": "variable_gain",
+        "gain_flatmax": "25.0",
+        "gain_min": "15.0",
+        "p_max": "21.0",
+        "nf_min": "5.8",
+        "nf_max": "10.0",
+        "out_voa_auto": false,
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "test_fixed_gain",
+        "type_def": "fixed_gain",
+        "gain_flatmax": "21.0",
+        "gain_min": "20.0",
+        "p_max": "21.0",
+        "nf0": "5.0",
+        "allowed_for_design": true
+      },
+      {
+        "type_variety": "std_booster",
+        "type_def": "fixed_gain",
+        "gain_flatmax": "21.0",
+        "gain_min": "20.0",
+        "p_max": "21.0",
+        "nf0": "5.0",
+        "allowed_for_design": false
+      }
+    ],
+    "Fiber": [
+      {
+        "type_variety": "SSMF",
+        "dispersion": "0.0000167",
+        "effective_area": "0.000000000083",
+        "pmd_coef": "0.000000000000001265"
+      }
+    ],
+    "Span": [
+      {
+        "power_mode": true,
+        "max_fiber_lineic_loss_for_raman": "0.25",
+        "target_extended_gain": "2.5",
+        "max_length": "150.0",
+        "length_units": "km",
+        "max_loss": "28.0",
+        "padding": "10.0",
+        "EOL": "0.0",
+        "con_in": "0.0",
+        "con_out": "0.0",
+        "delta_power_range_dict_db": {
+          "min_value": "0.0",
+          "max_value": "0.0",
+          "step": "0.5"
+        }
+      }
+    ],
+    "Roadm": [
+      {
+        "type_variety": "example_test",
+        "target_pch_out_db": "-18.0",
+        "add_drop_osnr": "35.0",
+        "pmd": "0.000000000001",
+        "pdl": "0.5",
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "roadm-path-impairments": []
+      },
+      {
+        "type_variety": "example_detailed_impairments",
+        "target_pch_out_db": "-20.0",
+        "add_drop_osnr": "35.0",
+        "pmd": "0.0",
+        "pdl": "0.0",
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "roadm-path-impairments": [
+          {
+            "roadm-path-impairments-id": 0,
+            "roadm-express-path": [
+              {
+                "frequency-range": {
+                  "lower-frequency": "191300000000000.0",
+                  "upper-frequency": "196100000000000.0"
+                },
+                "roadm-pmd": "0.0",
+                "roadm-cd": "0.0",
+                "roadm-pdl": "0.0",
+                "roadm-inband-crosstalk": "0.0",
+                "roadm-maxloss": "16.5"
+              }
+            ]
+          },
+          {
+            "roadm-path-impairments-id": 1,
+            "roadm-add-path": [
+              {
+                "frequency-range": {
+                  "lower-frequency": "191300000000000.0",
+                  "upper-frequency": "196100000000000.0"
+                },
+                "roadm-pmd": "0.0",
+                "roadm-cd": "0.0",
+                "roadm-pdl": "0.0",
+                "roadm-inband-crosstalk": "0.0",
+                "roadm-maxloss": "11.5",
+                "roadm-pmax": "2.5",
+                "roadm-osnr": "41.0",
+                "roadm-noise-figure": "23.0"
+              },
+              {
+                "frequency-range": {
+                  "lower-frequency": "186300000000000.0",
+                  "upper-frequency": "190100000000000.0"
+                },
+                "roadm-pmd": "0.0",
+                "roadm-cd": "0.0",
+                "roadm-pdl": "0.5",
+                "roadm-inband-crosstalk": "0.0",
+                "roadm-maxloss": "5.0",
+                "roadm-pmax": "0.0",
+                "roadm-osnr": "35.0",
+                "roadm-noise-figure": "6.0"
+              }
+            ]
+          },
+          {
+            "roadm-path-impairments-id": 2,
+            "roadm-drop-path": [
+              {
+                "frequency-range": {
+                  "lower-frequency": "191300000000000.0",
+                  "upper-frequency": "196100000000000.0"
+                },
+                "roadm-pmd": "0.0",
+                "roadm-cd": "0.0",
+                "roadm-pdl": "0.0",
+                "roadm-inband-crosstalk": "0.0",
+                "roadm-maxloss": "11.5",
+                "roadm-minloss": "7.5",
+                "roadm-typloss": "10.0",
+                "roadm-pmin": "-13.5",
+                "roadm-pmax": "-9.5",
+                "roadm-ptyp": "-12.0",
+                "roadm-osnr": "41.0",
+                "roadm-noise-figure": "15.0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type_variety": "default",
+        "target_pch_out_db": "-20.0",
+        "add_drop_osnr": "38.0",
+        "pmd": "0.0",
+        "pdl": "0.0",
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        }
+      },
+      {
+        "type_variety": "detailed_impairments",
+        "target_pch_out_db": "-20.0",
+        "add_drop_osnr": "35.0",
+        "pmd": "0.0",
+        "pdl": "0.0",
+        "restrictions": {
+          "preamp_variety_list": [],
+          "booster_variety_list": []
+        },
+        "roadm-path-impairments": [
+          {
+            "roadm-path-impairments-id": 0,
+            "roadm-express-path": [
+              {
+                "frequency-range": {
+                  "lower-frequency": "191300000000000.0",
+                  "upper-frequency": "196100000000000.0"
+                },
+                "roadm-pmd": "0.0",
+                "roadm-cd": "0.0",
+                "roadm-pdl": "0.0",
+                "roadm-inband-crosstalk": "0.0",
+                "roadm-maxloss": "16.5"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "SI": [
+      {
+        "type_variety": "default",
+        "f_min": "191300000000000.0",
+        "f_max": "196100000000000.0",
+        "baud_rate": "32000000000.0",
+        "spacing": "50000000000.0",
+        "power_dbm": "0.0",
+        "roll_off": "0.15",
+        "tx_osnr": "100.0",
+        "sys_margins": "0.0",
+        "use_si_channel_count_for_design": false,
+        "power_range_dict_db": {
+          "min_value": "0.0",
+          "max_value": "0.0",
+          "step": "0.5"
+        }
+      }
+    ],
+    "Transceiver": [
+      {
+        "type_variety": "vendorA_trx-type1",
+        "frequency": {
+          "min": "191350000000000.0",
+          "max": "196100000000000.0"
+        },
+        "mode": [
+          {
+            "format": "PS_SP64_1",
+            "baud_rate": "32000000000.0",
+            "OSNR": "11.0",
+            "bit_rate": "100000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "50000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "PS_SP64_2",
+            "baud_rate": "64000000000.0",
+            "OSNR": "15.0",
+            "bit_rate": "200000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 1",
+            "baud_rate": "32000000000.0",
+            "OSNR": "11.0",
+            "bit_rate": "100000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "50000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 2",
+            "baud_rate": "64000000000.0",
+            "OSNR": "15.0",
+            "bit_rate": "200000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          }
+        ]
+      },
+      {
+        "type_variety": "Voyager_16QAM",
+        "frequency": {
+          "min": "191350000000000.0",
+          "max": "196100000000000.0"
+        },
+        "mode": [
+          {
+            "format": "16QAM",
+            "baud_rate": "32000000000.0",
+            "OSNR": "19.0",
+            "bit_rate": "200000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "100.0",
+            "min_spacing": "50000000000.0",
+            "cost": "1.0"
+          }
+        ]
+      },
+      {
+        "type_variety": "Voyager",
+        "frequency": {
+          "min": "191350000000000.0",
+          "max": "196100000000000.0"
+        },
+        "mode": [
+          {
+            "format": "mode 1",
+            "baud_rate": "32000000000.0",
+            "OSNR": "12.0",
+            "bit_rate": "100000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "50000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 3",
+            "baud_rate": "44000000000.0",
+            "OSNR": "18.0",
+            "bit_rate": "300000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "62500000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 2",
+            "baud_rate": "66000000000.0",
+            "OSNR": "21.0",
+            "bit_rate": "400000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 2 - fake",
+            "baud_rate": "66000000000.0",
+            "OSNR": "21.0",
+            "bit_rate": "400000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          },
+          {
+            "format": "mode 4",
+            "baud_rate": "66000000000.0",
+            "OSNR": "16.0",
+            "bit_rate": "200000000000.0",
+            "roll_off": "0.15",
+            "tx_osnr": "45.0",
+            "min_spacing": "75000000000.0",
+            "cost": "1.0"
+          }
+        ]
+      }
+    ]
+  }
+}

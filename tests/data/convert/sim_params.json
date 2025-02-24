@@ -1,0 +1,13 @@
+{
+  "raman_params": {
+    "flag": true,
+    "result_spatial_resolution": 10e3,
+    "solver_spatial_resolution": 10e3
+  },
+  "nli_params": {
+    "method": "ggn_spectrally_separated",
+    "dispersion_tolerance": 1,
+    "phase_shift_tolerance": 0.1,
+    "computed_channels": [1, 18, 37, 56, 75]
+  }
+}

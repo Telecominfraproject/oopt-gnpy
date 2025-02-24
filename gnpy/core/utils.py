@@ -488,6 +488,109 @@ def unique_ordered(elements):
     return unique_elements
 
 
+def convert_empty_to_none(json_data: Union[list, dict]) -> dict:
+    """Convert all instances of "a": [None] into "a": None
+
+    :param json_data: the input data.
+    :type json_data: dict
+    :return: the converted data.
+    :rtype: dict
+
+    >>> json_data = {
+    ...     "uid": "[east edfa in Lannion",
+    ...     "type_variety": "multiband_booster",
+    ...     "metadata": {
+    ...         "location": {
+    ...             "latitude": 0.000000,
+    ...             "longitude": 0.000000,
+    ...             "city": "Zion",
+    ...             "region": ""
+    ...         }
+    ...     },
+    ...     "type": "Multiband_amplifier",
+    ...     "amplifiers": [{
+    ...             "type_variety": "multiband_booster_LOW_C",
+    ...             "operational": {
+    ...                 "gain_target": 12.22,
+    ...                 "delta_p": 4.19,
+    ...                 "out_voa": [None],
+    ...                 "tilt_target": 0.00,
+    ...                 "f_min": 191.3,
+    ...                 "f_max": 196.1
+    ...             }
+    ...         }, {
+    ...             "type_variety": "multiband_booster_LOW_L",
+    ...             "operational": {
+    ...                 "gain_target": 12.05,
+    ...                 "delta_p": 4.19,
+    ...                 "out_voa": [None],
+    ...                 "tilt_target": 0.00,
+    ...                 "f_min": 186.1,
+    ...                 "f_max": 190.9
+    ...             }
+    ...         }
+    ...     ]
+    ... }
+    >>> convert_empty_to_none(json_data)
+    {'uid': '[east edfa in Lannion', 'type_variety': 'multiband_booster', \
+'metadata': {'location': {'latitude': 0.0, 'longitude': 0.0, 'city': 'Zion', 'region': ''}}, \
+'type': 'Multiband_amplifier', 'amplifiers': [{'type_variety': 'multiband_booster_LOW_C', \
+'operational': {'gain_target': 12.22, 'delta_p': 4.19, 'out_voa': None, 'tilt_target': 0.0, \
+'f_min': 191.3, 'f_max': 196.1}}, {'type_variety': 'multiband_booster_LOW_L', \
+'operational': {'gain_target': 12.05, 'delta_p': 4.19, 'out_voa': None, 'tilt_target': 0.0, \
+'f_min': 186.1, 'f_max': 190.9}}]}
+
+    """
+    if isinstance(json_data, dict):
+        for key, value in json_data.items():
+            json_data[key] = convert_empty_to_none(value)
+    elif isinstance(json_data, list):
+        if len(json_data) == 1 and json_data[0] is None:
+            return None
+        for i, elem in enumerate(json_data):
+            json_data[i] = convert_empty_to_none(elem)
+    return json_data
+
+
+def convert_none_to_empty(json_data: Union[list, dict]) -> dict:
+    """Convert all instances of "a": None into "a": [None], to be compliant with RFC7951.
+
+    :param json_data: the input data.
+    :type json_data: dict
+    :return: the converted data.
+    :rtype: dict
+
+    >>> a = {'uid': '[east edfa in Lannion', 'type_variety': 'multiband_booster',
+    ... 'metadata': {'location': {'latitude': 0.0, 'longitude': 0.0, 'city': 'Zion', 'region': ''}},
+    ... 'type': 'Multiband_amplifier', 'amplifiers': [{'type_variety': 'multiband_booster_LOW_C',
+    ... 'operational': {'gain_target': 12.22, 'delta_p': 4.19, 'out_voa': None, 'tilt_target': 0.0,
+    ... 'f_min': 191.3, 'f_max': 196.1}}, {'type_variety': 'multiband_booster_LOW_L',
+    ... 'operational': {'gain_target': 12.05, 'delta_p': 4.19, 'out_voa': None, 'tilt_target': 0.0,
+    ... 'f_min': 186.1, 'f_max': 190.9}}]}
+    >>> convert_none_to_empty(a)
+    {'uid': '[east edfa in Lannion', 'type_variety': 'multiband_booster', \
+'metadata': {'location': {'latitude': 0.0, 'longitude': 0.0, 'city': 'Zion', 'region': ''}}, \
+'type': 'Multiband_amplifier', 'amplifiers': [{'type_variety': 'multiband_booster_LOW_C', \
+'operational': {'gain_target': 12.22, 'delta_p': 4.19, 'out_voa': [None], 'tilt_target': 0.0, \
+'f_min': 191.3, 'f_max': 196.1}}, {'type_variety': 'multiband_booster_LOW_L', \
+'operational': {'gain_target': 12.05, 'delta_p': 4.19, 'out_voa': [None], 'tilt_target': 0.0, \
+'f_min': 186.1, 'f_max': 190.9}}]}
+
+    """
+    if json_data == [None]:
+        # already conformed
+        return json_data
+    if isinstance(json_data, dict):
+        for key, value in json_data.items():
+            json_data[key] = convert_none_to_empty(value)
+    elif isinstance(json_data, list):
+        for i, elem in enumerate(json_data):
+            json_data[i] = convert_none_to_empty(elem)
+    elif json_data is None:
+        return [None]
+    return json_data
+
+
 def calculate_absolute_min_or_zero(x: array) -> array:
     """Calculates the element-wise absolute minimum between the x and zero.
 
