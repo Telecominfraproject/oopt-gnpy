@@ -37,30 +37,7 @@ def pathrequest(pch_dbm, nb_channels):
     params = {
         "power": dbm2watt(pch_dbm),
         "tx_power": dbm2watt(pch_dbm),
-        "nb_channel": nb_channels,
-        'request_id': None,
-        'trx_type': None,
-        'trx_mode': None,
-        'source': None,
-        'destination': None,
-        'bidir': False,
-        'nodes_list': [],
-        'loose_list': [],
-        'format': '',
-        'baud_rate': None,
-        'bit_rate': None,
-        'roll_off': None,
-        'OSNR': None,
-        'penalties': None,
-        'path_bandwidth': None,
-        'effective_freq_slot': None,
-        'f_min': None,
-        'f_max': None,
-        'spacing': None,
-        'min_spacing': None,
-        'cost': None,
-        'equalization_offset_db': None,
-        'tx_osnr': None
+        "nb_channel": nb_channels
     }
     return PathRequest(**params)
 

@@ -58,30 +58,7 @@ def test_setup():
         "power": dbm2watt(p_db),
         "tx_power": dbm2watt(p_db),
         "nb_channel": automatic_nch(equipment['SI']['default'].f_min,
-                                    equipment['SI']['default'].f_max, equipment['SI']['default'].spacing),
-        'request_id': None,
-        'trx_type': None,
-        'trx_mode': None,
-        'source': None,
-        'destination': None,
-        'bidir': False,
-        'nodes_list': [],
-        'loose_list': [],
-        'format': '',
-        'baud_rate': None,
-        'bit_rate': None,
-        'roll_off': None,
-        'OSNR': None,
-        'penalties': None,
-        'path_bandwidth': None,
-        'effective_freq_slot': None,
-        'f_min': None,
-        'f_max': None,
-        'spacing': None,
-        'min_spacing': None,
-        'cost': None,
-        'equalization_offset_db': None,
-        'tx_osnr': None
+                                    equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
     }
 
     build_network(network, equipment, PathRequest(**params))

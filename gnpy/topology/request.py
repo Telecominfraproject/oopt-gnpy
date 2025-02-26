@@ -23,6 +23,9 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 from collections import namedtuple, OrderedDict
 from typing import List
 from logging import getLogger
+from copy import deepcopy
+from csv import writer
+from math import ceil
 from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
@@ -37,20 +40,23 @@ from gnpy.core.exceptions import ServiceError, DisjunctionError
 from copy import deepcopy
 from csv import DictWriter
 from math import ceil, isinf
+from gnpy.topology.topology_parameters import RequestParams, DisjunctionParams
 
 
 LOGGER = getLogger(__name__)
 
 
-RequestParams = namedtuple('RequestParams', 'request_id source destination bidir trx_type'
-                           ' trx_mode nodes_list loose_list spacing power nb_channel f_min'
-                           ' f_max format baud_rate OSNR penalties bit_rate'
-                           ' roll_off tx_osnr min_spacing cost path_bandwidth effective_freq_slot'
-                           ' equalization_offset_db, tx_power')
-
-
-DisjunctionParams = namedtuple('DisjunctionParams', 'disjunction_id relaxable link_diverse'
-                               ' node_diverse disjunctions_req')
+# string definitions for the import/export of values from json and printings
+PDL_PENALTY_STRING = 'PDL_penalty'
+PMD_PENALTY_STRING = 'PMD_penalty'
+CD_PENALTY_STRING = 'CD_penalty'
+LOWER_SNR_STRING = 'lowest_SNR-0.1nm'
+SNR_BW_STRING = 'SNR-bandwidth'
+SNR_01NM_STRING = 'SNR-0.1nm'
+OSNR_BW_STRING = 'OSNR-bandwidth'
+OSNR_01NM_STRING = 'OSNR-0.1nm'
+REF_POWER_STRING = 'reference_power'
+PATH_BW_STRING = 'path_bandwidth'
 
 # string definitions for the import/export of values from json and printings
 PDL_PENALTY_STRING = 'PDL_penalty'
@@ -67,7 +73,7 @@ PATH_BW_STRING = 'path_bandwidth'
 
 class PathRequest:
     """the class that contains all attributes related to a request"""
-    def __init__(self, *args, **params):
+    def __init__(self, **params):
         params = RequestParams(**params)
         self.request_id = params.request_id
         self.source = params.source
@@ -132,7 +138,7 @@ class PathRequest:
 class Disjunction:
     """the class that contains all attributes related to disjunction constraints"""
 
-    def __init__(self, *args, **params):
+    def __init__(self, **params):
         params = DisjunctionParams(**params)
         self.disjunction_id = params.disjunction_id
         self.relaxable = params.relaxable
