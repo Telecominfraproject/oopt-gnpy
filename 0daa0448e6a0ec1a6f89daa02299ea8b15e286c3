@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "189425cc_42a335be",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-02-26T20:43:15Z",
+      "side": 1,
+      "message": "CI does not pass here: /github/workspace/gnpy/tools/json_io.py:docstring of gnpy.tools.json_io.load_eqpt_topo_from_json:10: ERROR: Unexpected indentation.",
+      "revId": "0daa0448e6a0ec1a6f89daa02299ea8b15e286c3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
