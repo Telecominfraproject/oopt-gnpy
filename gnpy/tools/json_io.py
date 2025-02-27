@@ -626,6 +626,7 @@ def network_from_json(json_data: dict, equipment: dict) -> DiGraph:
     #            too closely to the graph library
     # from networkx import node_link_graph
     g = DiGraph()
+    g.graph['network_name'] = json_data.get('network_name', None)
     for el_config in json_data['elements']:
         typ = el_config.pop('type')
         variety = el_config.pop('type_variety', 'default')
@@ -740,6 +741,8 @@ def network_to_json(network: DiGraph) -> dict:
                         for next_n in network.successors(n) if next_n is not None]
     }
     data.update(connections)
+    if network.graph['network_name']:
+        data['network_name'] = network.graph['network_name']
     return data
 
 
