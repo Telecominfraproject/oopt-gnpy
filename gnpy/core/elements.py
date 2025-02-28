@@ -891,18 +891,23 @@ class Fiber(_Node):
 
         :return Dict[str, Any]: JSON representation of the fiber.
         """
+        params = {
+            # have to specify each because namedtupple cannot be updated :(
+            'length': round(self.params.length * 1e-3, 6),
+            'loss_coef': round(self.params.loss_coef * 1e3, 6),
+            'length_units': 'km',
+            'att_in': self.params.att_in,
+            'con_in': self.params.con_in,
+            'con_out': self.params.con_out
+        }
+        # Export pmd_coef only if it is not a default from library.
+        if self.params.pmd_coef_defined:
+            params['pmd_coef'] = self.params.pmd_coef
+
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'type_variety': self.type_variety,
-                'params': {
-                    # have to specify each because namedtupple cannot be updated :(
-                    'length': round(self.params.length * 1e-3, 6),
-                    'loss_coef': round(self.params.loss_coef * 1e3, 6),
-                    'length_units': 'km',
-                    'att_in': self.params.att_in,
-                    'con_in': self.params.con_in,
-                    'con_out': self.params.con_out
-                },
+                'params': params,
                 'metadata': {
                     'location': self.metadata['location']._asdict()
                 }
@@ -1025,7 +1030,7 @@ class Fiber(_Node):
             else:
                 wavelength = c / frequency
                 dispersion = self.params.dispersion + self.params.dispersion_slope * \
-                             (wavelength - c / self.params.f_dispersion_ref)
+                             (wavelength - c / self.params.f_dispersion_ref)  # noqa E127
         beta2 = -((c / frequency) ** 2 * dispersion) / (2 * pi * c)
         return beta2
 
@@ -1048,7 +1053,7 @@ class Fiber(_Node):
                 dispersion_slope = self.params.dispersion_slope
                 beta2 = self.beta2(frequency)
                 beta3 = (dispersion_slope - (4 * pi * frequency ** 3 / c ** 2) * beta2) / (
-                            2 * pi * frequency ** 2 / c) ** 2
+                            2 * pi * frequency ** 2 / c) ** 2  # noqa E127
         return beta3
 
     def gamma(self, frequency=None):

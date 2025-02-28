@@ -33,7 +33,7 @@ from xlrd.sheet import Sheet
 from xlrd.biffh import XLRDError
 from networkx import DiGraph
 
-from gnpy.core.utils import silent_remove, transform_data
+from gnpy.core.utils import silent_remove, transform_data, convert_pmd_lineic
 from gnpy.core.exceptions import NetworkTopologyError
 from gnpy.core.elements import Edfa, Fused, Fiber
 
@@ -170,7 +170,7 @@ class Link:
         'east_lineic': 0.2,
         'east_con_in': None,
         'east_con_out': None,
-        'east_pmd': 0.1,
+        'east_pmd': None,
         'east_cable': ''
     }
 
@@ -636,7 +636,63 @@ def create_west_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict
     return eqpt
 
 
-def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> dict:
+def create_east_fiber_element(fiber: Node, nodes_by_city: Dict[str, Node]) -> Dict:
+    """Create fibers json elements for the east direction.
+
+    :param fiber: The Node object representing the equipment.
+    :type fiber: Node
+    :param nodes_by_city: A dictionary mapping city names to Node objects.
+    :type nodes_by_city: Dict[str, Node]
+    :return: A dictionary representing the west equipment element in JSON format.
+    :rtype: Dict
+    """
+    fiber_dict = {
+        'uid': f'fiber ({fiber.from_city} \u2192 {fiber.to_city})-{fiber.east_cable}',
+        'metadata': {'location': midpoint(nodes_by_city[fiber.from_city],
+                                          nodes_by_city[fiber.to_city])},
+        'type': 'Fiber',
+        'type_variety': fiber.east_fiber,
+        'params': {
+            'length': round(fiber.east_distance, 3),
+            'length_units': fiber.distance_units,
+            'loss_coef': fiber.east_lineic,
+            'con_in': fiber.east_con_in,
+            'con_out': fiber.east_con_out
+        }
+    }
+    if fiber.east_pmd:
+        fiber_dict['params']['pmd_coef'] = convert_pmd_lineic(fiber.east_pmd, fiber.east_distance, fiber.distance_units)
+    return fiber_dict
+
+
+def create_west_fiber_element(fiber: Node, nodes_by_city: Dict[str, Node]) -> Dict:
+    """Create fibers json elements for the west direction.
+
+    :param fiber: The Node object representing the equipment.
+    :type fiber: Node
+    :param nodes_by_city: A dictionary mapping city names to Node objects.
+    :type nodes_by_city: Dict[str, Node]
+    :return: A dictionary representing the west equipment element in JSON format.
+    :rtype: Dict
+    """
+    fiber_dict = {
+        'uid': f'fiber ({fiber.to_city} \u2192 {fiber.from_city})-{fiber.west_cable}',
+        'metadata': {'location': midpoint(nodes_by_city[fiber.from_city],
+                                          nodes_by_city[fiber.to_city])},
+        'type': 'Fiber',
+        'type_variety': fiber.west_fiber,
+        'params': {'length': round(fiber.west_distance, 3),
+                   'length_units': fiber.distance_units,
+                   'loss_coef': fiber.west_lineic,
+                   'con_in': fiber.west_con_in,
+                   'con_out': fiber.west_con_out}
+    }
+    if fiber.west_pmd:
+        fiber_dict['params']['pmd_coef'] = convert_pmd_lineic(fiber.west_pmd, fiber.west_distance, fiber.distance_units)
+    return fiber_dict
+
+
+def xls_to_json_data(input_filename: Path, filter_region: list[str] = None) -> dict:
     """Read the Excel sheets and produce the JSON dict in GNPy format (legacy).
 
     :param input_filename: The path to the input XLS file.
@@ -698,29 +754,8 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> d
                                           'longitude': x.longitude}},
                 'type': 'Fused'}
                for x in nodes_by_city.values() if x.node_type.lower() == 'fused']
-            + [{'uid': f'fiber ({x.from_city} \u2192 {x.to_city})-{x.east_cable}',
-                'metadata': {'location': midpoint(nodes_by_city[x.from_city],
-                                                  nodes_by_city[x.to_city])},
-                'type': 'Fiber',
-                'type_variety': x.east_fiber,
-                'params': {'length': round(x.east_distance, 3),
-                           'length_units': x.distance_units,
-                           'loss_coef': x.east_lineic,
-                           'con_in': x.east_con_in,
-                           'con_out': x.east_con_out}
-                }
-               for x in links]
-            + [{'uid': f'fiber ({x.to_city} \u2192 {x.from_city})-{x.west_cable}',
-                'metadata': {'location': midpoint(nodes_by_city[x.from_city],
-                                                  nodes_by_city[x.to_city])},
-                'type': 'Fiber',
-                'type_variety': x.west_fiber,
-                'params': {'length': round(x.west_distance, 3),
-                           'length_units': x.distance_units,
-                           'loss_coef': x.west_lineic,
-                           'con_in': x.west_con_in,
-                           'con_out': x.west_con_out}
-                } for x in links]
+            + [create_east_fiber_element(x, nodes_by_city) for x in links]
+            + [create_west_fiber_element(x, nodes_by_city) for x in links]
             + [{'uid': f'west edfa in {x.city}',
                 'metadata': {'location': {'city': x.city,
                                           'region': x.region,
