@@ -23,7 +23,7 @@ from gnpy.core.equipment import trx_mode_params, find_type_variety
 from gnpy.core.exceptions import ConfigurationError, EquipmentConfigError, NetworkTopologyError, ServiceError
 from gnpy.core.science_utils import estimate_nf_model
 from gnpy.core.info import Carrier
-from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt
+from gnpy.core.utils import automatic_nch, automatic_fmax, merge_amplifier_restrictions, dbm2watt, use_pmd_coef
 from gnpy.core.parameters import DEFAULT_RAMAN_COEFFICIENT, EdfaParams, MultiBandParams, DEFAULT_EDFA_CONFIG
 from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slot_vs_bandwidth, ResultElement
 from gnpy.topology.spectrum_assignment import mvalue_to_slots
@@ -687,6 +687,9 @@ def network_from_json(json_data: dict, equipment: dict) -> DiGraph:
                 if not extra_params:
                     msg = f'ROADM {el_config["uid"]}: invalid equalization settings'
                     raise ConfigurationError(msg)
+            # use temp pmd_coef if it exists else use the default one from library and keep this knowledge in
+            # pmd_coef_defined
+            use_pmd_coef(temp, extra_params)
             temp = merge_amplifier_restrictions(temp, extra_params)
             el_config['params'] = temp
             el_config['type_variety'] = variety
