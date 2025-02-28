@@ -52,7 +52,7 @@ Transceiver Site_B
   OSNR ASE (0.1nm, dB):      33.30
   OSNR ASE (signal bw, dB):  29.21
   CD (ps/nm):                1336.00
-  PMD (ps):                  0.36
+  PMD (ps):                  0.85
   PDL (dB):                  0.00
   Latency (ms):              0.39
   Actual pch out (dBm):      0.00

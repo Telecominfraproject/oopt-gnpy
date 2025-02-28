@@ -891,18 +891,23 @@ class Fiber(_Node):
 
         :return Dict[str, Any]: JSON representation of the fiber.
         """
+        params = {
+            # have to specify each because namedtupple cannot be updated :(
+            'length': round(self.params.length * 1e-3, 6),
+            'loss_coef': round(self.params.loss_coef * 1e3, 6),
+            'length_units': 'km',
+            'att_in': self.params.att_in,
+            'con_in': self.params.con_in,
+            'con_out': self.params.con_out
+        }
+        # Export pmd_coef only if it is not a default from library.
+        if self.params.pmd_coef_:
+            params['pmd_coef'] = self.params.pmd_coef
+
         return {'uid': self.uid,
                 'type': type(self).__name__,
                 'type_variety': self.type_variety,
-                'params': {
-                    # have to specify each because namedtupple cannot be updated :(
-                    'length': round(self.params.length * 1e-3, 6),
-                    'loss_coef': round(self.params.loss_coef * 1e3, 6),
-                    'length_units': 'km',
-                    'att_in': self.params.att_in,
-                    'con_in': self.params.con_in,
-                    'con_out': self.params.con_out
-                },
+                'params': params,
                 'metadata': {
                     'location': self.metadata['location']._asdict()
                 }

@@ -329,6 +329,34 @@ def merge_amplifier_restrictions(dict1, dict2):
     return copy_dict1
 
 
+def use_pmd_coef(dict1: dict, dict2: dict):
+    """If Fiber dict1 is missing the pmd_coef value then use the one of dict2.
+    In addition records that the pmd_coef was defined or not in pmd_coef_ key.
+
+    :param dict1: A dictionnary that contains pmd_coef key.
+    :type dict1: dict
+    :param dict2: Another dictionnary that contains pmd_coef key.
+    :type dict2: dict
+
+    >>> dict1 = {'a': 1, 'pmd_coef': 1.5e-15}
+    >>> dict2 = {'a': 2, 'pmd_coef': 2e-15}
+    >>> use_pmd_coef(dict1, dict2)
+    >>> dict1
+    {'a': 1, 'pmd_coef': 1.5e-15, 'pmd_coef_': 1.5e-15}
+    >>> dict1 = {'a': 1}
+    >>> use_pmd_coef(dict1, dict2)
+    >>> dict1
+    {'a': 1, 'pmd_coef_': None, 'pmd_coef': 2e-15}
+    """
+    if 'pmd_coef' in dict1 and not dict1['pmd_coef'] \
+            or ('pmd_coef' not in dict1 and 'pmd_coef' in dict2):
+        dict1['pmd_coef_'] = None
+        dict1['pmd_coef'] = dict2['pmd_coef']
+    elif 'pmd_coef' in dict1 and dict1['pmd_coef']:
+        dict1['pmd_coef_'] = dict1['pmd_coef']
+    # all other case do not need any change
+
+
 def silent_remove(this_list, elem):
     """Remove matching elements from a list without raising ValueError
 
@@ -557,4 +585,22 @@ def transform_data(data: str) -> Union[List[int], None]:
         return [int(data)]
     if isinstance(data, str):
         return [int(x) for x in data.split(' | ')]
+    return None
+
+
+def convert_pmd_lineic(pmd: Union[float, None], length: float, length_unit: str) -> Union[float, None]:
+    """Convert PMD value of the span in ps into pmd_lineic in s/sqrt(km)
+
+    :param pmd: value in ps
+    :type pmd: Union[float, None]
+    :param length: value in pkm
+    :type length: float
+    :return: lineic PMD s/sqrt(km)
+    :rtype: Union[float, None]
+
+    >>> convert_pmd_lineic(10, 0.001, 'km')
+    1e-11
+    """
+    if pmd:
+        return pmd * 1e-12 / sqrt(convert_length(length, length_unit))
     return None

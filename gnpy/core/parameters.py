@@ -343,6 +343,7 @@ class FiberParams(Parameters):
 
             # Polarization Mode Dispersion
             self._pmd_coef = kwargs['pmd_coef']  # s/sqrt(m)
+            self._pmd_coef_ = kwargs.get('pmd_coef_', kwargs['pmd_coef'])  # s/sqrt(m) or empty
 
             # Loss Coefficient
             if isinstance(kwargs['loss_coef'], dict):
@@ -427,6 +428,10 @@ class FiberParams(Parameters):
     @property
     def pmd_coef(self):
         return self._pmd_coef
+
+    @property
+    def pmd_coef_(self):
+        return self._pmd_coef_
 
     @property
     def ref_wavelength(self):
