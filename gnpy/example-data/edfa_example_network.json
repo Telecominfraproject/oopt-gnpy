@@ -23,7 +23,8 @@
         "length_units": "km",
         "att_in": 0,
         "con_in": 0.5,
-        "con_out": 0.5
+        "con_out": 0.5,
+        "pmd_coef": 3.0e-15
       },
       "metadata": {
         "location": {

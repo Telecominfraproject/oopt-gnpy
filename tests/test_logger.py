@@ -377,8 +377,8 @@ def wrong_element():
         "expected_msg": "Config error in fiber (ILA2 → ILA1): "
                         + "Fiber configurations json must include \'length_units\'. Configuration: "
                         + "{\'length\': 100.0, \'loss_coef\': 0.2, \'att_in\': 0, \'con_in\': 0, \'con_out\': 0, "
-                        + "\'type_variety\': \'SSMF\', \'dispersion\': 1.67e-05, \'effective_area\': 8.3e-11, "
-                        + "\'pmd_coef\': 1.265e-15}"
+                        + "\'pmd_coef_defined': False, \'pmd_coef\': 1.265e-15, "
+                        + "\'type_variety\': \'SSMF\', \'dispersion\': 1.67e-05, \'effective_area\': 8.3e-11}"
     })
     return data
 

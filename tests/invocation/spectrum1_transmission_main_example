@@ -101,7 +101,7 @@ Transceiver trx Lorient_KMA
   OSNR ASE (0.1nm, dB):      23.89
   OSNR ASE (signal bw, dB):  19.81
   CD (ps/nm):                2171.00
-  PMD (ps):                  0.46
+  PMD (ps):                  3.03
   PDL (dB):                  0.00
   Latency (ms):              0.64
   Actual pch out (dBm):      0.00
