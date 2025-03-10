@@ -16,6 +16,24 @@
       "message": "the test file is no more in the patch ?",
       "revId": "d7124f1327004bd518a9ba64c09254f46fe341fe",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e73a45dd_1bffed1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1038014
+      },
+      "writtenOn": "2025-03-10T14:08:54Z",
+      "side": 1,
+      "message": "yes, I had to drop since the test never pass. I will redo for a next commit",
+      "parentUuid": "7aeb9031_fe1fde66",
+      "revId": "d7124f1327004bd518a9ba64c09254f46fe341fe",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
