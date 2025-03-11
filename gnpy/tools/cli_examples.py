@@ -20,6 +20,9 @@ from pathlib import Path
 from typing import Union, List
 from math import ceil
 from numpy import mean
+import pandas as pd
+from tabulate import tabulate
+
 
 from gnpy.core import ansi_escapes
 from gnpy.core.elements import Transceiver, Fiber, RamanFiber
@@ -408,46 +411,51 @@ def path_requests_run(args=None):
         print(f'Network (after autodesign) saved to {args.save_network}')
 
     print(f'{ansi_escapes.blue}Result summary{ansi_escapes.reset}')
-    header = ['req id', '  demand', ' GSNR@bandwidth A-Z (Z-A)', ' GSNR@0.1nm A-Z (Z-A)',
-              '  Receiver minOSNR', '  mode', '  Gbit/s', '  nb of tsp pairs',
-              'N,M or blocking reason']
+    header = ['req id\n', 'demand\n', 'GSNR@bandwidth\nA-Z (Z-A)', 'GSNR@0.1nm\nA-Z (Z-A)', 'OSNR@bandwidth\nA-Z (Z-A)',
+              'OSNR@0.1nm\nA-Z (Z-A)', 'Receiver\nminOSNR', 'mode', 'Gbit/s', 'nb of \ntsp pairs',
+              'N,M or\nblocking reason']
+
     data = []
-    data.append(header)
     for i, this_p in enumerate(propagatedpths):
         rev_pth = reversed_propagatedpths[i]
+        psnrb = None
+        psnr = None
+        posnrb = None
+        posnr = None
         if rev_pth and this_p:
             psnrb = f'{round(mean(this_p[-1].snr), 2)} ({round(mean(rev_pth[-1].snr), 2)})'
             psnr = f'{round(mean(this_p[-1].snr_01nm), 2)}' +\
                 f' ({round(mean(rev_pth[-1].snr_01nm), 2)})'
+            posnrb = f'{round(mean(this_p[-1].osnr_ase), 2)} ({round(mean(rev_pth[-1].osnr_ase), 2)})'
+            posnr = f'{round(mean(this_p[-1].osnr_ase_01nm), 2)}' +\
+                f' ({round(mean(rev_pth[-1].osnr_ase_01nm), 2)})'
+
         elif this_p:
             psnrb = f'{round(mean(this_p[-1].snr), 2)}'
             psnr = f'{round(mean(this_p[-1].snr_01nm), 2)}'
+            posnrb = f'{round(mean(this_p[-1].osnr_ase), 2)}'
+            posnr = f'{round(mean(this_p[-1].osnr_ase_01nm), 2)}'
 
         try:
+            id_request = rqs[i].request_id[0:min(30, len(rqs[i].request_id))]
             if rqs[i].blocking_reason in BLOCKING_NOPATH:
-                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} :',
+                line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination} :',
                         '-', '-', '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
                         '-', '{rqs[i].blocking_reason}']
             else:
-                line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
-                        psnr, '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
+                line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
+                        psnr, posnrb, posnr, '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
                         '-', f'{rqs[i].blocking_reason}']
         except AttributeError:
-            line = [f'{rqs[i].request_id}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
-                    psnr, f'{rqs[i].OSNR + equipment["SI"]["default"].sys_margins}',
+            line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
+                    psnr, posnrb, posnr, f'{rqs[i].OSNR + equipment["SI"]["default"].sys_margins}',
                     f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
                     f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)}', f'({rqs[i].N},{rqs[i].M})']
         data.append(line)
 
-    col_width = max(len(word) for row in data for word in row[2:])   # padding
-    firstcol_width = max(len(row[0]) for row in data)   # padding
-    secondcol_width = max(len(row[1]) for row in data)   # padding
-    for row in data:
-        firstcol = ''.join(row[0].ljust(firstcol_width))
-        secondcol = ''.join(row[1].ljust(secondcol_width))
-        remainingcols = ''.join(word.center(col_width, ' ') for word in row[2:])
-        print(f'{firstcol} {secondcol} {remainingcols}')
-    print(f'{ansi_escapes.yellow}Result summary shows mean GSNR and OSNR (average over all channels){ansi_escapes.reset}')
+    df = pd.DataFrame(data, columns=header)
+    print(tabulate(df, headers='keys', tablefmt='psql', stralign='center', numalign='center', showindex=False))
+    print('Result summary shows mean GSNR and OSNR (average over all channels)')
 
     if args.output:
         result = []

@@ -17,6 +17,10 @@
 	loose-list:	[]
 ]
 [1;34;40mResult summary[0m
-req id   demand                       GSNR@bandwidth A-Z (Z-A)   GSNR@0.1nm A-Z (Z-A)        Receiver minOSNR               mode                    Gbit/s              nb of tsp pairs      N,M or blocking reason 
-0       trx Abilene to trx Albany :             9.04                     14.5                      -                      mode 3                   100.0                      -                MODE_NOT_FEASIBLE    
-[1;33;40mResult summary shows mean GSNR and OSNR (average over all channels)[0m
++----------+-----------------------------+------------------+--------------+------------------+--------------+------------+--------+----------+-------------+-------------------+
+|  req id  |           demand            |  GSNR@bandwidth  |  GSNR@0.1nm  |  OSNR@bandwidth  |  OSNR@0.1nm  |  Receiver  |  mode  |  Gbit/s  |   nb of     |      N,M or       |
+|          |                             |    A-Z (Z-A)     |  A-Z (Z-A)   |    A-Z (Z-A)     |  A-Z (Z-A)   |  minOSNR   |        |          |  tsp pairs  |  blocking reason  |
+|----------+-----------------------------+------------------+--------------+------------------+--------------+------------+--------+----------+-------------+-------------------|
+|    0     | trx Abilene to trx Albany : |       9.04       |     14.5     |       9.65       |    15.11     |     -      | mode 3 |   100    |      -      | MODE_NOT_FEASIBLE |
++----------+-----------------------------+------------------+--------------+------------------+--------------+------------+--------+----------+-------------+-------------------+
+Result summary shows mean GSNR and OSNR (average over all channels)
