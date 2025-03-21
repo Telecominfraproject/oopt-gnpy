@@ -65,6 +65,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b4cff44_d7458609",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-03-21T09:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00cb9936_38045e37",
+      "range": {
+        "startLine": 151,
+        "startChar": 13,
+        "endLine": 151,
+        "endChar": 44
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c67e6ad_7793c79f",
@@ -112,6 +136,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "218df476_fabae201",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 605,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-03-21T09:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24afd4e9_970613cb",
+      "range": {
+        "startLine": 605,
+        "startChar": 70,
+        "endLine": 605,
+        "endChar": 79
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be18c944_a20c944a",
@@ -149,6 +197,30 @@
       "side": 1,
       "message": "same comment. I have changed the text.",
       "parentUuid": "be18c944_a20c944a",
+      "range": {
+        "startLine": 615,
+        "startChar": 29,
+        "endLine": 615,
+        "endChar": 38
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "779ecd0b_d933da9c",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-03-21T09:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25d1c045_02e333de",
       "range": {
         "startLine": 615,
         "startChar": 29,
@@ -488,6 +560,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27af7497_d1487c56",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1484,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-03-21T09:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba5205df_5707b940",
+      "range": {
+        "startLine": 1483,
+        "startChar": 4,
+        "endLine": 1484,
+        "endChar": 27
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e3c1705_56c069b9",
@@ -525,6 +621,30 @@
       "side": 1,
       "message": "same comment",
       "parentUuid": "8e3c1705_56c069b9",
+      "range": {
+        "startLine": 2045,
+        "startChar": 4,
+        "endLine": 2048,
+        "endChar": 30
+      },
+      "revId": "31c1e36395d46bda62bbae0f9e4960d463839f2c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d009ffe_be633fd3",
+        "filename": "gnpy/core/network.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2048,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-03-21T09:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70f845cf_f2d35d18",
       "range": {
         "startLine": 2045,
         "startChar": 4,
