@@ -835,7 +835,7 @@ def filter_edfa_list_based_on_targets(uid: str, edfa_eqpt: dict, power_target: f
         f_min=edfa.f_min,
         f_max=edfa.f_max)
         for edfa_variety, edfa in edfa_dict.items()
-        if (edfa.allowed_for_design and edfa.raman)] \
+        if edfa.raman] \
         if raman_allowed else []
 
     # merge raman and edfa lists
