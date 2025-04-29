@@ -184,14 +184,15 @@ class Request_element(Element):
         if self.nodes_list:
             req_dictionnary['explicit-route-objects'] = {}
             temp = {'route-object-include-exclude': [
-                {'explicit-route-usage': 'route-include-ero',
-                 'index': self.nodes_list.index(node),
-                 'num-unnum-hop': {
-                     'node-id': f'{node}',
-                     'link-tp-id': 'link-tp-id is not used',
-                     'hop-type': f'{self.loose}',
-                 }
-                 }
+                {
+                    'index': self.nodes_list.index(node),
+                    'explicit-route-usage': 'route-include-ero',
+                    'num-unnum-hop': {
+                        'node-id': f'{node}',
+                        'link-tp-id': 'link-tp-id is not used',
+                        'hop-type': f'{self.loose}',
+                    }
+                }
                 for node in self.nodes_list]
             }
             req_dictionnary['explicit-route-objects'] = temp
