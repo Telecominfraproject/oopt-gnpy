@@ -162,17 +162,18 @@ def target_power(network: DiGraph, node: PASSIVE_ELEMENT_TYPES,
     ------
     - If the node is a ROADM, the function returns 0.
     - The target power is calculated based on the span loss and adjusted by the specified deviation.
+    - In theory at the optimum, the slope should be 1/3 (~0.3)
+    - the returned delta_p will be the optimum deviation with respect to the span_loss_ref.
     """
     if isinstance(node, elements.Roadm):
         return 0
 
-    SPAN_LOSS_REF = 20
-    POWER_SLOPE = 0.3
     dp_range = list(equipment['Span']['default'].delta_power_range_db)
     node_loss = span_loss(network, node, equipment) + deviation_db
 
     try:
-        dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
+        dp = round2float((node_loss - equipment['Span']['default'].span_loss_ref)
+                         * equipment['Span']['default'].power_slope, dp_range[2])
         dp = max(dp_range[0], dp)
         dp = min(dp_range[1], dp)
     except IndexError:
@@ -597,7 +598,8 @@ def find_last_node(network, node):
     return this_node
 
 
-def set_amplifier_voa(amp: elements.Edfa, power_target: float, power_mode: bool):
+def set_amplifier_voa(amp: elements.Edfa, power_target: float, power_mode: bool,
+                      voa_margin: float, voa_step: float):
     """Sets the output variable optical attenuator (VOA) for the amplifier.
 
     This function adjusts the VOA based on the target power and the operating mode
@@ -620,12 +622,11 @@ def set_amplifier_voa(amp: elements.Edfa, power_target: float, power_mode: bool)
       parameters and the target power.
     - If power_mode is False, the output VOA optimization is not applied.
     """
-    VOA_MARGIN = 1  # do not maximize the VOA optimization
     if amp.out_voa is None:
         if power_mode and amp.params.out_voa_auto:
             voa = min(amp.params.p_max - power_target,
                       amp.params.gain_flatmax - amp.effective_gain)
-            voa = max(round2float(voa, 0.5) - VOA_MARGIN, 0)
+            voa = max(round2float(voa, voa_step) - voa_margin, 0)
             amp.delta_p = amp.delta_p + voa
             amp.effective_gain = amp.effective_gain + voa
         else:
@@ -1066,7 +1067,8 @@ def set_one_amplifier(node: elements.Edfa, prev_node: ELEMENT_TYPES, next_node: 
     node.tilt_target = _tilt_target
     # if voa is not set, then set it and possibly optimize it with gain and update delta_p and
     # effective_gain values
-    set_amplifier_voa(node, power_target, power_mode)
+    set_amplifier_voa(node, power_target, power_mode,
+                      equipment['Span']['default'].voa_margin, equipment['Span']['default'].voa_step)
     # set_amplifier_voa may change delta_p in power_mode
     node._delta_p = node.delta_p if power_mode else dp
 
