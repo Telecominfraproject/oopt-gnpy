@@ -731,6 +731,30 @@ Span configuration is not a list (which may change in later releases) and the us
 |                                     |           | value is input in the topology for a        |
 |                                     |           | given Fiber.                                |
 +-------------------------------------+-----------+---------------------------------------------+
+| ``span_loss_ref``                   | (number)  | (optional) in dB. For autodesign.           |
+|                                     |           | Reference span loss value in dB, used to    |
+|                                     |           | calculate all delta_p deviations during     |
+|                                     |           | network autodesign. The default value is    |
+|                                     |           | 20dB.                                       |
++-------------------------------------+-----------+---------------------------------------------+
+| ``power_slope``                     | (number)  | (optional) Pure number. For autodesign.     |
+|                                     |           | Ratio used to compute all delta_p           |
+|                                     |           | deviations during network autodesign.       |
+|                                     |           | The default value is 0.3.                   |
++-------------------------------------+-----------+---------------------------------------------+
+| ``voa_margin``                      | (float)   | (optional) in dB. For autodesign.           |
+|                                     |           | Margin to subtract from the calculated VOA  |
+|                                     |           | during gain optimisation process, to        |
+|                                     |           | prevent maximum attenuation.                |
+|                                     |           | This creates a safety buffer.               |
+|                                     |           | Default value is 1dB.                       |
++-------------------------------------+-----------+---------------------------------------------+
+| ``voa_step``                        | (float)   | (optional) in dB. For autodesign.           |
+|                                     |           | Step size used for rounding the VOA value.  |
+|                                     |           | Ensures VOA adjustments align with hardware |
+|                                     |           | resolution.                                 |
+|                                     |           | Default value is 0.5dB.                     |
++-------------------------------------+-----------+---------------------------------------------+
 
 .. code-block:: json
 
