@@ -401,7 +401,8 @@ def test_set_out_voa():
     power_target = 19 + amp.delta_p
     power_mode = True
     amp.params.out_voa_auto = True
-    set_amplifier_voa(amp, power_target, power_mode)
+    set_amplifier_voa(amp, power_target, power_mode,
+                      voa_margin=equipment['Span']['default'].voa_margin, voa_step=equipment['Span']['default'].voa_step)
     assert amp.out_voa == 4.0
     assert amp.effective_gain == 20.0 + 4.0
     assert amp.delta_p == -3.0 + 4.0
