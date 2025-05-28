@@ -560,6 +560,9 @@ def _equipment_from_json(json_data: dict, extra_configs: Dict[str, Dict]) -> Dic
     """
     equipment = {}
     for key, entries in json_data.items():
+        # ignore library-information metadata
+        if key == 'library-information':
+            continue
         equipment[key] = {}
         for entry in entries:
             subkey = entry.get('type_variety', 'default')

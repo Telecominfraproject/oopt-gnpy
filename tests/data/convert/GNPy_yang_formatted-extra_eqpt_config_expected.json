@@ -1,5 +1,23 @@
 {
   "gnpy-eqpt-config:equipment": {
+      "library-information": {
+      "name": "extra_eqpt_config.json",
+      "content-schema": {
+        "module": ["gnpy-eqpt-config@2025-05-26"]
+      },
+      "description": [
+        "Pluggables library example"
+      ],
+      "contact": [
+        "foo@bar.com"
+      ],
+      "organization": "FOO",
+      "revision": [{
+          "date": "2025-05-26",
+          "description": "example"
+        }
+      ]
+    },
     "Transceiver": [
       {
         "type_variety": "ZR400G",

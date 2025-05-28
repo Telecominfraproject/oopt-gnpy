@@ -1,5 +1,23 @@
 {
   "gnpy-eqpt-config:equipment": {
+    "library-information": {
+      "name": "eqpt_config.json",
+      "content-schema": {
+        "module": ["gnpy-eqpt-config@2025-05-26"]
+      },
+      "description": [
+        "library example"
+      ],
+      "contact": [
+        "foo@bar.com"
+      ],
+      "organization": "FOO",
+      "revision": [{
+          "date": "2025-05-26",
+          "description": "example"
+        }
+      ]
+    },
     "Edfa": [
       {
         "type_variety": "CienaDB_medium_gain",
