@@ -1,0 +1,87 @@
+module gnpy-spectrum {
+  namespace "urn:gnpy-spectrum";
+
+  prefix spectrum;
+
+  organization
+    "Telecom Infra Project OOPT PSE Working Group";
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:esther.lerouzic@orange.com>
+    ";
+  description
+    "YANG model for gnpy network input for path computation simulation params- 2025";
+
+  revision 2025-04-10 {
+    description
+      "First yang model for spectrum option";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  list spectrum {
+    key f_min;
+    leaf f_min {
+      type decimal64 {
+        fraction-digits 1;
+      }
+      mandatory true;
+      description "
+        Define partition: f_min is the first carrier central frequency 
+        f_max is the last one. partitions must not overlap.
+        Note that the meaning of f_min and f_max is different than the one
+        in equipment_config SpectralInformation";
+    }
+    leaf f_max {
+      type decimal64 {
+        fraction-digits 1;
+      }
+      mandatory true;
+    }
+    leaf baud_rate {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      mandatory true;
+      description "Simulated baud rate.";
+    }
+    leaf slot_width {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      mandatory true;
+      description "Carrier spectrum occupation. Carriers of this partition
+      are spaced at slot_width offsets.";
+    }
+    leaf delta_pdb {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      description "Power offset compared to the reference power used for design
+      (SI block in equipment library) to be applied by ROADM to equalize the
+      carriers in this partition. Default value is 0 dB.";
+    }
+    leaf roll_off {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      description "Pure number between 0 and 1. Mandatory TX signal roll-off shape.
+      Used by Raman-aware simulation code.";
+    }
+    leaf tx_osnr {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      description "OSNR out from transponder. Default value is 40 dB.";
+    }
+    leaf tx_power_dbm {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      description "Power out from transceiver. Default value is 0 dBm";
+    }
+    leaf label {
+      type string;
+    }
+  }
+}

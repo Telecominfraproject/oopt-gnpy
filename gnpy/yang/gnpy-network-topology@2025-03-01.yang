@@ -1,0 +1,628 @@
+module gnpy-network-topology {
+  yang-version 1.1;
+  namespace "gnpy:gnpy-network-topology";
+  prefix gnpynt;
+
+  organization
+    "Telecom Infra Project OOPT PSE Working Group";
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:ahmed.triki@orange.com>
+     contact:  <mailto:esther.lerouzic@orange.com>
+    ";
+  description
+    "YANG model for gnpy network input for path computation - 2020 - candi preversion";
+
+  revision 2025-03-01 {
+    description
+      "spacing for design band and pmd_coef";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  revision 2025-01-20 {
+    description
+      "Add RamanFiber, design bands, impairments";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  revision 2024-02-21 {
+    description
+      "fix namespaces for identity-ref,
+      add roadm impairment";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+  revision 2023-02-01 {
+    description
+      "change per-degree roadm targets
+      set 6 digits for fiber length
+      set 6 digits for loss_coef
+      add type empty for con_in and con_out";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+  revision 2022-11-21 {
+    description
+      "draft for detecon - GNPy API";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+  revision 2020-10-22 {
+    description
+      "draft for experimental/2020-candi";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  identity type-element {
+    description
+      "Base identity for element type";
+  }
+
+  identity Transceiver {
+    base type-element;
+    description
+      " Transceiver element";
+  }
+
+  identity Fiber {
+    base type-element;
+    description
+      "Fiber element (unidirectional)";
+  }
+
+  identity RamanFiber {
+    base type-element;
+    description
+      "RamanFiber element (unidirectional)";
+  }
+
+  identity Roadm {
+    base type-element;
+    description
+      "Roadm element";
+  }
+
+  identity Edfa {
+    base type-element;
+    description
+      "Edfa element";
+  }
+
+  identity Fused {
+    base type-element;
+    description
+      "Fused element ; non amplified connection between two fiber spans ;
+       can be used to model optical distribution frame, or losses due to
+       connectors or fused in a span";
+  }
+
+  identity  Multiband_amplifier {
+    base type-element;
+    description
+      "Multiband_amplifier element";
+  }
+
+  identity length-unit {
+    description
+      "length unit";
+  }
+
+  identity km {
+    base length-unit;
+    description
+      "kilometers";
+  }
+
+  identity m {
+    base length-unit;
+    description
+      "meter";
+  }
+
+  typedef Coordinate {
+    type decimal64 {
+      fraction-digits 6;
+    }
+  }
+
+  identity pumping-direction {
+    description
+      "Raman pumping direction";
+  }
+
+  identity coprop {
+    base pumping-direction;
+    description
+      "forward pumping";
+  }
+
+  identity counterprop {
+    base pumping-direction;
+    description
+      "backward pumping";
+  }
+
+  typedef Coef {
+    type decimal64 {
+      fraction-digits 2;
+    }
+  }
+
+
+  grouping location-attributes {
+    container location {
+      leaf city {
+        type union {
+          type string;
+          type empty;
+        }
+        mandatory false;
+      }
+      leaf region {
+        type union {
+          type string;
+          type empty;
+        }
+        mandatory false;
+      }
+      leaf latitude {
+        type Coordinate;
+        mandatory false;
+      }
+      leaf longitude {
+        type Coordinate;
+        mandatory false;
+      }
+    }
+  }
+
+  grouping frequency_band {
+    description
+     "Used for amplifiers, for design band";
+    leaf f_min {
+      type decimal64 {
+        fraction-digits 1;
+      }
+      units "Hz";
+    }
+    leaf f_max {
+      type decimal64 {
+        fraction-digits 1;
+      }
+      units "Hz";
+    }
+  }
+
+  grouping fiber-common-params {
+    description
+      "Common attributes to fiber and raman fiber";
+    leaf length {
+      type decimal64 {
+        fraction-digits 6;
+      }
+      mandatory true;
+    }
+    leaf loss_coef {
+      type decimal64 {
+        fraction-digits 6;
+      }
+      mandatory true;
+      units db/km;
+      description "Loss coefficient of the fiber span (dB/km)";
+    }
+    leaf pmd_coef {
+      type decimal64 {
+        fraction-digits 18;
+      }
+      mandatory false;
+      units s/km^0.5;
+      description "PMD coefficient of the fiber span (s/km^0.5)";
+    }
+    list loss_coef_per_frequency {
+      key frequency;
+      leaf frequency {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units "Hz";
+      }
+      leaf value {
+        type decimal64 {
+          fraction-digits 8;
+        }
+        units "dB/km";
+      }
+    }
+    leaf length_units {
+      type identityref {
+        base length-unit;
+      }
+      mandatory true;
+    }
+    leaf att_in {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+    }
+    leaf con_in {
+      type union {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        type empty;
+      }
+      units "dB";
+    }
+    leaf con_out {
+      type union {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        type empty;
+      }
+      units "dB";
+    }
+  }
+
+  grouping raman-fiber-operational {
+    leaf temperature {
+      type decimal64 {
+          fraction-digits 2;
+      }
+    }
+    list raman_pumps {
+      key "frequency";
+      leaf power {
+        type decimal64 {
+          fraction-digits 9;
+        }
+      }
+      leaf frequency {
+        type decimal64 {
+          fraction-digits 1;
+        }
+      }
+      leaf propagation_direction {
+        type identityref {
+          base pumping-direction;
+        }
+      }
+    }
+  }
+
+  grouping edfa-params {
+      leaf gain_target {
+       type union {
+          type decimal64 {
+            fraction-digits 6;
+          }
+          type empty;
+        }
+        units "dB";
+        description
+          "gain target of the amplifier (before VOA and after att_in)";
+      }
+      leaf tilt_target {
+        type union {
+          type decimal64 {
+            fraction-digits 6;
+          }
+          type empty;
+        }
+        description
+          "..";
+      }
+      leaf out_voa {
+        type union {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          type empty;
+        }
+        units "dB";
+        description
+          "..";
+      }
+      leaf in_voa {
+        type union {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          type empty;
+        }
+        units "dB";
+        description
+          "..";
+      }
+      leaf delta_p {
+        type union {
+          type decimal64 {
+            fraction-digits 6;
+          }
+          type empty;
+        }
+        units "dB";
+        description
+          "per channel target output power delta with respect to power setting in SI";
+      }
+  }
+
+  grouping multiband-params {
+    list amplifiers {
+      key "type_variety";
+      leaf type_variety {
+        type string;
+      }
+      container operational {
+        description
+          "Operational values for the Edfa ";
+        uses edfa-params;
+        uses frequency_band;
+      }
+    }
+  }
+
+  grouping  roadm-trx-params {
+    list design_bands {
+      key "f_min";
+      uses frequency_band;
+      leaf spacing {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units "Hz";
+      }
+    }
+    list per_degree_design_bands_targets {
+      key "degree_uid";
+      leaf degree_uid {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+      }
+      list design_bands {
+        key "f_min";
+        uses frequency_band;
+        leaf spacing {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          units "Hz";
+        }
+      }
+    }
+  }
+
+  grouping roadm-params {
+    choice target_type {
+      case constant_power {
+        leaf target_pch_out_db {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          units "dBm";
+          description
+            "Target power applied on all channels out of all degrees of the ROADM";
+        }
+      }
+      case constant_psd {
+        leaf target_psd_out_mWperGHz {
+          type decimal64 {
+            fraction-digits 10;
+          }
+          units "mW/GHz";
+          description
+            "Target power spectral density applied on all channels out of all degrees of the ROADM.
+            target power is computed for each channel using this value multiplied by the baud_rate of
+            each channel in Ghz. eg target power = 0.0003125 * 32Gbauds = 0.01 mw ie -20 dBm";
+        }
+      }
+      case constant_psw {
+        leaf target_out_mWperSlotWidth {
+          type decimal64 {
+            fraction-digits 10;
+          }
+          units "mW/GHz";
+          description
+            "Target power spectral density applied on all channels out of all degrees of the ROADM.
+            target power is computed for each channel using this value multiplied by the slot width of
+            each channel in Ghz. eg target power = 0.0002 * 50GHz = 0.01 mw ie -20 dBm";
+        }
+      }
+    }
+    container restrictions {
+      leaf-list preamp_variety_list {
+        type string;
+        description 
+          "List of authorized preamp type-variety";
+      }
+      leaf-list booster_variety_list {
+        type string;
+        description 
+          "List of authorized booster type-variety";
+      }
+    }
+    list per_degree_power_targets {
+      key "degree_uid";
+      leaf degree_uid {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+      }
+      choice per_degree_target_type {
+        case constant_power {
+          leaf per_degree_pch_out_db {
+            type decimal64 {
+                fraction-digits 2;
+            }
+            units "dBm";
+            description
+              "Equalization applied on all channels on this degree.
+              This target replaces the one defined for all degrees";
+          }
+        }
+        case constant_psd {
+          leaf per_degree_psd_out_mWperGHz {
+            type decimal64 {
+              fraction-digits 10;
+            }
+            units "mW/GHz";
+            description
+              "Equalization applied on all channels on this degree.
+              This target replaces the one defined for all degrees";
+          }
+        }
+        case constant_psw {
+          leaf per_degree_psd_out_mWperSlotWidth {
+            type decimal64 {
+              fraction-digits 10;
+            }
+            units "mW/GHz";
+            description
+              "Equalization applied on all channels on this degree.
+              This target replaces the one defined for all degrees";
+          }
+        }
+      }
+    }
+    list per_degree_impairments {
+      key "from_degree to_degree";
+      leaf from_degree {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+      }
+      leaf to_degree {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+      }
+      leaf impairment_id {
+        type uint32;
+      }
+    }
+  }
+
+  grouping transceiver-params;
+
+  grouping fused-params{
+    leaf loss {
+      type union {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          type empty;
+        }
+      units "dB";
+      description
+        "Concentrated loss of the fused element";    
+    }
+  }
+
+  grouping element-type-choice {
+    container operational {
+      when "../type = 'gnpynt:Edfa' or ../type = 'gnpynt:RamanFiber'";
+      description
+        "Operational values for the Edfa and the RamanFiber";
+      choice ramanfiber {
+        case RamanFiber {
+          when "../type = 'gnpynt:RamanFiber'";
+          uses raman-fiber-operational;
+        }
+        case Edfa {
+          when "../type = 'gnpynt:Edfa'";
+          uses edfa-params;
+          uses frequency_band;
+        }
+      }
+    }
+    choice element-type {
+      case FiberRoadm {
+        container params {
+          choice fiberroadmfused {
+            case Fiber {
+              when "../type = 'gnpynt:Fiber' or ../type = 'gnpynt:RamanFiber'";
+              uses fiber-common-params;
+            }
+            case RoadmTransceiver {
+              when "../type = 'gnpynt:Roadm' or ../type = 'gnpynt:Transceiver'";
+              uses roadm-trx-params;
+              choice roadm {
+                case roadm {
+                  when "../type = 'gnpynt:Roadm'";
+                  uses roadm-params;
+                }
+              }
+            }
+            case Fused {
+              when "../type = 'gnpynt:Fused'";
+              uses fused-params;
+            }
+            case Multiband_amplifier {
+              when "../type = 'gnpynt:Multiband_amplifier'";
+              leaf-list variety_list {
+                type string;
+                description 
+                  "List of authorized type-variety";
+              }
+            }
+          }
+        }
+      }
+      case Multiband_amplifier {
+        when "type = 'gnpynt:Multiband_amplifier'";
+        uses multiband-params;
+      }
+    }
+  }
+
+
+  grouping topo {
+    list elements {
+      key "uid";
+      leaf uid {
+        type string;
+      }
+      leaf type {
+        type identityref {
+          base type-element;
+        }
+        mandatory true;
+      }
+      leaf type_variety {
+        type string;
+        mandatory false;
+      }
+      container metadata {
+        uses location-attributes;
+      }
+      uses element-type-choice;
+    }
+    list connections {
+      key "from_node to_node";
+      leaf from_node {
+        type leafref {
+          path "../../elements/uid";
+        }
+      }
+      leaf to_node {
+        type leafref {
+          path "../../elements/uid";
+        }
+      }
+    }
+  }
+  container topology {
+    description
+      "Describe the topology gnpy-formated for release 2.6 toaster (including mixed rate and multiband)";
+    uses topo;
+    leaf network_name {
+      type string;
+      mandatory false;
+    }
+  }
+}
