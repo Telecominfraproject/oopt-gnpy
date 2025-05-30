@@ -1,0 +1,176 @@
+module gnpy-sim-params {
+  yang-version 1.1;
+  namespace "urn:gnpy-sim-params";
+
+  prefix sim-params;
+
+  import gnpy-api {
+    prefix "gapi";
+    revision-date 2025-06-13;
+  }
+
+  organization
+    "Telecom Infra Project OOPT PSE Working Group";
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:esther.lerouzic@orange.com>
+    ";
+  description
+    "YANG model for gnpy network input for path computation simulation params- 2025";
+
+  revision 2025-04-10 {
+    description
+      "First yang model for sim-params option";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  identity nli-method {
+    description "Base identity for NLI calculation methods";
+  }
+
+  identity ggn_spectrally_separated {
+    base nli-method;
+    description "GGN spectrally separated method";
+  }
+
+  identity ggn_approx {
+    base nli-method;
+    description "GGN approximation method";
+  }
+
+  identity gn_model_analytic {
+    base nli-method;
+    description "GN model analytic method";
+  }
+
+  identity raman-method {
+    description "Base identity for Raman calculation methods";
+  }
+
+  identity perturbative {
+    base raman-method;
+    description "Raman perturbative method";
+  }
+
+  identity numerical {
+    base raman-method;
+    description "Raman numerical first order method";
+  }
+
+  grouping raman-sim-params {
+    description
+      "Raman simulation attributes";
+    container raman_params {
+      description
+        "Simulation parameters definition for Raman effect evaluation.";
+      leaf flag {
+        type boolean;
+        description 
+          "boolean for enabling/disable the evaluation of the Raman power
+          profile in frequency and position
+          ";
+      }
+      leaf order {
+        type uint16;
+        default 2;
+        description
+          "Solution order for perturbative method";
+      }
+      leaf method {
+        type identityref {
+          base raman-method;
+        }
+        description
+          "Method used for Raman effect evaluation.";
+      }
+      leaf result_spatial_resolution {
+        type decimal64 {
+          fraction-digits 3;
+        }
+        description
+          "Spatial resolution of the evaluated Raman power profile in m. Suggested value is 10e3m";
+      }
+      leaf solver_spatial_resolution {
+        type decimal64 {
+          fraction-digits 3;
+        }
+        description
+          "Spatial step for the iterative solution of the first order ode. a suggested value is 10e3 m";
+      }
+    }
+  }
+
+  grouping nli-sim-params {
+    description
+      "NLI simulation attributes";
+    container nli_params {
+      description
+        "Simulation parameters definition for Non Linear
+        Interference (NLI) effect evaluation.";
+      leaf method {
+        type identityref {
+          base nli-method;
+        }
+        description "Model used for the NLI evaluation.";
+      }
+      leaf dispersion_tolerance {
+        type decimal64 {
+          fraction-digits 1;
+        }
+        default "1.0";
+        description "Tuning parameter for ggn model solution";
+      }
+      leaf phase_shift_tolerance {
+        type decimal64 {
+          fraction-digits 1;
+        }
+        default "0.1";
+        description "Tuning parameter for ggn model solution";
+      }
+      
+      choice computation {
+        description
+          "Definition of the channels on which the NLI is evaluated: explicir position or amount.";
+        case explicit-channels {
+          leaf-list computed_channels {
+            type uint16 {
+              range "1..max";
+            }
+            ordered-by user;
+            description "The exact channel indices (starting from 1) on which the NLI is evaluated";
+          }
+        }
+        case nb_of_channels {
+          leaf computed_number_of_channels {
+            type uint16;
+            description "The number of channels on which the NLI is evaluated";
+          }
+        }
+      }
+    }
+  }
+
+  grouping sim-params {
+    description
+      "Simulation parameters definition.";
+    container sim-params {
+      description
+        "Simulation parameters definition.";
+      uses raman-sim-params;
+      uses nli-sim-params;
+    }
+  }
+
+  container sim-params {
+    description
+      "Simulation parameters definition.";
+    uses raman-sim-params;
+    uses nli-sim-params;
+  }
+
+  augment "/gapi:api" {
+    description "Add the gnpy-sim-params input in the API request.";
+    uses sim-params;
+  }
+}
