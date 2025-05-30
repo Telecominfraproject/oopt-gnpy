@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+# SPDX-License-Identifier: BSD-3-Clause
+# update an existing json file with all the 96ch txt files for a given amplifier type
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
 """
 Created on Tue Jan 30 12:32:00 2018
 

@@ -1,8 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 # SPDX-License-Identifier: BSD-3-Clause
-#
-# Copyright (C) 2020 Telecom Infra Project and GNPy contributors
-# see LICENSE.md for a list of contributors
-#
+# test_info
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
+"""
+Checks autodesign functions
+"""
 
 from pathlib import Path
 import pytest

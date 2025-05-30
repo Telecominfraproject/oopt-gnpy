@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Jean-Luc Auge
-# @Date:   2018-02-02 14:06:55
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_propagation
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
+"""
+Check that propagation example give expected results
+"""
 
 import pytest
 

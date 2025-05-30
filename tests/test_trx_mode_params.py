@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Esther Le Rouzic
-# @Date:   2023-09-29
-"""
-@author: esther.lerouzic
-checks all possibilities of this function
 
+# SPDX-License-Identifier: BSD-3-Clause
+# test_trx_mode_params
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
+"""
+checks all possibilities of this function
 """
 
 from pathlib import Path

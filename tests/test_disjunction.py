@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-# Module name : test_disjunction.py
-# Version:
-# License: BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_disjunction
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
 
 """
-@author: esther.lerouzic
 checks that computed paths are disjoint as specified in the json service file
 that computed paths do not loop
 that include node constraints are correctly taken into account

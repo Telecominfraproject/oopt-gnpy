@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-# Module name : test_automaticmodefeature.py
-# Version :
-# License : BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_automaticmodefeature
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
 
 """
-@author: esther.lerouzic
 checks that empty info on mode, power, nbchannel in service file are supported
     uses combination of [mode, pow, nb channel] filled or empty defined in meshTopologyToy_services.json
     leading to feasible path or not, and check the propagate and propagate_and_optimize_mode

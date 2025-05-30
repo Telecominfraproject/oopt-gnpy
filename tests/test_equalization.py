@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Esther Le Rouzic
-# @Date:   2019-05-22
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_equalization
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
 """
-@author: esther.lerouzic
 checks that new equalization option give the same output as old one:
 
 """
