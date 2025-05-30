@@ -29,7 +29,7 @@
       "p_max": 21,
       "nf_min": 6,
       "nf_max": 10,
-      "advanced_config_from_json": "default_edfa_config.json",
+      "default_config_from_json": "user_edfa_config.json",
       "out_voa_auto": false,
       "allowed_for_design": false
     }
