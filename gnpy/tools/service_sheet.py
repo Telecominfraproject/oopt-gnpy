@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# SPDX-License-Identifier: BSD-3-Clause
+# gnpy.tools.service_sheet: XLS parser that can be called to create a JSON request file
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
 """
 gnpy.tools.service_sheet
 ========================

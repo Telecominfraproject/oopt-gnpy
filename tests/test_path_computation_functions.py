@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-# Module name: test_path_computation_functions.py
-# Version:
-# License: BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_path_computation_functions
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
+
 
 """
-@author: esther.lerouzic
+test path computation functions
 
 """
 

@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Esther Le Rouzic
-# @Date:   2018-06-15
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_parser
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
 
 """Adding tests to check the parser non regression
 

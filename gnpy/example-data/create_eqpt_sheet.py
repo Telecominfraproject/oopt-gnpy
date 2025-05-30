@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# SPDX-License-Identifier: BSD-3-Clause
+# Utility functions that creates an Eqpt sheet template
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
 """
 create_eqpt_sheet.py
 ====================

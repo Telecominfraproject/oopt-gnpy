@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# SPDX-License-Identifier: BSD-3-Clause
+# test_science_utils
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
 """
 Checks that RamanFiber propagates properly the spectral information. In this way, also the RamanSolver and the NliSolver
 are tested.

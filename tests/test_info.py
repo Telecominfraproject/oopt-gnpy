@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# SPDX-License-Identifier: BSD-3-Clause
+# test_info
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
+"""
+Checks spectral information utilities
+"""
+
 import pytest
 from numpy import array, zeros, ones
 from numpy.testing import assert_array_equal

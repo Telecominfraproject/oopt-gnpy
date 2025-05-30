@@ -1,4 +1,14 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_invocation
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
+"""
+Checks that invocation of scripts give expected results
+"""
 
 from pathlib import Path
 import os

@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
+# SPDX-License-Identifier: BSD-3-Clause
+# gnpy.tools.worker_utils: Common code for CLI examples and API
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
+"""
 gnpy.tools.worker_utils
 =======================
 
 Common code for CLI examples and API
-'''
+"""
 import logging
 from copy import deepcopy
 from typing import Union, List, Tuple

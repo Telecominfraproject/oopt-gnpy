@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Esther Le Rouzic
-# @Date:   2019-05-22
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_gain_mode
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
 """
-@author: esther.lerouzic
 checks behaviour of gain mode
 - if all amps have their gains set, check that these gains are used, even if power_dbm or req_power change
 - check that saturation is correct in gain mode

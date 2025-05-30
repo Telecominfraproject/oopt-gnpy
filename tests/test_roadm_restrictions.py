@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Esther Le Rouzic
-# @Date:   2019-05-22
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_roadm_restrictions
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
+
+
 """
-@author: esther.lerouzic
 checks that fused placed in amp type is correctly converted to a fused element instead of an edfa
 and that no additional amp is added.
 checks that restrictions in roadms are correctly applied during autodesign

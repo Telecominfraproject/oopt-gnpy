@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-# Module name: test_spectrum_assignment.py
-# Version:
-# License: BSD 3-Clause Licence
-# Copyright (c) 2018, Telecom Infra Project
+# -*- coding: utf-8 -*-
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_spectrum_assignment
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
 
 """
-@author: esther.lerouzic
-
+test spectrum assignment utilities
 """
 
 from pathlib import Path

@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author: Jean-Luc Auge
-# @Date:   2018-02-02 14:06:55
+
+# SPDX-License-Identifier: BSD-3-Clause
+# test_amplifier
+# Copyright (C) 2025 Telecom Infra Project and GNPy contributors
+# see AUTHORS.rst for a list of contributors
 
 from numpy import zeros, array
 from numpy.testing import assert_allclose
