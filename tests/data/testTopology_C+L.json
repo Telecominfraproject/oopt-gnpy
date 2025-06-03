@@ -1337,7 +1337,6 @@
           "longitude": 0.0
         }
       },
-      "type": "Edfa",
       "type_variety": "std_low_gain_multiband",
       "type": "Multiband_amplifier",
       "amplifiers": [

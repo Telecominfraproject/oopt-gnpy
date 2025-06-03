@@ -244,6 +244,46 @@ def per_label_average(values, labels):
     return summary
 
 
+def per_label_list(values: List[Union[float, int]], labels: List[str], calculation_type: str = 'average',
+                   key: str = 'average') -> List[Dict[str, Union[str, float]]]:
+    # pylint: disable=C0301
+    """computes the average, min or max per defined spectrum band, using labels. makes it as a list with 'label': ; 'average':
+
+    :param values: list of values to be processed
+    :type values: List[Union[float, int]]
+    :param labels: list of label for each value
+    :type labels: List[str]
+    :param calculation_type: type of calculation: must be in 'average', 'min' or 'max'
+    :type calculation_type: str
+    :param key: key to use in the dictionnary
+    :type key: str
+    :return: list of value per label dicyionnaries
+    :rtype: List[Dict[str, str | float]]
+
+    >>> labels = ['A', 'A', 'A', 'A', 'A', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'C', 'D', 'D', 'D', 'D']
+    >>> values = [28.51, 28.23, 28.15, 28.17, 28.36, 28.53, 28.64, 28.68, 28.7, 28.71, 28.72, 28.73, 28.74, 28.91, 27.96, 27.85, 27.87, 28.02] # noqa: E501
+    >>> per_label_list(values, labels, 'average')
+    [{'label': 'A', 'average': 28.28}, {'label': 'B', 'average': 28.68}, {'label': 'C', 'average': 28.91}, {'label': 'D', 'average': 27.92}]
+    """
+
+    label_set = sorted(set(labels))
+    summary = []
+    for label in label_set:
+        vals = [val for val, lab in zip(values, labels) if lab == label]
+        if calculation_type == 'average':
+            value = round(mean(vals), 2)
+        elif calculation_type == 'min':
+            value = round(min(vals), 2)
+        elif calculation_type == 'max':
+            value = round(max(vals), 2)
+        else:
+            raise ValueError('unsupported processing type')
+        summary.append({
+            "label": label,
+            key: value})
+    return summary
+
+
 def pretty_summary_print(summary):
     """Build a prettty string that shows the summary dict values per label with 2 digits"""
     if len(summary) == 1:

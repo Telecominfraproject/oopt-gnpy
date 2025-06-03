@@ -17,7 +17,7 @@
       {
         "name": "gnpy-path-computation",
         "namespace": "gnpy:gnpy-path-computation",
-        "revision": "2025-01-20",
+        "revision": "2026-03-13",
         "conformance-type": "implement"
       },
       {

@@ -22,10 +22,11 @@ tests:
 from pathlib import Path
 from os import unlink
 import shutil
+from copy import deepcopy
 from pandas import read_csv
 from xlrd import open_workbook
 import pytest
-from copy import deepcopy
+
 from gnpy.core.utils import automatic_nch, dbm2watt
 from gnpy.core.network import build_network, add_missing_elements_in_network
 from gnpy.core.exceptions import ServiceError, ConfigurationError
@@ -34,12 +35,17 @@ from gnpy.topology.request import (jsontocsv, requests_aggregation, compute_path
 from gnpy.topology.spectrum_assignment import build_oms_list, pth_assign_spectrum
 from gnpy.tools.convert import convert_file
 from gnpy.tools.json_io import (load_json, load_network, save_network, load_equipment, requests_from_json,
-                                disjunctions_from_json, network_to_json, network_from_json)
+                                disjunctions_from_json, network_to_json, network_from_json, load_gnpy_json)
 from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list, Request_element, Request
 from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG
+from gnpy.tools.cli_examples import transmission_main_example, path_requests_run
+from gnpy.tools.xls_utils import read_xls
 
+
+SRC_ROOT = Path(__file__).parent.parent
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
+EXAMPLE_DIR = SRC_ROOT / 'gnpy' / 'example-data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
 
@@ -263,9 +269,9 @@ def test_json_response_generation(xls_input, expected_response_file):
                 {'metric-type': 'OSNR-0.1nm', 'accumulative-value': 30.32},
                 {'metric-type': 'lowest_SNR-0.1nm', 'accumulative-value': 26.72},
                 {'metric-type': 'biggest_SNR-0.1nm', 'accumulative-value': 27.74},
-                {'metric-type': 'PDL_penalty', 'accumulative-value': 'not evaluated'},
-                {'metric-type': 'CD_penalty', 'accumulative-value': 'not evaluated'},
-                {'metric-type': 'PMD_penalty', 'accumulative-value': 'not evaluated'},
+                {'metric-type': 'PDL_penalty', 'accumulative-value': None},
+                {'metric-type': 'CD_penalty', 'accumulative-value': None},
+                {'metric-type': 'PMD_penalty', 'accumulative-value': None},
                 {'metric-type': 'reference_power', 'accumulative-value': 0.0012589254117941673},
                 {'metric-type': 'path_bandwidth', 'accumulative-value': 60000000000.0}]
             assert expected['response'][2] == response
@@ -637,3 +643,62 @@ def test_roadm_type_variety(type_variety, target_pch_out_db, correct_variety):
     else:
         with pytest.raises(ConfigurationError):
             network = network_from_json(json_data, equipment)
+
+
+@pytest.mark.parametrize('args, expected_output', [
+    ([], DATA_DIR / 'parser' / 'transmission' / 'results_transmission_expected.xlsx'),
+    ([str(DATA_DIR / 'testTopology.xls'), '-e', str(DATA_DIR / 'eqpt_config.json'), '--spectrum',
+     str(EXAMPLE_DIR / 'initial_spectrum2.json')],
+     DATA_DIR / 'parser' / 'transmission' / 'results_transmission_mix_rate_expected.xlsx'),
+    ([str(EXAMPLE_DIR / 'multiband_example_network.json'), 'Site_A', 'Site_D', '-e',
+      str(EXAMPLE_DIR / 'eqpt_config_multiband.json'), '--spectrum',
+      str(EXAMPLE_DIR / 'multiband_spectrum.json')],
+     DATA_DIR / 'parser' / 'transmission' / 'results_transmission_multiband_expected.xlsx')
+])
+def test_xlsx_generation(tmpdir, args, expected_output):
+    """tests generation of transmission results in xlsx"""
+    xlsx_copy = tmpdir / 'results.xlsx'
+    args.extend(["-o", str(xlsx_copy)])
+    print(args)
+    transmission_main_example(args)
+    expected_xlsx_output = DATA_DIR / expected_output
+    expected = read_xls(expected_xlsx_output, 'path detail')
+    actual = read_xls(Path(xlsx_copy), 'path detail')
+    assert actual == expected
+
+
+# test json_file
+@pytest.mark.parametrize('script, args, expected_output', [
+    (transmission_main_example, [], 'results_transmission_expected.json'),
+    (transmission_main_example,
+     [str(DATA_DIR / 'parser' / 'transmission' / 'testTopology.xls'), '-e',
+      str(DATA_DIR / 'parser' / 'transmission' / 'eqpt_config.json'), '--spectrum',
+      str(DATA_DIR / 'parser' / 'transmission' / 'initial_spectrum2.json')],
+     'test_transmission_response_expected.json'),
+    (transmission_main_example,
+     [str(DATA_DIR / 'parser' / 'transmission' / 'multiband_example_network.json'), 'Site_A', 'Site_D', '-e',
+      str(DATA_DIR / 'parser' / 'transmission' / 'eqpt_config_multiband.json'), '--spectrum',
+      str(DATA_DIR / 'parser' / 'transmission' / 'multiband_spectrum.json')],
+     'test_transmission_multiband_response_expected.json'),
+    (transmission_main_example,
+     [str(DATA_DIR / 'parser' / 'transmission' / 'testTopology.xls'), '-e',
+      str(DATA_DIR / 'parser' / 'transmission' / 'eqpt_config.json'), '--spectrum',
+      str(DATA_DIR / 'parser' / 'transmission' / 'initial_spectrum2.json'), '-r', "3", '-s',
+      str(DATA_DIR / 'parser' / 'transmission' / 'testTopology.xls')],
+     'results_transmission_service_option_expected.json'),
+    (path_requests_run,
+     [str(DATA_DIR / 'parser' / 'transmission' / 'testTopology.xls'),
+      str(DATA_DIR / 'parser' / 'transmission' / 'testTopology.xls'), '-e',
+      str(DATA_DIR / 'parser' / 'transmission' / 'eqpt_config.json')],
+     'testTopology_response_expected.json')
+])
+def test_json_generation(tmpdir, script, args, expected_output):
+    """tests generation of transmission results in json"""
+    json_copy = tmpdir / 'results.json'
+    args.extend(["-o", str(json_copy)])
+    print(args)
+    script(args)
+    expected_json_output = DATA_DIR / 'parser' / 'transmission' / expected_output
+    json_expected = load_gnpy_json(expected_json_output)
+    json_input = load_gnpy_json(json_copy)
+    assert json_input == json_expected
