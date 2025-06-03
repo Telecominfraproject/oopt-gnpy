@@ -30,15 +30,15 @@
           },
           {
             "metric-type": "PDL_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "CD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "PMD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "reference_power",
@@ -241,15 +241,15 @@
           },
           {
             "metric-type": "PDL_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "CD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "PMD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "reference_power",
@@ -732,15 +732,15 @@
           },
           {
             "metric-type": "PDL_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "CD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "PMD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "reference_power",
@@ -983,15 +983,15 @@
           },
           {
             "metric-type": "PDL_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "CD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "PMD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "reference_power",
@@ -1474,15 +1474,15 @@
           },
           {
             "metric-type": "PDL_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "CD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "PMD_penalty",
-            "accumulative-value": "not evaluated"
+            "accumulative-value": null
           },
           {
             "metric-type": "reference_power",

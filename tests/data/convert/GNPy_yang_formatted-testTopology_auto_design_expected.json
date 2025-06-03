@@ -163,10 +163,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in Lannion_CAS to Corlay",
@@ -197,10 +193,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in Lorient_KMA to Loudeac",
@@ -231,10 +223,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in Vannes_KBE to Lorient_KMA",
@@ -261,10 +249,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in Rennes_STA to Stbrieuc",
@@ -291,10 +275,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in Brest_KLA to Morlaix",
@@ -322,7 +302,6 @@
         "params": {
           "target_pch_out_db": "-20.0",
           "restrictions": {
-            "preamp_variety_list": [],
             "booster_variety_list": [
               "std_booster"
             ]
@@ -356,8 +335,7 @@
           "restrictions": {
             "preamp_variety_list": [
               "std_low_gain"
-            ],
-            "booster_variety_list": []
+            ]
           },
           "per_degree_power_targets": [
             {
@@ -385,10 +363,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in c to a",
@@ -419,10 +393,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in d to c",
@@ -449,10 +419,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in e to d",
@@ -479,10 +445,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in f to c",
@@ -513,10 +475,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in g to e",
@@ -543,10 +501,6 @@
         "type_variety": "default",
         "params": {
           "target_pch_out_db": "-20.0",
-          "restrictions": {
-            "preamp_variety_list": [],
-            "booster_variety_list": []
-          },
           "per_degree_power_targets": [
             {
               "degree_uid": "east edfa in h to f",

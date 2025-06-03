@@ -1,0 +1,229 @@
+{
+  "gnpy-path-computation:responses": {
+    "response": [
+      {
+        "response-id": "reference",
+        "path-properties": {
+          "path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "per-label-accumulative-value": [
+                {
+                  "label": "32.00G",
+                  "accumulative-value": "27.09"
+                }
+              ]
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "32.00G",
+                  "accumulative-value": "31.17"
+                }
+              ]
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "per-label-accumulative-value": [
+                {
+                  "label": "32.00G",
+                  "accumulative-value": "29.21"
+                }
+              ]
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "32.00G",
+                  "accumulative-value": "33.29"
+                }
+              ]
+            },
+            {
+              "metric-type": "lowest_SNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "32.00G",
+                  "accumulative-value": "31.06"
+                }
+              ]
+            }
+          ],
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "Site_A",
+                  "link-tp-id": "Site_A",
+                  "details": {
+                    "type": "Transceiver",
+                    "gsnr-0.1nm-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "40.0"
+                      }
+                    ],
+                    "gnsr-signal-bw-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "35.92"
+                      }
+                    ],
+                    "osnr-ase-0.1nm-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "40.0"
+                      }
+                    ],
+                    "osnr-ase-signal-bw-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "35.92"
+                      }
+                    ],
+                    "cd-ps-per-nm": [
+                      {
+                        "label": "32.00G",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pmd-ps": [
+                      {
+                        "label": "32.00G",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pdl-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "0.0"
+                      }
+                    ],
+                    "latency-ms": "0.0",
+                    "actual-pch-out-dbm": [
+                      {
+                        "label": "32.00G",
+                        "average": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "num-unnum-hop": {
+                  "node-id": "Span1",
+                  "link-tp-id": "Span1",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "17.0",
+                    "length-km": "80.0",
+                    "lineic-att-db-per-km": "0.2",
+                    "connector-att-in-db": "0.5",
+                    "connector-att-out-db": "0.5",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "1336.0",
+                    "fiber-pmd-ps": "0.85"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 2,
+                "num-unnum-hop": {
+                  "node-id": "Edfa1",
+                  "link-tp-id": "Edfa1",
+                  "details": {
+                    "type": "Edfa",
+                    "type-variety": "std_low_gain",
+                    "effective-gain-db-before-att-in-and-before-output-voa": "15.0",
+                    "p-in-dbm": "1.81",
+                    "p-out-dbm": "16.81",
+                    "p-out-per-ch-dbm": [
+                      {
+                        "label": "32.00G",
+                        "average": "-2.0"
+                      }
+                    ],
+                    "nf_db": "6.62",
+                    "out-voa-db": "0.0",
+                    "in-voa-db": "0.0",
+                    "att-db": "0.0"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 3,
+                "num-unnum-hop": {
+                  "node-id": "Site_B",
+                  "link-tp-id": "Site_B",
+                  "details": {
+                    "type": "Transceiver",
+                    "gsnr-0.1nm-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "31.17"
+                      }
+                    ],
+                    "gnsr-signal-bw-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "27.09"
+                      }
+                    ],
+                    "osnr-ase-0.1nm-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "33.29"
+                      }
+                    ],
+                    "osnr-ase-signal-bw-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "29.21"
+                      }
+                    ],
+                    "cd-ps-per-nm": [
+                      {
+                        "label": "32.00G",
+                        "average": "1336.0"
+                      }
+                    ],
+                    "pmd-ps": [
+                      {
+                        "label": "32.00G",
+                        "average": "0.85"
+                      }
+                    ],
+                    "pdl-db": [
+                      {
+                        "label": "32.00G",
+                        "average": "0.0"
+                      }
+                    ],
+                    "latency-ms": "0.39",
+                    "actual-pch-out-dbm": [
+                      {
+                        "label": "32.00G",
+                        "average": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

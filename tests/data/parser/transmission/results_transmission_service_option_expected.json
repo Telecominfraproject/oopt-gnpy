@@ -1,0 +1,506 @@
+{
+  "gnpy-path-computation:responses": {
+    "response": [
+      {
+        "response-id": "3",
+        "path-properties": {
+          "path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "21.85"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "20.28"
+                }
+              ]
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "25.94"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "27.37"
+                }
+              ]
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "23.94"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "20.9"
+                }
+              ]
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "28.02"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "27.99"
+                }
+              ]
+            },
+            {
+              "metric-type": "lowest_SNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "25.83"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "27.17"
+                }
+              ]
+            }
+          ],
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "trx Lannion_CAS",
+                  "link-tp-id": "trx Lannion_CAS",
+                  "details": {
+                    "type": "Transceiver",
+                    "transponder-type": "vendorA_trx-type1",
+                    "transponder-mode": "mode 1",
+                    "gsnr-0.1nm-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "40.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "40.0"
+                      }
+                    ],
+                    "gnsr-signal-bw-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "35.92"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "32.91"
+                      }
+                    ],
+                    "osnr-ase-0.1nm-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "40.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "40.0"
+                      }
+                    ],
+                    "osnr-ase-signal-bw-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "35.92"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "32.91"
+                      }
+                    ],
+                    "cd-ps-per-nm": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pmd-ps": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pdl-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "latency-ms": "0.0",
+                    "actual-pch-out-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "cd-penalty-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pmd-penalty-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pdl-penalty-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "num-unnum-hop": {
+                  "node-id": "roadm Lannion_CAS",
+                  "link-tp-id": "roadm Lannion_CAS",
+                  "details": {
+                    "type": "Roadm",
+                    "actual-loss-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "20.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "20.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 2,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Lannion_CAS to Stbrieuc",
+                  "link-tp-id": "east edfa in Lannion_CAS to Stbrieuc",
+                  "details": {
+                    "type": "Edfa",
+                    "type-variety": "std_low_gain",
+                    "effective-gain-db-before-att-in-and-before-output-voa": "21.0",
+                    "p-in-dbm": "-2.22",
+                    "p-out-dbm": "18.79",
+                    "p-out-per-ch-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "1.01"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "1.02"
+                      }
+                    ],
+                    "nf_db": "6.88",
+                    "out-voa-db": "0.0",
+                    "in-voa-db": "0.0",
+                    "att-db": "0.0"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 3,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Lannion_CAS -> Stbrieuc)-F056",
+                  "link-tp-id": "fiber (Lannion_CAS -> Stbrieuc)-F056",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "12.0",
+                    "length-km": "60.0",
+                    "lineic-att-db-per-km": "0.2",
+                    "connector-att-in-db": "0.0",
+                    "connector-att-out-db": "0.0",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "1002.0",
+                    "fiber-pmd-ps": "0.31"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 4,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Stbrieuc to Rennes_STA",
+                  "link-tp-id": "east edfa in Stbrieuc to Rennes_STA",
+                  "details": {
+                    "type": "Edfa",
+                    "type-variety": "std_medium_gain",
+                    "effective-gain-db-before-att-in-and-before-output-voa": "12.0",
+                    "p-in-dbm": "6.79",
+                    "p-out-dbm": "18.8",
+                    "p-out-per-ch-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "1.01"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "1.03"
+                      }
+                    ],
+                    "nf_db": "13.0",
+                    "out-voa-db": "0.0",
+                    "in-voa-db": "0.0",
+                    "att-db": "3.0"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 5,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Stbrieuc -> Rennes_STA)-F057",
+                  "link-tp-id": "fiber (Stbrieuc -> Rennes_STA)-F057",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "13.0",
+                    "length-km": "65.0",
+                    "lineic-att-db-per-km": "0.2",
+                    "connector-att-in-db": "0.0",
+                    "connector-att-out-db": "0.0",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "1085.5",
+                    "fiber-pmd-ps": "0.32"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 6,
+                "num-unnum-hop": {
+                  "node-id": "west edfa in Rennes_STA to Stbrieuc",
+                  "link-tp-id": "west edfa in Rennes_STA to Stbrieuc",
+                  "details": {
+                    "type": "Edfa",
+                    "type-variety": "std_low_gain",
+                    "effective-gain-db-before-att-in-and-before-output-voa": "13.0",
+                    "p-in-dbm": "5.8",
+                    "p-out-dbm": "18.8",
+                    "p-out-per-ch-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "1.01"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "1.03"
+                      }
+                    ],
+                    "nf_db": "7.48",
+                    "out-voa-db": "0.0",
+                    "in-voa-db": "0.0",
+                    "att-db": "0.0"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 7,
+                "num-unnum-hop": {
+                  "node-id": "roadm Rennes_STA",
+                  "link-tp-id": "roadm Rennes_STA",
+                  "details": {
+                    "type": "Roadm",
+                    "actual-loss-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "21.01"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "21.03"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 8,
+                "num-unnum-hop": {
+                  "node-id": "trx Rennes_STA",
+                  "link-tp-id": "trx Rennes_STA",
+                  "details": {
+                    "type": "Transceiver",
+                    "transponder-type": "vendorA_trx-type1",
+                    "transponder-mode": "mode 1",
+                    "gsnr-0.1nm-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "25.94"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "27.37"
+                      }
+                    ],
+                    "gnsr-signal-bw-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "21.85"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "20.28"
+                      }
+                    ],
+                    "osnr-ase-0.1nm-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "28.02"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "27.99"
+                      }
+                    ],
+                    "osnr-ase-signal-bw-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "23.94"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "20.9"
+                      }
+                    ],
+                    "cd-ps-per-nm": [
+                      {
+                        "label": "mode_1",
+                        "average": "2087.5"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "2087.5"
+                      }
+                    ],
+                    "pmd-ps": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.45"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.45"
+                      }
+                    ],
+                    "pdl-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "latency-ms": "0.61",
+                    "actual-pch-out-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "cd-penalty-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.05"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.05"
+                      }
+                    ],
+                    "pmd-penalty-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.01"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.01"
+                      }
+                    ],
+                    "pdl-penalty-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

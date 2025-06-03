@@ -1,0 +1,557 @@
+{
+  "gnpy-path-computation:responses": {
+    "response": [
+      {
+        "response-id": "reference",
+        "path-properties": {
+          "path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "per-label-accumulative-value": [
+                {
+                  "label": "cband",
+                  "accumulative-value": "20.78"
+                },
+                {
+                  "label": "lband",
+                  "accumulative-value": "21.29"
+                }
+              ]
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "cband",
+                  "accumulative-value": "24.87"
+                },
+                {
+                  "label": "lband",
+                  "accumulative-value": "25.37"
+                }
+              ]
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "per-label-accumulative-value": [
+                {
+                  "label": "cband",
+                  "accumulative-value": "21.47"
+                },
+                {
+                  "label": "lband",
+                  "accumulative-value": "22.57"
+                }
+              ]
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "cband",
+                  "accumulative-value": "25.55"
+                },
+                {
+                  "label": "lband",
+                  "accumulative-value": "26.65"
+                }
+              ]
+            },
+            {
+              "metric-type": "lowest_SNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "cband",
+              "accumulative-value": "24.83"
+                },
+                {
+                  "label": "lband",
+                  "accumulative-value": "25.28"
+                }
+              ]
+            }
+          ],
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "trx Site_A",
+                  "link-tp-id": "trx Site_A",
+                  "details": {
+                    "type": "Transceiver",
+                    "gsnr-0.1nm-db": [
+                      {
+                        "label": "cband",
+                        "average": "40.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "40.0"
+                      }
+                    ],
+                    "gnsr-signal-bw-db": [
+                      {
+                        "label": "cband",
+                        "average": "35.92"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "35.92"
+                      }
+                    ],
+                    "osnr-ase-0.1nm-db": [
+                      {
+                        "label": "cband",
+                        "average": "40.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "40.0"
+                      }
+                    ],
+                    "osnr-ase-signal-bw-db": [
+                      {
+                        "label": "cband",
+                        "average": "35.92"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "35.92"
+                      }
+                    ],
+                    "cd-ps-per-nm": [
+                      {
+                        "label": "cband",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pmd-ps": [
+                      {
+                        "label": "cband",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pdl-db": [
+                      {
+                        "label": "cband",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "0.0"
+                      }
+                    ],
+                    "latency-ms": "0.0",
+                    "actual-pch-out-dbm": [
+                      {
+                        "label": "cband",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "num-unnum-hop": {
+                  "node-id": "roadm Site_A",
+                  "link-tp-id": "roadm Site_A",
+                  "details": {
+                    "type": "Roadm",
+                    "actual-loss-db": [
+                      {
+                        "label": "cband",
+                        "average": "20.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "20.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 2,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Site_A to Site_B",
+                  "link-tp-id": "east edfa in Site_A to Site_B",
+                  "details": {
+                    "type": "Multiband_amplifier",
+                    "amplifiers": [
+                      {
+                        "type-variety": "std_medium_gain_C",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "20.9",
+                        "p-in-dbm": "-1.08",
+                        "p-out-dbm": "19.83",
+                        "p-out-per-ch-dbm": [
+                          {
+                            "label": "cband",
+                            "average": "-2.09"
+                          }
+                        ],
+                        "nf_db": "6.38",
+                        "out-voa-db": "3.0",
+                        "in-voa-db": "0.0",
+                        "att-db": "0.0"
+                      },
+                      {
+                        "type-variety": "std_medium_gain_L",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "22.43",
+                        "p-in-dbm": "-1.49",
+                        "p-out-dbm": "20.95",
+                        "p-out-per-ch-dbm": [
+                          {
+                            "label": "lband",
+                            "average": "-0.57"
+                          }
+                        ],
+                        "nf_db": "6.17",
+                        "out-voa-db": "3.0",
+                        "in-voa-db": "0.0",
+                        "att-db": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 3,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Site_A -> Site_B)-",
+                  "link-tp-id": "fiber (Site_A -> Site_B)-",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "15.0",
+                    "length-km": "75.0",
+                    "lineic-att-db-per-km": "0.2",
+                    "connector-att-in-db": "0.0",
+                    "connector-att-out-db": "0.0",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "1252.5",
+                    "fiber-pmd-ps": "0.35"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 4,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Site_B to Site_C",
+                  "link-tp-id": "east edfa in Site_B to Site_C",
+                  "details": {
+                    "type": "Multiband_amplifier",
+                    "amplifiers": [
+                      {
+                        "type-variety": "std_medium_gain_C",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "18.0",
+                        "p-in-dbm": "1.83",
+                        "p-out-dbm": "19.83",
+                        "p-out-per-ch-dbm": [
+                          {
+                            "label": "cband",
+                            "average": "-2.09"
+                          }
+                        ],
+                        "nf_db": "7.38",
+                        "out-voa-db": "3.0",
+                        "in-voa-db": "0.0",
+                        "att-db": "0.0"
+                      },
+                      {
+                        "type-variety": "std_medium_gain_L",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "18.0",
+                        "p-in-dbm": "2.95",
+                        "p-out-dbm": "20.95",
+                        "p-out-per-ch-dbm": [
+                          {
+                            "label": "lband",
+                            "average": "-0.56"
+                          }
+                        ],
+                        "nf_db": "7.38",
+                        "out-voa-db": "3.0",
+                        "in-voa-db": "0.0",
+                        "att-db": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 5,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Site_B -> Site_C)-",
+                  "link-tp-id": "fiber (Site_B -> Site_C)-",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "16.8",
+                    "length-km": "80.0",
+                    "lineic-att-db-per-km": "0.21",
+                    "connector-att-in-db": "0.0",
+                    "connector-att-out-db": "0.0",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "1336.0",
+                    "fiber-pmd-ps": "0.36"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 6,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Site_C to Site_D",
+                  "link-tp-id": "east edfa in Site_C to Site_D",
+                  "details": {
+                    "type": "Multiband_amplifier",
+                    "amplifiers": [
+                      {
+                        "type-variety": "std_medium_gain_C",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "19.8",
+                        "p-in-dbm": "0.03",
+                        "p-out-dbm": "19.84",
+                        "p-out-per-ch-dbm": [
+                          {
+                            "label": "cband",
+                            "average": "-2.08"
+                          }
+                        ],
+                        "nf_db": "6.63",
+                        "out-voa-db": "3.0",
+                        "in-voa-db": "0.0",
+                        "att-db": "0.0"
+                      },
+                      {
+                        "type-variety": "std_medium_gain_L",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "19.8",
+                        "p-in-dbm": "1.15",
+                        "p-out-dbm": "20.95",
+                        "p-out-per-ch-dbm": [
+                          {
+                            "label": "lband",
+                            "average": "-0.56"
+                          }
+                        ],
+                        "nf_db": "6.63",
+                        "out-voa-db": "3.0",
+                        "in-voa-db": "0.0",
+                        "att-db": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 7,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Site_C -> Site_D)-",
+                  "link-tp-id": "fiber (Site_C -> Site_D)-",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "18.7",
+                    "length-km": "85.0",
+                    "lineic-att-db-per-km": "0.22",
+                    "connector-att-in-db": "0.0",
+                    "connector-att-out-db": "0.0",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "1419.5",
+                    "fiber-pmd-ps": "0.37"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 8,
+                "num-unnum-hop": {
+                  "node-id": "west edfa in Site_D to Site_C",
+                  "link-tp-id": "west edfa in Site_D to Site_C",
+                  "details": {
+                    "type": "Multiband_amplifier",
+                    "amplifiers": [
+                      {
+                        "type-variety": "std_medium_gain_C",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "21.7",
+                        "p-in-dbm": "-1.86",
+                        "p-out-dbm": "19.85",
+                        "p-out-per-ch-dbm": [
+                          {
+                            "label": "cband",
+                            "average": "-2.07"
+                          }
+                        ],
+                        "nf_db": "6.25",
+                        "out-voa-db": "3.0",
+                        "in-voa-db": "0.0",
+                        "att-db": "0.0"
+                      },
+                      {
+                        "type-variety": "std_medium_gain_L",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "21.7",
+                        "p-in-dbm": "-0.75",
+                        "p-out-dbm": "20.96",
+                        "p-out-per-ch-dbm": [
+                          {
+                            "label": "lband",
+                            "average": "-0.55"
+                          }
+                        ],
+                        "nf_db": "6.25",
+                        "out-voa-db": "3.0",
+                        "in-voa-db": "0.0",
+                        "att-db": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 9,
+                "num-unnum-hop": {
+                  "node-id": "roadm Site_D",
+                  "link-tp-id": "roadm Site_D",
+                  "details": {
+                    "type": "Roadm",
+                    "actual-loss-db": [
+                      {
+                        "label": "cband",
+                        "average": "17.93"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "19.45"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 10,
+                "num-unnum-hop": {
+                  "node-id": "trx Site_D",
+                  "link-tp-id": "trx Site_D",
+                  "details": {
+                    "type": "Transceiver",
+                    "gsnr-0.1nm-db": [
+                      {
+                        "label": "cband",
+                        "average": "24.87"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "25.37"
+                      }
+                    ],
+                    "gnsr-signal-bw-db": [
+                      {
+                        "label": "cband",
+                        "average": "20.78"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "21.29"
+                      }
+                    ],
+                    "osnr-ase-0.1nm-db": [
+                      {
+                        "label": "cband",
+                        "average": "25.55"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "26.65"
+                      }
+                    ],
+                    "osnr-ase-signal-bw-db": [
+                      {
+                        "label": "cband",
+                        "average": "21.47"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "22.57"
+                      }
+                    ],
+                    "cd-ps-per-nm": [
+                      {
+                        "label": "cband",
+                        "average": "4008.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "4008.0"
+                      }
+                    ],
+                    "pmd-ps": [
+                      {
+                        "label": "cband",
+                        "average": "0.62"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "0.62"
+                      }
+                    ],
+                    "pdl-db": [
+                      {
+                        "label": "cband",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "0.0"
+                      }
+                    ],
+                    "latency-ms": "1.18",
+                    "actual-pch-out-dbm": [
+                      {
+                        "label": "cband",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "lband",
+                        "average": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

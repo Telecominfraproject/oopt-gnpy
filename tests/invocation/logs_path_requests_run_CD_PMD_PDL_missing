@@ -36,6 +36,6 @@ WARNING  gnpy.topology.request:request.py 	Warning! Request 0 computed path from
 	lowest_SNR-0.1nm = 14.32
 	required_OSNR@0.1nm = 18
 	system_margins = 2
-	PDL_penalty = not evaluated
-	CD_penalty = not evaluated
-	PMD_penalty = not evaluated
+	PDL_penalty = None
+	CD_penalty = None
+	PMD_penalty = None

@@ -1,0 +1,6 @@
+oms_id,free_slots,occupied_slots,nb of channels,remaining 5OG channels,remaining 75G channels,remaining 100G channels,ABP,useable capacity (Gbit/s), spectrum efficiency,carried services
+roadm Lannion_CAS - roadm Lorient_KMA,757,20,2,94.0,62.0,46.0,0.0049261083743842304,300.0,2.4,"['1', '4']"
+roadm Lannion_CAS - roadm Rennes_STA,757,20,2,94.0,62.0,47.0,0.0,300.0,2.4,"['3', '5']"
+roadm Lannion_CAS - roadm Brest_KLA,769,8,1,95.0,63.0,47.0,0.0,100.0,2.0,['1']
+roadm Lorient_KMA - roadm Vannes_KBE,749,28,3,93.0,62.0,46.0,0.0,400.0,2.2857142857142856,"['0', '1', '4']"
+roadm Vannes_KBE - roadm Rennes_STA,765,12,1,95.0,63.0,47.0,0.0,200.0,2.6666666666666665,['4']

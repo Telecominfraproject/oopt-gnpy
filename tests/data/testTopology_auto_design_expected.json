@@ -572,11 +572,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 20.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -593,11 +593,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 50.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -614,11 +614,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 60.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -635,11 +635,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 10.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 8.0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -656,11 +656,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 60.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -677,11 +677,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 65.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -698,11 +698,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 40.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -719,11 +719,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 35.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -740,11 +740,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 75.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -761,11 +761,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 70.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -782,11 +782,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 50.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -803,11 +803,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 55.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -824,11 +824,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 30.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 4.0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -845,11 +845,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 30.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 4.0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -866,11 +866,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 10.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -887,11 +887,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 60.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -908,11 +908,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 70.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -929,11 +929,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 80.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -950,11 +950,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 90.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -971,11 +971,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 100.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -992,11 +992,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 110.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1013,11 +1013,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 20.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1034,11 +1034,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 50.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1055,11 +1055,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 60.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1076,11 +1076,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 10.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 8.0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1097,11 +1097,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 60.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1118,11 +1118,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 65.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1139,11 +1139,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 40.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1160,11 +1160,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 35.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1181,11 +1181,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 75.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1202,11 +1202,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 70.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1223,11 +1223,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 50.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1244,11 +1244,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 55.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1265,11 +1265,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 30.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 4.0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1286,11 +1286,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 30.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 4.0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1307,11 +1307,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 10.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 8.0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1328,11 +1328,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 60.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1349,11 +1349,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 70.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1370,11 +1370,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 80.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1391,11 +1391,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 90.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1412,11 +1412,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 100.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
@@ -1433,11 +1433,11 @@
       "type_variety": "SSMF",
       "params": {
         "length": 110.0,
-        "loss_coef": 0.2,
         "length_units": "km",
         "att_in": 0,
         "con_in": 0,
-        "con_out": 0
+        "con_out": 0,
+        "loss_coef": 0.2
       },
       "metadata": {
         "location": {
