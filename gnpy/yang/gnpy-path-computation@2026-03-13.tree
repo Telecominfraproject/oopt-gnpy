@@ -1,0 +1,763 @@
+module: gnpy-path-computation
+  +--rw services
+  |  +--rw path-request* [request-id]
+  |  |  +--rw request-id                string
+  |  |  +--rw bidirectional             boolean
+  |  |  +--rw source?                   string
+  |  |  +--rw destination?              string
+  |  |  +--rw src-tp-id?                string
+  |  |  +--rw dst-tp-id?                string
+  |  |  +--rw explicit-route-objects
+  |  |  |  +--ro route-object-include-exclude* [index]
+  |  |  |     +--ro explicit-route-usage?      identityref
+  |  |  |     +--ro index                      uint32
+  |  |  |     +--ro (subobject-type)?
+  |  |  |        +--:(num-unnum-hop)
+  |  |  |        |  +--ro num-unnum-hop
+  |  |  |        |     +--ro node-id?      string
+  |  |  |        |     +--ro link-tp-id?   string
+  |  |  |        |     +--ro hop-type?     te-hop-type
+  |  |  |        |     +--ro details
+  |  |  |        |        +--ro type?                                                          identityref
+  |  |  |        |        +--ro type-variety?                                                  string
+  |  |  |        |        +--ro (element-details)?
+  |  |  |        |           +--:(transceiver)
+  |  |  |        |           |  +--ro transponder-type?                                        string
+  |  |  |        |           |  +--ro transponder-mode?                                        string
+  |  |  |        |           |  +--ro gsnr-0.1nm-db* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro gnsr-signal-bw-db* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro osnr-ase-0.1nm-db* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro osnr-ase-signal-bw-db* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro cd-ps-per-nm* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro pmd-ps* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro pdl-db* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro latency-ms?                                              decimal64
+  |  |  |        |           |  +--ro actual-pch-out-dbm* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro cd-penalty-db* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro pmd-penalty-db* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro pdl-penalty-db* []
+  |  |  |        |           |     +--ro label?     string
+  |  |  |        |           |     +--ro average?   decimal64
+  |  |  |        |           +--:(roadm)
+  |  |  |        |           |  +--ro actual-loss-db* []
+  |  |  |        |           |     +--ro label?     string
+  |  |  |        |           |     +--ro average?   decimal64
+  |  |  |        |           +--:(fused)
+  |  |  |        |           |  +--ro loss-db?                                                 decimal64
+  |  |  |        |           +--:(edfa)
+  |  |  |        |           |  +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+  |  |  |        |           |  +--ro p-in-dbm?                                                decimal64
+  |  |  |        |           |  +--ro p-out-dbm?                                               decimal64
+  |  |  |        |           |  +--ro p-out-per-ch-dbm* []
+  |  |  |        |           |  |  +--ro label?     string
+  |  |  |        |           |  |  +--ro average?   decimal64
+  |  |  |        |           |  +--ro nf_db?                                                   decimal64
+  |  |  |        |           |  +--ro out-voa-db?                                              decimal64
+  |  |  |        |           |  +--ro in-voa-db?                                               decimal64
+  |  |  |        |           |  +--ro att-db?                                                  decimal64
+  |  |  |        |           +--:(fiber)
+  |  |  |        |           |  +--ro total-loss-in-db-incl-connectors-padding?                decimal64
+  |  |  |        |           |  +--ro length-km?                                               decimal64
+  |  |  |        |           |  +--ro lineic-att-db-per-km?                                    decimal64
+  |  |  |        |           |  +--ro connector-att-in-db?                                     decimal64
+  |  |  |        |           |  +--ro connector-att-out-db?                                    decimal64
+  |  |  |        |           |  +--ro padding-db?                                              decimal64
+  |  |  |        |           |  +--ro chromatic-dispersion-ps-per-nm?                          decimal64
+  |  |  |        |           |  +--ro fiber-pmd-ps?                                            decimal64
+  |  |  |        |           +--:(multiband_amplifier)
+  |  |  |        |              +--ro amplifiers* []
+  |  |  |        |                 +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+  |  |  |        |                 +--ro p-in-dbm?                                                decimal64
+  |  |  |        |                 +--ro p-out-dbm?                                               decimal64
+  |  |  |        |                 +--ro p-out-per-ch-dbm* []
+  |  |  |        |                 |  +--ro label?     string
+  |  |  |        |                 |  +--ro average?   decimal64
+  |  |  |        |                 +--ro nf_db?                                                   decimal64
+  |  |  |        |                 +--ro out-voa-db?                                              decimal64
+  |  |  |        |                 +--ro in-voa-db?                                               decimal64
+  |  |  |        |                 +--ro att-db?                                                  decimal64
+  |  |  |        |                 +--ro type-variety?                                            string
+  |  |  |        +--:(label)
+  |  |  |        |  +--ro label-hop* [N]
+  |  |  |        |     +--ro N    union
+  |  |  |        |     +--ro M?   union
+  |  |  |        +--:(hop-attribute)
+  |  |  |           +--ro (hop-type)?
+  |  |  |              +--:(tsp)
+  |  |  |              |  +--ro transponder
+  |  |  |              |     +--ro transponder-type?   string
+  |  |  |              |     +--ro transponder-mode?   string
+  |  |  |              +--:(regen)
+  |  |  |                 +--ro regenerator
+  |  |  |                    +--ro transponder-type?   string
+  |  |  |                    +--ro transponder-mode?   string
+  |  |  +--rw path-constraints
+  |  |     +--rw te-bandwidth
+  |  |        +--rw technology?            string
+  |  |        +--rw trx_type               string
+  |  |        +--rw trx_mode?              union
+  |  |        +--rw effective-freq-slot* [N]
+  |  |        |  +--rw N    union
+  |  |        |  +--rw M?   union
+  |  |        +--rw spacing                decimal64
+  |  |        +--rw max-nb-of-channel?     union
+  |  |        +--rw output-power?          union
+  |  |        +--rw tx_power?              union
+  |  |        +--rw path_bandwidth         decimal64
+  |  +--rw synchronization* [synchronization-id]
+  |     +--rw synchronization-id    string
+  |     +--rw svec
+  |        +--rw relaxable?           boolean
+  |        +--rw disjointness?        te-path-disjointness
+  |        +--rw request-id-number*   string
+  +--rw responses
+     +--rw response* [response-id]
+        +--rw response-id        string
+        +--rw path-properties
+        |  +--rw path-metric* [metric-type]
+        |  |  +--rw metric-type                           identityref
+        |  |  +--rw (value-type)?
+        |  |     +--:(simple-value)
+        |  |     |  +--rw accumulative-value?             accumulative-value-type
+        |  |     +--:(complex-value)
+        |  |        +--rw per-label-accumulative-value* [label]
+        |  |           +--rw label                 string
+        |  |           +--rw accumulative-value?   accumulative-value-type
+        |  +--rw z-a-path-metric* [metric-type]
+        |  |  +--rw metric-type                           identityref
+        |  |  +--rw (value-type)?
+        |  |     +--:(simple-value)
+        |  |     |  +--rw accumulative-value?             accumulative-value-type
+        |  |     +--:(complex-value)
+        |  |        +--rw per-label-accumulative-value* [label]
+        |  |           +--rw label                 string
+        |  |           +--rw accumulative-value?   accumulative-value-type
+        |  +--ro path-route-objects* []
+        |     +--ro path-route-object
+        |        +--ro index?                     uint32
+        |        +--ro (subobject-type)?
+        |           +--:(num-unnum-hop)
+        |           |  +--ro num-unnum-hop
+        |           |     +--ro node-id?      string
+        |           |     +--ro link-tp-id?   string
+        |           |     +--ro hop-type?     te-hop-type
+        |           |     +--ro details
+        |           |        +--ro type?                                                          identityref
+        |           |        +--ro type-variety?                                                  string
+        |           |        +--ro (element-details)?
+        |           |           +--:(transceiver)
+        |           |           |  +--ro transponder-type?                                        string
+        |           |           |  +--ro transponder-mode?                                        string
+        |           |           |  +--ro gsnr-0.1nm-db* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro gnsr-signal-bw-db* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro osnr-ase-0.1nm-db* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro osnr-ase-signal-bw-db* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro cd-ps-per-nm* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro pmd-ps* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro pdl-db* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro latency-ms?                                              decimal64
+        |           |           |  +--ro actual-pch-out-dbm* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro cd-penalty-db* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro pmd-penalty-db* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro pdl-penalty-db* []
+        |           |           |     +--ro label?     string
+        |           |           |     +--ro average?   decimal64
+        |           |           +--:(roadm)
+        |           |           |  +--ro actual-loss-db* []
+        |           |           |     +--ro label?     string
+        |           |           |     +--ro average?   decimal64
+        |           |           +--:(fused)
+        |           |           |  +--ro loss-db?                                                 decimal64
+        |           |           +--:(edfa)
+        |           |           |  +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+        |           |           |  +--ro p-in-dbm?                                                decimal64
+        |           |           |  +--ro p-out-dbm?                                               decimal64
+        |           |           |  +--ro p-out-per-ch-dbm* []
+        |           |           |  |  +--ro label?     string
+        |           |           |  |  +--ro average?   decimal64
+        |           |           |  +--ro nf_db?                                                   decimal64
+        |           |           |  +--ro out-voa-db?                                              decimal64
+        |           |           |  +--ro in-voa-db?                                               decimal64
+        |           |           |  +--ro att-db?                                                  decimal64
+        |           |           +--:(fiber)
+        |           |           |  +--ro total-loss-in-db-incl-connectors-padding?                decimal64
+        |           |           |  +--ro length-km?                                               decimal64
+        |           |           |  +--ro lineic-att-db-per-km?                                    decimal64
+        |           |           |  +--ro connector-att-in-db?                                     decimal64
+        |           |           |  +--ro connector-att-out-db?                                    decimal64
+        |           |           |  +--ro padding-db?                                              decimal64
+        |           |           |  +--ro chromatic-dispersion-ps-per-nm?                          decimal64
+        |           |           |  +--ro fiber-pmd-ps?                                            decimal64
+        |           |           +--:(multiband_amplifier)
+        |           |              +--ro amplifiers* []
+        |           |                 +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+        |           |                 +--ro p-in-dbm?                                                decimal64
+        |           |                 +--ro p-out-dbm?                                               decimal64
+        |           |                 +--ro p-out-per-ch-dbm* []
+        |           |                 |  +--ro label?     string
+        |           |                 |  +--ro average?   decimal64
+        |           |                 +--ro nf_db?                                                   decimal64
+        |           |                 +--ro out-voa-db?                                              decimal64
+        |           |                 +--ro in-voa-db?                                               decimal64
+        |           |                 +--ro att-db?                                                  decimal64
+        |           |                 +--ro type-variety?                                            string
+        |           +--:(label)
+        |           |  +--ro label-hop* [N]
+        |           |     +--ro N    union
+        |           |     +--ro M?   union
+        |           +--:(hop-attribute)
+        |              +--ro (hop-type)?
+        |                 +--:(tsp)
+        |                 |  +--ro transponder
+        |                 |     +--ro transponder-type?   string
+        |                 |     +--ro transponder-mode?   string
+        |                 +--:(regen)
+        |                    +--ro regenerator
+        |                       +--ro transponder-type?   string
+        |                       +--ro transponder-mode?   string
+        +--rw no-path
+           +--rw no-path?           identityref
+           +--rw path-properties
+              +--rw path-metric* [metric-type]
+              |  +--rw metric-type                           identityref
+              |  +--rw (value-type)?
+              |     +--:(simple-value)
+              |     |  +--rw accumulative-value?             accumulative-value-type
+              |     +--:(complex-value)
+              |        +--rw per-label-accumulative-value* [label]
+              |           +--rw label                 string
+              |           +--rw accumulative-value?   accumulative-value-type
+              +--rw z-a-path-metric* [metric-type]
+              |  +--rw metric-type                           identityref
+              |  +--rw (value-type)?
+              |     +--:(simple-value)
+              |     |  +--rw accumulative-value?             accumulative-value-type
+              |     +--:(complex-value)
+              |        +--rw per-label-accumulative-value* [label]
+              |           +--rw label                 string
+              |           +--rw accumulative-value?   accumulative-value-type
+              +--ro path-route-objects* []
+                 +--ro path-route-object
+                    +--ro index?                     uint32
+                    +--ro (subobject-type)?
+                       +--:(num-unnum-hop)
+                       |  +--ro num-unnum-hop
+                       |     +--ro node-id?      string
+                       |     +--ro link-tp-id?   string
+                       |     +--ro hop-type?     te-hop-type
+                       |     +--ro details
+                       |        +--ro type?                                                          identityref
+                       |        +--ro type-variety?                                                  string
+                       |        +--ro (element-details)?
+                       |           +--:(transceiver)
+                       |           |  +--ro transponder-type?                                        string
+                       |           |  +--ro transponder-mode?                                        string
+                       |           |  +--ro gsnr-0.1nm-db* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro gnsr-signal-bw-db* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro osnr-ase-0.1nm-db* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro osnr-ase-signal-bw-db* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro cd-ps-per-nm* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro pmd-ps* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro pdl-db* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro latency-ms?                                              decimal64
+                       |           |  +--ro actual-pch-out-dbm* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro cd-penalty-db* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro pmd-penalty-db* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro pdl-penalty-db* []
+                       |           |     +--ro label?     string
+                       |           |     +--ro average?   decimal64
+                       |           +--:(roadm)
+                       |           |  +--ro actual-loss-db* []
+                       |           |     +--ro label?     string
+                       |           |     +--ro average?   decimal64
+                       |           +--:(fused)
+                       |           |  +--ro loss-db?                                                 decimal64
+                       |           +--:(edfa)
+                       |           |  +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+                       |           |  +--ro p-in-dbm?                                                decimal64
+                       |           |  +--ro p-out-dbm?                                               decimal64
+                       |           |  +--ro p-out-per-ch-dbm* []
+                       |           |  |  +--ro label?     string
+                       |           |  |  +--ro average?   decimal64
+                       |           |  +--ro nf_db?                                                   decimal64
+                       |           |  +--ro out-voa-db?                                              decimal64
+                       |           |  +--ro in-voa-db?                                               decimal64
+                       |           |  +--ro att-db?                                                  decimal64
+                       |           +--:(fiber)
+                       |           |  +--ro total-loss-in-db-incl-connectors-padding?                decimal64
+                       |           |  +--ro length-km?                                               decimal64
+                       |           |  +--ro lineic-att-db-per-km?                                    decimal64
+                       |           |  +--ro connector-att-in-db?                                     decimal64
+                       |           |  +--ro connector-att-out-db?                                    decimal64
+                       |           |  +--ro padding-db?                                              decimal64
+                       |           |  +--ro chromatic-dispersion-ps-per-nm?                          decimal64
+                       |           |  +--ro fiber-pmd-ps?                                            decimal64
+                       |           +--:(multiband_amplifier)
+                       |              +--ro amplifiers* []
+                       |                 +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+                       |                 +--ro p-in-dbm?                                                decimal64
+                       |                 +--ro p-out-dbm?                                               decimal64
+                       |                 +--ro p-out-per-ch-dbm* []
+                       |                 |  +--ro label?     string
+                       |                 |  +--ro average?   decimal64
+                       |                 +--ro nf_db?                                                   decimal64
+                       |                 +--ro out-voa-db?                                              decimal64
+                       |                 +--ro in-voa-db?                                               decimal64
+                       |                 +--ro att-db?                                                  decimal64
+                       |                 +--ro type-variety?                                            string
+                       +--:(label)
+                       |  +--ro label-hop* [N]
+                       |     +--ro N    union
+                       |     +--ro M?   union
+                       +--:(hop-attribute)
+                          +--ro (hop-type)?
+                             +--:(tsp)
+                             |  +--ro transponder
+                             |     +--ro transponder-type?   string
+                             |     +--ro transponder-mode?   string
+                             +--:(regen)
+                                +--ro regenerator
+                                   +--ro transponder-type?   string
+                                   +--ro transponder-mode?   string
+
+  augment /gapi:api:
+    +--rw services
+    |  +--rw path-request* [request-id]
+    |  |  +--rw request-id                string
+    |  |  +--rw bidirectional             boolean
+    |  |  +--rw source?                   string
+    |  |  +--rw destination?              string
+    |  |  +--rw src-tp-id?                string
+    |  |  +--rw dst-tp-id?                string
+    |  |  +--rw explicit-route-objects
+    |  |  |  +--ro route-object-include-exclude* [index]
+    |  |  |     +--ro explicit-route-usage?      identityref
+    |  |  |     +--ro index                      uint32
+    |  |  |     +--ro (subobject-type)?
+    |  |  |        +--:(num-unnum-hop)
+    |  |  |        |  +--ro num-unnum-hop
+    |  |  |        |     +--ro node-id?      string
+    |  |  |        |     +--ro link-tp-id?   string
+    |  |  |        |     +--ro hop-type?     te-hop-type
+    |  |  |        |     +--ro details
+    |  |  |        |        +--ro type?                                                          identityref
+    |  |  |        |        +--ro type-variety?                                                  string
+    |  |  |        |        +--ro (element-details)?
+    |  |  |        |           +--:(transceiver)
+    |  |  |        |           |  +--ro transponder-type?                                        string
+    |  |  |        |           |  +--ro transponder-mode?                                        string
+    |  |  |        |           |  +--ro gsnr-0.1nm-db* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro gnsr-signal-bw-db* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro osnr-ase-0.1nm-db* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro osnr-ase-signal-bw-db* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro cd-ps-per-nm* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro pmd-ps* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro pdl-db* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro latency-ms?                                              decimal64
+    |  |  |        |           |  +--ro actual-pch-out-dbm* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro cd-penalty-db* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro pmd-penalty-db* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro pdl-penalty-db* []
+    |  |  |        |           |     +--ro label?     string
+    |  |  |        |           |     +--ro average?   decimal64
+    |  |  |        |           +--:(roadm)
+    |  |  |        |           |  +--ro actual-loss-db* []
+    |  |  |        |           |     +--ro label?     string
+    |  |  |        |           |     +--ro average?   decimal64
+    |  |  |        |           +--:(fused)
+    |  |  |        |           |  +--ro loss-db?                                                 decimal64
+    |  |  |        |           +--:(edfa)
+    |  |  |        |           |  +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+    |  |  |        |           |  +--ro p-in-dbm?                                                decimal64
+    |  |  |        |           |  +--ro p-out-dbm?                                               decimal64
+    |  |  |        |           |  +--ro p-out-per-ch-dbm* []
+    |  |  |        |           |  |  +--ro label?     string
+    |  |  |        |           |  |  +--ro average?   decimal64
+    |  |  |        |           |  +--ro nf_db?                                                   decimal64
+    |  |  |        |           |  +--ro out-voa-db?                                              decimal64
+    |  |  |        |           |  +--ro in-voa-db?                                               decimal64
+    |  |  |        |           |  +--ro att-db?                                                  decimal64
+    |  |  |        |           +--:(fiber)
+    |  |  |        |           |  +--ro total-loss-in-db-incl-connectors-padding?                decimal64
+    |  |  |        |           |  +--ro length-km?                                               decimal64
+    |  |  |        |           |  +--ro lineic-att-db-per-km?                                    decimal64
+    |  |  |        |           |  +--ro connector-att-in-db?                                     decimal64
+    |  |  |        |           |  +--ro connector-att-out-db?                                    decimal64
+    |  |  |        |           |  +--ro padding-db?                                              decimal64
+    |  |  |        |           |  +--ro chromatic-dispersion-ps-per-nm?                          decimal64
+    |  |  |        |           |  +--ro fiber-pmd-ps?                                            decimal64
+    |  |  |        |           +--:(multiband_amplifier)
+    |  |  |        |              +--ro amplifiers* []
+    |  |  |        |                 +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+    |  |  |        |                 +--ro p-in-dbm?                                                decimal64
+    |  |  |        |                 +--ro p-out-dbm?                                               decimal64
+    |  |  |        |                 +--ro p-out-per-ch-dbm* []
+    |  |  |        |                 |  +--ro label?     string
+    |  |  |        |                 |  +--ro average?   decimal64
+    |  |  |        |                 +--ro nf_db?                                                   decimal64
+    |  |  |        |                 +--ro out-voa-db?                                              decimal64
+    |  |  |        |                 +--ro in-voa-db?                                               decimal64
+    |  |  |        |                 +--ro att-db?                                                  decimal64
+    |  |  |        |                 +--ro type-variety?                                            string
+    |  |  |        +--:(label)
+    |  |  |        |  +--ro label-hop* [N]
+    |  |  |        |     +--ro N    union
+    |  |  |        |     +--ro M?   union
+    |  |  |        +--:(hop-attribute)
+    |  |  |           +--ro (hop-type)?
+    |  |  |              +--:(tsp)
+    |  |  |              |  +--ro transponder
+    |  |  |              |     +--ro transponder-type?   string
+    |  |  |              |     +--ro transponder-mode?   string
+    |  |  |              +--:(regen)
+    |  |  |                 +--ro regenerator
+    |  |  |                    +--ro transponder-type?   string
+    |  |  |                    +--ro transponder-mode?   string
+    |  |  +--rw path-constraints
+    |  |     +--rw te-bandwidth
+    |  |        +--rw technology?            string
+    |  |        +--rw trx_type               string
+    |  |        +--rw trx_mode?              union
+    |  |        +--rw effective-freq-slot* [N]
+    |  |        |  +--rw N    union
+    |  |        |  +--rw M?   union
+    |  |        +--rw spacing                decimal64
+    |  |        +--rw max-nb-of-channel?     union
+    |  |        +--rw output-power?          union
+    |  |        +--rw tx_power?              union
+    |  |        +--rw path_bandwidth         decimal64
+    |  +--rw synchronization* [synchronization-id]
+    |     +--rw synchronization-id    string
+    |     +--rw svec
+    |        +--rw relaxable?           boolean
+    |        +--rw disjointness?        te-path-disjointness
+    |        +--rw request-id-number*   string
+    +--rw responses
+       +--rw response* [response-id]
+          +--rw response-id        string
+          +--rw path-properties
+          |  +--rw path-metric* [metric-type]
+          |  |  +--rw metric-type                           identityref
+          |  |  +--rw (value-type)?
+          |  |     +--:(simple-value)
+          |  |     |  +--rw accumulative-value?             accumulative-value-type
+          |  |     +--:(complex-value)
+          |  |        +--rw per-label-accumulative-value* [label]
+          |  |           +--rw label                 string
+          |  |           +--rw accumulative-value?   accumulative-value-type
+          |  +--rw z-a-path-metric* [metric-type]
+          |  |  +--rw metric-type                           identityref
+          |  |  +--rw (value-type)?
+          |  |     +--:(simple-value)
+          |  |     |  +--rw accumulative-value?             accumulative-value-type
+          |  |     +--:(complex-value)
+          |  |        +--rw per-label-accumulative-value* [label]
+          |  |           +--rw label                 string
+          |  |           +--rw accumulative-value?   accumulative-value-type
+          |  +--ro path-route-objects* []
+          |     +--ro path-route-object
+          |        +--ro index?                     uint32
+          |        +--ro (subobject-type)?
+          |           +--:(num-unnum-hop)
+          |           |  +--ro num-unnum-hop
+          |           |     +--ro node-id?      string
+          |           |     +--ro link-tp-id?   string
+          |           |     +--ro hop-type?     te-hop-type
+          |           |     +--ro details
+          |           |        +--ro type?                                                          identityref
+          |           |        +--ro type-variety?                                                  string
+          |           |        +--ro (element-details)?
+          |           |           +--:(transceiver)
+          |           |           |  +--ro transponder-type?                                        string
+          |           |           |  +--ro transponder-mode?                                        string
+          |           |           |  +--ro gsnr-0.1nm-db* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro gnsr-signal-bw-db* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro osnr-ase-0.1nm-db* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro osnr-ase-signal-bw-db* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro cd-ps-per-nm* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro pmd-ps* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro pdl-db* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro latency-ms?                                              decimal64
+          |           |           |  +--ro actual-pch-out-dbm* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro cd-penalty-db* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro pmd-penalty-db* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro pdl-penalty-db* []
+          |           |           |     +--ro label?     string
+          |           |           |     +--ro average?   decimal64
+          |           |           +--:(roadm)
+          |           |           |  +--ro actual-loss-db* []
+          |           |           |     +--ro label?     string
+          |           |           |     +--ro average?   decimal64
+          |           |           +--:(fused)
+          |           |           |  +--ro loss-db?                                                 decimal64
+          |           |           +--:(edfa)
+          |           |           |  +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+          |           |           |  +--ro p-in-dbm?                                                decimal64
+          |           |           |  +--ro p-out-dbm?                                               decimal64
+          |           |           |  +--ro p-out-per-ch-dbm* []
+          |           |           |  |  +--ro label?     string
+          |           |           |  |  +--ro average?   decimal64
+          |           |           |  +--ro nf_db?                                                   decimal64
+          |           |           |  +--ro out-voa-db?                                              decimal64
+          |           |           |  +--ro in-voa-db?                                               decimal64
+          |           |           |  +--ro att-db?                                                  decimal64
+          |           |           +--:(fiber)
+          |           |           |  +--ro total-loss-in-db-incl-connectors-padding?                decimal64
+          |           |           |  +--ro length-km?                                               decimal64
+          |           |           |  +--ro lineic-att-db-per-km?                                    decimal64
+          |           |           |  +--ro connector-att-in-db?                                     decimal64
+          |           |           |  +--ro connector-att-out-db?                                    decimal64
+          |           |           |  +--ro padding-db?                                              decimal64
+          |           |           |  +--ro chromatic-dispersion-ps-per-nm?                          decimal64
+          |           |           |  +--ro fiber-pmd-ps?                                            decimal64
+          |           |           +--:(multiband_amplifier)
+          |           |              +--ro amplifiers* []
+          |           |                 +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+          |           |                 +--ro p-in-dbm?                                                decimal64
+          |           |                 +--ro p-out-dbm?                                               decimal64
+          |           |                 +--ro p-out-per-ch-dbm* []
+          |           |                 |  +--ro label?     string
+          |           |                 |  +--ro average?   decimal64
+          |           |                 +--ro nf_db?                                                   decimal64
+          |           |                 +--ro out-voa-db?                                              decimal64
+          |           |                 +--ro in-voa-db?                                               decimal64
+          |           |                 +--ro att-db?                                                  decimal64
+          |           |                 +--ro type-variety?                                            string
+          |           +--:(label)
+          |           |  +--ro label-hop* [N]
+          |           |     +--ro N    union
+          |           |     +--ro M?   union
+          |           +--:(hop-attribute)
+          |              +--ro (hop-type)?
+          |                 +--:(tsp)
+          |                 |  +--ro transponder
+          |                 |     +--ro transponder-type?   string
+          |                 |     +--ro transponder-mode?   string
+          |                 +--:(regen)
+          |                    +--ro regenerator
+          |                       +--ro transponder-type?   string
+          |                       +--ro transponder-mode?   string
+          +--rw no-path
+             +--rw no-path?           identityref
+             +--rw path-properties
+                +--rw path-metric* [metric-type]
+                |  +--rw metric-type                           identityref
+                |  +--rw (value-type)?
+                |     +--:(simple-value)
+                |     |  +--rw accumulative-value?             accumulative-value-type
+                |     +--:(complex-value)
+                |        +--rw per-label-accumulative-value* [label]
+                |           +--rw label                 string
+                |           +--rw accumulative-value?   accumulative-value-type
+                +--rw z-a-path-metric* [metric-type]
+                |  +--rw metric-type                           identityref
+                |  +--rw (value-type)?
+                |     +--:(simple-value)
+                |     |  +--rw accumulative-value?             accumulative-value-type
+                |     +--:(complex-value)
+                |        +--rw per-label-accumulative-value* [label]
+                |           +--rw label                 string
+                |           +--rw accumulative-value?   accumulative-value-type
+                +--ro path-route-objects* []
+                   +--ro path-route-object
+                      +--ro index?                     uint32
+                      +--ro (subobject-type)?
+                         +--:(num-unnum-hop)
+                         |  +--ro num-unnum-hop
+                         |     +--ro node-id?      string
+                         |     +--ro link-tp-id?   string
+                         |     +--ro hop-type?     te-hop-type
+                         |     +--ro details
+                         |        +--ro type?                                                          identityref
+                         |        +--ro type-variety?                                                  string
+                         |        +--ro (element-details)?
+                         |           +--:(transceiver)
+                         |           |  +--ro transponder-type?                                        string
+                         |           |  +--ro transponder-mode?                                        string
+                         |           |  +--ro gsnr-0.1nm-db* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro gnsr-signal-bw-db* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro osnr-ase-0.1nm-db* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro osnr-ase-signal-bw-db* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro cd-ps-per-nm* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro pmd-ps* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro pdl-db* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro latency-ms?                                              decimal64
+                         |           |  +--ro actual-pch-out-dbm* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro cd-penalty-db* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro pmd-penalty-db* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro pdl-penalty-db* []
+                         |           |     +--ro label?     string
+                         |           |     +--ro average?   decimal64
+                         |           +--:(roadm)
+                         |           |  +--ro actual-loss-db* []
+                         |           |     +--ro label?     string
+                         |           |     +--ro average?   decimal64
+                         |           +--:(fused)
+                         |           |  +--ro loss-db?                                                 decimal64
+                         |           +--:(edfa)
+                         |           |  +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+                         |           |  +--ro p-in-dbm?                                                decimal64
+                         |           |  +--ro p-out-dbm?                                               decimal64
+                         |           |  +--ro p-out-per-ch-dbm* []
+                         |           |  |  +--ro label?     string
+                         |           |  |  +--ro average?   decimal64
+                         |           |  +--ro nf_db?                                                   decimal64
+                         |           |  +--ro out-voa-db?                                              decimal64
+                         |           |  +--ro in-voa-db?                                               decimal64
+                         |           |  +--ro att-db?                                                  decimal64
+                         |           +--:(fiber)
+                         |           |  +--ro total-loss-in-db-incl-connectors-padding?                decimal64
+                         |           |  +--ro length-km?                                               decimal64
+                         |           |  +--ro lineic-att-db-per-km?                                    decimal64
+                         |           |  +--ro connector-att-in-db?                                     decimal64
+                         |           |  +--ro connector-att-out-db?                                    decimal64
+                         |           |  +--ro padding-db?                                              decimal64
+                         |           |  +--ro chromatic-dispersion-ps-per-nm?                          decimal64
+                         |           |  +--ro fiber-pmd-ps?                                            decimal64
+                         |           +--:(multiband_amplifier)
+                         |              +--ro amplifiers* []
+                         |                 +--ro effective-gain-db-before-att-in-and-before-output-voa?   decimal64
+                         |                 +--ro p-in-dbm?                                                decimal64
+                         |                 +--ro p-out-dbm?                                               decimal64
+                         |                 +--ro p-out-per-ch-dbm* []
+                         |                 |  +--ro label?     string
+                         |                 |  +--ro average?   decimal64
+                         |                 +--ro nf_db?                                                   decimal64
+                         |                 +--ro out-voa-db?                                              decimal64
+                         |                 +--ro in-voa-db?                                               decimal64
+                         |                 +--ro att-db?                                                  decimal64
+                         |                 +--ro type-variety?                                            string
+                         +--:(label)
+                         |  +--ro label-hop* [N]
+                         |     +--ro N    union
+                         |     +--ro M?   union
+                         +--:(hop-attribute)
+                            +--ro (hop-type)?
+                               +--:(tsp)
+                               |  +--ro transponder
+                               |     +--ro transponder-type?   string
+                               |     +--ro transponder-mode?   string
+                               +--:(regen)
+                                  +--ro regenerator
+                                     +--ro transponder-type?   string
+                                     +--ro transponder-mode?   string

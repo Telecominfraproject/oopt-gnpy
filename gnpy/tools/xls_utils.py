@@ -322,3 +322,15 @@ def get_sheet_names(workbook: WorkbookType, is_xlsx: bool) -> List[str]:
     if is_xlsx:
         return workbook.sheetnames
     return workbook.sheet_names()
+
+
+def read_xls(file_name: Union[Path, str], sheet_name: str) -> List:
+    """Reads one sheet
+    """
+    wb, is_xlsx = generic_open_workbook(file_name)
+    sheet = get_sheet(wb, sheet_name, is_xlsx)
+    res = []
+    for row in all_rows(sheet, is_xlsx, start=0):
+        if not is_type_cell_empty(row[0], is_xlsx):
+            res.append([c.value for c in row])
+    return res

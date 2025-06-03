@@ -1,0 +1,457 @@
+{
+  "gnpy-path-computation:responses": {
+    "response": [
+      {
+        "response-id": "reference",
+        "path-properties": {
+          "path-metric": [
+            {
+              "metric-type": "SNR-bandwidth",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "18.85"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "15.9"
+                }
+              ]
+            },
+            {
+              "metric-type": "SNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "22.93"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "22.99"
+                }
+              ]
+            },
+            {
+              "metric-type": "OSNR-bandwidth",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "18.98"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "15.93"
+                }
+              ]
+            },
+            {
+              "metric-type": "OSNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+                  "accumulative-value": "23.06"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "23.02"
+                }
+              ]
+            },
+            {
+              "metric-type": "lowest_SNR-0.1nm",
+              "per-label-accumulative-value": [
+                {
+                  "label": "mode_1",
+              "accumulative-value": "22.91"
+                },
+                {
+                  "label": "mode_2",
+                  "accumulative-value": "22.98"
+                }
+              ]
+            }
+          ],
+          "path-route-objects": [
+            {
+              "path-route-object": {
+                "index": 0,
+                "num-unnum-hop": {
+                  "node-id": "trx Lannion_CAS",
+                  "link-tp-id": "trx Lannion_CAS",
+                  "details": {
+                    "type": "Transceiver",
+                    "gsnr-0.1nm-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "40.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "40.0"
+                      }
+                    ],
+                    "gnsr-signal-bw-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "35.92"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "32.91"
+                      }
+                    ],
+                    "osnr-ase-0.1nm-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "40.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "40.0"
+                      }
+                    ],
+                    "osnr-ase-signal-bw-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "35.92"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "32.91"
+                      }
+                    ],
+                    "cd-ps-per-nm": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pmd-ps": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "pdl-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "latency-ms": "0.0",
+                    "actual-pch-out-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 1,
+                "num-unnum-hop": {
+                  "node-id": "roadm Lannion_CAS",
+                  "link-tp-id": "roadm Lannion_CAS",
+                  "details": {
+                    "type": "Roadm",
+                    "actual-loss-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "20.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "20.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 2,
+                "num-unnum-hop": {
+                  "node-id": "east edfa in Lannion_CAS to Corlay",
+                  "link-tp-id": "east edfa in Lannion_CAS to Corlay",
+                  "details": {
+                    "type": "Edfa",
+                    "type-variety": "test",
+                    "effective-gain-db-before-att-in-and-before-output-voa": "20.0",
+                    "p-in-dbm": "-2.22",
+                    "p-out-dbm": "17.79",
+                    "p-out-per-ch-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.01"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.02"
+                      }
+                    ],
+                    "out-voa-db": "0.0",
+                    "in-voa-db": "0.0",
+                    "att-db": "0.0"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 3,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Lannion_CAS -> Corlay)-F061",
+                  "link-tp-id": "fiber (Lannion_CAS -> Corlay)-F061",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "4.0",
+                    "length-km": "20.0",
+                    "lineic-att-db-per-km": "0.2",
+                    "connector-att-in-db": "0.0",
+                    "connector-att-out-db": "0.0",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "334.0",
+                    "fiber-pmd-ps": "0.18"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 4,
+                "num-unnum-hop": {
+                  "node-id": "west fused spans in Corlay",
+                  "link-tp-id": "west fused spans in Corlay",
+                  "details": {
+                    "type": "Fused",
+                    "loss-db": "1.0"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 5,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Corlay -> Loudeac)-F010",
+                  "link-tp-id": "fiber (Corlay -> Loudeac)-F010",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "10.0",
+                    "length-km": "50.0",
+                    "lineic-att-db-per-km": "0.2",
+                    "connector-att-in-db": "0.0",
+                    "connector-att-out-db": "0.0",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "835.0",
+                    "fiber-pmd-ps": "0.28"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 6,
+                "num-unnum-hop": {
+                  "node-id": "west fused spans in Loudeac",
+                  "link-tp-id": "west fused spans in Loudeac",
+                  "details": {
+                    "type": "Fused",
+                    "loss-db": "1.0"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 7,
+                "num-unnum-hop": {
+                  "node-id": "fiber (Loudeac -> Lorient_KMA)-F054",
+                  "link-tp-id": "fiber (Loudeac -> Lorient_KMA)-F054",
+                  "details": {
+                    "type": "Fiber",
+                    "type-variety": "SSMF",
+                    "total-loss-in-db-incl-connectors-padding": "12.0",
+                    "length-km": "60.0",
+                    "lineic-att-db-per-km": "0.2",
+                    "connector-att-in-db": "0.0",
+                    "connector-att-out-db": "0.0",
+                    "padding-db": "0.0",
+                    "chromatic-dispersion-ps-per-nm": "1002.0",
+                    "fiber-pmd-ps": "0.31"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 8,
+                "num-unnum-hop": {
+                  "node-id": "west edfa in Lorient_KMA to Loudeac",
+                  "link-tp-id": "west edfa in Lorient_KMA to Loudeac",
+                  "details": {
+                    "type": "Edfa",
+                    "type-variety": "std_medium_gain",
+                    "effective-gain-db-before-att-in-and-before-output-voa": "28.0",
+                    "p-in-dbm": "-10.21",
+                    "p-out-dbm": "17.86",
+                    "p-out-per-ch-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.05"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.1"
+                      }
+                    ],
+                    "out-voa-db": "0.0",
+                    "in-voa-db": "0.0",
+                    "att-db": "0.0"
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 9,
+                "num-unnum-hop": {
+                  "node-id": "roadm Lorient_KMA",
+                  "link-tp-id": "roadm Lorient_KMA",
+                  "details": {
+                    "type": "Roadm",
+                    "actual-loss-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "20.05"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "20.1"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "path-route-object": {
+                "index": 10,
+                "num-unnum-hop": {
+                  "node-id": "trx Lorient_KMA",
+                  "link-tp-id": "trx Lorient_KMA",
+                  "details": {
+                    "type": "Transceiver",
+                    "gsnr-0.1nm-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "22.93"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "22.99"
+                      }
+                    ],
+                    "gnsr-signal-bw-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "18.85"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "15.9"
+                      }
+                    ],
+                    "osnr-ase-0.1nm-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "23.06"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "23.02"
+                      }
+                    ],
+                    "osnr-ase-signal-bw-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "18.98"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "15.93"
+                      }
+                    ],
+                    "cd-ps-per-nm": [
+                      {
+                        "label": "mode_1",
+                        "average": "2171.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "2171.0"
+                      }
+                    ],
+                    "pmd-ps": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.46"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.46"
+                      }
+                    ],
+                    "pdl-db": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ],
+                    "latency-ms": "0.64",
+                    "actual-pch-out-dbm": [
+                      {
+                        "label": "mode_1",
+                        "average": "0.0"
+                      },
+                      {
+                        "label": "mode_2",
+                        "average": "0.0"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

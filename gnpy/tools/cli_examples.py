@@ -33,11 +33,12 @@ from gnpy.core.equipment import trx_mode_params
 from gnpy.core import exceptions
 from gnpy.core.parameters import SimParams
 from gnpy.core.utils import lin2db, pretty_summary_print, per_label_average, watt2dbm
-from gnpy.topology.request import (ResultElement, jsontocsv, BLOCKING_NOPATH, PathRequest, correct_json_route_list)
+from gnpy.topology.request import (BLOCKING_NOPATH, PathRequest, correct_json_route_list)
 from gnpy.tools.json_io import (load_equipments_and_configs, load_network, load_json, load_requests, save_network,
-                                requests_from_json, save_json, load_initial_spectrum, DEFAULT_EQPT_CONFIG)
+                                requests_from_json, load_initial_spectrum, DEFAULT_EQPT_CONFIG)
 from gnpy.tools.plots import plot_baseline, plot_results
 from gnpy.tools.worker_utils import designed_network, transmission_simulation, planning
+from gnpy.tools.cli_utils import save_json_path_and_trans
 
 
 _logger = logging.getLogger(__name__)
@@ -369,6 +370,7 @@ def transmission_main_example(args: Union[List[str], None] = None):
                         metavar='SERVICES-REQUESTS.(json|xls|xlsx)', help='Input Service-file')
     parser.add_argument('-r', '--route_id', nargs='?', required='--service' in sys.argv or '-s' in sys.argv,
                         help='Compute for the given route-id of the Service')
+    parser.add_argument('-o', '--output', type=Path, help='save the results file')
 
     args = parser.parse_args(args if args is not None else sys.argv[1:])
     _setup_logging(args)
@@ -522,6 +524,10 @@ def transmission_main_example(args: Union[List[str], None] = None):
         else:
             print(mypath[-1])
 
+    if args.output:
+        save_json_path_and_trans(args.output, propagations_for_path, [req], equipment,
+                                 flag='Trans', oms_list=None, result=None)
+
     if args.save_network is not None:
         save_network(network, args.save_network)
         print(f'{ansi_escapes.blue}Network (after autodesign) saved to {args.save_network}{ansi_escapes.reset}')
@@ -561,10 +567,6 @@ def transmission_main_example(args: Union[List[str], None] = None):
 
     if args.plot:
         plot_results(network, path, source, destination)
-
-
-def _path_result_json(pathresult):
-    return {'response': [n.json for n in pathresult]}
 
 
 def path_requests_run(args=None):
@@ -614,7 +616,7 @@ def path_requests_run(args=None):
         data = load_requests(args.service_filename, equipment, bidir=args.bidir,
                              network=network, network_filename=args.topology)
         _data = requests_from_json(data, equipment)
-        _, propagatedpths, reversed_propagatedpths, rqs, dsjn, result = \
+        oms_list, propagatedpths, reversed_propagatedpths, rqs, dsjn, result = \
             planning(network, equipment, data, redesign=args.redesign_per_request, user_policy=user_policy)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition: {ansi_escapes.reset}{e}')
@@ -687,18 +689,4 @@ def path_requests_run(args=None):
     print('Result summary shows mean GSNR and OSNR (average over all channels)')
 
     if args.output:
-        result = []
-        # assumes that list of rqs and list of propgatedpths have same order
-        for i, pth in enumerate(propagatedpths):
-            result.append(ResultElement(rqs[i], pth, reversed_propagatedpths[i]))
-        temp = _path_result_json(result)
-        if args.output.suffix.lower() == '.json':
-            save_json(temp, args.output)
-            print(f'{ansi_escapes.blue}Saved JSON to {args.output}{ansi_escapes.reset}')
-        elif args.output.suffix.lower() == '.csv':
-            with open(args.output, "w", encoding='utf-8') as fcsv:
-                jsontocsv(temp, equipment, fcsv)
-            print(f'{ansi_escapes.blue}Saved CSV to {args.output}{ansi_escapes.reset}')
-        else:
-            print(f'{ansi_escapes.red}Cannot save output: neither JSON nor CSV file{ansi_escapes.reset}')
-            sys.exit(1)
+        save_json_path_and_trans(args.output, propagatedpths, rqs, equipment, 'Path', oms_list, result)

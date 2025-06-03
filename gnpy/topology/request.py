@@ -21,7 +21,7 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from collections import OrderedDict
-from typing import List
+from typing import List, Union, Dict
 from logging import getLogger
 from copy import deepcopy
 from csv import DictWriter
@@ -32,13 +32,12 @@ from networkx.utils import pairwise
 from numpy import mean, argmin
 
 from gnpy.core import elements
-from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm
-from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, \
-    demuxed_spectral_information, muxed_spectral_information, SpectralInformation
+from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm, per_label_list
+from gnpy.core.info import create_input_spectral_information, demuxed_spectral_information, \
+    muxed_spectral_information, carriers_to_spectral_information, SpectralInformation
 from gnpy.core import network as network_module
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 from gnpy.topology.topology_parameters import RequestParams, DisjunctionParams
-
 
 LOGGER = getLogger(__name__)
 
@@ -188,8 +187,7 @@ class ResultElement:
                     'index': index,
                     'num-unnum-hop': {
                         'node-id': element.uid,
-                        'link-tp-id': element.uid,
-                        # TODO change index in order to insert transponder attribute
+                        'link-tp-id': element.uid
                     }
                 }
             }
@@ -380,7 +378,7 @@ def compute_constrained_path(network, req):
     return total_path
 
 
-def filter_si(path: list, equipment: dict, si: SpectralInformation) -> SpectralInformation:
+def filter_si(path: list, equipment: Dict, si: SpectralInformation) -> SpectralInformation:
     """Filter spectral information based on the amplifiers common range"""
     # First retrieve f_min, f_max spectrum according to amplifiers' spectrum on the path
     common_range = find_elements_common_range(path, equipment)
@@ -422,6 +420,7 @@ def propagate(path, req, equipment):
     path[-1].update_snr(*roadm_osnr)
     path[-1].calc_penalties(req.penalties)
     return si
+
 
 def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
@@ -1349,5 +1348,267 @@ def get_penalty_from_receiver(receiver, impairment):
         if isinf(penalty_value):
             return "Infinity"
         return penalty_value
+    return None
+
+
+class ResultElementTrans:
+    """Class that contains all attributes related to a transmission result
+    """
+    def __init__(self, path_request, computed_path, index):
+        self.path_id = path_request.request_id
+        self.path_request = path_request
+        self.computed_path = computed_path
+        self.index = index
+
+    uid = property(lambda self: repr(self))
+
+    def get_dict(self, var_element: Union[elements.Transceiver, elements.Roadm, elements.Edfa,
+                                          elements.Multiband_amplifier, elements.Fiber, elements.RamanFiber,
+                                          elements.Fused]):
+        """Creates the dict for json export
+
+        :param var_element: element of a path
+        :type var_element: Union[elements.Transceiver, elements.Roadm, elements.Edfa, elements.Multiband_amplifier,
+                           elements.Fiber, elements.RamanFiber, elements.Fused]
+        """
+        if type(var_element).__name__ == 'Transceiver':
+            return transceiver_dict(var_element, self.path_request)
+        if type(var_element).__name__ == 'Roadm':
+            return roadm_dict(var_element)
+        if isinstance(var_element, (elements.Fiber, elements.RamanFiber)):
+            return fiber_dict(var_element)
+        if type(var_element).__name__ == 'Edfa':
+            return amp_dict(var_element)
+        if isinstance(var_element, elements.Multiband_amplifier):
+            amplifiers_list = []
+            for amp in var_element.amplifiers.values():
+                ampdict = amp_dict(amp)
+                del ampdict['type']
+                amplifiers_list.append(ampdict)
+            multiband_amp_info = {
+                'type': type(var_element).__name__,
+                'amplifiers': amplifiers_list
+            }
+            return multiband_amp_info
+        if type(var_element).__name__ == 'Fused':
+            return fused_dict(var_element)
+
+        raise ValueError('unrecognized class type ', type(var_element).__name__)
+
+    @property
+    def detailed_path_json(self) -> List[Dict]:
+        """method that builds json export for a path object
+        """
+        pro_list = []
+        for element in [self.computed_path]:
+            temp = {'index': self.index,
+                    'num-unnum-hop': {
+                        'node-id': element.uid,
+                        'link-tp-id': element.uid,
+                        'details': self.get_dict(element)
+                    }
+                    }
+
+            pro_list.append(temp)
+        return pro_list
+
+    @property
+    def path_properties(self) -> List[Dict]:
+        """a function that returns the path properties (metrics, crossed elements) into a dict"""
+        def path_metric(pth: List[Union[elements.Transceiver, elements.Roadm, elements.Edfa,
+                                        elements.Multiband_amplifier, elements.Fiber,
+                                        elements.RamanFiber, elements.Fused]])\
+                -> List[Dict]:
+            """creates the metrics dictionary"""
+
+            return [
+                {
+                    'metric-type': SNR_BW_STRING,
+                    'per-label-accumulative-value': per_label_list(
+                        pth.snr, pth.propagated_labels, 'average', 'accumulative-value')
+                } if hasattr(pth, 'snr') else None,
+                {
+                    'metric-type': SNR_01NM_STRING,
+                    'per-label-accumulative-value': per_label_list(
+                        pth.snr_01nm, pth.propagated_labels, 'average', 'accumulative-value')
+                } if hasattr(pth, 'snr_01nm') else None,
+                {
+                    'metric-type': OSNR_BW_STRING,
+                    'per-label-accumulative-value': per_label_list(
+                        pth.osnr_ase, pth.propagated_labels, 'average', 'accumulative-value')
+                } if hasattr(pth, 'osnr_ase') else None,
+                {
+                    'metric-type': OSNR_01NM_STRING,
+                    'per-label-accumulative-value': per_label_list(
+                        pth.osnr_ase_01nm, pth.propagated_labels, 'average', 'accumulative-value')
+                } if hasattr(pth, 'osnr_ase_01nm') else None,
+                {
+                    'metric-type': LOWER_SNR_STRING,
+                    'per-label-accumulative-value': per_label_list(
+                        pth.snr_01nm, pth.propagated_labels, 'min', 'accumulative-value')
+                } if hasattr(pth, 'snr_01nm') else None,
+                {
+                    'metric-type': PDL_PENALTY_STRING,
+                    'accumulative-value': get_penalty_from_receiver(pth, 'pdl')
+                } if hasattr(pth, 'penalties') and 'pdl' in getattr(pth, 'pdl', {}) else None,
+                {
+                    'metric-type': CD_PENALTY_STRING,
+                    'accumulative-value': get_penalty_from_receiver(pth, 'chromatic_dispersion')
+                } if hasattr(pth, 'penalties') and 'chromatic_dispersion' in getattr(pth, 'chromatic_dispersion', {})
+                else None,
+                {
+                    'metric-type': PMD_PENALTY_STRING,
+                    'accumulative-value': get_penalty_from_receiver(pth, 'pmd')
+                } if hasattr(pth, 'penalties') and 'pmd' in getattr(pth, 'pmd', {}) else None]
+
+        path_properties = [
+            metric for metric in path_metric(self.computed_path) if metric is not None]
+        return path_properties
+
+    @property
+    def pathresult(self) -> Dict:
+        """create the result dictionnary (response for a request)"""
+        response = {'path-route-objects': self.detailed_path_json[0],
+                    'hop-properties': {
+                        'hop-metric': self.path_properties}}
+        return response
+
+
+def transceiver_dict(element: elements.Transceiver, path_request: PathRequest) -> Dict:
+    """Build the transceiver type dict.
+
+    :param element: The transceiver object representing the transceiver.
+    :type element: elements.Transceiver
+    :param path_request: a request.
+    :type path_request: PathRequest
+    :return: A dict representing the transceiver details.
+    :rtype: Dict
+    """
+
+    transceiver_info = {}
+    transceiver_info['type'] = type(element).__name__
+    if path_request.tsp is not None:
+        transceiver_info['transponder-type'] = path_request.tsp
+    if path_request.tsp_mode is not None:
+        transceiver_info['transponder-mode'] = path_request.tsp_mode
+    transceiver_info['gsnr-0.1nm-db'] = per_label_list(
+        element.snr_01nm, element.propagated_labels)
+    transceiver_info['gnsr-signal-bw-db'] = per_label_list(
+        element.snr, element.propagated_labels)
+    transceiver_info['osnr-ase-0.1nm-db'] = per_label_list(
+        element.osnr_ase_01nm, element.propagated_labels)
+    transceiver_info['osnr-ase-signal-bw-db'] = per_label_list(
+        element.osnr_ase, element.propagated_labels)
+    transceiver_info['cd-ps-per-nm'] = per_label_list(
+        element.chromatic_dispersion, element.propagated_labels)
+    transceiver_info['pmd-ps'] = per_label_list(
+        element.pmd, element.propagated_labels)
+    transceiver_info['pdl-db'] = per_label_list(
+        element.pdl, element.propagated_labels)
+    transceiver_info['latency-ms'] = round(mean(element.latency), 3) if element.latency is not None else None
+    transceiver_info['actual-pch-out-dbm'] = \
+        per_label_list(watt2dbm(element.tx_power), element.propagated_labels) \
+        if hasattr(element, 'tx_power') else None
+
+    if element.penalties:
+        transceiver_info['cd-penalty-db'] = \
+            per_label_list(element.penalties.get('chromatic_dispersion'), element.propagated_labels) \
+            if element.penalties.get('chromatic_dispersion') is not None else None
+        transceiver_info['pmd-penalty-db'] = \
+            per_label_list(element.penalties.get('pmd'), element.propagated_labels) \
+            if element.penalties.get('pmd') is not None else None
+        transceiver_info['pdl-penalty-db'] = \
+            per_label_list(element.penalties.get('pdl'), element.propagated_labels) \
+            if element.penalties.get('pdl') is not None else None
+
+    return transceiver_info
+
+
+def amp_dict(element: elements.Edfa) -> Dict:
+    """Build the amplifier type string.
+
+    :param element: The Edfa object representing the amplifier..
+    :type element: elements.Edfa
+    :return: A dict representing the amplifier details.
+    :rtype: Dict
+    """
+    amplifier_info = {}
+
+    amplifier_info['type'] = type(element).__name__
+    amplifier_info['type-variety'] = element.params.type_variety
+    amplifier_info['effective-gain-db-before-att-in-and-before-output-voa'] = (
+        round(element.effective_gain, 3) if element.effective_gain is not None else None)
+    amplifier_info['p-in-dbm'] = round(element.pin_db, 3) if element.pin_db is not None else None
+    amplifier_info['p-out-dbm'] = round(element.pout_db, 3) if element.pout_db is not None else None
+
+    if hasattr(element, "pch_out_dbm"):
+        amplifier_info['p-out-per-ch-dbm'] = per_label_list(
+            element.pch_out_dbm, element.propagated_labels)
     else:
-        return 'not evaluated'
+        amplifier_info['p-out-per-ch-dbm'] = None
+
+    amplifier_info['out-voa-db'] = round(element.out_voa, 2) if element.out_voa is not None else None
+    amplifier_info['in-voa-db'] = round(element.in_voa, 2) if element.in_voa is not None else None
+    amplifier_info['att-db'] = round(element.att_in, 2) if element.att_in is not None else None
+
+    return amplifier_info
+
+
+def fiber_dict(element: Union[elements.Fiber, elements.RamanFiber]) -> Dict:
+    """Build the fiber type dict.
+
+    :param element: The Fiber or RamanFiber object representing the fiber.
+    :type element: Union[elements.Fiber, elements.RamanFiber]
+    :return: A dict representing the fiber details.
+    :rtype: Dict
+    """
+
+    fiber_info = {}
+
+    fiber_info['type'] = type(element).__name__
+    fiber_info['type-variety'] = element.type_variety
+    fiber_info['total-loss-in-db-incl-connectors-padding'] = (
+        round(element.loss, 3) if element.loss is not None else None)
+    fiber_info['length-km'] = round(element.params.length / 1000, 3) if element.params.length is not None else None
+    fiber_info['lineic-att-db-per-km'] = (
+        round(element.params.loss_coef * 1e3, 4) if element.params.loss_coef is not None else None)
+    fiber_info['connector-att-in-db'] = element.params.con_in
+    fiber_info['connector-att-out-db'] = element.params.con_out
+    fiber_info['padding-db'] = element.params.att_in
+    fiber_info['chromatic-dispersion-ps-per-nm'] = (
+        round(mean(element.chromatic_dispersion() * 1e3), 6) if element.chromatic_dispersion() is not None else None)
+    fiber_info['fiber-pmd-ps'] = (
+        round(mean(element.pmd * 1e12), 6) if element.pmd is not None else None)
+
+    return fiber_info
+
+
+def fused_dict(element: elements.Fused) -> Dict:
+    """Build the fused element type dict.
+
+    :param element: The Fused object representing the fused element.
+    :type element: elements.Fused
+    :return: A dict representing the fused element details.
+    :rtype: Dict
+    """
+    fused_info = {}
+
+    fused_info['type'] = type(element).__name__
+    fused_info['loss-db'] = round(element.loss, 3) if element.loss is not None else None
+    return fused_info
+
+
+def roadm_dict(element: elements.Roadm) -> Dict:
+    """Build the ROADM type dict.
+
+    :param element: The Roadm object representing the ROADM.
+    :type element: elements.Roadm
+    :return: A dict representing the ROADM details.
+    :rtype: Dict
+    """
+    roadm_info = {}
+
+    roadm_info['type'] = type(element).__name__
+    total_loss = per_label_list(element.loss_pch_db, element.propagated_labels)
+    roadm_info['actual-loss-db'] = total_loss
+    return roadm_info
