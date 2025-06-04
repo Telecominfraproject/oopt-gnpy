@@ -25,6 +25,10 @@
             "accumulative-value": 30.81
           },
           {
+            "metric-type": "biggest_SNR-0.1nm",
+            "accumulative-value": 30.87
+          },
+          {
             "metric-type": "PDL_penalty",
             "accumulative-value": "not evaluated"
           },
@@ -230,6 +234,10 @@
           {
             "metric-type": "lowest_SNR-0.1nm",
             "accumulative-value": 22.05
+          },
+          {
+            "metric-type": "biggest_SNR-0.1nm",
+            "accumulative-value": 22.33
           },
           {
             "metric-type": "PDL_penalty",
@@ -719,6 +727,10 @@
             "accumulative-value": 25.72
           },
           {
+            "metric-type": "biggest_SNR-0.1nm",
+            "accumulative-value": 26.52
+          },
+          {
             "metric-type": "PDL_penalty",
             "accumulative-value": "not evaluated"
           },
@@ -964,6 +976,10 @@
           {
             "metric-type": "lowest_SNR-0.1nm",
             "accumulative-value": 22.1
+          },
+          {
+            "metric-type": "biggest_SNR-0.1nm",
+            "accumulative-value": 22.23
           },
           {
             "metric-type": "PDL_penalty",
@@ -1451,6 +1467,10 @@
           {
             "metric-type": "lowest_SNR-0.1nm",
             "accumulative-value": 28.65
+          },
+          {
+            "metric-type": "biggest_SNR-0.1nm",
+            "accumulative-value": 29.31
           },
           {
             "metric-type": "PDL_penalty",
