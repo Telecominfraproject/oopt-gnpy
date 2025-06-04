@@ -262,6 +262,7 @@ def test_json_response_generation(xls_input, expected_response_file):
                 {'metric-type': 'OSNR-bandwidth', 'accumulative-value': 26.239999999999998},
                 {'metric-type': 'OSNR-0.1nm', 'accumulative-value': 30.32},
                 {'metric-type': 'lowest_SNR-0.1nm', 'accumulative-value': 26.72},
+                {'metric-type': 'biggest_SNR-0.1nm', 'accumulative-value': 27.74},
                 {'metric-type': 'PDL_penalty', 'accumulative-value': 'not evaluated'},
                 {'metric-type': 'CD_penalty', 'accumulative-value': 'not evaluated'},
                 {'metric-type': 'PMD_penalty', 'accumulative-value': 'not evaluated'},

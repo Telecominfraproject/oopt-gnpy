@@ -48,6 +48,7 @@ PDL_PENALTY_STRING = 'PDL_penalty'
 PMD_PENALTY_STRING = 'PMD_penalty'
 CD_PENALTY_STRING = 'CD_penalty'
 LOWER_SNR_STRING = 'lowest_SNR-0.1nm'
+UPPER_SNR_STRING = 'biggest_SNR-0.1nm'
 SNR_BW_STRING = 'SNR-bandwidth'
 SNR_01NM_STRING = 'SNR-0.1nm'
 OSNR_BW_STRING = 'OSNR-bandwidth'
@@ -256,6 +257,10 @@ class ResultElement:
                 {
                     'metric-type': LOWER_SNR_STRING,
                     'accumulative-value': round(min(pth[-1].snr_01nm), 2)
+                },
+                {
+                    'metric-type': UPPER_SNR_STRING,
+                    'accumulative-value': round(max(pth[-1].snr_01nm), 2)
                 },
                 {
                     'metric-type': PDL_PENALTY_STRING,
@@ -523,11 +528,12 @@ def _jsontopath_metric(path_metric):
     power = read_property(path_metric, REF_POWER_STRING)
     path_bandwidth = read_property(path_metric, PATH_BW_STRING)
     output_snr_min = read_property(path_metric, LOWER_SNR_STRING)
+    output_snr_max = read_property(path_metric, UPPER_SNR_STRING)
     pdl = read_property(path_metric, PDL_PENALTY_STRING)
     cd = read_property(path_metric, CD_PENALTY_STRING)
     pmd = read_property(path_metric, PMD_PENALTY_STRING)
-    return round(output_osnr, 2), round(output_snr, 2), round(output_snrbandwidth, 2), output_snr_min, pdl, cd, pmd, \
-        round(watt2dbm(power), 2), round(path_bandwidth * 1e-9, 2),
+    return round(output_osnr, 2), round(output_snr, 2), round(output_snrbandwidth, 2), output_snr_min, \
+        output_snr_max, pdl, cd, pmd, round(watt2dbm(power), 2), round(path_bandwidth * 1e-9, 2)
 
 
 def _jsontoparams(path_response, trx_type, trx_mode, equipment):
@@ -560,10 +566,10 @@ def _jsontoparams(path_response, trx_type, trx_mode, equipment):
                  for m in equipment['Transceiver'][trx_type].mode if m['format'] == trx_mode)
     else:
         [minosnr, baud_rate, bit_rate, cost] = ['', '', '', '']
-    output_osnr, output_snr, output_snrbandwidth, output_snr_min, pdl, cd, pmd, power, path_bandwidth = \
-        _jsontopath_metric(path_response['path-properties']['path-metric'])
+    output_osnr, output_snr, output_snrbandwidth, output_snr_min, output_snr_max, pdl, cd, pmd, power, \
+        path_bandwidth = _jsontopath_metric(path_response['path-properties']['path-metric'])
 
-    return (path_bandwidth, output_osnr, output_snr, output_snrbandwidth, output_snr_min, pdl, cd, pmd,
+    return (path_bandwidth, output_osnr, output_snr, output_snrbandwidth, output_snr_min, output_snr_max, pdl, cd, pmd,
             minosnr + equipment['SI']['default'].sys_margins, baud_rate, power, pth, sptrm, bit_rate), cost
 
 
@@ -578,9 +584,10 @@ def jsontocsv(json_data, equipment, fileout):
     nb_tsp_field = 'nb of tsp pairs'
     rev_path_metric_fields = ('reversed path OSNR-0.1nm (average)', 'reversed path SNR-0.1nm (average)',
                               'reversed path SNR-bandwidth (average)', 'reversed path SNR-0.1nm (min)',
-                              'reversed path PDL_penalty', 'reversed path CD_penalty', 'reversed path PMD_penalty')
+                              'reversed path SNR-0.1nm (max)','reversed path PDL_penalty', 'reversed path CD_penalty',
+                              'reversed path PMD_penalty')
     path_metric_fields = ('OSNR-0.1nm (average)', 'SNR-0.1nm (average)', 'SNR-bandwidth (average)',
-                          'SNR-0.1nm (min)', 'PDL_penalty', 'CD_penalty', 'PMD_penalty',
+                          'SNR-0.1nm (min)', 'SNR-0.1nm (max)', 'PDL_penalty', 'CD_penalty', 'PMD_penalty',
                           'min required OSNR (inc. margin)', 'baud rate (Gbaud)',
                           'input power (dBm)')
     fieldnames = ('response-id', 'source', 'destination', 'path_bandwidth', 'Pass?',
