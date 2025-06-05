@@ -33,30 +33,16 @@ from json import dumps
 from pathlib import Path
 from copy import copy
 from typing import Generator, Tuple, List, Dict, DefaultDict
-from xlrd import open_workbook
-from xlrd.sheet import Sheet
-from xlrd.biffh import XLRDError
 from networkx import DiGraph
 
 from gnpy.core.utils import silent_remove, transform_data, convert_pmd_lineic
 from gnpy.core.exceptions import NetworkTopologyError
 from gnpy.core.elements import Edfa, Fused, Fiber
+from gnpy.tools.xls_utils import SheetType, all_rows, generic_open_workbook, get_row_slice, get_sheet, \
+    XLS_EXCEPTIONS, is_type_cell_empty
 
 
 _logger = getLogger(__name__)
-
-
-def all_rows(sh: Sheet, start: int = 0) -> Generator[list, None, None]:
-    """Returns all rows of the xls(x) sheet starting from start row.
-
-    :param sh: The sheet object from which to retrieve rows.
-    :type sh: xlrd.sheet.Sheet
-    :param start: The starting row index (default is 0).
-    :type sart: int
-    :return: A generator yielding all rows from the specified starting index.
-    :rtype: Generator[list, None, None]
-    """
-    return (sh.row(x) for x in range(start, sh.nrows))
 
 
 class Node:
@@ -92,7 +78,7 @@ class Node:
 
         :param kwargs: A dictionary of attributes to update.
         """
-        clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
+        clean_kwargs = {k: v for k, v in kwargs.items() if v != '' and v is not None}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
             setattr(self, k, v)
@@ -147,7 +133,7 @@ class Link:
 
         :param kwargs: A dictionary of attributes to update.
         """
-        clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
+        clean_kwargs = {k: v for k, v in kwargs.items() if v != '' and v is not None}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
             setattr(self, k, v)
@@ -211,7 +197,7 @@ class Eqpt:
 
         :param kwargs: A dictionary of attributes to update.
         """
-        clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
+        clean_kwargs = {k: v for k, v in kwargs.items() if v != '' and v is not None}
         for k, v in self.default_values.items():
             v_east = clean_kwargs.get(k, v)
             setattr(self, k, v_east)
@@ -259,7 +245,7 @@ class Roadm:
         :param kwargs: A dictionary of attributes to update.
         :type kwargs: dict
         """
-        clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
+        clean_kwargs = {k: v for k, v in kwargs.items() if v != '' and v is not None}
         for k, v in self.default_values.items():
             v = clean_kwargs.get(k, v)
             setattr(self, k, v)
@@ -273,14 +259,14 @@ class Roadm:
                       }
 
 
-def read_header(my_sheet: Sheet, line: int, slice_: Tuple[int, int]) -> List[namedtuple]:
+def read_header(my_sheet: SheetType, is_xlsx: bool, line: int, slice_: Tuple[int, int]) -> List[namedtuple]:
     """Return the list of headers in a specified range.
 
     header_i = [(header, header_column_index), ...]
     in a {line, slice1_x, slice_y} range
 
     :param my_sheet: The sheet object from which to read headers.
-    :type my_sheet: xlrd.sheet.Sheet
+    :type my_sheet: SheetType
     :param line: The row index to read headers from.
     :type line: int
     :param slice_: A tuple specifying the start and end column indices.
@@ -290,8 +276,9 @@ def read_header(my_sheet: Sheet, line: int, slice_: Tuple[int, int]) -> List[nam
     """
     param_header = namedtuple('param_header', 'header colindex')
     try:
-        header = [x.value.strip() for x in my_sheet.row_slice(line, slice_[0], slice_[1])]
-        header_i = [param_header(header, i + slice_[0]) for i, header in enumerate(header) if header != '']
+        cells = get_row_slice(my_sheet, line, slice_[0], slice_[1], is_xlsx)
+        headers = [cell.value.strip() if cell.value else '' for cell in cells]
+        header_i = [param_header(header, i + slice_[0]) for i, header in enumerate(headers) if header != '']
     except (AttributeError, IndexError):
         header_i = []
     if header_i != [] and header_i[-1].colindex != slice_[1]:
@@ -299,7 +286,7 @@ def read_header(my_sheet: Sheet, line: int, slice_: Tuple[int, int]) -> List[nam
     return header_i
 
 
-def read_slice(my_sheet: Sheet, line: int, slice_: Tuple[int, int], header: str) -> Tuple[int, int]:
+def read_slice(my_sheet: SheetType, is_xlsx: bool, line: int, slice_: Tuple[int, int], header: str) -> Tuple[int, int]:
     """return the slice range of a given header
     in a defined range {line, slice_x, slice_y}
 
@@ -313,7 +300,7 @@ def read_slice(my_sheet: Sheet, line: int, slice_: Tuple[int, int], header: str)
     :return: A tuple representing the start and end indices of the slice.
     :rtype: Tuple[int, int]
     """
-    header_i = read_header(my_sheet, line, slice_)
+    header_i = read_header(my_sheet, is_xlsx, line, slice_)
     slice_range = (-1, -1)
     if header_i != []:
         try:
@@ -324,7 +311,7 @@ def read_slice(my_sheet: Sheet, line: int, slice_: Tuple[int, int], header: str)
     return slice_range
 
 
-def parse_headers(my_sheet: Sheet, input_headers_dict: Dict, headers: Dict[int, str],
+def parse_headers(my_sheet: SheetType, is_xlsx: bool, input_headers_dict: Dict, headers: Dict[int, str],
                   start_line: int, slice_in: Tuple[int, int]) -> Dict[int, str]:
     """return a dict of header_slice
 
@@ -332,7 +319,7 @@ def parse_headers(my_sheet: Sheet, input_headers_dict: Dict, headers: Dict[int, 
     - value = header name
 
     :param my_sheet: The sheet object from which to read headers.
-    :type my_sheet: xlrd.sheet.Sheet
+    :type my_sheet: SheetType
     :param input_headers_dict: A dictionary mapping expected headers to internal names.
     :type input_headers_dict: dict
     :param headers: A dictionary to store the header slices.
@@ -345,11 +332,11 @@ def parse_headers(my_sheet: Sheet, input_headers_dict: Dict, headers: Dict[int, 
     :rtype: Dict[int, str]
     """
     for h0 in input_headers_dict:
-        slice_out = read_slice(my_sheet, start_line, slice_in, h0)
+        slice_out = read_slice(my_sheet, is_xlsx, start_line, slice_in, h0)
         iteration = 1
         while slice_out == (-1, -1) and iteration < 10:
             # try next lines
-            slice_out = read_slice(my_sheet, start_line + iteration, slice_in, h0)
+            slice_out = read_slice(my_sheet, is_xlsx, start_line + iteration, slice_in, h0)
             iteration += 1
         if slice_out == (-1, -1):
             msg = f'missing header {h0}'
@@ -359,7 +346,7 @@ def parse_headers(my_sheet: Sheet, input_headers_dict: Dict, headers: Dict[int, 
         elif not isinstance(input_headers_dict[h0], dict):
             headers[slice_out[0]] = input_headers_dict[h0]
         else:
-            headers = parse_headers(my_sheet, input_headers_dict[h0], headers, start_line + 1, slice_out)
+            headers = parse_headers(my_sheet, is_xlsx, input_headers_dict[h0], headers, start_line + 1, slice_out)
     if headers == {}:
         msg = 'CRITICAL ERROR: could not find any header to read _ ABORT'
         raise NetworkTopologyError(msg)
@@ -377,7 +364,7 @@ def parse_row(row, headers):
             zip(list(headers.values()), [row[i] for i in headers])}
 
 
-def parse_sheet(my_sheet: Sheet, input_headers_dict: Dict, header_line: int,
+def parse_sheet(my_sheet: SheetType, is_xlsx: bool, input_headers_dict: Dict, header_line: int,
                 start_line: int, column: int) -> Generator[Dict[str, str], None, None]:
     """Parse a sheet and yield rows as dictionaries.
 
@@ -393,9 +380,12 @@ def parse_sheet(my_sheet: Sheet, input_headers_dict: Dict, header_line: int,
     :type column: int
     :return: A generator yielding parsed rows as dictionaries.
     """
-    headers = parse_headers(my_sheet, input_headers_dict, {}, header_line, (0, column))
-    for row in all_rows(my_sheet, start=start_line):
-        yield parse_row(row[0: column], headers)
+    headers = parse_headers(my_sheet, is_xlsx, input_headers_dict, {}, header_line, (0, column))
+    for row in all_rows(my_sheet, is_xlsx, start=start_line):
+        if not is_type_cell_empty(row[0], is_xlsx):
+            # Check required because openpyxl in read_only mode can return "ghost" rows at the end of the document
+            # (ReadOnlyCell cells with no actual value but formatting information even for empty rows).
+            yield parse_row(row[0: column], headers)
 
 
 def _format_items(items: List[str]):
@@ -962,40 +952,41 @@ def parse_excel(input_filename: Path) -> Tuple[List[Node], List[Link], List[Eqpt
                      'from degree to degree impairment id': 'impairment_ids'
                      }
 
-    with open_workbook(input_filename) as wb:
-        nodes_sheet = wb.sheet_by_name('Nodes')
-        links_sheet = wb.sheet_by_name('Links')
-        try:
-            eqpt_sheet = wb.sheet_by_name('Eqpt')
-        except XLRDError:
-            # eqpt_sheet is optional
-            eqpt_sheet = None
-        try:
-            roadm_sheet = wb.sheet_by_name('Roadms')
-        except XLRDError:
-            # roadm_sheet is optional
-            roadm_sheet = None
+    wb, is_xlsx = generic_open_workbook(input_filename)
+    nodes_sheet = get_sheet(wb, 'Nodes', is_xlsx)
+    links_sheet = get_sheet(wb, 'Links', is_xlsx)
+    try:
+        eqpt_sheet = get_sheet(wb, 'Eqpt', is_xlsx)
+    except XLS_EXCEPTIONS:
+        # eqpt_sheet is optional
+        eqpt_sheet = None
 
-        nodes = [Node(**node) for node in parse_sheet(nodes_sheet, node_headers,
-                                                      NODES_LINE, NODES_LINE + 1, NODES_COLUMN)]
-        expected_node_types = {'ROADM', 'ILA', 'FUSED'}
-        for n in nodes:
-            if n.node_type not in expected_node_types:
-                n.node_type = 'ILA'
+    try:
+        roadm_sheet = get_sheet(wb, 'Roadms', is_xlsx)
+    except XLS_EXCEPTIONS:
+        # roadm_sheet is optional
+        roadm_sheet = None
 
-        links = [Link(**link) for link in parse_sheet(links_sheet, link_headers,
-                                                      LINKS_LINE, LINKS_LINE + 2, LINKS_COLUMN)]
-        eqpts = []
-        if eqpt_sheet is not None:
-            eqpts = [Eqpt(**eqpt) for eqpt in parse_sheet(eqpt_sheet, eqpt_headers,
-                                                          EQPTS_LINE, EQPTS_LINE + 2, EQPTS_COLUMN)]
-        roadms = []
-        if roadm_sheet is not None:
-            roadms = [Roadm(**roadm) for roadm in parse_sheet(roadm_sheet, roadm_headers,
-                                                              ROADMS_LINE, ROADMS_LINE + 2, ROADMS_COLUMN)]
+    nodes = [Node(**node) for node in parse_sheet(nodes_sheet, is_xlsx, node_headers,
+                                                  NODES_LINE, NODES_LINE + 1, NODES_COLUMN)]
+    expected_node_types = {'ROADM', 'ILA', 'FUSED'}
+    for n in nodes:
+        if n.node_type not in expected_node_types:
+            n.node_type = 'ILA'
+
+    links = [Link(**link) for link in parse_sheet(links_sheet, is_xlsx, link_headers,
+                                                  LINKS_LINE, LINKS_LINE + 2, LINKS_COLUMN)]
+    eqpts = []
+    if eqpt_sheet is not None:
+        eqpts = [Eqpt(**eqpt) for eqpt in parse_sheet(eqpt_sheet, is_xlsx, eqpt_headers,
+                                                      EQPTS_LINE, EQPTS_LINE + 2, EQPTS_COLUMN)]
+    roadms = []
+    if roadm_sheet is not None:
+        roadms = [Roadm(**roadm) for roadm in parse_sheet(roadm_sheet, is_xlsx, roadm_headers,
+                                                          ROADMS_LINE, ROADMS_LINE + 2, ROADMS_COLUMN)]
 
     # sanity check
-    all_cities = Counter(n.city for n in nodes)
+    all_cities = Counter(n.city for n in nodes if n.city)
     if len(all_cities) != len(nodes):
         msg = f'Duplicate city: {all_cities}'
         raise NetworkTopologyError(msg)
