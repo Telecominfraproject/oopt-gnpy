@@ -786,12 +786,28 @@ def load_gnpy_json(filename: Path) -> dict:
     return yang_to_legacy(load_json(filename))
 
 
-def save_json(obj: dict, filename: Path):
-    """Save in json format. Export yang formatted data (RFC7951)
+def save_json(obj: Dict, filename: Path):
+    """Save in json format.
+
+    :param obj: data to be saved
+    :type obj: Dict
+    :param filename: Path of the file where to save the data
+    :type filename: Path
     """
-    data = legacy_to_yang(obj)
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
+
+
+def save_gnpy_json(obj: dict, filename: Path):
+    """Save in json format. Export yang formatted data (RFC7951)
+
+    :param obj: data to be saved
+    :type obj: Dict
+    :param filename: Path of the file where to save the data
+    :type filename: Path
+    """
+    data = legacy_to_yang(obj)
+    save_json(data, filename)
 
 
 def load_requests(filename: Path, eqpt: dict, bidir: bool, network: DiGraph, network_filename: str) -> dict:
