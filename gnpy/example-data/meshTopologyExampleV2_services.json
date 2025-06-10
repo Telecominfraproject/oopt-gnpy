@@ -245,7 +245,7 @@
     {
       "synchronization-id": "3",
       "svec": {
-        "relaxable": "false",
+        "relaxable": false,
         "disjointness": "node link",
         "request-id-number": [
           "3",
@@ -256,7 +256,7 @@
     {
       "synchronization-id": "4",
       "svec": {
-        "relaxable": "false",
+        "relaxable": false,
         "disjointness": "node link",
         "request-id-number": [
           "4",

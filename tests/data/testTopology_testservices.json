@@ -427,7 +427,7 @@
           "spacing": 75000000000.0,
           "max-nb-of-channel": null,
           "output-power": null,
-          "path_bandwidth": null
+          "path_bandwidth": 300000000000.0
         }
       }
     },
@@ -446,7 +446,7 @@
           "spacing": 30000000000.0,
           "max-nb-of-channel": null,
           "output-power": null,
-          "path_bandwidth": null
+          "path_bandwidth": 300000000000.0
         }
       }
     }
@@ -455,7 +455,7 @@
     {
       "synchronization-id": "1",
       "svec": {
-        "relaxable": "False",
+        "relaxable": false,
         "disjointness": "node link",
         "request-id-number": [
           "1",
@@ -466,7 +466,7 @@
     {
       "synchronization-id": "3",
       "svec": {
-        "relaxable": "False",
+        "relaxable": false,
         "disjointness": "node link",
         "request-id-number": [
           "3",
@@ -477,7 +477,7 @@
     {
       "synchronization-id": "ff",
       "svec": {
-        "relaxable": "False",
+        "relaxable": false,
         "disjointness": "node link",
         "request-id-number": [
           "ff",
@@ -488,7 +488,7 @@
     {
       "synchronization-id": "13",
       "svec": {
-        "relaxable": "False",
+        "relaxable": false,
         "disjointness": "node link",
         "request-id-number": [
           "13",

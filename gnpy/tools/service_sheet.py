@@ -239,7 +239,7 @@ class Request_element(Element):
         if self.disjoint_from:
             return {'synchronization-id': self.request_id,
                     'svec': {
-                        'relaxable': 'false',
+                        'relaxable': False,
                         'disjointness': 'node link',
                         'request-id-number': [self.request_id] + list(self.disjoint_from)
                     }
