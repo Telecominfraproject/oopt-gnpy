@@ -1,11 +1,11 @@
 [1;34;40mList of disjunctions[0m
 [Disjunction 3
-	relaxable:    false
+	relaxable:    False
 	link-diverse: True
 	node-diverse: True
 	request-id-numbers: ['3', '1']
 , Disjunction 4
-	relaxable:    false
+	relaxable:    False
 	link-diverse: True
 	node-diverse: True
 	request-id-numbers: ['4', '5']
