@@ -1,0 +1,470 @@
+{
+  "score": 0.0,
+  "format": 75.0,
+  "sections": {
+    "Edfa": {
+      "score": 81.1,
+      "axes": {
+        "consistency": 91.7,
+        "completeness": 60.0
+      }
+    },
+    "Roadm": {
+      "score": 88.2,
+      "axes": {
+        "consistency": 90.3,
+        "completeness": 84.0
+      }
+    },
+    "Transceiver": {
+      "score": 72.3,
+      "axes": {
+        "consistency": 82.3,
+        "completeness": 52.3
+      }
+    }
+  },
+  "issues": [
+    {
+      "axis": "format",
+      "code": "LIBRARY_NAME_MISMATCH",
+      "section": "Library",
+      "item": null,
+      "sub_item": null,
+      "message": "library-information/name \"eqpt_configtoto.json\" does not match file name \"invalid_bitrate.json\"",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "BIT_RATE_INVALID",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "PS_SP64_1",
+      "message": "bit_rate 112300000000.0 is not a multiple of 50e9 bit/s",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "INVALID_PENALTY_VALUE_NOT_MONOTONIC",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "PS_SP64_1",
+      "message": "pmd penalty values must not decrease when pmd increases.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "INVALID_PENALTY_VALUE_NOT_MONOTONIC",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "PS_SP64_2",
+      "message": "chromatic_dispersion penalty values must not decrease when chromatic_dispersion increases.",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "mode 1",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "mode 2",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager_16QAM",
+      "sub_item": "16QAM",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 1",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 3",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2 - fake",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 4",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_INCONSISTENT",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2",
+      "message": "Spacing 75.00 GHz, baud_rate=66.00 Gbaud: offset=3.00 dB differs from cluster median 0.00 dB. Cluster: vendorA_trx-type1/PS_SP64_2=0.00 dB, vendorA_trx-type1/mode 2=0.00 dB, Voyager/mode 2 - fake=0.00 dB, Voyager/mode 4=0.00 dB",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "PS_SP64_2",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=64.00 Gbaud, spacing=75.00 GHz). Expected approximately 1.76 dB from spacing or 3.14 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "mode 2",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=64.00 Gbaud, spacing=75.00 GHz). Expected approximately 1.76 dB from spacing or 3.14 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2 - fake",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=66.00 Gbaud, spacing=75.00 GHz). Expected approximately 1.76 dB from spacing or 3.14 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 4",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=66.00 Gbaud, spacing=75.00 GHz). Expected approximately 1.76 dB from spacing or 3.14 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 3",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=44.00 Gbaud, spacing=62.50 GHz). Expected approximately 0.97 dB from spacing or 1.38 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PATH_IMPAIRMENTS_MISSING",
+      "section": "Roadm",
+      "item": "example_test",
+      "sub_item": null,
+      "message": "Missing  roadm-path-impairments",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "IMPAIRMENT_TOO_DIFFERENT_BETWEEN_BANDS",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Impairment roadm-pmd [30.0, 0.0] in ROADM roadm-add-path is too different between the bands ['191.30-196.10', '186.30-190.10']191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "IMPAIRMENT_TOO_DIFFERENT_BETWEEN_BANDS",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Impairment roadm-pmax [2.5, 0.0] in ROADM roadm-add-path is too different between the bands ['191.30-196.10', '186.30-190.10']191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "IMPAIRMENT_TOO_DIFFERENT_BETWEEN_BANDS",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Impairment roadm-osnr [41.0, 10.0] in ROADM roadm-add-path is too different between the bands ['191.30-196.10', '186.30-190.10']191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pmd in ROADM roadm-express-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pdl in ROADM roadm-express-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pmd in ROADM roadm-add-path 186.30-190.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pdl in ROADM roadm-add-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "PATH_IMPAIRMENTS_MISSING",
+      "section": "Roadm",
+      "item": "default",
+      "sub_item": null,
+      "message": "Missing  roadm-path-impairments",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pmd in ROADM roadm-express-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pdl in ROADM roadm-express-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "ROADM_PMD_TOO_HIGH",
+      "section": "Roadm",
+      "item": "example_test",
+      "sub_item": null,
+      "message": "ROADM PMD=100.00ps is too high for two ROADMs: accumulated PMD=141.42ps, while the worst transceiver tolerance is 20.00ps.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "ROADM_PMD_TOO_HIGH",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "ROADM add/drop path PMD (0.00ps/40.00ps) are too high for two ROADMs: accumulated PMD=40.00ps, while the worst transceiver tolerance is 20.00ps.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "ROADM_PDL_TOO_HIGH",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "ROADM add/drop path PDL (0.00dB/10.00dB) are too high for two ROADMs: accumulated PMD=10.00dB, while the worst transceiver tolerance is 1.00dB.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "ROADM_ADD_DROP_OSNR_TOO_LOW",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "ROADM add/drop path OSNR (10.00dB/41.00dB) are too low for two ROADMs: accumulated OSNR=10.00pdB, while the best transceiver sensitivity is 11.00dB.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "ROADM_TARGET_POWER_TOO_HIGH",
+      "section": "Roadm",
+      "item": "example_test",
+      "sub_item": null,
+      "message": "ROADM target power=-2.00dBm is too high compared to maximum output power of transceiver 0.00dBm and estimated ROADM best maxloss 5.00dB.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "ROADM_TARGET_POWER_TOO_HIGH",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "ROADM target power=-20.00dBm is too high compared to maximum output power of transceiver 0.00dBm and estimated ROADM best maxloss 30.00dB.",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "OFFSET_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "PS_SP64_2",
+      "message": "Missing equalization_offset_db: baud_rate=64.00 Gbaud differs from reference 32.00 Gbaud and ROADMs use target_pch_out_db.",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "OFFSET_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "mode 2",
+      "message": "Missing equalization_offset_db: baud_rate=64.00 Gbaud differs from reference 32.00 Gbaud and ROADMs use target_pch_out_db.",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "OFFSET_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 3",
+      "message": "Missing equalization_offset_db: baud_rate=44.00 Gbaud differs from reference 32.00 Gbaud and ROADMs use target_pch_out_db.",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "OFFSET_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2 - fake",
+      "message": "Missing equalization_offset_db: baud_rate=66.00 Gbaud differs from reference 32.00 Gbaud and ROADMs use target_pch_out_db.",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "OFFSET_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 4",
+      "message": "Missing equalization_offset_db: baud_rate=66.00 Gbaud differs from reference 32.00 Gbaud and ROADMs use target_pch_out_db.",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "FREQUENCY_RANGE_TOO_SMALL",
+      "section": "Edfa",
+      "item": "std_low_gain",
+      "sub_item": null,
+      "message": "Frequency range is too small 0.80THz",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "INVALID_NF_RANGE_NOT_MATCHING_GAIN_RANGE",
+      "section": "Edfa",
+      "item": "test",
+      "sub_item": null,
+      "message": "Computed \u0394P invalid                 \n 1st coil vs 2nd coil calculated DeltaP 11.45 for                 \n amplifier test is not valid: revise inputs                 \n calculated 1st coil NF = 4.93, 2nd coil NF = 6.93",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "test",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "test_fixed_gain",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    },
+    {
+      "axis": "consistency",
+      "code": "INVALID_RAMAN_AMPLIFIER_ALLOWED_FOR_DESIGN",
+      "section": "Edfa",
+      "item": "raman_amp",
+      "sub_item": null,
+      "message": "Raman amplifier (fixed gain with <3 nf0) can not be used alone by autodesign",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "raman_amp",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "std_booster",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    },
+    {
+      "axis": "consistency",
+      "code": "INVALID_MULTIBAND_SINGLE_BAND",
+      "section": "Edfa",
+      "item": "std_medium_gain_multiband",
+      "sub_item": null,
+      "message": "Multiband amplifier references amplifiers covering 1 distinct frequency range(s) ([(191225000000000.0, 197000000000000.0)]): at least 2 are expected.",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "MAX_POWER_TOO_LOW",
+      "section": "Edfa",
+      "item": "test",
+      "sub_item": null,
+      "message": "Amplifier test max power 19.00dBm is below reference spectrum power 19.87dBm.",
+      "weight": 0.5
+    }
+  ]
+}
