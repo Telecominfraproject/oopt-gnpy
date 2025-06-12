@@ -18,7 +18,7 @@ from logging import getLogger
 from math import isclose, factorial
 from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapezoid, arcsinh, clip, abs, sum, \
     concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, argsort, cumprod, \
-    polyfit, log, log10, reshape, swapaxes, full, nan, cumsum
+    polyfit, log, log10, reshape, swapaxes, full, nan, cumsum, isnan
 from scipy.constants import k, h
 from scipy.interpolate import interp1d
 from scipy.special import erfc, erfcinv
@@ -706,6 +706,11 @@ def estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     nf2 = lin2db((db2lin(nf_min) - db2lin(nf_max)) /
                  (1 / db2lin(g1a_max) - 1 / db2lin(g1a_min)))
     nf1 = lin2db(db2lin(nf_min) - db2lin(nf2) / db2lin(g1a_max))
+
+    if isnan(nf1) or isnan(nf2):
+        raise EquipmentConfigError('Variable gain EDFA may be a single stage EDFA. '
+                                   f'Could not compute first or second stage noise figures {nf1:.2f}-{nf2:.2f}'
+                                   f' for variable gain amplifier {type_variety}')
 
     if nf1 < 4:
         raise EquipmentConfigError(f'First coil value too low {nf1} for amplifier {type_variety}')

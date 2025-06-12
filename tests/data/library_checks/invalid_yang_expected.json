@@ -1,0 +1,205 @@
+{
+  "score": 0.0,
+  "format": 0.0,
+  "sections": {},
+  "issues": [
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Roadm[type_variety='example_detailed_impairments']",
+      "sub_item": "pmd",
+      "message": "Unsatisfied range - value \"0.00015\" is out of the allowed range.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Roadm[type_variety='example_detailed_impairments']",
+      "sub_item": "roadm-path-impairments[roadm-path-impairments-id='0']/roadm-express-path[1]/roadm-pmd",
+      "message": "Invalid union value \"0.0000000000015\" - no matching subtype found:\n    ly2 decimal64: Value \"0.0000000000015\" of decimal64 type exceeds defined number (8) of fraction digits.\n    ly2 empty: Invalid empty value size 120 b.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Transceiver[type_variety='vendorA_trx-type1']",
+      "sub_item": "mode[format='PS_SP64_1']",
+      "message": "Node \"baud-rate\" not found as a child of \"mode\" node.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Transceiver[type_variety='Voyager']",
+      "sub_item": "mode[format='mode 2 - fake']",
+      "message": "Node \"OSNR \" not found as a child of \"mode\" node.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Roadm[type_variety='example_detailed_impairments']",
+      "sub_item": "restrictions/preamp_variety_list[.='toto']",
+      "message": "Invalid union value \"toto\" - no matching subtype found:\n    ly2 leafref: Invalid leafref value \"toto\" - no target instance \"../../../Edfa/gnpyeqpt:type_variety\" with the same value.\n    ly2 leafref: Invalid leafref value \"toto\" - no target instance \"../../../Edfa/gnpyeqpt:other_name\" with the same value.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Edfa[type_variety='medium+low_gain+high_power']",
+      "sub_item": "booster_variety",
+      "message": "Invalid union value \"high_power\" - no matching subtype found:\n    ly2 leafref: Invalid leafref value \"high_power\" - no target instance \"../../Edfa/type_variety\" with the same value.\n    ly2 leafref: Invalid leafref value \"high_power\" - no target instance \"../../Edfa/other_name\" with the same value.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "RamanFiber[type_variety='ramanSSMF']",
+      "sub_item": null,
+      "message": "Each RamanFiber must have a Fiber entry with the same type_variety.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "RamanFiber[type_variety='ramanSSMF']",
+      "sub_item": null,
+      "message": "Fiber and RamanFiber must have the same dispersion.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "RamanFiber[type_variety='ramanSSMF']",
+      "sub_item": null,
+      "message": "Fiber and RamanFiber must have the same effective_area, or none.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "RamanFiber[type_variety='ramanSSMF']",
+      "sub_item": null,
+      "message": "Fiber and RamanFiber must have the same pmd_coef.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "RamanFiber[type_variety='SSMF']",
+      "sub_item": null,
+      "message": "Fiber and RamanFiber must have the same dispersion.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Edfa[type_variety='CienaDB_medium_gain']",
+      "sub_item": "gain_flatmax",
+      "message": "Must condition \". >= ./../gain_min\" not satisfied.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Edfa[type_variety='test_fixed_gain']",
+      "sub_item": "nf0",
+      "message": "Fixed_gain amplifiers with nf0 < 3, are supposed to be Raman\nsimplified amplifier model and thus raman must be true.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Edfa[type_variety='medium+low_gain']",
+      "sub_item": "preamp_variety",
+      "message": "A dual_stage amplifier with raman set to true must have a preamp with raman set to true.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Edfa[type_variety='medium+low_gain+high_power']",
+      "sub_item": "preamp_variety",
+      "message": "preamp_variety must not reference a dual_stage amplifier.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Edfa[type_variety='medium+low_gain+high_power']",
+      "sub_item": "preamp_variety",
+      "message": "A dual_stage amplifier whose preamp has raman must have raman set to true.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Edfa[type_variety='std_medium_gain_multiband']",
+      "sub_item": "amplifiers[.='std_medium_gain']",
+      "message": "Each variable_gain or fixed_gain amplifier referenced by a multi_band amplifier must have f_min and f_max defined.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Edfa[type_variety='std_medium_gain_multiband_wrong_ref']",
+      "sub_item": "amplifiers[.='std_medium_gain_multiband']",
+      "message": "An amplifier referenced by a multi_band amplifier must not be a multi_band amplifier.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Roadm[type_variety='example_test']",
+      "sub_item": "restrictions/booster_variety_list[.='raman']",
+      "message": "A booster amplifier must not have raman set to true.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Transceiver[type_variety='vendorA_trx-type1']",
+      "sub_item": "mode[format='PS_SP64_1']/min_spacing",
+      "message": "Must condition \". >= ./../baud_rate\" not satisfied.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Transceiver[type_variety='vendorA_trx-type1']",
+      "sub_item": "mode[format='PS_SP64_1']",
+      "message": "Mandatory node \"baud_rate\" instance does not exist.",
+      "weight": 1.0
+    },
+    {
+      "axis": "format",
+      "code": "YANG_INVALID",
+      "section": "Library",
+      "item": "Transceiver[type_variety='Voyager']",
+      "sub_item": "mode[format='mode 2 - fake']",
+      "message": "Mandatory node \"OSNR\" instance does not exist.",
+      "weight": 1.0
+    }
+  ]
+}

@@ -1,0 +1,362 @@
+{
+  "score": 86.3,
+  "format": 100.0,
+  "sections": {
+    "Edfa": {
+      "score": 72.2,
+      "axes": {
+        "consistency": 100.0,
+        "completeness": 16.7
+      }
+    },
+    "Roadm": {
+      "score": 91.4,
+      "axes": {
+        "consistency": 98.1,
+        "completeness": 78.0
+      }
+    },
+    "Transceiver": {
+      "score": 72.7,
+      "axes": {
+        "consistency": 86.7,
+        "completeness": 44.7
+      }
+    }
+  },
+  "issues": [
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "PS_SP64_2",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "mode 1",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "mode 2",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager_16QAM",
+      "sub_item": "16QAM",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 1",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 3",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2 - fake",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PENALTIES_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 4",
+      "message": "Missing penalties",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_INCONSISTENT",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2",
+      "message": "Spacing 75.00 GHz, baud_rate=66.00 Gbaud: offset=3.00 dB differs from cluster median 0.00 dB. Cluster: vendorA_trx-type1/PS_SP64_2=0.00 dB, vendorA_trx-type1/mode 2=0.00 dB, Voyager/mode 2 - fake=2.00 dB, Voyager/mode 4=0.00 dB",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_INCONSISTENT",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 2 - fake",
+      "message": "Spacing 75.00 GHz, baud_rate=66.00 Gbaud: offset=2.00 dB differs from cluster median 0.00 dB. Cluster: vendorA_trx-type1/PS_SP64_2=0.00 dB, vendorA_trx-type1/mode 2=0.00 dB, Voyager/mode 2=3.00 dB, Voyager/mode 4=0.00 dB",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "PS_SP64_2",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=64.00 Gbaud, spacing=75.00 GHz). Expected approximately 1.76 dB from spacing or 3.14 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "mode 2",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=64.00 Gbaud, spacing=75.00 GHz). Expected approximately 1.76 dB from spacing or 3.14 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 4",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=66.00 Gbaud, spacing=75.00 GHz). Expected approximately 1.76 dB from spacing or 3.14 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "consistency",
+      "code": "OFFSET_NOT_PROPORTIONAL",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 3",
+      "message": "Offset 0.00 dB not consistent with reference (baud_rate=44.00 Gbaud, spacing=62.50 GHz). Expected approximately 0.97 dB from spacing or 1.38 dB from baud rate.",
+      "weight": 1.0
+    },
+    {
+      "axis": "completeness",
+      "code": "PATH_IMPAIRMENTS_MISSING",
+      "section": "Roadm",
+      "item": "example_test",
+      "sub_item": null,
+      "message": "Missing  roadm-path-impairments",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "IMPAIRMENT_TOO_DIFFERENT_BETWEEN_BANDS",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Impairment roadm-maxloss [11.5, 5.0] in ROADM roadm-add-path is too different between the bands ['191.30-196.10', '186.30-190.10']191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "IMPAIRMENT_TOO_DIFFERENT_BETWEEN_BANDS",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Impairment roadm-pmax [2.5, 0.0] in ROADM roadm-add-path is too different between the bands ['191.30-196.10', '186.30-190.10']191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "consistency",
+      "code": "IMPAIRMENT_TOO_DIFFERENT_BETWEEN_BANDS",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Impairment roadm-osnr [41.0, 35.0] in ROADM roadm-add-path is too different between the bands ['191.30-196.10', '186.30-190.10']191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pmd in ROADM roadm-express-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pdl in ROADM roadm-express-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pmd in ROADM roadm-add-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pmd in ROADM roadm-add-path 186.30-190.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pdl in ROADM roadm-add-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pmd in ROADM roadm-drop-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "example_detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pdl in ROADM roadm-drop-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "PATH_IMPAIRMENTS_MISSING",
+      "section": "Roadm",
+      "item": "default",
+      "sub_item": null,
+      "message": "Missing  roadm-path-impairments",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pmd in ROADM roadm-express-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "IMPAIRMENT_KIND_MISSING",
+      "section": "Roadm",
+      "item": "detailed_impairments",
+      "sub_item": null,
+      "message": "Missing roadm-pdl in ROADM roadm-express-path 191.30-196.10",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "OFFSET_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "PS_SP64_2",
+      "message": "Missing equalization_offset_db: baud_rate=64.00 Gbaud differs from reference 32.00 Gbaud and ROADMs use target_pch_out_db.",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "OFFSET_MISSING",
+      "section": "Transceiver",
+      "item": "vendorA_trx-type1",
+      "sub_item": "mode 2",
+      "message": "Missing equalization_offset_db: baud_rate=64.00 Gbaud differs from reference 32.00 Gbaud and ROADMs use target_pch_out_db.",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "OFFSET_MISSING",
+      "section": "Transceiver",
+      "item": "Voyager",
+      "sub_item": "mode 3",
+      "message": "Missing equalization_offset_db: baud_rate=44.00 Gbaud differs from reference 32.00 Gbaud and ROADMs use target_pch_out_db.",
+      "weight": 0.5
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "std_medium_gain",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "std_low_gain",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "test",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "test_fixed_gain",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    },
+    {
+      "axis": "completeness",
+      "code": "FREQUENCY_RANGE_MISSING",
+      "section": "Edfa",
+      "item": "std_booster",
+      "sub_item": null,
+      "message": "Missing frequency range",
+      "weight": 1
+    }
+  ]
+}
