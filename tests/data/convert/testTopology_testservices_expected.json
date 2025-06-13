@@ -79,16 +79,16 @@
         "explicit-route-objects": {
           "route-object-include-exclude": [
             {
-              "explicit-route-usage": "route-include-ero",
               "index": 0,
+              "explicit-route-usage": "route-include-ero",
               "num-unnum-hop": {
                 "node-id": "roadm e",
                 "hop-type": "LOOSE"
               }
             },
             {
-              "explicit-route-usage": "route-include-ero",
               "index": 1,
+              "explicit-route-usage": "route-include-ero",
               "num-unnum-hop": {
                 "node-id": "roadm g",
                 "link-tp-id": "link-tp-id is not used",
@@ -157,8 +157,8 @@
         "explicit-route-objects": {
           "route-object-include-exclude": [
             {
-              "explicit-route-usage": "route-include-ero",
               "index": 0,
+              "explicit-route-usage": "route-include-ero",
               "num-unnum-hop": {
                 "node-id": "bb",
                 "link-tp-id": "link-tp-id is not used",
@@ -189,8 +189,8 @@
         "explicit-route-objects": {
           "route-object-include-exclude": [
             {
-              "explicit-route-usage": "route-include-ero",
               "index": 0,
+              "explicit-route-usage": "route-include-ero",
               "num-unnum-hop": {
                 "node-id": "trx b",
                 "link-tp-id": "link-tp-id is not used",
@@ -240,16 +240,16 @@
         "explicit-route-objects": {
           "route-object-include-exclude": [
             {
-              "explicit-route-usage": "route-include-ero",
               "index": 0,
+              "explicit-route-usage": "route-include-ero",
               "num-unnum-hop": {
                 "node-id": "roadm e",
                 "hop-type": "LOOSE"
               }
             },
             {
-              "explicit-route-usage": "route-include-ero",
               "index": 1,
+              "explicit-route-usage": "route-include-ero",
               "num-unnum-hop": {
                 "node-id": "roadm g",
                 "link-tp-id": "link-tp-id is not used",
@@ -367,16 +367,16 @@
         "explicit-route-objects": {
           "route-object-include-exclude": [
             {
-              "explicit-route-usage": "route-include-ero",
               "index": 0,
+              "explicit-route-usage": "route-include-ero",
               "num-unnum-hop": {
                 "node-id": "roadm e",
                 "hop-type": "LOOSE"
               }
             },
             {
-              "explicit-route-usage": "route-include-ero",
               "index": 1,
+              "explicit-route-usage": "route-include-ero",
               "num-unnum-hop": {
                 "node-id": "roadm g",
                 "link-tp-id": "link-tp-id is not used",

@@ -1,5 +1,6 @@
 {
   "uid": "Span1",
+  "type_variety": "SSMF",
   "params": {
     "length": 80,
     "loss_coef": 0.2,
@@ -13,7 +14,6 @@
         "loss": 0.5
       }
     ],
-    "type_variety": "SSMF",
     "dispersion": 0.0000167,
     "effective_area": 83e-12,
     "pmd_coef": 1.265e-15

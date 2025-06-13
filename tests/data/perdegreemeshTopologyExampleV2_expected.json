@@ -66,8 +66,9 @@
       "params": {
         "per_degree_impairments": [{
               "from_degree": "west edfa in Lannion_CAS to Morlaix",
-              "impairment_id": 0,
-              "to_degree": "east edfa in Lannion_CAS to Stbrieuc"}],
+              "to_degree": "east edfa in Lannion_CAS to Stbrieuc",
+              "impairment_id": 0
+}],
         "per_degree_pch_out_db": {
           "east edfa in Lannion_CAS to Corlay": -18.6,
           "east edfa in Lannion_CAS to Morlaix": -23.0
