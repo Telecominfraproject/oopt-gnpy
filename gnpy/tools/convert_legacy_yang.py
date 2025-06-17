@@ -31,7 +31,7 @@ from gnpy.tools.yang_convert_utils import convert_degree, convert_back_degree, \
     remove_namespace_context, load_data, reorder_route_objects, reorder_lumped_losses_objects, \
     reorder_raman_pumps, convert_raman_coef, convert_back_raman_coef, convert_raman_efficiency, \
     convert_back_raman_efficiency, convert_nf_coef, convert_back_nf_coef, \
-    convert_nf_fit_coef, convert_back_nf_fit_coef
+    convert_nf_fit_coef, convert_back_nf_fit_coef, API_NMSP
 
 
 def legacy_to_yang(json_data: Dict) -> Dict:
@@ -108,6 +108,9 @@ def legacy_to_yang(json_data: Dict) -> Dict:
     # case of response json
     elif RESPONSE_KEY in json_data:
         json_data = {RESP_NMSP: json_data}
+
+    elif API_NMSP in json_data:
+        json_data = {API_NMSP: json_data[API_NMSP]}
 
     elif any(k in json_data for k in [SPECTRUM_NMSP, SIM_PARAMS_NMSP, RESP_NMSP]):
         # then this is a new format json, nothing to convert
@@ -186,6 +189,9 @@ def yang_to_legacy(json_data: Dict) -> Dict:
     # case of planning response json
     elif RESP_NMSP in json_data:
         json_data = json_data[RESP_NMSP]
+
+    elif API_NMSP in json_data:
+        json_data = json_data[API_NMSP]
     elif any(k in json_data for k in SIM_PARAMS_KEYS + [SPECTRUM_KEY, RESPONSE_KEY, PATH_REQUEST_KEY]):
         # then this is a legacy format json, nothing to convert
         pass

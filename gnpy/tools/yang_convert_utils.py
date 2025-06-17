@@ -46,6 +46,7 @@ RESP_NMSP = 'gnpy-path-computation:responses'
 EDFA_CONFIG_NMSP = 'gnpy-edfa-config:edfa-config'
 SIM_PARAMS_NMSP = 'gnpy-sim-params:sim-params'
 SPECTRUM_NMSP = 'gnpy-spectrum:spectrum'
+API_NMSP = 'gnpy-api:api'
 
 
 class PrettyFloat(float):

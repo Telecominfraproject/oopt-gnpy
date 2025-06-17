@@ -480,3 +480,25 @@ def test_successful_conversion():
 
     result = convert_delta_power_range(input_data)
     assert result == expected_output
+
+
+def test_api_yang():
+    """Test conversion in API context"""
+    with open(DATA_DIR / 'GNPy_api_example.json', 'r', encoding='utf-8') as f:
+        json_data = json.load(f)
+        converted = yang_to_legacy(json_data)
+
+    with open(DATA_DIR / "GNPy_legacy_formatted-GNPy_api_example.json", 'r', encoding='utf-8') as f:
+        expected = json.load(f)
+    assert converted == expected
+
+
+def test_api_no_extra_config_yang():
+    """Test conversion in API context"""
+    with open(DATA_DIR / 'GNPy_api_example_no_extra_config.json', 'r', encoding='utf-8') as f:
+        json_data = json.load(f)
+        converted = yang_to_legacy(json_data)
+
+    with open(DATA_DIR / "GNPy_legacy_formatted-GNPy_api_example_no_extra_config.json", 'r', encoding='utf-8') as f:
+        expected = json.load(f)
+    assert converted == expected
