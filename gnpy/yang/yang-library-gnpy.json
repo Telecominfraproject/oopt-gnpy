@@ -3,6 +3,12 @@
     "module-set-id": "gnpy-library",
     "module": [
       {
+        "name": "gnpy-api",
+        "namespace": "gnpy:api",
+        "revision": "2025-06-13",
+        "conformance-type": "implement"
+      },
+      {
         "name": "gnpy-network-topology",
         "namespace": "gnpy:gnpy-network-topology",
         "revision": "2025-03-01",
