@@ -10,8 +10,9 @@ It ships with a number of example programs. Release versions will ship with
 fully-functional programs.
 
     **Note**: *If you are a network operator or involved in route planning and
-    optimization for your organization, please contact project maintainer Jan
-    Kundrát <jkt@jankundrat.com>. gnpy is looking for users with
+    optimization for your organization, please contact project maintainers
+    esther Le Rouzic <esther.lerouzic@orange.com>, Andrea D'Amico <adamico@nec-labs.com>.
+    gnpy is looking for users with
     specific, delineated use cases to drive requirements for future
     development.*
 
