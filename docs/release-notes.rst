@@ -7,13 +7,20 @@ Release change log
 Each release introduces some changes and new features.
 
 (prepare text for next release)
+
+**Environment**
+
+The windows-2019 environment is no more supported.
+
 **Yang Conversion Utilities**
+
 This release introduces new conversion utilities to facilitate conversion between YANG and legacy formats,
 ensuring full compatibility with GNPy. The "legacy" format also benefit from the YANG validation for
 a stricter verification of input files.
 Console Script for Yang Conversion: Added a new command-line script to perform Yang format conversions easily.
 
 **Design Enhancements**
+
 This release adds the ability to parametrize power target calculations, allowing customization of reference
 span loss and deviation ratios. It implements the use of a reference channel per OMS (Optical Multiplex Section)
 instead of total power for design calculations, improving accuracy and performance.
@@ -21,11 +28,13 @@ It also includes spacing information in design band data to assist in maximum po
 targets compution during autodesign.
 
 **Excel handling**
+
 XLSX files are now read with openpyxl library (while XLS files are still read with xlrd library). Latest release of
 xlrd is supported, which solves compatibility issues with anaconda install.
 
 v2.12
 =====
+
 **Important Changes:**
 
 The default values for EDFA configuration, including frequency range, gain ripple, noise figure ripple, or dynamic gain tilt
@@ -34,6 +43,30 @@ However, users can define their own custom parameters using the default_config_f
 
 This change streamlines the configuration process but requires users to explicitly set parameters through the new
 model if the default values do not suit their needs via the --extra-config option.
+
+v2.11.1
+-------
+
+**Environment**
+
+The macOS-12 environment is no more supported.
+
+**per degree impairment enabled in xls input**
+
+This release now read per degre roadm-path impairment from roadm sheet
+Several optional columns are added: 'type_variety' and 'from degrees'
+and 'from degree to degree impairment id'.
+
+- 'from degrees' can contain a list of degrees separated with ' | ', then the
+  'from degree to degree impairment id' must contain a list of ids of the same
+  length.
+
+Impairment ids are expected to be defined in the ROADM equipment library and
+from degree must be among the previous node from this ROADM.
+
+**optimizing computation speed**
+The computation of path is skipped if the provided include nodes provides
+a complete explicit path (speeds simulation time).
 
 v2.11
 =====
