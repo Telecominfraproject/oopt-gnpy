@@ -229,6 +229,9 @@ The modes are defined as follows:
 +----------------------------+-----------+-----------------------------------------+
 | ``bit_rate``               | (number)  | in bit/s                                |
 +----------------------------+-----------+-----------------------------------------+
+| ``min_spacing``            | (number)  | in Hz. Min required slot size for this  |
+|                            |           | mode.                                   |
++----------------------------+-----------+-----------------------------------------+
 | ``roll_off``               | (number)  | Pure number between 0 and 1. TX signal  |
 |                            |           | roll-off shape. Used by Raman-aware     |
 |                            |           | simulation code.                        |
@@ -810,78 +813,84 @@ It also defines the channels to be propagated for the gnpy-transmission-example 
 Flexgrid channel partitioning is available since the 2.7 release via the extra ``--spectrum`` option.
 In the simplest case, homogeneous channel allocation can be defined via the ``SpectralInformation`` construct which defines a spectrum of N identical carriers:
 
-+----------------------+-----------+-------------------------------------------+
-| field                |   type    | description                               |
-+======================+===========+===========================================+
-| ``type_variety``     | (string)  | Optional. Default: ``default``            |
-|                      |           | A unique name to ID the band for          |
-|                      |           | propagation or design.                    |
-+----------------------+-----------+-------------------------------------------+
-| ``f_min``,           | (number)  | In Hz. Define spectrum boundaries. Note   |
-| ``f_max``            |           | that due to backward compatibility, the   |
-|                      |           | first channel central frequency is placed |
-|                      |           | at :math:`f_{min} + spacing` and the last |
-|                      |           | one at :math:`f_{max}`.                   |
-+----------------------+-----------+-------------------------------------------+
-| ``baud_rate``        | (number)  | In Hz. Simulated baud rate.               |
-+----------------------+-----------+-------------------------------------------+
-| ``spacing``          | (number)  | In Hz. Carrier spacing.                   |
-+----------------------+-----------+-------------------------------------------+
-| ``roll_off``         | (number)  | Pure number between 0 and 1. TX signal    |
-|                      |           | roll-off shape. Used by Raman-aware       |
-|                      |           | simulation code.                          |
-+----------------------+-----------+-------------------------------------------+
-| ``tx_osnr``          | (number)  | In dB. OSNR out from transponder.         |
-+----------------------+-----------+-------------------------------------------+
-| ``power_dbm``        | (number)  | In dBm. Target input power in spans to    |
-|                      |           | be considered for the design              |
-|                      |           | In gain mode                              |
-|                      |           | (see spans/power_mode = false), if no     |
-|                      |           | gain is set in an amplifier, auto-design  |
-|                      |           | sets gain to meet this reference          |
-|                      |           | power. If amplifiers gain is set,         |
-|                      |           | ``power_dbm`` is                          |
-|                      |           | ignored.                                  |
-|                      |           |                                           |
-|                      |           | In power mode, the ``power_dbm``          |
-|                      |           | is the reference power for                |
-|                      |           | the ``delta_p`` settings in amplifiers.   |
-|                      |           | It is also the reference power for        |
-|                      |           | auto-design power optimisation range      |
-|                      |           | Spans/delta_power_range_db. For example,  |
-|                      |           | if delta_power_range_db = `[0,0,0]`, the  |
-|                      |           | same power=power_dbm is launched in every |
-|                      |           | spans. The network design is performed    |
-|                      |           | with the power_dbm value: even if a       |
-|                      |           | power sweep is defined (see after) the    |
-|                      |           | design is not repeated.                   |
-|                      |           |                                           |
-|                      |           | If the ``--power`` CLI option is used,    |
-|                      |           | its value replaces this parameter.        |
-+----------------------+-----------+-------------------------------------------+
-| ``tx_power_dbm``     | (number)  | In dBm. Optional. Power out from          |
-|                      |           | transceiver. Default = power_dbm          |
-+----------------------+-----------+-------------------------------------------+
-| ``power_range_db``   | (number)  | Power sweep excursion around              |
-|                      |           | ``power_dbm``.                            |
-|                      |           | This defines a list of reference powers   |
-|                      |           | to run the propagation, in the range      |
-|                      |           | power_range_db + power_dbm.               |
-|                      |           | Power sweep uses the ``delta_p`` targets  |
-|                      |           | or, if they have not been set, the ones   |
-|                      |           | computed by auto-design, regardless of    |
-|                      |           | of preceding amplifiers' power            |
-|                      |           | saturation.                               |
-|                      |           |                                           |
-|                      |           | Power sweep is an easy way to find the    |
-|                      |           | optimal reference power.                  |
-|                      |           |                                           |
-|                      |           | Power sweep excursion is ignored in case  |
-|                      |           | of gain mode.                             |
-+----------------------+-----------+-------------------------------------------+
-| ``sys_margins``      | (number)  | In dB. Added margin on min required       |
-|                      |           | transceiver OSNR.                         |
-+----------------------+-----------+-------------------------------------------+
++-------------------------------------+-----------+-------------------------------------------+
+| field                               |   type    | description                               |
++=====================================+===========+===========================================+
+| ``type_variety``                    | (string)  | Optional. Default: ``default``            |
+|                                     |           | A unique name to ID the band for          |
+|                                     |           | propagation or design.                    |
++-------------------------------------+-----------+-------------------------------------------+
+| ``f_min``,  ``f_max``               | (number)  | In Hz. Define spectrum boundaries. Note   |
+|                                     |           | that due to backward compatibility, the   |
+|                                     |           | first channel central frequency is placed |
+|                                     |           | at :math:`f_{min} + spacing` and the last |
+|                                     |           | one at :math:`f_{max}`.                   |
++-------------------------------------+-----------+-------------------------------------------+
+| ``baud_rate``                       | (number)  | In Hz. Simulated baud rate.               |
++-------------------------------------+-----------+-------------------------------------------+
+| ``spacing``                         | (number)  | In Hz. Carrier spacing.                   |
++-------------------------------------+-----------+-------------------------------------------+
+| ``roll_off``                        | (number)  | Pure number between 0 and 1. TX signal    |
+|                                     |           | roll-off shape. Used by Raman-aware       |
+|                                     |           | simulation code.                          |
++-------------------------------------+-----------+-------------------------------------------+
+| ``tx_osnr``                         | (number)  | In dB. OSNR out from transponder.         |
++-------------------------------------+-----------+-------------------------------------------+
+| ``power_dbm``                       | (number)  | In dBm. Target input power in spans to    |
+|                                     |           | be considered for the design              |
+|                                     |           | In gain mode                              |
+|                                     |           | (see spans/power_mode = false), if no     |
+|                                     |           | gain is set in an amplifier, auto-design  |
+|                                     |           | sets gain to meet this reference          |
+|                                     |           | power. If amplifiers gain is set,         |
+|                                     |           | ``power_dbm`` is                          |
+|                                     |           | ignored.                                  |
+|                                     |           |                                           |
+|                                     |           | In power mode, the ``power_dbm``          |
+|                                     |           | is the reference power for                |
+|                                     |           | the ``delta_p`` settings in amplifiers.   |
+|                                     |           | It is also the reference power for        |
+|                                     |           | auto-design power optimisation range      |
+|                                     |           | Spans/delta_power_range_db. For example,  |
+|                                     |           | if delta_power_range_db = `[0,0,0]`, the  |
+|                                     |           | same power=power_dbm is launched in every |
+|                                     |           | spans. The network design is performed    |
+|                                     |           | with the power_dbm value: even if a       |
+|                                     |           | power sweep is defined (see after) the    |
+|                                     |           | design is not repeated.                   |
+|                                     |           |                                           |
+|                                     |           | If the ``--power`` CLI option is used,    |
+|                                     |           | its value replaces this parameter.        |
++-------------------------------------+-----------+-------------------------------------------+
+| ``tx_power_dbm``                    | (number)  | In dBm. Optional. Power out from          |
+|                                     |           | transceiver. Default = power_dbm          |
++-------------------------------------+-----------+-------------------------------------------+
+| ``power_range_db``                  | (number)  | Power sweep excursion around              |
+|                                     |           | ``power_dbm``.                            |
+|                                     |           | This defines a list of reference powers   |
+|                                     |           | to run the propagation, in the range      |
+|                                     |           | power_range_db + power_dbm.               |
+|                                     |           | Power sweep uses the ``delta_p`` targets  |
+|                                     |           | or, if they have not been set, the ones   |
+|                                     |           | computed by auto-design, regardless of    |
+|                                     |           | of preceding amplifiers' power            |
+|                                     |           | saturation.                               |
+|                                     |           |                                           |
+|                                     |           | Power sweep is an easy way to find the    |
+|                                     |           | optimal reference power.                  |
+|                                     |           |                                           |
+|                                     |           | Power sweep excursion is ignored in case  |
+|                                     |           | of gain mode.                             |
++-------------------------------------+-----------+-------------------------------------------+
+| ``sys_margins``                     | (number)  | In dB. Added margin on min required       |
+|                                     |           | transceiver OSNR.                         |
++-------------------------------------+-----------+-------------------------------------------+
+| ``use_si_channel_count_for_design`` | (boolean) | Optional. If True, the design uses the SI |
+|                                     |           | definition for channel count computation  |
+|                                     |           | instead of the amplifier bandwidth.       |
+|                                     |           | This option enable to reproduce legacy    |
+|                                     |           | behaviour.                                |
++-------------------------------------+-----------+-------------------------------------------+
 
 It is possible to define a set of bands in the SI block. In this case, type_variety must be used.
 Each set defines a reference channel used for design functions and autodesign processes.
