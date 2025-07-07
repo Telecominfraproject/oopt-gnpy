@@ -18,7 +18,7 @@ from pathlib import Path
 import json
 from collections import namedtuple
 from copy import deepcopy
-from typing import Union, Dict, List, Tuple
+from typing import Union, Dict, List, Tuple, Optional
 from networkx import DiGraph
 from numpy import arange
 
@@ -35,6 +35,7 @@ from gnpy.topology.spectrum_assignment import mvalue_to_slots
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
 from gnpy.tools.convert_legacy_yang import yang_to_legacy, legacy_to_yang
+from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG, DEFAULT_EQPT_CONFIG
 
 
 _logger = getLogger(__name__)
@@ -45,10 +46,6 @@ Model_fg = namedtuple('Model_fg', 'nf0')
 Model_openroadm_ila = namedtuple('Model_openroadm_ila', 'nf_coef')
 Model_hybrid = namedtuple('Model_hybrid', 'nf_ram gain_ram edfa_variety')
 Model_dual_stage = namedtuple('Model_dual_stage', 'preamp_variety booster_variety')
-_examples_dir = Path(__file__).parent.parent / 'example-data'
-DEFAULT_EXTRA_CONFIG = {"std_medium_gain_advanced_config.json": _examples_dir / "std_medium_gain_advanced_config.json",
-                        "Juniper-BoosterHG.json": _examples_dir / "Juniper-BoosterHG.json"}
-DEFAULT_EQPT_CONFIG = _examples_dir / "eqpt_config.json"
 
 
 class Model_openroadm_preamp:
@@ -245,8 +242,8 @@ class Amp(_JsonThing):
         if type_def == 'fixed_gain':
             if 'default_config_from_json' in kwargs:
                 # use user defined default instead of DEFAULT_EDFA_CONFIG
-                config_filename = extra_configs[kwargs.pop('default_config_from_json')]
-                config = load_json(config_filename)
+                config_filename = kwargs.pop('default_config_from_json')
+                config = deepcopy(extra_configs[config_filename])
             try:
                 nf0 = kwargs.pop('nf0')
             except KeyError as exc:  # nf0 is expected for a fixed gain amp
@@ -260,13 +257,13 @@ class Amp(_JsonThing):
             nf_def = Model_fg(nf0)
         elif type_def == 'advanced_model':
             # use the user file name define in library instead of default config
-            config_filename = extra_configs[kwargs.pop('advanced_config_from_json')]
-            config = load_json(config_filename)
+            config_filename = kwargs.pop('advanced_config_from_json')
+            config = deepcopy(extra_configs[config_filename])
         elif type_def == 'variable_gain':
             if 'default_config_from_json' in kwargs:
                 # use user defined default instead of DEFAULT_EDFA_CONFIG
-                config_filename = extra_configs[kwargs.pop('default_config_from_json')]
-                config = load_json(config_filename)
+                config_filename = kwargs.pop('default_config_from_json')
+                config = deepcopy(extra_configs[config_filename])
             gain_min, gain_max = kwargs['gain_min'], kwargs['gain_flatmax']
             try:  # nf_min and nf_max are expected for a variable gain amp
                 nf_min = kwargs.pop('nf_min')
@@ -389,36 +386,37 @@ def _spectrum_from_json(json_data: dict):
     return spectrum
 
 
-def merge_equipment(equipment: dict, additional_filenames: List[Path], extra_configs: Dict[str, Path]):
+def merge_equipment(equipment: Dict, extra_equipments: Dict[str, Dict], extra_configs: Dict[str, Dict]):
     """Merge additional equipment libraries into the base equipment dictionary.
     Typical case is the use of third party transceivers which are not part of a the supplier library.
 
     raise warnings if the same reference is used on two different libraries
     """
-    for filename in additional_filenames:
-        extra_eqpt = load_equipment(filename, extra_configs)
+    for filename, json_data in extra_equipments.items():
+        extra_eqpt = _equipment_from_json(json_data, extra_configs)
         # populate with default eqpt to streamline loading
         for eqpt_type, extra_items in extra_eqpt.items():
             for type_variety, item in extra_items.items():
                 if type_variety not in equipment[eqpt_type]:
                     equipment[eqpt_type][type_variety] = item
                 else:
-                    msg = f'\n\tEquipment file {filename.name}: duplicate equipment entry found: {eqpt_type}-{type_variety}\n'
+                    msg = f'\n\tEquipment file {filename}: duplicate equipment entry found: {eqpt_type}-{type_variety}\n'
                     _logger.warning(msg)
 
 
 def load_equipments_and_configs(equipment_filename: Path,
                                 extra_equipment_filenames: List[Path],
-                                extra_config_filenames: List[Path]) -> dict:
+                                extra_config_filenames: List[Path]) -> Dict:
     """Loads equipment configurations and merge with additional equipment and configuration files.
 
-    Args:
-        equipment_filename (Path): The path to the primary equipment configuration file.
-        extra_equipment_filenames (List[Path]): A list of paths to additional equipment configuration files to merge.
-        extra_config_filenames (List[Path]): A list of paths to additional configuration files to include.
-
-    Returns:
-        dict: A dictionary containing the loaded equipment configurations.
+    :param equipment_filename: The path to the primary equipment configuration file.
+    :type equipment_filename: Path
+    :param extra_equipment_filenames: A list of paths to additional equipment configuration files to merge.
+    :type extra_equipment_filenames: List[Path]
+    :param extra_config_filenames: A list of paths to additional configuration files to include.
+    :type extra_config_filenames: List[Path]
+    :return: A dictionary containing the loaded equipment configurations.
+    :rtype: Dict
 
     Notes:
         If no equipment filename is provided, a default equipment configuration will be used.
@@ -429,16 +427,24 @@ def load_equipments_and_configs(equipment_filename: Path,
     if not equipment_filename:
         equipment_filename = DEFAULT_EQPT_CONFIG
     if extra_config_filenames:
-        extra_configs = {f.name: f for f in extra_config_filenames}
+        # All files must have different filenames (as filename is used as the key in the library)
+        filename_list = [f.name for f in extra_config_filenames]
+        if len(set(filename_list)) != len(extra_config_filenames):
+            msg = f'Identical filenames for extra-config {filename_list}'
+            _logger.error(msg)
+            raise ConfigurationError(msg)
+        extra_configs = {f.name: load_json(f) for f in extra_config_filenames}
         for k, v in DEFAULT_EXTRA_CONFIG.items():
             extra_configs[k] = v
     equipment = load_equipment(equipment_filename, extra_configs)
     if extra_equipment_filenames:
-        merge_equipment(equipment, extra_equipment_filenames, extra_configs)
+        # use the string representation of the path to support identical filenames but placed in different folders.
+        extra_equipments = {f.as_posix(): load_json(f) for f in extra_equipment_filenames}
+        merge_equipment(equipment, extra_equipments, extra_configs)
     return equipment
 
 
-def load_equipment(filename: Path, extra_configs: Dict[str, Path] = DEFAULT_EXTRA_CONFIG) -> dict:
+def load_equipment(filename: Path, extra_configs: Dict[str, Dict] = DEFAULT_EXTRA_CONFIG) -> Dict:
     """Load equipment, returns equipment dict
     """
     json_data = load_gnpy_json(filename)
@@ -544,7 +550,7 @@ def _si_sanity_check(equipment):
         del equipment['SI'][possible_SI[0]]
 
 
-def _equipment_from_json(json_data: dict, extra_configs: Dict[str, Path]) -> dict:
+def _equipment_from_json(json_data: dict, extra_configs: Dict[str, Dict]) -> Dict:
     """build global dictionnary eqpt_library that stores all eqpt characteristics:
     edfa type type_variety, fiber type_variety
     from the eqpt_config.json (filename parameter)
@@ -1022,13 +1028,21 @@ def results_to_json(pathresults: List[ResultElement]):
     return {'response': [n.json for n in pathresults]}
 
 
-def load_eqpt_topo_from_json(eqpt: dict, topology: dict) -> Tuple[dict, DiGraph]:
+def load_eqpt_topo_from_json(eqpt: dict, topology: dict, extra_equipments: Optional[Dict[str, Dict]] = None,
+                             extra_configs: Dict[str, Dict] = DEFAULT_EXTRA_CONFIG) -> Tuple[dict, DiGraph]:
     """Loads equipment configuration and network topology from JSON data.
 
     :param eqpt: Dictionary containing the equipment configuration in JSON format.
         It includes details about the devices to be processed and structured.
+    :type eqpt: dict
     :param topology: Dictionary representing the network topology in JSON format,
         defining the structure of the network and its connections.
+    :type topology: dict
+    :param extra_equipments: dictionary containing additional libraries (eg for pluggables). Key can be
+                             the file Path or any other string.
+    :type extra_equipments: Optional[Dict[str, Dict]]
+    :param extra_configs: Additional configurations for amplifiers in the library
+    :type extra_configs: Dict[str, Dict]
 
     :return: A tuple containing:
 
@@ -1036,7 +1050,8 @@ def load_eqpt_topo_from_json(eqpt: dict, topology: dict) -> Tuple[dict, DiGraph]
         - A directed graph (DiGraph) representing the network topology, where nodes
           correspond to equipment and edges define their connections.
     """
-    equipment = _equipment_from_json(eqpt, DEFAULT_EXTRA_CONFIG)
+    equipment = _equipment_from_json(eqpt, extra_configs)
+    if extra_equipments:
+        merge_equipment(equipment, extra_equipments, extra_configs)
     network = network_from_json(topology, equipment)
     return equipment, network
-

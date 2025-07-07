@@ -19,7 +19,7 @@ from numpy.testing import assert_array_equal, assert_allclose
 import pytest
 from gnpy.core.utils import automatic_nch, dbm2watt
 from gnpy.core.network import build_network
-from gnpy.tools.json_io import load_equipment, load_network
+from gnpy.tools.json_io import load_equipment, load_network, load_json
 from gnpy.core.equipment import trx_mode_params
 from gnpy.topology.request import PathRequest, compute_constrained_path, propagate
 
@@ -28,8 +28,7 @@ TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILENAME = DATA_DIR / 'perdegreemeshTopologyExampleV2_auto_design_expected.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
 
 def pathrequest(pch_dbm, nb_channels):

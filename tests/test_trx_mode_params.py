@@ -16,14 +16,13 @@ import pytest
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import EquipmentConfigError
 from gnpy.tools.json_io import load_equipment, load_json, _equipment_from_json
+from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG
 
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 EQPT_LIBRARY_NAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILE_NAME = DATA_DIR / 'testTopology_expected.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
 
 
 @pytest.mark.parametrize('trx_type, trx_mode, error_message, no_error, expected_result',
@@ -96,7 +95,7 @@ def test_trx_mode_params(trx_type, trx_mode, error_message, no_error, expected_r
         'penalties': None,
         'cost': None
     }
-    equipment = load_equipment(EQPT_LIBRARY_NAME, EXTRA_CONFIGS)
+    equipment = load_equipment(EQPT_LIBRARY_NAME, DEFAULT_EXTRA_CONFIG)
     if no_error:
         trx_params = trx_mode_params(equipment, trx_type, trx_mode, error_message)
         print(trx_params)
@@ -155,7 +154,7 @@ def test_wrong_baudrate_spacing(baudrate, spacing, error_message):
             'equalization_offset_db': 0}]
     }
     json_data['Transceiver'].append(wrong_transceiver)
-    equipment = _equipment_from_json(json_data, EXTRA_CONFIGS)
+    equipment = _equipment_from_json(json_data, DEFAULT_EXTRA_CONFIG)
 
     with pytest.raises(EquipmentConfigError, match=error_message):
         _ = trx_mode_params(equipment, 'vendorB_trx-type1', 'wrong mode', error_message=False)

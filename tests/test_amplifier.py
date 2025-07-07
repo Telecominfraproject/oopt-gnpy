@@ -6,23 +6,25 @@
 # Copyright (C) 2025 Telecom Infra Project and GNPy contributors
 # see AUTHORS.rst for a list of contributors
 
+from pathlib import Path
+import pytest
+
 from numpy import zeros, array
 from numpy.testing import assert_allclose
+
 from gnpy.core.elements import Transceiver, Edfa, Fiber
 from gnpy.core.utils import automatic_fmax, lin2db, db2lin, merge_amplifier_restrictions, dbm2watt, watt2dbm
 from gnpy.core.info import create_input_spectral_information, create_arbitrary_spectral_information
 from gnpy.core.network import build_network, set_amplifier_voa
 from gnpy.tools.json_io import load_network, load_equipment, load_json, _equipment_from_json, network_from_json
 from gnpy.topology.request import PathRequest
-from pathlib import Path
-import pytest
+
 
 TEST_DIR =  Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 test_network = DATA_DIR / 'test_network.json'
 eqpt_library = DATA_DIR / 'eqpt_config.json'
-extra_configs = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+extra_configs = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
 # TODO in elements.py code: pytests doesn't pass with 1 channel: interpolate fail
 
@@ -551,7 +553,7 @@ def test_multiband():
 def test_user_defined_config():
     """Checks that a user defined config is correctly used instead of DEFAULT_EDFA_CONFIG
     """
-    extra_configs['user_edfa_config.json'] = DATA_DIR / 'user_edfa_config.json'
+    extra_configs['user_edfa_config.json'] = load_json(DATA_DIR / 'user_edfa_config.json')
     user_edfa = {
         "type_variety": "user_defined",
         "type_def": "variable_gain",
@@ -596,7 +598,7 @@ def test_default_config():
     """Checks that a config using a file gives the exact same result as the default config if values are identical
     to DEFAULT_EDFA_CONFIG
     """
-    extra_configs['copy_default_edfa_config.json'] = DATA_DIR / 'copy_default_edfa_config.json'
+    extra_configs['copy_default_edfa_config.json'] = load_json(DATA_DIR / 'copy_default_edfa_config.json')
     user_edfa = {
         "type_variety": "user_defined",
         "type_def": "variable_gain",
@@ -680,7 +682,7 @@ def test_frequency_range(file):
     }
     if file:
         user_edfa["default_config_from_json"] = file['name']
-        extra_configs[file['name']] = file['path']
+        extra_configs[file['name']] = load_json(file['path'])
     # add the reference to
     json_data = load_json(eqpt_library)
     json_data['Edfa'].append(user_edfa)
