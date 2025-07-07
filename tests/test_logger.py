@@ -17,15 +17,14 @@ import pytest
 from gnpy.core.exceptions import ConfigurationError, ServiceError, EquipmentConfigError, ParametersError, \
     NetworkTopologyError
 from gnpy.tools.json_io import SI, Roadm, Amp, load_equipment, requests_from_json, network_from_json, \
-    load_network, load_requests
+    load_network, load_requests, load_json
 from gnpy.tools.convert import xls_to_json_data
 
 TEST_DIR = Path(__file__).parent
 EQPT_FILENAME = TEST_DIR / 'data/eqpt_config.json'
 MULTIBAND_EQPT_FILENAME = TEST_DIR / 'data/eqpt_config_multiband.json'
 DATA_DIR = TEST_DIR / 'data'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
 
 def test_jsonthing(caplog):

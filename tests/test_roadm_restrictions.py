@@ -35,8 +35,7 @@ TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILE_NAME = DATA_DIR / 'testTopology_expected.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
 
 def pathrequest(pch_dbm: float, p_tot_dbm: float = None, nb_channels: int = None):

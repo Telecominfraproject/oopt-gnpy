@@ -22,15 +22,14 @@ from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
 from gnpy.core.utils import db2lin, dbm2watt
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.network import build_network
-from gnpy.tools.json_io import load_network, load_equipment, network_from_json
+from gnpy.tools.json_io import load_network, load_equipment, network_from_json, load_json
 from gnpy.topology.request import PathRequest
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 network_file_name = DATA_DIR / 'LinkforTest.json'
 eqpt_library_name = DATA_DIR / 'eqpt_config.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
 
 @pytest.fixture(params=[(96, 0.05e12), (60, 0.075e12), (45, 0.1e12), (2, 0.1e12)],
