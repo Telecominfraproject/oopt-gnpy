@@ -33,8 +33,7 @@ network_file_name = data_dir / 'testTopology_expected.json'
 service_file_name = data_dir / 'testTopology_testservices.json'
 result_file_name = data_dir / 'testTopology_testresults.json'
 eqpt_library_name = data_dir / 'eqpt_config.json'
-extra_configs = {"std_medium_gain_advanced_config.json": data_dir / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": data_dir / "Juniper-BoosterHG.json"}
+extra_configs = {"std_medium_gain_advanced_config.json": load_json(data_dir / "std_medium_gain_advanced_config.json")}
 
 
 def pathrequest(pch_dbm: float, p_tot_dbm: float = None, nb_channels: int = None):

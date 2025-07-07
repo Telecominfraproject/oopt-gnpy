@@ -24,17 +24,16 @@ from gnpy.topology.spectrum_assignment import (build_oms_list, align_grids, nval
                                                bitmap_sum, Bitmap, spectrum_selection, pth_assign_spectrum,
                                                build_path_oms_id_list, aggregate_oms_bitmap)
 from gnpy.tools.json_io import (load_equipment, load_network, requests_from_json, disjunctions_from_json,
-                                _check_one_request)
+                                _check_one_request, load_json)
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILENAME = DATA_DIR / 'testTopology_auto_design_expected.json'
 SERVICE_FILENAME = DATA_DIR / 'testTopology_services_expected.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
-grid = 0.00625e12
+grid = 0.00625e12   
 slot = 0.0125e12
 guardband = 25.0e9
 cband_freq_min = 191.3e12

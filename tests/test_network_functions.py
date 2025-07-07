@@ -31,8 +31,7 @@ DATA_DIR = TEST_DIR / 'data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 EQPT_MULTBAND_FILENAME = DATA_DIR / 'eqpt_config_multiband.json'
 NETWORK_FILENAME = DATA_DIR / 'bugfixiteratortopo.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
 
 @pytest.mark.parametrize("node, attenuation", [

@@ -36,13 +36,12 @@ from gnpy.tools.convert import convert_file
 from gnpy.tools.json_io import (load_json, load_network, save_network, load_equipment, requests_from_json,
                                 disjunctions_from_json, network_to_json, network_from_json)
 from gnpy.tools.service_sheet import read_service_sheet, correct_xls_route_list, Request_element, Request
+from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
-equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
 
 
 def pathrequest(pch_dbm: float, p_tot_dbm: float = None, nb_channels: int = None):
@@ -108,7 +107,7 @@ def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
                           }.items())
 def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json_output):
     """tests generation of topology json and that the build network gives correct results in gain mode"""
-    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
     network = load_network(xls_input, equipment)
     add_missing_elements_in_network(network, equipment)
     # in order to test the Eqpt sheet and load gain target,
@@ -139,7 +138,7 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
                           }.items())
 def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
     """test that autodesign creates same file as an input file already autodesigned"""
-    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
     network = load_network(json_input, equipment)
     # in order to test the Eqpt sheet and load gain target,
     # change the power-mode to False (to be in gain mode)
@@ -166,7 +165,7 @@ def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
 }.items())
 def test_excel_service_json_generation(xls_input, expected_json_output):
     """test services creation"""
-    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
     network = load_network(DATA_DIR / 'testTopology.xls', equipment)
     # Build the network once using the default power defined in SI in eqpt config
     p_db = equipment['SI']['default'].power_dbm
@@ -187,7 +186,7 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
 def test_csv_response_generation(tmpdir, json_input):
     """tests if generated csv is consistant with expected generation same columns (order not important)"""
     json_data = load_json(json_input)
-    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
     csv_filename = Path(tmpdir / json_input.name).with_suffix('.csv')
     with open(csv_filename, 'w', encoding='utf-8') as fcsv:
         jsontocsv(json_data, equipment, fcsv)
@@ -252,7 +251,7 @@ def test_csv_response_generation(tmpdir, json_input):
 def test_json_response_generation(xls_input, expected_response_file):
     """tests if json response is correctly generated for all combinations of requests"""
 
-    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
     network = load_network(xls_input, equipment)
     p_db = equipment['SI']['default'].power_dbm
 
@@ -669,7 +668,7 @@ def test_roadm_type_variety(type_variety, target_pch_out_db, correct_variety):
         # Do not add type variety in json_data to test that it creates a 'default' type_variety
         expected_roadm['type_variety'] = 'default'
     expected_roadm['params']['target_pch_out_db'] = target_pch_out_db
-    equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+    equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
     if correct_variety:
         network = network_from_json(json_data, equipment)
         roadm = [n for n in network.nodes()][0]

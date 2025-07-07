@@ -20,6 +20,7 @@ from gnpy.core.utils import automatic_nch, dbm2watt
 from gnpy.topology.request import explicit_path, PathRequest
 from gnpy.topology.spectrum_assignment import build_oms_list
 from gnpy.tools.json_io import load_equipment, load_network, requests_from_json
+from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG
 
 
 TEST_DIR = Path(__file__).parent
@@ -27,9 +28,8 @@ DATA_DIR = TEST_DIR / 'data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 NETWORK_FILENAME = DATA_DIR / 'testTopology_auto_design_expected.json'
 SERVICE_FILENAME = DATA_DIR / 'testTopology_services_expected.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
-equipment = load_equipment(EQPT_FILENAME, EXTRA_CONFIGS)
+
+equipment = load_equipment(EQPT_FILENAME, DEFAULT_EXTRA_CONFIG)
 
 
 def pathrequest(pch_dbm, nb_channels):

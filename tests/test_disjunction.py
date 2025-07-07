@@ -22,7 +22,8 @@ from gnpy.core.elements import Roadm
 from gnpy.topology.request import (compute_path_dsjctn, isdisjoint, find_reversed_path, PathRequest,
                                    correct_json_route_list, requests_aggregation, Disjunction)
 from gnpy.topology.spectrum_assignment import build_oms_list
-from gnpy.tools.json_io import requests_from_json, load_requests, load_network, load_equipment, disjunctions_from_json
+from gnpy.tools.json_io import requests_from_json, load_requests, load_network, load_equipment, \
+    disjunctions_from_json, load_json
 
 
 DATA_DIR = Path(__file__).parent.parent / 'tests/data'
@@ -30,8 +31,7 @@ NETWORK_FILE_NAME = DATA_DIR / 'testTopology_expected.json'
 SERVICE_FILE_NAME = DATA_DIR / 'testTopology_testservices.json'
 RESULT_FILE_NAME = DATA_DIR / 'testTopology_testresults.json'
 EQPT_LIBRARY_NAME = DATA_DIR / 'eqpt_config.json'
-EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": DATA_DIR / "std_medium_gain_advanced_config.json",
-                 "Juniper-BoosterHG.json": DATA_DIR / "Juniper-BoosterHG.json"}
+EXTRA_CONFIGS = {"std_medium_gain_advanced_config.json": load_json(DATA_DIR / "std_medium_gain_advanced_config.json")}
 
 
 @pytest.fixture()
