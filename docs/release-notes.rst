@@ -7,6 +7,25 @@ Release change log
 Each release introduces some changes and new features.
 
 (prepare text for next release)
+**Yang Conversion Utilities**
+This release introduces new conversion utilities to facilitate conversion between YANG and legacy formats,
+ensuring full compatibility with GNPy. The "legacy" format also benefit from the YANG validation for
+a stricter verification of input files.
+Console Script for Yang Conversion: Added a new command-line script to perform Yang format conversions easily.
+
+**Design Enhancements**
+This release adds the ability to parametrize power target calculations, allowing customization of reference
+span loss and deviation ratios. It implements the use of a reference channel per OMS (Optical Multiplex Section)
+instead of total power for design calculations, improving accuracy and performance.
+It also includes spacing information in design band data to assist in maximum power computation for EDFA
+targets compution during autodesign.
+
+**Excel handling**
+XLSX files are now read with openpyxl library (while XLS files are still read with xlrd library). Latest release of
+xlrd is supported, which solves compatibility issues with anaconda install.
+
+v2.12
+=====
 **Important Changes:**
 
 The default values for EDFA configuration, including frequency range, gain ripple, noise figure ripple, or dynamic gain tilt
@@ -14,7 +33,7 @@ are now hardcoded in parameters.py and are no longer read from the default_edfa_
 However, users can define their own custom parameters using the default_config_from_json variable, which should be populated with a file name containing the desired parameter description. This applies to both variable_gain and fixed_gain amplifier types.
 
 This change streamlines the configuration process but requires users to explicitly set parameters through the new
-model if the default values do not suit their needs.
+model if the default values do not suit their needs via the --extra-config option.
 
 v2.11
 =====
@@ -428,15 +447,15 @@ involute manner to get a vanishing beta3 , and this was a mere artifact for NLI 
 beta2 and beta3, not for total dispersion accumulation). Now, the evaluation of beta2 and beta3 is performed explicitly
 in the element.py module.
 
-2. The effective area is provided as a scalar value evaluated at the Fiber reference frequency and properly scaled
+1. The effective area is provided as a scalar value evaluated at the Fiber reference frequency and properly scaled
 considering the Fiber refractive indices n1 and n2, and the core radius. These quantities are assumed to be fixed and
 are hard coded in the parameters.py module. Essential change: The effective area is always scaled along the frequency.
 
-3. The Raman gain coefficient is properly scaled considering the overlapping of fiber effective area values scaled at
+1. The Raman gain coefficient is properly scaled considering the overlapping of fiber effective area values scaled at
 the interacting frequencies. Essential change: In previous version the Raman gain coefficient depends only on
 the frequency offset.
 
-4. The nonlinear coefficient ``'gamma'`` is properly scaled considering the refractive index n2 and the scaling
+1. The nonlinear coefficient ``'gamma'`` is properly scaled considering the refractive index n2 and the scaling
 effective area.  Essential change: As the effective area, the nonlinear coefficient is always scaled along the
 frequency.
 
