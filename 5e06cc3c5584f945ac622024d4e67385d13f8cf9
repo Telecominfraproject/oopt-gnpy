@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9850f964_213e0764",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-09-02T22:03:52Z",
+      "side": 1,
+      "message": "I tested it from legacy to yang for topology and equipment-config files and it looks good.\n\nThanks,\nGiacomo",
+      "revId": "5e06cc3c5584f945ac622024d4e67385d13f8cf9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
