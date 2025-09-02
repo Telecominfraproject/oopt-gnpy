@@ -8,6 +8,7 @@ To learn how to contribute, please see CONTRIBUTING.md
 - Alessio Ferrari (Politecnico di Torino) <alessio.ferrari@polito.it>
 - Anders Lindgren (Telia Company) <Anders.X.Lindgren@teliacompany.com>
 - Andrea D'Amico (NEC) <adamico@nec-labs.com>
+- Arturo Mayoral (Telecom Infra Project) <amayoral@telecominfraproject.com>
 - Brian Taylor (Facebook) <briantaylor@fb.com>
 - David Boertjes (Ciena) <dboertje@ciena.com>
 - Diego Landa (Facebook) <dlanda@fb.com>
