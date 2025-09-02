@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75372859_0c515dce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-09-02T21:35:27Z",
+      "side": 1,
+      "message": "This looks good to me. Just a couple of minor comments.\n\nThanks,\nGiacomo",
+      "revId": "928dffc9e2a37d2e0f32df04e12e8147ad21f4ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "814b4310_91a7d5f5",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-09-02T21:35:27Z",
+      "side": 1,
+      "message": "Why 0 and not None as for the other parameters?",
+      "range": {
+        "startLine": 624,
+        "startChar": 8,
+        "endLine": 624,
+        "endChar": 19
+      },
+      "revId": "928dffc9e2a37d2e0f32df04e12e8147ad21f4ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c66e762a_0eebb454",
+        "filename": "gnpy/tools/convert.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-09-02T21:35:27Z",
+      "side": 1,
+      "message": "Similar here, why 0 and not None?",
+      "range": {
+        "startLine": 230,
+        "startChar": 8,
+        "endLine": 230,
+        "endChar": 24
+      },
+      "revId": "928dffc9e2a37d2e0f32df04e12e8147ad21f4ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
