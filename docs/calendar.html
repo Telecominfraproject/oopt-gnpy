@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project Calendar</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 20px; }
+      .container { max-width: 1000px; margin: 0 auto; }
+      h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+      iframe { border: 0; width: 100%; height: 800px; }
+      .note { color: #555; margin-top: 1rem; font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Project Calendar</h1>
+      <p>This page embeds the public project calendar. It updates automatically when events change in Google Calendar.</p>
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src=4bea2543b7f66ce42c17fcbcf4810ffc72acd90b76c378d0ec622ae662f958a0%40group.calendar.google.com&ctz=Europe%2FMadrid"
+        frameborder="0"
+        scrolling="no"
+      ></iframe>
+      <p class="note">Timezone: Europe/Madrid. If you prefer your local timezone, add <code>&amp;ctz=Your%2FTimezone</code> to the URL.</p>
+    </div>
+  </body>
+  </html>
+
+

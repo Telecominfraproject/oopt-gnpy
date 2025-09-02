@@ -32,4 +32,4 @@ Learn more about this [in the documentation](https://gnpy.readthedocs.io/), or g
 
 ## Project Calendar
 
-See upcoming meetings on the [Project Calendar](docs/calendar.md). The calendar is embedded from Google Calendar and updates automatically.
+See upcoming meetings on the [Project Calendar](https://arthurmll.github.io/oopt-gnpy/calendar.html). The calendar is embedded from Google Calendar and updates automatically.
