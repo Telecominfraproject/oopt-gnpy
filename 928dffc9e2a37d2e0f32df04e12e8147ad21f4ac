@@ -41,6 +41,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2104d28_35479e29",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-09-03T09:39:56Z",
+      "side": 1,
+      "message": "Thanks for the review: the difference is related to the autodesign phase.\n\n  - if out_voa is None , and the out_voa_auto is true for the type of amplifier, then there is the possibility to optimize gain and set a out voa value. If out_voa_auto is false, then out_voa is set to 0\n  - instead we have not plan any in_voa optimization, so the default value is set to none directly.\n\nin short, not setting in_voa means in_voa is 0dB, whereas not setting out_voa does not mean it is 0db: it depends on the amplifier option.",
+      "parentUuid": "814b4310_91a7d5f5",
+      "range": {
+        "startLine": 624,
+        "startChar": 8,
+        "endLine": 624,
+        "endChar": 19
+      },
+      "revId": "928dffc9e2a37d2e0f32df04e12e8147ad21f4ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c66e762a_0eebb454",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-09-02T21:35:27Z",
       "side": 1,
       "message": "Similar here, why 0 and not None?",
+      "range": {
+        "startLine": 230,
+        "startChar": 8,
+        "endLine": 230,
+        "endChar": 24
+      },
+      "revId": "928dffc9e2a37d2e0f32df04e12e8147ad21f4ac",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fde2763_4d02ca70",
+        "filename": "gnpy/tools/convert.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-09-03T09:39:56Z",
+      "side": 1,
+      "message": "The same explamation holds here as att_in is the excel keywork for in_voa",
+      "parentUuid": "c66e762a_0eebb454",
       "range": {
         "startLine": 230,
         "startChar": 8,
