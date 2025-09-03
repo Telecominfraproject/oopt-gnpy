@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "222c3e07_93ffcdf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1038014
+      },
+      "writtenOn": "2025-09-03T15:44:33Z",
+      "side": 1,
+      "message": "all tests passed on mac silicon M2",
+      "revId": "537c45b96322f0579dee3d8cac91715c042e28ea",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
