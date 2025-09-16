@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5b660cb_5a990e28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-09-16T11:03:21Z",
+      "side": 1,
+      "message": "here is your patch on gerrit. could you have a look on my comment ?",
+      "revId": "238ff3731453a75ec7d80abc29ff3adb6bf62310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9571d31_17293222",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-09-16T11:03:21Z",
+      "side": 1,
+      "message": "shouldn\u0027t we change this to the page https://telecominfraproject.github.io/oopt-gnpy/ ?",
+      "revId": "238ff3731453a75ec7d80abc29ff3adb6bf62310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
