@@ -29,3 +29,7 @@ GNPy can do much more, including acting as a Path Computation Engine, tracking b
 Learn more about this [in the documentation](https://gnpy.readthedocs.io/), or give it a [try online at `gnpy.app`](https://gnpy.app/):
 
 [![Path propagation at gnpy.app](docs/images/2022-04-12-gnpy-app.png)](https://gnpy.app/)
+
+## Project Calendar
+
+See upcoming meetings on the [Project Calendar](https://arthurmll.github.io/oopt-gnpy/calendar.html). The calendar is embedded from Google Calendar and updates automatically.
