@@ -6,6 +6,10 @@ WARNING  gnpy.tools.json_io:json_io.py
 WARNING  gnpy.tools.json_io:json_io.py 
 	Equipment file extra_eqpt_config.json: duplicate equipment entry found: Transceiver-ZR400G
 
+INFO     gnpy.core.network:network.py 
+Reference used for design: (Input optical power reference in span = 0.00dBm
+                            spacing = 50.000GHz
+                            nb_channels = 76
 INFO     gnpy.tools.worker_utils:worker_utils.py List of disjunctions:
 []
 INFO     gnpy.tools.worker_utils:worker_utils.py Aggregating similar requests

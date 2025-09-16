@@ -20,11 +20,12 @@ from numpy.testing import assert_allclose
 import pytest
 
 from gnpy.core.network import build_network
-from gnpy.core.utils import automatic_nch, lin2db, watt2dbm
+from gnpy.core.utils import automatic_nch, lin2db, watt2dbm, dbm2watt
 from gnpy.core.elements import Roadm
 from gnpy.topology.request import compute_path_dsjctn, propagate, propagate_and_optimize_mode, correct_json_route_list
 from gnpy.tools.json_io import load_network, load_equipment, requests_from_json, load_requests, load_json, \
     _equipment_from_json
+from gnpy.topology.request import PathRequest
 
 
 data_dir = Path(__file__).parent.parent / 'tests/data'
@@ -34,6 +35,40 @@ result_file_name = data_dir / 'testTopology_testresults.json'
 eqpt_library_name = data_dir / 'eqpt_config.json'
 extra_configs = {"std_medium_gain_advanced_config.json": data_dir / "std_medium_gain_advanced_config.json",
                  "Juniper-BoosterHG.json": data_dir / "Juniper-BoosterHG.json"}
+
+
+def pathrequest(pch_dbm: float, p_tot_dbm: float = None, nb_channels: int = None):
+    """create ref channel for defined power settings
+    """
+    params = {
+        "power": dbm2watt(pch_dbm),
+        "tx_power": dbm2watt(pch_dbm),
+        "nb_channel": nb_channels if nb_channels else round(dbm2watt(p_tot_dbm) / dbm2watt(pch_dbm), 0),
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
+    return PathRequest(**params)
 
 
 @pytest.mark.parametrize("net", [network_file_name])
@@ -52,9 +87,9 @@ def test_automaticmodefeature(net, eqpt, serv, expected_mode):
     # spacing, f_min and f_max
     p_db = equipment['SI']['default'].power_dbm
 
-    p_total_db = p_db + lin2db(automatic_nch(equipment['SI']['default'].f_min,
-                                             equipment['SI']['default'].f_max, equipment['SI']['default'].spacing))
-    build_network(network, equipment, p_db, p_total_db)
+    nb_channels = automatic_nch(equipment['SI']['default'].f_min,
+                                equipment['SI']['default'].f_max, equipment['SI']['default'].spacing)
+    build_network(network, equipment, pathrequest(p_db, nb_channels=nb_channels))
 
     rqs = requests_from_json(data, equipment)
     rqs = correct_json_route_list(network, rqs)
@@ -168,7 +203,7 @@ def test_propagate_and_optimize_mode(caplog):
     data['path-request'][1]['path-constraints']['te-bandwidth']['spacing'] = 75e9
     assert_allclose(watt2dbm(data['path-request'][1]['path-constraints']['te-bandwidth']['output-power']), 1, rtol=1e-9)
     # use the request power for design, or there will be inconsistencies with the gain
-    build_network(network, equipment, 1, 21)
+    build_network(network, equipment, pathrequest(1, 21))
 
     rqs = requests_from_json(data, equipment)
     rqs = correct_json_route_list(network, rqs)

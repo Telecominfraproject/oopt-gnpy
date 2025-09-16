@@ -1,0 +1,877 @@
+module gnpy-network-topology {
+  yang-version 1.1;
+  namespace "gnpy:gnpy-network-topology";
+  prefix gnpynt;
+
+  import gnpy-api {
+    prefix "gapi";
+    revision-date 2025-06-13;
+  }
+
+  import gnpy-eqpt-config {
+    prefix "geqpt";
+    revision-date 2025-05-26;
+  }
+
+  organization
+    "Telecom Infra Project OOPT PSE Working Group";
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:ahmed.triki@orange.com>
+     contact:  <mailto:esther.lerouzic@orange.com>
+    ";
+  description
+    "YANG model for gnpy network input for path computation - 2020 - candi preversion";
+
+  revision 2025-03-01 {
+    description
+      "spacing for design band and pmd_coef";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  revision 2025-01-20 {
+    description
+      "Add RamanFiber, design bands, impairments";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  revision 2024-02-21 {
+    description
+      "fix namespaces for identity-ref,
+      add roadm impairment";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+  revision 2023-02-01 {
+    description
+      "change per-degree roadm targets
+      set 6 digits for fiber length
+      set 6 digits for loss_coef
+      add type empty for con_in and con_out";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+  revision 2022-11-21 {
+    description
+      "draft for detecon - GNPy API";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+  revision 2020-10-22 {
+    description
+      "draft for experimental/2020-candi";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  identity type-element {
+    description
+      "Base identity for element type";
+  }
+
+  identity Transceiver {
+    base type-element;
+    description
+      " Transceiver element";
+  }
+
+  identity Fiber {
+    base type-element;
+    description
+      "Fiber element (unidirectional)";
+  }
+
+  identity RamanFiber {
+    base type-element;
+    description
+      "RamanFiber element (unidirectional)";
+  }
+
+  identity Roadm {
+    base type-element;
+    description
+      "Roadm element";
+  }
+
+  identity Edfa {
+    base type-element;
+    description
+      "Edfa element";
+  }
+
+  identity Fused {
+    base type-element;
+    description
+      "Fused element ; non amplified connection between two fiber spans ;
+       can be used to model optical distribution frame, or losses due to
+       connectors or fused in a span";
+  }
+
+  identity  Multiband_amplifier {
+    base type-element;
+    description
+      "Multiband_amplifier element";
+  }
+
+  identity length-unit {
+    description
+      "length unit";
+  }
+
+  identity km {
+    base length-unit;
+    description
+      "kilometers";
+  }
+
+  identity m {
+    base length-unit;
+    description
+      "meter";
+  }
+
+  typedef Coordinate {
+    type decimal64 {
+      fraction-digits 6;
+    }
+    description
+      "Latitude or longitude type";
+  }
+
+  identity pumping-direction {
+    description
+      "Raman pumping direction";
+  }
+
+  identity coprop {
+    base pumping-direction;
+    description
+      "forward pumping";
+  }
+
+  identity counterprop {
+    base pumping-direction;
+    description
+      "backward pumping";
+  }
+
+  grouping location-attributes {
+    description
+      "grouping for location imformation: city, region names
+      and coordinates.";
+    container location {
+      description
+        "Information for a node location: city, region names
+        and coordinates.";
+      leaf city {
+        type union {
+          type string;
+          type empty;
+        }
+        description
+          "City name.";
+      }
+      leaf region {
+        type union {
+          type string;
+          type empty;
+        }
+        description
+          "Region name. Used for filtering purpose.";
+      }
+      leaf latitude {
+        type Coordinate;
+        description
+          "Latitude coordinate.";
+      }
+      leaf longitude {
+        type Coordinate;
+        description
+          "Longitude coordinate.";
+      }
+    }
+  }
+
+  grouping fiber-common-params {
+    description
+      "Common attributes to fiber and raman fiber.";
+    leaf length {
+      type decimal64 {
+        fraction-digits 6;
+      }
+      mandatory true;
+      description
+        "Length of the fiber span.";
+    }
+    leaf pmd_coef {
+      type decimal64 {
+        fraction-digits 18;
+      }
+      units "s/km^0.5";
+      description "PMD coefficient of the fiber span (s/km^0.5)";
+    }
+
+    choice ref_freq_or_wl {
+      description
+        "Definition of the reference: frequency or wavelength.";
+      case frequency {
+        leaf ref_frequency {
+          type decimal64 {
+            fraction-digits 1;
+          }
+          units "Hz";
+          description
+            "Reference frequency for all parameters evaluation
+            (unique for all parameters: beta2, beta3, gamma, effective_area)";
+        }
+      }
+      case wavelength {
+        leaf ref_wavelength {
+          type decimal64 {
+            fraction-digits 12;
+          }
+          units "m";
+          description
+              "Reference wavelength for all parameters evaluation
+              (unique for all parameters: beta2, beta3, gamma, effective_area)";
+        }
+      }
+    }
+
+    choice dispersion-vector-or-scalar {
+      description
+        "Dispersion definition: scalar with its slope or array of
+        values and the slope is computed based on the values.";
+      case scalar {
+        leaf dispersion {
+          type decimal64 {
+            fraction-digits 8;
+          }
+          units "s.m-1.m-1";
+          description "Dispersion of the span fiber.";
+        }
+        leaf dispersion_slope {
+          type decimal64 {
+            fraction-digits 11;
+          }
+          units "s.m-1.m-1.m-1";
+          description "Dispersion slope of the span fiber.";
+        }
+      }
+      case vector {
+        list dispersion_per_frequency {
+          key "frequency";
+          description
+            "Dispersion per frequency value.";
+          leaf frequency {
+            type decimal64 {
+              fraction-digits 1;
+            }
+            units "Hz";
+            description "Frequency of the loss coef.";
+          }
+          leaf dispersion {
+            type decimal64 {
+              fraction-digits 8;
+            }
+            units "s.m-1.m-1";
+            description "Dispersion of the span fiber.";
+          }
+        }
+      }
+    }
+
+    leaf effective_area {
+      type decimal64 {
+        fraction-digits 14;
+      }
+      units "m^2";
+      description "Effective Area of the span fibery.";
+    }
+
+    leaf gamma{
+      type decimal64 {
+        fraction-digits 8;
+      }
+      units "w-1.m-1" ;
+      description "2pi.n2/(lambda*Aeff) (w-2.m-1)";
+    }
+
+    container raman_coefficient {
+      description
+        "Raman coeeficient definition (for Stimulated Raman Scattering
+        and Raman amplification)";
+      leaf reference_frequency {
+        type decimal64 {
+          fraction-digits 1;
+        }
+        units "Hz";
+        description
+          "Reference frequency used with frequency offset values
+          for Raman coefficient evaluation.";
+      }
+      list g0_per_frequency {
+          key frequency_offset;
+          description
+            "Raman gain coefficient in terms of optical power defined per frequency.";
+          leaf frequency_offset {
+            type decimal64 {
+              fraction-digits 1;
+            }
+            units "Hz";
+            description
+              "Frequency offset.";
+          }
+          leaf g0 {
+            type decimal64 {
+              fraction-digits 14;
+            }
+            units "1/(m.W)";
+            description "Raman gain coefficient in terms of optical power.";
+          }
+      }
+    }
+
+    list lumped_losses {
+      key "position";
+      description "Places along the fiber length with extra
+        losses. Specified as a loss in dB at each relevant position (in km).";
+      leaf position {
+          type decimal64 {
+            fraction-digits 6;
+          }
+          units "km";
+          mandatory true;
+          description "Position of the lumped loss on the fiber.";
+        }
+      leaf loss {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units "dB";
+        mandatory true;
+        description "Loss of the lumped loss on the fiber.";
+      }
+    }
+
+    choice loss_coef-vector-or-scalar {
+      description
+        "Loss coef definition: scalar or per frequency vector";
+      case scalar {
+        leaf loss_coef {
+          type decimal64 {
+            fraction-digits 6;
+          }
+          units "dB/km";
+          mandatory true;
+          description "Loss coefficient of the fiber span (dB/km)";
+        }
+      }
+      case vector {
+        list loss_coef_per_frequency {
+          key frequency;
+          description
+            "Per frequency loss_coef definition.";
+          leaf frequency {
+            type decimal64 {
+              fraction-digits 1;
+            }
+            units "Hz";
+            description
+              "Frequency of the loss coef value.";
+          }
+          leaf loss_coef_value {
+            type decimal64 {
+              fraction-digits 16;
+            }
+            units "dB/km";
+            description
+              "Loss coef oat the frequency value.";
+          }
+        }
+      }
+    }
+    leaf length_units {
+      type identityref {
+        base length-unit;
+      }
+      mandatory true;
+      description
+        "Length unit used for the length definition (m or km)";
+    }
+    leaf att_in {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      description
+       "Padding attenuation placed at span input to reach min loss
+       target defined in the library.";
+    }
+    leaf con_in {
+      type union {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        type empty;
+      }
+      units "dB";
+      description
+        "Input connector loss.";
+    }
+    leaf con_out {
+      type union {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        type empty;
+      }
+      units "dB";
+      description
+        "Output connector loss.";
+    }
+  }
+
+  grouping raman-fiber-operational {
+    description
+      "Raman pumps definition of the Raman Fiber.";
+    leaf temperature {
+      type decimal64 {
+          fraction-digits 2;
+      }
+      description
+        "Temperature of the fiber.";
+    }
+    list raman_pumps {
+      description
+        "Definition of Raman pumps.";
+      key "frequency";
+      leaf power {
+        type decimal64 {
+          fraction-digits 9;
+        }
+        units "W";
+        description
+          "Total pump power considering a depolarized pump.";
+      }
+      leaf frequency {
+        type decimal64 {
+          fraction-digits 1;
+        }
+        units "Hz";
+        description
+          "Pump central frequency.";
+      }
+      leaf propagation_direction {
+        type identityref {
+          base pumping-direction;
+        }
+        description
+          "Pump injection direction: the pumps can propagate in
+          the same or opposite direction with respect the signal.
+          Valid choices are coprop and counterprop";
+      }
+    }
+  }
+
+  grouping edfa-params {
+    description
+      "Common parameters for amplifiers definition.";
+    leaf gain_target {
+      type union {
+        type decimal64 {
+          fraction-digits 6;
+        }
+        type empty;
+      }
+      units "dB";
+      description
+        "gain target of the amplifier (before VOA and after att_in)";
+    }
+    leaf tilt_target {
+      type union {
+        type decimal64 {
+          fraction-digits 6;
+        }
+        type empty;
+      }
+      units "dB";
+      description
+        "Tilt target on the whole wavelength range of the amplifier.";
+    }
+    leaf out_voa {
+      type union {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        type empty;
+      }
+      units "dB";
+      description
+        "Output variable optical attenuator loss";
+    }
+    leaf in_voa {
+      type union {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        type empty;
+      }
+      units "dB";
+      description
+        "Input variable optical attenuator loss";
+    }
+    leaf delta_p {
+      type union {
+        type decimal64 {
+          fraction-digits 6;
+        }
+        type empty;
+      }
+      units "dB";
+      description
+        "Per channel target output power deviation with respect to power settings in SI.";
+    }
+  }
+
+  grouping multiband-params {
+    description
+      "Attributes for multiband amplifiers";
+    list amplifiers {
+      key "type_variety";
+      description
+        "Definition of attributes of each amplifier of the multiband amplifier.";
+      leaf type_variety {
+        type string;
+        description
+          "Type_variety definition.";
+      }
+      container operational {
+        description
+          "Operational values for the Edfa ";
+        uses edfa-params;
+        uses geqpt:frequency-band;
+      }
+    }
+  }
+
+  grouping design-bands {
+    description "Values used to compute the maximum power in
+      amplifier during autodesign phase";
+    choice parameter-used-for-design {
+      description
+        "Values used to compute the maximum power in
+      amplifier during autodesign phase";
+      case spacing {
+        leaf spacing {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          units "Hz";
+          description
+            "Spacing used to compute max power in the spans
+            during autodesign.";
+        }
+      }
+      case number-of-channels {
+        leaf number-of-channels {
+          type uint16 {
+            range "1 .. max";
+          }
+          description
+            "Number of channels used to compute max power in the spans
+            during autodesign.";
+        }
+      }
+    }
+  }
+
+  grouping  roadm-trx-params {
+    description
+      "Design band attributes common to ROADM and Transceivers,
+      Used for autodesign";
+    list design_bands {
+      key "f_min";
+      uses geqpt:frequency-band;
+      uses design-bands;
+      description
+        "Value used to compute the maximum power in
+        amplifier during autodesign phase, same for all degrees.";
+    }
+    list per_degree_design_bands_targets {
+      key "degree_uid";
+      description
+        "Per degree definition of design bands used to compute the maximum power in
+        amplifier during autodesign phase.";
+      leaf degree_uid {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+        description
+          "Degree identifier (= uid of the next element on this direction).";
+      }
+      list design_bands {
+        key "f_min";
+        uses geqpt:frequency-band;
+        uses design-bands;
+        description
+          "Value used to compute the maximum power in
+          amplifier during autodesign phase, same for all degrees.";
+      }
+    }
+  }
+
+  grouping roadm-params {
+    description
+      "Definition of ROADM configuration parameters.";
+    uses geqpt:roadm-equalization-params;
+    uses geqpt:restrictions;
+
+    list per_degree_power_targets {
+      key "degree_uid";
+      description
+        "Equalization strategy for this degree. If not defined, use the
+        one defined in ROADM.";
+      leaf degree_uid {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+        description
+          "Degree identifier (= uid of the next element on this direction).";
+      }
+      choice per_degree_target_type {
+        description
+          "Equalization strategy for this ROADM. If not defined, the
+          one defined in library for this type_variety is used.";
+        case constant_power {
+          leaf per_degree_pch_out_db {
+            type decimal64 {
+                fraction-digits 2;
+            }
+            units "dBm";
+            description
+              "Equalization applied on all channels on this degree.
+              This target replaces the one defined for all degrees";
+          }
+        }
+        case constant_psd {
+          leaf per_degree_psd_out_mWperGHz {
+            type decimal64 {
+              fraction-digits 10;
+            }
+            units "mW/GHz";
+            description
+              "Equalization applied on all channels on this degree.
+              This target replaces the one defined for all degrees";
+          }
+        }
+        case constant_psw {
+          leaf per_degree_psd_out_mWperSlotWidth {
+            type decimal64 {
+              fraction-digits 10;
+            }
+            units "mW/GHz";
+            description
+              "Equalization applied on all channels on this degree.
+              This target replaces the one defined for all degrees";
+          }
+        }
+      }
+    }
+    list per_degree_impairments {
+      key "from_degree to_degree";
+      description
+        "Definition of impairments for this ROADM.";
+      leaf from_degree {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+        description
+          "Degree identifier (= uid of the next element on this direction).";
+      }
+      leaf to_degree {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+        description
+          "Degree identifier (= uid of the next element on this direction).";
+      }
+      leaf impairment_id {
+        type uint32;
+        description
+          "Reference to the impairment ID defined in the library.";
+      }
+    }
+  }
+
+  grouping fused-params{
+    description
+      "Parameters for Fused elements.";
+    leaf loss {
+      type union {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          type empty;
+        }
+      units "dB";
+      description
+        "Concentrated loss of the fused element";    
+    }
+  }
+
+  grouping element-type-choice {
+    description
+      "Definition of operational container for RamanFiber or Edfa, and of
+      params container for all elements.";
+    container operational {
+      when "../type = 'gnpynt:Edfa' or ../type = 'gnpynt:RamanFiber'";
+      description
+        "Operational values for the Edfa and the RamanFiber";
+      choice ramanfiber {
+        description
+          "Definition of operational parameters for RamanFibers";
+        case RamanFiber {
+          when "../type = 'gnpynt:RamanFiber'";
+          uses raman-fiber-operational;
+        }
+        case Edfa {
+          when "../type = 'gnpynt:Edfa'";
+          uses edfa-params;
+          uses geqpt:frequency-band;
+        }
+      }
+    }
+    choice element-type {
+      description
+        "Params content depending on element type.";
+      case FiberRoadm {
+        container params {
+          description
+            "parameters definition in case of Fiber, RamanFiber, Roadm, Fused, Transceivers";
+          choice fiberroadmfused {
+            description
+              "parameters definition in case of Fiber, RamanFiber, Roadm, Fused, Transceivers";
+            case Fiber {
+              when "../type = 'gnpynt:Fiber' or ../type = 'gnpynt:RamanFiber'";
+              uses fiber-common-params;
+            }
+            case RoadmTransceiver {
+              when "../type = 'gnpynt:Roadm' or ../type = 'gnpynt:Transceiver'";
+              uses roadm-trx-params;
+              choice roadm {
+                description
+                  "parameters definition only in case of Roadm.";                
+                case roadm {
+                  when "../type = 'gnpynt:Roadm'";
+                  uses roadm-params;
+                }
+              }
+            }
+            case Fused {
+              when "../type = 'gnpynt:Fused'";
+              uses fused-params;
+            }
+            case Multiband_amplifier {
+              when "../type = 'gnpynt:Multiband_amplifier'";
+              leaf-list variety_list {
+                type string;
+                description 
+                  "List of authorized type-variety";
+              }
+            }
+          }
+        }
+      }
+      case Multiband_amplifier {
+        when "type = 'gnpynt:Multiband_amplifier'";
+        uses multiband-params;
+      }
+    }
+  }
+
+
+  grouping topo {
+    description
+      "Definition of the topology: list of elements and connections.";
+    list elements {
+      description
+        "element definition.";
+      key "uid";
+      leaf uid {
+        type string;
+        description
+          "element unique identifier";
+      }
+      leaf type {
+        type identityref {
+          base type-element;
+        }
+        mandatory true;
+        description
+          "element type among possible types (Fiber, RamanFiber, Edfa,
+          Multiband_amplifier, Fused, Roadm, Transceiver).";
+      }
+      leaf type_variety {
+        type string;
+        description
+          "Valid reference to a library reference type variety for (Fiber,
+          RamanFiber, Edfa, Multiband_amplifier, Roadm).";
+      }
+      container metadata {
+        description
+          "Metadata definitions.";
+        uses location-attributes;
+      }
+      uses element-type-choice;
+    }
+    list connections {
+      key "from_node to_node";
+      description
+        "List on connections between elements.";
+      leaf from_node {
+        type leafref {
+          path "../../elements/uid";
+        }
+        description
+          "Ingress node of the connection, reference to a defined element in the topology";
+      }
+      leaf to_node {
+        type leafref {
+          path "../../elements/uid";
+        }
+        description
+          "Egress node of the connection, reference to a defined element in the topology";
+      }
+    }
+  }
+
+  grouping gnpytopo {
+    description
+      "Reusable grouping for topology definition.";
+    container topology {
+      description
+        "Describe the topology gnpy-formated for release 2.6 toaster (including mixed rate and multiband)";
+      uses topo;
+      leaf network_name {
+        type string;
+      }
+    }
+  }
+  
+  container topology {
+    description
+      "Describe the topology gnpy-formated for release 2.6 toaster (including mixed rate and multiband)";
+    uses topo;
+    leaf network_name {
+      type string;
+    }
+  }
+
+  augment "/gapi:api" {
+    description "Add the gnpy-network-topology input in the API request.";
+    uses gnpytopo;
+  }
+}

@@ -4,6 +4,10 @@ WARNING  gnpy.tools.json_io:json_io.py
 
 INFO     gnpy.tools.cli_examples:cli_examples.py source = 'trx Brest_KLA'
 INFO     gnpy.tools.cli_examples:cli_examples.py destination = 'trx Rennes_STA'
+INFO     gnpy.core.network:network.py 
+Reference used for design: (Input optical power reference in span = 3.00dBm
+                            spacing = 50.000GHz
+                            nb_channels = None
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Lorient_KMA to Loudeac
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
@@ -27,7 +31,7 @@ WARNING  gnpy.core.network:network.py
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix
 	is above user specified amplifier std_low_gain
-	max flat gain: 16dB ; required gain: 21.22dB. Please check amplifier type.
+	max flat gain: 16dB ; required gain: 21.72dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Brest_KLA to Morlaix

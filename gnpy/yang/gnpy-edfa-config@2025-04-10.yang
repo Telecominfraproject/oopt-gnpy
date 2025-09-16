@@ -1,0 +1,95 @@
+module gnpy-edfa-config {
+  yang-version 1.1;
+  namespace "urn:gnpy-edaf-config";
+
+  prefix edfa-config;
+
+  import gnpy-api {
+    prefix "gapi";
+    revision-date 2025-06-13;
+  }
+
+  import gnpy-eqpt-config {
+    prefix "geqpt";
+    revision-date 2025-05-26;
+  }
+
+  organization
+    "Telecom Infra Project OOPT PSE Working Group";
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:esther.lerouzic@orange.com>
+    ";
+  description
+    "YANG model for gnpy network input for path computation extra edfa config- 2025";
+
+  revision 2025-04-10 {
+    description
+      "First yang model for extra edfa config option";
+    reference
+      "YANG model for network input for path computation with gnpy";
+  }
+
+  grouping edfa-config-grouping {
+    description
+      "Attributes for detailed configuration of EDFA.";
+    leaf f_min {
+      type decimal64 {
+        fraction-digits 1;
+      }
+      mandatory true;
+      description " Minimum and maximum frequency range for the amplifier. 
+      Signal must fit entirely within this range (center frequency and spectrum width
+        ";
+    }
+    leaf f_max {
+      type decimal64 {
+        fraction-digits 1;
+      }
+      mandatory true;
+    }
+    leaf-list nf_ripple {
+      config false;
+      type decimal64 {
+        fraction-digits 18;
+      }
+    }
+    leaf-list dgt {
+      config false;
+      type decimal64 {
+        fraction-digits 18;
+      }
+    }
+    leaf-list gain_ripple {
+      config false;
+      type decimal64 {
+        fraction-digits 18;
+      }
+    }
+    list nf_fit_coeff {
+      key coef_order;
+      config false;
+      uses geqpt:polynomial-coef;
+      must "./coef_order <= 3";
+      description "3rd order polynomial NF = f(-dg) coeficients list";
+    }
+  }
+
+  grouping edfa-config {
+    container edfa-config {
+      uses edfa-config-grouping;
+    }
+  }
+
+  container edfa-config {
+    uses edfa-config-grouping;
+  }
+
+  augment "/gapi:api/gapi:extra-configs" {
+    description "Add the list of additional configuration of EDFA in the API request.";
+    when "/gapi:api/gapi:extra-configs" ;
+    uses edfa-config;
+  }
+
+}
+

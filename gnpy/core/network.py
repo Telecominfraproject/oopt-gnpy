@@ -26,7 +26,7 @@ from gnpy.core import elements
 from gnpy.core.equipment import find_type_variety, find_type_varieties
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
 from gnpy.core.utils import round2float, convert_length, psd2powerdbm, lin2db, watt2dbm, dbm2watt, automatic_nch, \
-    find_common_range
+    find_common_range, get_spacing_from_band, reorder_per_degree_design_bands
 from gnpy.core.info import ReferenceCarrier, create_input_spectral_information
 from gnpy.core.parameters import SimParams, EdfaParams, find_band_name, FrequencyBand, MultiBandParams
 from gnpy.core.science_utils import RamanSolver
@@ -162,17 +162,18 @@ def target_power(network: DiGraph, node: PASSIVE_ELEMENT_TYPES,
     ------
     - If the node is a ROADM, the function returns 0.
     - The target power is calculated based on the span loss and adjusted by the specified deviation.
+    - In theory at the optimum, the slope should be 1/3 (~0.3)
+    - the returned delta_p will be the optimum deviation with respect to the span_loss_ref.
     """
     if isinstance(node, elements.Roadm):
         return 0
 
-    SPAN_LOSS_REF = 20
-    POWER_SLOPE = 0.3
     dp_range = list(equipment['Span']['default'].delta_power_range_db)
     node_loss = span_loss(network, node, equipment) + deviation_db
 
     try:
-        dp = round2float((node_loss - SPAN_LOSS_REF) * POWER_SLOPE, dp_range[2])
+        dp = round2float((node_loss - equipment['Span']['default'].span_loss_ref)
+                         * equipment['Span']['default'].power_slope, dp_range[2])
         dp = max(dp_range[0], dp)
         dp = min(dp_range[1], dp)
     except IndexError:
@@ -597,7 +598,8 @@ def find_last_node(network, node):
     return this_node
 
 
-def set_amplifier_voa(amp: elements.Edfa, power_target: float, power_mode: bool):
+def set_amplifier_voa(amp: elements.Edfa, power_target: float, power_mode: bool,
+                      voa_margin: float, voa_step: float):
     """Sets the output variable optical attenuator (VOA) for the amplifier.
 
     This function adjusts the VOA based on the target power and the operating mode
@@ -620,17 +622,18 @@ def set_amplifier_voa(amp: elements.Edfa, power_target: float, power_mode: bool)
       parameters and the target power.
     - If power_mode is False, the output VOA optimization is not applied.
     """
-    VOA_MARGIN = 1  # do not maximize the VOA optimization
     if amp.out_voa is None:
         if power_mode and amp.params.out_voa_auto:
             voa = min(amp.params.p_max - power_target,
                       amp.params.gain_flatmax - amp.effective_gain)
-            voa = max(round2float(voa, 0.5) - VOA_MARGIN, 0)
+            voa = max(round2float(voa, voa_step) - voa_margin, 0)
             amp.delta_p = amp.delta_p + voa
             amp.effective_gain = amp.effective_gain + voa
         else:
             voa = 0  # no output voa optimization in gain mode
         amp.out_voa = voa
+    if amp.in_voa is None:
+        amp.in_voa = 0
 
 
 def get_oms_edge_list(oms_ingress_node: Union[elements.Roadm, elements.Transceiver], network: DiGraph) \
@@ -746,15 +749,16 @@ def compute_gain_power_and_tilt_target(node: elements.Edfa, prev_node: ELEMENT_T
     """
     node_loss = span_loss(network, prev_node, equipment)
     voa = node.out_voa if node.out_voa else 0
+    in_voa = node.in_voa if node.in_voa else 0
     if node.operational.delta_p is None:
         dp = target_power(network, next_node, equipment, deviation_db) + voa
     else:
         dp = node.operational.delta_p
     if node.effective_gain is None or power_mode:
-        gain_target = node_loss + deviation_db + dp - prev_dp + prev_voa
+        gain_target = node_loss + deviation_db + dp - prev_dp + prev_voa + in_voa
     else:  # gain mode with effective_gain
         gain_target = node.effective_gain
-        dp = prev_dp - (node_loss + deviation_db) - prev_voa + gain_target
+        dp = prev_dp - (node_loss + deviation_db) - prev_voa + gain_target - in_voa
 
     if node.operational.tilt_target is None:
         _tilt_target = -tilt_target
@@ -832,7 +836,7 @@ def filter_edfa_list_based_on_targets(uid: str, edfa_eqpt: dict, power_target: f
         f_min=edfa.f_min,
         f_max=edfa.f_max)
         for edfa_variety, edfa in edfa_dict.items()
-        if (edfa.allowed_for_design and edfa.raman)] \
+        if edfa.raman] \
         if raman_allowed else []
 
     # merge raman and edfa lists
@@ -875,7 +879,7 @@ def filter_edfa_list_based_on_targets(uid: str, edfa_eqpt: dict, power_target: f
 
 def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node: ELEMENT_TYPES, next_node: ELEMENT_TYPES,
                              power_mode: bool, prev_voa: dict, prev_dp: dict,
-                             pref_total_db: float, network: DiGraph, equipment: dict, restrictions: List,
+                             pref_total_db: dict, network: DiGraph, equipment: dict, restrictions: List,
                              _design_bands: dict, deviation_db: dict, tilt_target: dict):
     """Preselects multiband amplifiers eligible based on power, gain, and tilt targets across all bands.
 
@@ -936,7 +940,7 @@ def preselect_multiband_amps(uid: str, _amplifiers: dict, prev_node: ELEMENT_TYP
         # get the target gain, power and tilt based on previous propagation
         gain_target, power_target, _tilt_target, _, _, _ = \
             compute_gain_power_and_tilt_target(amp, prev_node, next_node, power_mode, prev_voa[band], prev_dp[band],
-                                               pref_total_db, network, equipment, deviation_db[band], tilt_target[band])
+                                               pref_total_db[band], network, equipment, deviation_db[band], tilt_target[band])
         _selection = [a.variety
                       for a in filter_edfa_list_based_on_targets(uid, edfa_eqpt, power_target, gain_target,
                                                                  _tilt_target, target_extended_gain)]
@@ -1063,7 +1067,8 @@ def set_one_amplifier(node: elements.Edfa, prev_node: ELEMENT_TYPES, next_node: 
     node.tilt_target = _tilt_target
     # if voa is not set, then set it and possibly optimize it with gain and update delta_p and
     # effective_gain values
-    set_amplifier_voa(node, power_target, power_mode)
+    set_amplifier_voa(node, power_target, power_mode,
+                      equipment['Span']['default'].voa_margin, equipment['Span']['default'].voa_step)
     # set_amplifier_voa may change delta_p in power_mode
     node._delta_p = node.delta_p if power_mode else dp
 
@@ -1148,7 +1153,7 @@ def get_node_restrictions(node: Union[elements.Edfa, elements.Multiband_amplifie
 
 
 def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elements.Transceiver], equipment: dict,
-                         pref_ch_db: float, pref_total_db: float, verbose: bool):
+                         pref_ch_db: float, verbose: bool, reference_channel):
     """Configures the egress amplifiers for a given node in the network.
 
     Go through each link starting from this_node until next Roadm or Transceiver and
@@ -1197,9 +1202,10 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
         prev_dp = {}
         voa = {}
         prev_voa = {}
+        pref_total_db = {}
         for band_name, band in _design_bands.items():
+            this_node_out_power = None
             if isinstance(this_node, elements.Transceiver):
-                # todo change pref to a ref channel
                 if equipment['SI']['default'].tx_power_dbm is not None:
                     this_node_out_power = equipment['SI']['default'].tx_power_dbm
                 else:
@@ -1212,6 +1218,9 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
             dp[band_name] = prev_dp[band_name]
             prev_voa[band_name] = 0
             voa[band_name] = 0
+            nb_channels_per_band = reference_channel.nb_channel if reference_channel.nb_channel \
+                else automatic_nch(band['f_min'], band['f_max'], band['spacing'])
+            pref_total_db[band_name] = pref_ch_db + lin2db(nb_channels_per_band)
 
         for node, next_node in oms_nodes:
             # go through all nodes in the OMS
@@ -1229,7 +1238,7 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                                              + 'and the restrictions (roadm or amplifier restictions)')
                 dp[band_name], voa[band_name] = set_one_amplifier(node, prev_node, next_node, power_mode,
                                                                   prev_voa[band_name], prev_dp[band_name],
-                                                                  pref_ch_db, pref_total_db,
+                                                                  pref_ch_db, pref_total_db[band_name],
                                                                   network, restrictions, equipment, verbose)
             elif isinstance(node, elements.RamanFiber):
                 # this is to record the expected gain in Raman fiber in its .estimated_gain attribute.
@@ -1256,12 +1265,16 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
                                      and equipment['Edfa'][n].f_max >= _design_bands[band_name]['f_max']]
                     dp[band_name], voa[band_name] = \
                         set_one_amplifier(amp, prev_node, next_node, power_mode,
-                                          prev_voa[band_name], prev_dp[band_name],
-                                          pref_ch_db, pref_total_db, network, _restrictions, equipment, verbose,
+                                          prev_voa[band_name], prev_dp[band_name], pref_ch_db, pref_total_db[band_name],
+                                          network, _restrictions, equipment, verbose,
                                           deviation_db=deviation_db[band_name], tilt_target=tilt_target[band_name])
                 amps_type_varieties = [a.type_variety for a in node.amplifiers.values()]
+                amps_bands = [a.params.bands[0] for a in node.amplifiers.values()]
                 try:
                     node.type_variety = find_type_variety(amps_type_varieties, equipment)[0]
+                    # overwrite type_variety and bands to be consistent with selected type_variety
+                    node.params.type_variety = node.type_variety
+                    node.params.bands = amps_bands
                 except ConfigurationError as e:
                     # should never come here... only for debugging
                     msg = f'In {node.uid}: {e}'
@@ -1327,8 +1340,11 @@ def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver]
     """
     next_oms = (n for n in network.successors(node))
     if len(node.design_bands) == 0:
-        node.design_bands = [{'f_min': si.f_min, 'f_max': si.f_max} for si in equipment['SI'].values()]
-
+        node.design_bands = [{'f_min': si.f_min, 'f_max': si.f_max, 'spacing': si.spacing}
+                             for si in equipment['SI'].values()]
+    # complete node.per_degree_design_bands with node.design_bands spacing when it is missing.
+    # Use the spacing from SI if nothing is specified.
+    update_design_bands_spacing(node, equipment['SI']['default'].spacing)
     default_is_single_band = len(node.design_bands) == 1
     for next_node in next_oms:
         # get all the elements from the OMS and retrieve their amps types and bands
@@ -1344,14 +1360,14 @@ def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver]
         if oms_is_single_band == default_is_single_band:
             amp_bands.append(node.design_bands)
 
-        common_range = find_common_range(amp_bands, None, None)
+        common_range = find_common_range(amp_bands, None, None, equipment['SI']['default'].spacing, node.design_bands)
         # node.per_degree_design_bands has already been populated with node.params.per_degree_design_bands loaded
         # from the json.
         # let's complete the dict with the design band of degrees for which there was no definition
         if next_node.uid not in node.per_degree_design_bands:
             if common_range:
                 # if degree design band was not defined, then use the common_range computed with the oms amplifiers
-                # already defined
+                # already defined.
                 node.per_degree_design_bands[next_node.uid] = common_range
             elif oms_is_single_band is None or (oms_is_single_band == default_is_single_band):
                 # else if no amps are defined (no bands) then use default ROADM bands
@@ -1361,14 +1377,42 @@ def set_per_degree_design_band(node: Union[elements.Roadm, elements.Transceiver]
                 # unsupported case: single band OMS with default multiband design band
                 raise NetworkTopologyError(f"in {node.uid} degree {next_node.uid}: inconsistent design multiband/"
                                            + " single band definition on a single band/ multiband OMS")
-        if next_node.uid in node.params.per_degree_design_bands:
-            # order bands per min frequency in params.per_degree_design_bands for those degree that are defined there
-            node.params.per_degree_design_bands[next_node.uid] = \
-                sorted(node.params.per_degree_design_bands[next_node.uid], key=lambda x: x['f_min'])
-        # order the bands per min frequency in .per_degree_design_bands (all degrees must exist there)
-        node.per_degree_design_bands[next_node.uid] = \
-            sorted(node.per_degree_design_bands[next_node.uid], key=lambda x: x['f_min'])
+    # reorder per_degree_design_bands.
+    reorder_per_degree_design_bands(node.per_degree_design_bands)
+    reorder_per_degree_design_bands(node.params.per_degree_design_bands)
     # check node.params.per_degree_design_bands keys
+    check_per_degree_design_bands_keys(node, network)
+
+
+def update_design_bands_spacing(node: Union[elements.Roadm, elements.Transceiver],
+                                default_spacing: float):
+    """
+    Update the spacing of design bands for a given node.
+
+    This function iterates through the design bands associated with the node and updates
+    their spacing based on the frequency range defined by 'f_min' and 'f_max'. If a specific
+    spacing cannot be determined from the design bands, the default spacing is used.
+
+    :param node: The node object which can be either a Roadm or Transceiver instance.
+    :type node: Union[elements.Roadm, elements.Transceiver]
+    :param default_spacing: The default spacing to use if no specific spacing can be determined.
+    :type default_spacing: float
+    """
+    for design_bands in node.per_degree_design_bands.values():
+        for design_band in design_bands:
+            temp = get_spacing_from_band(node.design_bands, design_band['f_min'], design_band['f_max'])
+            default_spacing = temp if temp is not None else default_spacing
+            design_band['spacing'] = design_band.get('spacing', default_spacing)
+
+
+def check_per_degree_design_bands_keys(node: Union[elements.Roadm, elements.Transceiver], network: DiGraph):
+    """Checks that per_degree_design_bands keys are existing uid of elements in the network
+
+    :param node: a ROADM or a Transceiver element
+    :type node: Union[elements.Roadm, elements.Transceiver]
+    :param network: the network containing the node and its connections
+    :type network: DiGraph
+    """
     if node.params.per_degree_design_bands:
         next_oms_uid = [n.uid for n in network.successors(node)]
         for degree in node.params.per_degree_design_bands.keys():
@@ -2036,7 +2080,7 @@ def add_missing_fiber_attributes(network: DiGraph, equipment: dict):
     add_fiber_padding(network, fibers, default_span_data.padding, equipment)
 
 
-def build_network(network: DiGraph, equipment: dict, pref_ch_db: float, pref_total_db: float,
+def build_network(network: DiGraph, equipment: dict, reference_channel,
                   set_connector_losses: bool = True, verbose: bool = True):
     """Sets the ROADM equalization targets and amplifier gain and power.
 
@@ -2077,8 +2121,9 @@ def build_network(network: DiGraph, equipment: dict, pref_ch_db: float, pref_tot
     for transceiver in transceivers:
         set_per_degree_design_band(transceiver, network, equipment)
     # then set amplifiers gain, delta_p and out_voa on each OMS
+    pref_ch_db = watt2dbm(reference_channel.power)
     for roadm in roadms + transceivers:
-        set_egress_amplifier(network, roadm, equipment, pref_ch_db, pref_total_db, verbose)
+        set_egress_amplifier(network, roadm, equipment, pref_ch_db, verbose, reference_channel)
     for roadm in roadms:
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
         set_roadm_internal_paths(roadm, network)
@@ -2111,10 +2156,9 @@ def design_network(reference_channel, network: DiGraph, equipment: Dict, set_con
     ------
     - The function calculates the reference total power based on the number of channels and their power levels.
     """
-    pref_ch_db = watt2dbm(reference_channel.power)  # reference channel power
-    # reference total power (limited to C band till C+L autodesign is not solved)
-    designed_nb_channel = min(reference_channel.nb_channel,
-                              automatic_nch(191.0e12, 196.2e12, reference_channel.spacing))
-    pref_total_db = pref_ch_db + lin2db(designed_nb_channel)
-    build_network(network, equipment, pref_ch_db, pref_total_db, set_connector_losses=set_connector_losses,
+    if verbose:
+        logger.info(f'\nReference used for design: (Input optical power reference in span = {watt2dbm(reference_channel.power):.2f}dBm\n'   # noqa E501
+                    + f'                            spacing = {reference_channel.spacing * 1e-9:.3f}GHz\n'
+                    + f'                            nb_channels = {reference_channel.nb_channel}')
+    build_network(network, equipment, reference_channel, set_connector_losses=set_connector_losses,
                   verbose=verbose)

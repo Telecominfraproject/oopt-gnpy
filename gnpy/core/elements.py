@@ -1336,6 +1336,7 @@ class Edfa(_Node):
         self._delta_p = None
         self.tilt_target = self.operational.tilt_target  # defined per lambda on the amp band
         self.out_voa = self.operational.out_voa
+        self.in_voa = self.operational.in_voa
         self.propagated_labels = [""]
 
     @property
@@ -1355,11 +1356,12 @@ class Edfa(_Node):
             'type': type(self).__name__,
             'type_variety': self.params.type_variety,
             'operational': {
-                'gain_target': round(self.effective_gain, 6) if self.effective_gain else None,
+                'gain_target': round(self.effective_gain, 6) if self.effective_gain is not None else None,
                 'delta_p': self.delta_p,
                 'tilt_target': round(tilt_target, 5) if tilt_target is not None else None,
                 # defined per lambda on the amp band
-                'out_voa': self.out_voa
+                'out_voa': self.out_voa,
+                'in_voa': self.in_voa
             },
             'metadata': {
                 'location': self.metadata['location']._asdict()
@@ -1384,6 +1386,9 @@ class Edfa(_Node):
             return f'{type(self).__name__} {self.uid}'
         nf = mean(self.nf)
         total_pch = pretty_summary_print(per_label_average(self.pch_out_dbm, self.propagated_labels))
+        voas = f'  input VOA (dB):         {self.in_voa:.2f}\n' \
+            + f'  output VOA (dB):        {self.out_voa:.2f}' if self.in_voa else \
+            f'  output VOA (dB):        {self.out_voa:.2f}'
         return '\n'.join([f'{type(self).__name__} {self.uid}',
                           f'  type_variety:           {self.params.type_variety}',
                           f'  effective gain(dB):     {self.effective_gain:.2f}',
@@ -1401,7 +1406,7 @@ class Edfa(_Node):
                           '  target pch (dBm):       ' + (f'{self.target_pch_out_dbm:.2f}'
                                                           if self.target_pch_out_dbm is not None else 'None'),
                           f'  actual pch out (dBm):   {total_pch}',
-                          f'  output VOA (dB):        {self.out_voa:.2f}'])
+                          voas])
 
     def interpol_params(self, spectral_info):
         """interpolate SI channel frequencies with the edfa dgt and gain_ripple frquencies from JSON
@@ -1660,6 +1665,8 @@ class Edfa(_Node):
         :type spectral_info: SpectralInformation
         """
         # interpolate the amplifier vectors with the carriers freq, calculate nf & gain profile
+        if self.in_voa is not None:
+            spectral_info.apply_attenuation_db(self.in_voa)
         self.interpol_params(spectral_info)
 
         ase = self.noise_profile(spectral_info)
@@ -1765,11 +1772,11 @@ class Multiband_amplifier(_Node):
         """
         return {'uid': self.uid,
                 'type': type(self).__name__,
-                'type_variety': self.type_variety,
+                'type_variety': self.params.type_variety,
                 'amplifiers': [{
-                    'type_variety': amp.type_variety,
+                    'type_variety': amp.params.type_variety,
                     'operational': {
-                        'gain_target': round(amp.effective_gain, 6),
+                        'gain_target': round(amp.effective_gain, 6) if amp.effective_gain else None,
                         'delta_p': amp.delta_p,
                         'tilt_target': amp.tilt_target,
                         'out_voa': amp.out_voa

@@ -34,6 +34,7 @@ from gnpy.topology.request import PathRequest, Disjunction, compute_spectrum_slo
 from gnpy.topology.spectrum_assignment import mvalue_to_slots
 from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
+from gnpy.tools.convert_legacy_yang import yang_to_legacy, legacy_to_yang
 
 
 _logger = getLogger(__name__)
@@ -69,7 +70,9 @@ class _JsonThing:
         clean_kwargs = {k: v for k, v in kwargs.items() if v != ''}
         for k, v in default_values.items():
             setattr(self, k, clean_kwargs.get(k, v))
-            if k not in clean_kwargs and name != 'Amp' and v is not None and v != []:
+            disable_warning_keys = ['use_si_channel_count_for_design', 'voa_step', 'voa_margin', 'span_loss_ref',
+                                    'power_slope']
+            if k not in clean_kwargs and name != 'Amp' and v is not None and v != [] and k not in disable_warning_keys:
                 # do not show this warning if the default value is None
                 msg = f'\n\tWARNING missing {k} attribute in eqpt_config.json[{name}]' \
                     + f'\n\tdefault value is {k} = {v}\n'
@@ -89,7 +92,8 @@ class SI(_JsonThing):
         "roll_off": 0.15,
         "tx_osnr": 45,
         "sys_margins": 0,
-        "tx_power_dbm": None  # optional value in SI
+        "tx_power_dbm": None,  # optional value in SI
+        "use_si_channel_count_for_design": False  # optional value in SI
     }
 
     def __init__(self, **kwargs):
@@ -110,7 +114,11 @@ class Span(_JsonThing):
         'padding': 10,
         'EOL': 0,
         'con_in': 0,
-        'con_out': 0
+        'con_out': 0,
+        "span_loss_ref": 20.0,
+        "power_slope": 0.3,
+        "voa_margin": 1,
+        "voa_step": 0.5
     }
 
     def __init__(self, **kwargs):
@@ -433,14 +441,14 @@ def load_equipments_and_configs(equipment_filename: Path,
 def load_equipment(filename: Path, extra_configs: Dict[str, Path] = DEFAULT_EXTRA_CONFIG) -> dict:
     """Load equipment, returns equipment dict
     """
-    json_data = load_json(filename)
+    json_data = load_gnpy_json(filename)
     return _equipment_from_json(json_data, extra_configs)
 
 
 def load_initial_spectrum(filename: Path) -> dict:
     """Load spectrum to propagate, returns spectrum dict
     """
-    json_data = load_json(filename)
+    json_data = load_gnpy_json(filename)
     return _spectrum_from_json(json_data['spectrum'])
 
 
@@ -586,7 +594,7 @@ def load_network(filename: Path, equipment: dict) -> DiGraph:
     if filename.suffix.lower() in ('.xls', '.xlsx'):
         json_data = xls_to_json_data(filename)
     elif filename.suffix.lower() == '.json':
-        json_data = load_json(filename)
+        json_data = load_gnpy_json(filename)
     else:
         raise ValueError(f'unsupported topology filename extension {filename.suffix.lower()}')
     return network_from_json(json_data, equipment)
@@ -626,6 +634,7 @@ def network_from_json(json_data: dict, equipment: dict) -> DiGraph:
     #            too closely to the graph library
     # from networkx import node_link_graph
     g = DiGraph()
+    g.graph['network_name'] = json_data.get('network_name', None)
     for el_config in json_data['elements']:
         typ = el_config.pop('type')
         variety = el_config.pop('type_variety', 'default')
@@ -740,21 +749,39 @@ def network_to_json(network: DiGraph) -> dict:
                         for next_n in network.successors(n) if next_n is not None]
     }
     data.update(connections)
+    if network.graph['network_name']:
+        data['network_name'] = network.graph['network_name']
     return data
 
 
 def load_json(filename: Path) -> dict:
-    """load json data, convert from the yang to the legacy
-    supports both legacy ang yang formatted inputs based on yang models
+    """load json data
+
+    :param filename: Path to the file to convert
+    :type filemname: Path
+    :return: json data in a dictionnary
+    :rtype: Dict
     """
     with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data
 
 
-def save_json(obj: Dict, filename: Path):
-    """Save in json format. Use yang formatted data for Topo and Services
+def load_gnpy_json(filename: Path) -> dict:
+    """load json data. It supports both legacy ang yang formatted inputs based on yang models.
+
+    :param filename: Path to the file to convert
+    :type filemname: Path
+    :return: json data in a dictionnary
+    :rtype: Dict
     """
+    return yang_to_legacy(load_json(filename))
+
+
+def save_json(obj: dict, filename: Path):
+    """Save in json format. Export yang formatted data (RFC7951)
+    """
+    data = legacy_to_yang(obj)
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2, ensure_ascii=False)
 

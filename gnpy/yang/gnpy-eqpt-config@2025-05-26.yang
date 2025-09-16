@@ -1,0 +1,1347 @@
+module gnpy-eqpt-config {
+  yang-version 1.1;
+  namespace "urn:ns:gnpy:equipment_library";
+
+  prefix "gnpyeqpt";
+
+  import gnpy-api {
+    prefix "gapi";
+    revision-date 2025-06-13;
+  }
+
+  import ietf-optical-impairment-topology {
+    prefix "oit";
+    revision-date 2024-05-21;
+    reference
+      "RFC XXXX: A Yang Data Model for Impairment-aware
+       Optical Networks";
+  }
+  import ietf-layer0-types {
+    prefix "l0-types";
+    revision-date 2024-03-04;
+    reference
+      "RFC YYYY: Common YANG Data Types for Traffic Engineering";
+  }
+
+  organization
+    "Telecom Infra Project OOPT PSE
+     Working Group";
+
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:ahmed.triki@orange.com>
+     contact:  <mailto:esther.lerouzic@orange.com>
+   ";
+
+  description "Base YANG model for gnpy equipment library input for path computation - 2020 - candi preversion";
+
+  revision 2025-05-26 {
+    description
+      "Add leaves for parametrization of autodesign and metadata";
+    reference
+      "Base YANG model for equipment library input for detecon, libyang validation, GNPy4Ofr API";
+  }
+  revision 2025-03-01 {
+    description
+      "Add use_si_channel_count_for_design";
+    reference
+      "Base YANG model for equipment library input for detecon, libyang validation, GNPy4Ofr API";
+  }
+  revision 2025-01-20 {
+    description
+      "Add RamanFiber, design bands, tx_power";
+    reference
+      "Base YANG model for equipment library input for detecon, libyang validation, GNPy4Ofr API";
+  }
+  revision "2024-02-21" {
+    description "add roadm, fix identity-ref, fix leafref";
+    reference "Base YANG model for equipment library input for detecon, libyang validatio, GNPy4Ofr API";
+  }
+
+  revision "2023-02-04" {
+    description "fix pdl, pmd fraction-digit, add advanced_model type def, remove no-type-def";
+    reference "Base YANG model for equipment library input for detecon - GNPy";
+  }
+  revision "2022-11-21" {
+    description "draft for toaster detecon - GNPy API";
+    reference "Base YANG model for equipment library input for detecon - GNPy";
+  }
+  revision "2020-10-22" {
+    description "draft for experimental/2020-candi";
+    reference "Base YANG model for equipment library input for path computation with gnpy";
+  }
+
+  /*
+   * Identities
+   */
+
+  identity edfa-type-def {
+    description "base identity for variable gain and fixed gain";
+  }
+
+  identity variable_gain {
+    base edfa-type-def;
+    description "'variable_gain' is a simplified model simulating a 2-coil 
+      EDFA with internal, input and output VOAs. The NF vs gain response is calculated 
+      accordingly based on the input parameters: nf_min, nf_max, and gain_flatmax. It 
+      is not a simple interpolation but a 2-stage NF calculation.";
+  }
+
+  identity fixed_gain {
+    base edfa-type-def;
+    description "'fixed_gain' is a fixed gain model. NF == Cte == nf0 if gain_min < gain < gain_flatmax";
+  }
+
+  identity openroadm {
+    base edfa-type-def;
+    description "'openroadm' is an openroadm amplifier type.";
+  }
+
+  identity openroadm_preamp {
+    base edfa-type-def;
+    description "'openroadm' is an openroadm amplifier type.";
+  }
+
+  identity openroadm_booster {
+    base edfa-type-def;
+    description "'openroadm' is an openroadm amplifier type.";
+  }
+
+  identity multi_band {
+    base edfa-type-def;
+    description "multi_band has a combination of amp per frequency band defined with their f_min f_max range";
+  }
+
+  identity dual_stage {
+      base edfa-type-def;
+      description "dual-stage has two amps defined";
+  }
+
+  identity advanced_model {
+      base edfa-type-def;
+      description "advanced_model has a combination of amp per frequency band defined with their f_min f_max range";
+  }
+
+  identity fiber-variety {
+    description "base identity for fiber variety";
+  }
+
+  identity transceiver-variety {
+    description "base identity for transceiver variety";
+  }
+
+  grouping variable_gain {
+    description
+      "Parameters for variable gain amplifier definition.";
+    leaf nf_min {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      description
+        "Minimum Noise figure for the maximum gain.";
+    }
+    leaf nf_max {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      description
+        "Maximum Noise figure for the minimum gain.";
+    }
+    leaf default_config_from_json {
+      type string;
+      description
+        "file name where all f_min, f_max, gain ripple, dgt, nf_ripple are detailed";
+    }
+  }
+
+  grouping fixed_gain{
+    description
+      "Definition of fixed gain type_def parameters.";
+    leaf nf0 {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      description
+        "Noise figure for the fixed gain value.";
+    }
+  }
+
+  grouping polynomial-coef {
+    description
+      "Nth order polynomial coefficients to define
+      p[0]*x**(N-1) + p[1]*x**(N-2) + ... + p[N-2]*x + p[N-1]";
+    leaf coef_order {
+      type uint8 {
+        range "0 .. 5";
+      }
+      description
+      "Index of the coefficient from highest degree to the constant term.";
+    }
+    leaf nf_coef {
+    type decimal64 {
+      fraction-digits 10;
+    }
+    description
+      "Nth order polynomial coefficients.";
+    }
+  }
+
+  grouping openroadm {
+    description
+      "Definition of OpenRoadm type_def parameters.";
+    list nf_coef {
+      key coef_order;
+      description
+        "3rd order polynomial coefficients list to define the incremental
+        OSNR vs Pin. Incremental OSNR is the amplifier OSNR contribution.
+        Pin is the amplifier channel input power defined in a 50GHz bandwidth.
+        Incremental OSNR = a*Pin³ + b*Pin² + c*Pin + d";
+      uses polynomial-coef;
+      must "./coef_order <= 3";
+    }
+  }
+
+  grouping dual-stage {
+    description
+      "Dual stage amplifier definition.";
+    leaf preamp_variety {
+      type union {
+        type leafref {
+          path "../../Edfa/type_variety";
+        }
+        type leafref {
+          path "../../Edfa/other_name";
+        }
+      }
+      description
+        "Valid reference of an Edfa type_variety for the preamp
+        amplifier of the dual amplifiers.";
+    }
+    leaf booster_variety {
+      type union {
+        type leafref {
+          path "../../Edfa/type_variety";
+        }
+        type leafref {
+          path "../../Edfa/other_name";
+        }
+      }
+      description
+        "Valid reference of an Edfa type_variety for the preamp
+        amplifier of the dual amplifiers.";
+    }
+  }
+
+  grouping multi_band {
+    description
+      "Definition of this multiband amplifier sub amplifiers types.";
+    leaf-list amplifiers {
+      type string;
+      description "list of amplifier type-variety picked in other type-def";
+    }
+  }
+
+  grouping advanced_model {
+    description
+      "Definition of advanced model type_def parameters.";
+    leaf advanced_config_from_json {
+      type string;
+      description
+        "file name where all noise interp coef, gain ripple, dgt, nf_ripple are detailed";
+    }
+  }
+
+  grouping edfa-common {
+    description
+      "Common parameters for all amplifiers definition";
+    leaf allowed_for_design{
+      type boolean ;
+      description "If false, the amplifier will not be picked by auto-design but it can still be used as a 
+      manual input (from JSON or Excel template topology files.)";
+    }
+    leaf gain_flatmax {
+      type decimal64 {
+        fraction-digits 2;
+        range "0 .. 60";
+      }
+      units "dB";
+      description
+        "Amplifier maximum gain in dB before its extended gain range: flat
+        or nominal tilt output. If gain > gain_flatmax, the amplifier will tilt,
+        based on its dgt function. If gain > gain_flatmax + target_extended_gain,
+        the amplifier output power is reduced to  not exceed the extended gain range.";
+    }
+    leaf gain_min {
+      type decimal64 {
+        fraction-digits 2;
+        range "0 .. 60";
+      }
+      units "dB";
+      description
+        "amplifier minimum gain in dB. If gain < gain_min, the amplifier input
+        is automatically padded, which results in NF += gain_min - gain";
+    }
+    leaf extended_gain_range {
+      type decimal64 {
+        fraction-digits 2;
+        range "0 .. 60";
+      }
+      units "dB";
+      description "Extendded gain range for this type_variety amplifier.
+      If gain > gain_flatmax + target_extended_gain, the amplifier output power
+      is reduced to  not exceed the extended gain range.";
+    }
+    leaf p_max {
+      type decimal64 {
+        fraction-digits 2;
+        range "0 .. 60";
+      }
+      units "dBm";
+      description
+        "Amplifier max output power, full load. Total output power can not
+        exceed this value";
+    }
+    leaf type_def {
+      type identityref{
+        base edfa-type-def;
+      }
+      description
+        "Sets the amplifier model that the simulation will use to calculate
+        the ASE noise contribution. 5 models are defined with reserved words:
+        - advanced_model
+        - variable_gain
+        - fixed_gain
+        - dual_stage
+        - multi_band
+        - openroadm
+        ";
+    }
+    leaf raman {
+      type boolean;
+      description
+        "Boolean flag that indicates if this amplifier contains a Raman amplifier.";
+    }
+    leaf out_voa_auto{
+      type boolean ;
+      description "auto_design feature to optimize the amplifier output VOA. If true, output VOA is present 
+      and will be used to push amplifier gain to its maximum, within EOL power margins.";
+    }
+    leaf in_voa_auto{
+      type boolean ;
+      description "auto_design feature to optimize the amplifier input VOA. If true, input VOA is present.
+      TODO: code the function in GNPy";
+    }
+    leaf voa_step{
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      must ". >= 0";
+      description
+        "For autodesign. Step size used for rounding the VOA value. 
+        Ensures VOA adjustments align with hardware resolution.";
+    }
+    leaf pmd {
+      type decimal64 {
+        fraction-digits 16;
+      }
+      units "s";
+      must ". >= 0 and . <= 0.000000001";
+      description
+        "Polarization mode dispersion contribution of the amplifier (PMD)";
+    }
+    leaf pdl {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      must ". >= 0";
+      description
+        "Polarization dependant gain contribution of the amplifier.";
+    }
+    choice type_of_model {
+      description
+        "Type of the amplifier";
+      case variable_gain {
+        when "type_def = 'gnpyeqpt:variable_gain'";
+        uses variable_gain ;
+      }
+      case fixed_gain{
+        when "type_def = 'gnpyeqpt:fixed_gain'";
+        uses fixed_gain;
+      }
+      case openroadm{
+        when "type_def = 'gnpyeqpt:openroadm'";
+        uses openroadm;
+      }
+      case dual_stage {
+        when "type_def = 'gnpyeqpt:dual_stage'";
+        uses dual-stage ;
+      }
+      case multi_band {
+        when "type_def = 'gnpyeqpt:multi_band'";
+        uses multi_band ;
+      }
+      case advanced_model {
+        when "type_def = 'gnpyeqpt:advanced_model'";
+        uses advanced_model;
+      }
+    }
+  }
+
+  grouping common-fiber {
+    description "common parameters for fiber and raman fiber";
+    leaf type_variety {
+      type string ;
+      description "a unique name to ID the fiber in the JSON or Excel template topology input file";
+      }
+    leaf dispersion{
+      type decimal64 {
+        fraction-digits 8;
+      }
+      must ". >= -0.001 and . <= 0.001";
+      units "s.m-1.m-1";
+      description
+        "Chromatic dispersion coefficient (scalar).";
+    }
+    leaf gamma{
+      type decimal64 {
+        fraction-digits 8;
+      }
+      units "w-1.m-1" ;
+      must ". >= 0 and . <= 0.1";
+      description "Non linear coefficient 2pi.n2/(lambda*Aeff) (w-2.m-1) of the
+      Fiber type_variety";
+    }
+    leaf pmd_coef{
+      type decimal64 {
+        fraction-digits 18;
+      }
+      units "s.sqrt(m)-1";
+      must ". >= 0 and . <= 0.0000000000001";
+      description
+        "Polarization mode dispersion coefficient of the fiber type_variety.";
+    }
+      leaf effective_area{
+        type decimal64 {
+          fraction-digits 14;
+        }
+        units "m-2";
+        must ". >= 0 and . <= 0.00000001";
+        description
+          "Effective area of the fiber (not just the MFD circle). This is the
+          A_eff parameter of this type_variety.";
+      }
+    list loss_coef_lut {
+      key "freq";
+      description
+        "List of loss_coefficient per frequency for this type_variety.";
+      leaf freq {
+        type decimal64 {
+          fraction-digits 2;
+          range "1000000000000 .. 1000000000000000";
+        }
+        units "Hz";
+        description
+          "Frequency";
+      }
+      leaf loss_coef_value {
+        type decimal64 {
+          fraction-digits 16;
+          range "0 .. 100";
+        }
+        units "db/km";
+        description
+          "Loss coefficient value for this frequency.";
+      }
+    }
+    choice ref_freq_or_wl {
+      description
+        "Reference frequency or wavelength for the loss_coef vector definition.";
+      case frequency {
+        leaf ref_frequency {
+          type decimal64 {
+            fraction-digits 1;
+            range "1000000000000 .. 1000000000000000";
+          }
+          units "Hz";
+          description
+            "Reference frequency.";
+        }
+      }
+      case wavelength {
+        leaf ref_wavelength {
+          type decimal64 {
+            fraction-digits 12;
+            range "0.0000005 .. 0.0001";
+          }
+          units "m";
+          description
+            "Reference wavelength.";
+        }
+      }
+    }
+  }
+
+  grouping range {
+    description
+      "Common definition of range.";
+    leaf min_value {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      description
+        "Min value of the range.";
+    }
+    leaf max_value {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      description
+        "Max value of the range.";
+    }
+    leaf step {
+      type decimal64 {
+        fraction-digits 2;
+      }
+      units "dB";
+      description
+        "Step value of the range.";
+    }
+  }
+
+  grouping frequency-band {
+    description
+      "Used for amplifiers, for design band. Signal must entirely
+      fit into the band";
+    leaf f_min {
+      type decimal64 {
+        fraction-digits 1;
+        range "1000000000000 .. 1000000000000000";
+      }
+      units "Hz";
+        description
+          "Lower frequency boandary of the amplification band.";
+    }
+    leaf f_max {
+      type decimal64 {
+        fraction-digits 1;
+        range "1000000000000 .. 1000000000000000";
+      }
+      units "Hz";
+      must ". >= ./../f_min";
+      description
+        "Upper frequency boundary of the amplification band.";
+    }
+  }
+
+  grouping restrictions {
+    description
+      "reusable grouping for restrictions definition";
+    container restrictions {
+      description
+        "List of amplifiers authorized in this ROADM for autodesign.";
+      leaf-list preamp_variety_list {
+        type string;
+        description 
+          "List of authorized preamp type-variety";
+      }
+      leaf-list booster_variety_list {
+        type string;
+        description 
+          "List of authorized booster type-variety";
+      }
+    }
+  }
+
+  grouping frequency-range {
+    description
+      "This grouping defines the lower and upper bounds of a
+      frequency range (e.g., a band).
+      This grouping SHOULD NOT be used to define a frequency slot,
+      which SHOULD be defined using the n and m values instead.
+      copied from ietf-layer0-types except for units which must be Hz.";
+    leaf lower-frequency {
+      type union {
+        type decimal64 {
+          fraction-digits 2;
+          range "0..max";
+        }
+        type empty;
+      }
+      units "Hz";
+      mandatory true;
+      description
+        "The lower frequency boundary of the
+        frequency range.";
+    }
+    leaf upper-frequency {
+      type union {
+        type decimal64 {
+          fraction-digits 2;
+          range "0..max";
+        }
+        type empty;
+      }
+      units "Hz";
+      must '. > ../lower-frequency' {
+        error-message
+          "The upper frequency must be greater than the lower
+          frequency.";
+      }
+      mandatory true;
+      description
+        "The upper frequency boundary of the
+        frequency range.";
+    }
+  }
+
+  grouping roadm-equalization-params {
+    description
+      "Definition of ROADM configuration parameters.";
+    choice target_type {
+      description
+        "Equalization strategy for this ROADM. If not defined, the
+        one defined in library for this type_variety is used.";
+      case constant_power {
+        leaf target_pch_out_db {
+          type decimal64 {
+            fraction-digits 2;
+          }
+          units "dBm";
+          description
+            "Target power applied on all channels out of all degrees of the ROADM";
+        }
+      }
+      case constant_psd {
+        leaf target_psd_out_mWperGHz {
+          type decimal64 {
+            fraction-digits 10;
+          }
+          units "mW/GHz";
+          description
+            "Target power spectral density applied on all channels out of all degrees of the ROADM.
+            target power is computed for each channel using this value multiplied by the baud_rate of
+            each channel in Ghz. eg target power = 0.0003125 * 32Gbauds = 0.01 mw ie -20 dBm";
+        }
+      }
+      case constant_psw {
+        leaf target_out_mWperSlotWidth {
+          type decimal64 {
+            fraction-digits 10;
+          }
+          units "mW/GHz";
+          description
+            "Target power spectral density applied on all channels out of all degrees of the ROADM.
+            target power is computed for each channel using this value multiplied by the slot width of
+            each channel in Ghz. eg target power = 0.0002 * 50GHz = 0.01 mw ie -20 dBm";
+        }
+      }
+    }
+  }
+
+  grouping SI-Transceiver {
+    description
+      "Common parameters for SI and transceivers.";
+    leaf baud_rate {
+      type decimal64 {
+          fraction-digits 2;
+          range "100000000 .. 2000000000000";
+        }
+      units "baud";
+      description "Baud rate of this mode.";
+    }
+    leaf tx_osnr {
+      type decimal64 {
+          fraction-digits 2;
+          range "0 .. max";
+        }
+      units "dB";
+      description "OSNR contribution of the TX for this mode.";
+    }
+    leaf roll_off {
+      type union {
+        type decimal64 {
+            fraction-digits 2;
+            range "0 .. 1";
+          }
+        type empty;
+      }
+      description 
+        "Pure number between 0 and 1. TX signal roll-off shape.
+        Used by Raman-aware simulation code.";
+    }
+    leaf tx_power_dbm {
+      type decimal64 {
+        fraction-digits 2;
+        range "-60 .. 60";
+      }
+      description "Power out from transceiver. Default value is 0 dBm";
+    }
+  }
+
+  grouping eqpt {
+    description
+      "Library definition";
+    list Edfa {
+      key type_variety;
+      description
+        "List of all amplifiers type varieties.";
+      leaf type_variety {
+        type string;
+        description "a unique name to ID the amplifier in the JSON/Excel template topology input file";
+      }
+      leaf-list other_name {
+        type string;
+        description "a list of alternative names for the equipment";
+      }
+      uses frequency-band;
+      uses edfa-common;
+    }
+
+    list Fiber {
+      key type_variety;
+      description
+        "List of fiber type_varieties available in this library.";
+      uses common-fiber;
+    }
+
+    list RamanFiber {
+      key type_variety;
+      description
+        "List of RamanFiber type_varieties available in this library.";
+      uses common-fiber;
+      list raman_efficiency {
+        key "frequency_offset";
+        description
+          "Old parameters for Raman efficiency. It's been replaced
+          by Raman coefficient g0";
+        leaf cr {
+          type decimal64 {
+            fraction-digits 9;
+            range "0 .. 0.001";
+          }
+          description
+            "Raman coefficient";
+        }
+        leaf frequency_offset {
+          type decimal64 {
+            fraction-digits 2;
+            range "0 .. 1000000000000000";
+          }
+          description
+            "Offset frequency.";
+        }
+      }
+    }
+
+    list Span {
+      config false ;
+      description
+        "General parameters for the autodesign and the propagation.";
+      leaf power_mode {
+        type boolean ;
+        description
+          "If false, only gain settings are used for propagation,
+          If true, only the ``delta_p`` is used for propagation, and gain_target.";
+      }
+      container delta_power_range_dict_db {
+        uses range ;
+        description
+          "Specifies the range of power excursion/span for optimum power computation
+          during autodesign.";
+      }
+      leaf max_length {
+        type decimal64 {
+          fraction-digits 2;
+          range "10 .. 1000";
+        }
+        units "km";
+        default 150.0 ;
+        description
+          "Split fiber lengths > max_length. Interest to support high level
+          topologies that do not specify in line amplification sites.";
+      }
+      leaf max_loss {
+        type decimal64 {
+          fraction-digits 2;
+          range "10 .. 60";
+        }
+        units "dB";
+        description
+          "Split fiber loss > max_loss. Interest to support high level
+          topologies that do not specify in line amplification sites.";
+      }
+      leaf max_fiber_lineic_loss_for_raman {
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 0.5";
+        }
+        units "dB.km-1";
+        description
+          "Maximum linear fiber loss for Raman amplification use.";
+      }
+      leaf target_extended_gain {
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 20";
+        }
+        units "dB";
+        description
+          "Extended gain range.";
+      }
+      leaf length_units{
+        type string ;
+        default "km";
+        description
+          "Unit for max_length.";
+      }
+      leaf padding{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        default 10.0 ;
+        description
+          "Min span loss before putting an attenuator before fiber. Attenuator
+          value Fiber/att_in = max(0, padding - span_loss)";
+      }
+      leaf EOL{
+          type decimal64 {
+          fraction-digits 2;
+        }
+        default 0.0 ;
+        description
+          "All fiber span loss ageing. The value is added to the con_out (fiber output
+          connector). So the design and the path feasibility are performed with
+          span_loss + EOL.";
+      }
+      leaf con_in{
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 60";
+        }
+        default 0.0 ;
+        description
+          "Default values if Fiber/params/con_in is None in the topology input
+          description. This default value is ignored if a Fiber/params/con_in/out
+          value is input in the topology for a given Fiber.";
+      }
+      leaf con_out{
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 60";
+        }    
+        default 0.0 ;
+        description
+          "Default values if Fiber/params/con_out is None in the topology input
+          description. This default value is ignored if a Fiber/params/con_in/out
+          value is input in the topology for a given Fiber.";
+      }
+      leaf span_loss_ref{
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 60";
+        }
+        must ". >= 0";
+        default 20.0 ;
+        description "Reference span loss value in dB, used to
+        calculate all delta_p deviations during
+        network autodesign.";
+      }
+      leaf power_slope{
+        type decimal64 {
+          fraction-digits 2;
+        }
+        must ". >= 0";
+        default 0.3 ;
+        description "Ratio used to compute all delta_p
+        deviations during network autodesign.";
+      }
+      leaf voa_margin{
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 10";
+        }
+        must ". >= 0";
+        default 1.0 ;
+        description "Margin to subtract from the calculated VOA
+        during gain optimisation process, to
+        prevent maximum attenuation. This creates a safety buffer.";
+      }
+      leaf voa_step{
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 10";
+        }
+        must ". >= 0";
+        default 0.5 ;
+        description " Step size used for rounding the VOA value.
+        Ensures VOA adjustments align with hardware resolution.";
+      }
+    }
+
+    list Roadm {
+      key type_variety;
+      description
+        "List of ROADM type varieties available in this library.";
+      leaf type_variety {
+        type string;
+        description
+          "Unique name to ID the ROADM variety in the JSON
+          template topology input file.";
+      }
+      uses roadm-equalization-params;
+      leaf add_drop_osnr {
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 1000";
+        }
+        units "dB";
+        description "OSNR contribution from the add/drop ports.";
+      }
+      leaf pmd {
+        type decimal64 {
+          fraction-digits 15;
+          range "0 .. 0.0000000001";
+        }
+        units "s";
+        description "Polarization mode dispersion";
+      }
+      leaf pdl {
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 10";
+        }
+        units "dB";
+        description "Polarization dependant loss";
+      }
+      uses restrictions;
+
+      list roadm-path-impairments {
+        key "roadm-path-impairments-id";
+        description
+          "The set of optical impairments related to a ROADM path.";
+
+        leaf roadm-path-impairments-id {
+          type uint32;
+          description "index of the ROADM path-impairment list";
+        }
+        choice impairment-type {
+          description "type path impairment";
+          case roadm-express-path {
+            list roadm-express-path {
+              config false;
+              description
+                "The list of optical impairments on a ROADM express
+                path for different frequency ranges.
+                Two elements in the list must not have the same range
+                or overlapping ranges.";
+              container frequency-range {
+                description
+                  "The frequency range for which these optical
+                  impairments apply.";
+                uses frequency-range;
+              }
+              // todo: augment express to allow transit OSNR//
+              uses oit:roadm-express-path;
+            }
+          }
+          case roadm-add-path {
+            list roadm-add-path {
+              config false;
+              description
+                "The list of optical impairments on a ROADM add
+                path for different frequency ranges.
+                Two elements in the list must not have the same range
+                or overlapping ranges.";
+              container frequency-range {
+                description
+                  "The frequency range for which these optical
+                  impairments apply.";
+                uses frequency-range;
+              }
+              uses oit:roadm-add-path;
+            }
+          }
+          case roadm-drop-path {
+            list roadm-drop-path {
+              config false;
+              description
+                "The list of optical impairments on a ROADM add
+                path for different frequency ranges.
+                Two elements in the list must not have the same range
+                or overlapping ranges.";
+              container frequency-range {
+                description
+                  "The frequency range for which these optical
+                  impairments apply.";
+                uses frequency-range;
+              }
+              uses oit:roadm-drop-path;
+            }
+          }
+        }
+      } // list path impairments
+    }
+
+    list SI {
+      config false;
+      description
+        "Spectrum Information parameters definition for the simulation.";
+      uses frequency-band;
+      leaf spacing {
+        type decimal64 {
+          fraction-digits 2;
+          range "1000000000 .. max";
+        }
+        must ". >= ./../baud_rate";
+        description
+          "Carrier spacing used for the design or for the propagation.";
+      }
+      leaf power_dbm {
+        type decimal64 {
+          fraction-digits 2;
+          range "-60 .. 60";
+        }
+        description
+          "Target input power in spans to be considered for the design";
+      }
+      container power_range_dict_db {
+        description
+          "Power sweep excursion around power_dbm";
+        uses range;
+      }
+      leaf type_variety {
+        type string ;
+        description "a unique name to ID the SI band";
+      }
+      leaf sys_margins {
+        type decimal64 {
+          fraction-digits 2;
+          range "0 .. 10";
+        }
+        description
+          "Additional system margin to account for path feasibility estimation.";
+      }
+      leaf use_si_channel_count_for_design {
+        type boolean ;
+        description
+          "";
+      }
+      uses SI-Transceiver;
+    }
+
+    list Transceiver {
+      key type_variety;
+      description
+        "List of transceivers of this library.";
+      leaf type_variety {
+        type string ;
+        description "a unique name to ID the transceiver in the JSON or Excel template topology input file";
+      }
+      leaf-list other_name {
+        type string;
+        description "a list of alternative names for the equipment";
+      }
+      leaf comment {
+        type string;
+        description "free string";
+      }
+      container frequency {
+        leaf min {
+          type decimal64 {
+              fraction-digits 2;
+              range "1000000000000 .. 1000000000000000";
+            }
+          units "Hz";
+          description
+            "Lower central frequency for this transceiver.";
+        }
+        leaf max {
+          type decimal64 {
+              fraction-digits 2;
+              range "1000000000000 .. 1000000000000000";
+            }
+          units "Hz";
+          description
+            "Upper central frequency for this transceiver.";
+        }
+        description "Min/max frequency of transponder eg 191.35e12  and 196.1e12";
+      }
+      list mode {
+        key format;
+        description
+          "List of modes of this transceiver.";
+        leaf format {
+          type string ;
+          description "Unique name of the mode.";
+        }
+        leaf-list other_name {
+          type string;
+          description "A list of alternative names for the mode.";
+        }
+        leaf OSNR {
+          type decimal64 {
+              fraction-digits 2;
+              range "0 .. 200";
+            }
+          units "dB";
+          description "Min required OSNR in 0.1nm (dB).";
+        }
+        leaf min_spacing {
+          type decimal64 {
+            fraction-digits 2;
+            range "100000000 .. 20000000000000";
+          }
+          units "Hz";
+          must ". >= ./../baud_rate";
+          description "Min required spacing for this mode.";
+        }    
+        leaf bit_rate {
+          type decimal64 {
+              fraction-digits 2;
+              range "100000000 .. max";
+            }
+          units "bit/s" ;
+          description "bit rate.";
+        }
+        leaf cost {
+          type decimal64 {
+              fraction-digits 2;
+            }
+          description "arbitrary unit";
+        }
+        uses SI-Transceiver;
+        list penalties {
+          config false;
+          description
+            "Transceiver penalties due to impairments.";
+          leaf chromatic_dispersion {
+            type decimal64 {
+              fraction-digits 2;
+              range "-10000000 .. 10000000";
+            }
+            units "ps/nm";
+            description "chromatic dispersion";
+          }
+          leaf pmd {
+            type decimal64 {
+              fraction-digits 15;
+              range "0 .. 1000";
+            }
+            units "ps";
+            description "Polarization mode dispersion";
+          }
+          leaf pdl {
+            type decimal64 {
+              fraction-digits 2;
+              range "0 .. 10";
+            }
+            units "dB";
+            description "Polarization dependant loss";
+          }
+           leaf rx-channel-power-value {
+            type decimal64 {
+              fraction-digits 2;
+              range "-60 .. 10";
+            }
+            units "dBm"; 
+            description "Optional penalty associated with a
+            received. It can not contain power below rx-channel-power-min";
+          }
+          leaf penalty_value {
+            type decimal64 {
+              fraction-digits 2;
+              range "0 .. 200";
+            }
+            units "dB";
+            description
+              "OSNR penalty associated to this impairment.";
+          }
+        }
+        leaf equalization_offset_db {
+          type decimal64 {
+            fraction-digits 4;
+            range "-20 .. 20";
+          }
+          description "Power offset for equalizing this mode in ROADM compared to reference channel";          
+        }
+        leaf tx-channel-power-min {
+          type decimal64 {
+            fraction-digits 2;
+            range "-20 .. 20";
+          }
+          description "Min power out of transceiver";    
+        }
+        leaf tx-channel-power-max {
+          type decimal64 {
+            fraction-digits 2;
+            range "-20 .. 20";
+          }
+          must ". >= ./../tx-channel-power-min";
+          description "Max power out of transceiver";    
+        }
+        leaf rx-channel-power-min {
+          type decimal64 {
+            fraction-digits 2;
+            range "-60 .. 10";
+          }
+          description "Min power supported at receiver input";    
+        }
+        leaf rx-channel-power-max {
+          type decimal64 {
+            fraction-digits 2;
+            range "-60 .. 0";
+          }
+          must ". >= ./../rx-channel-power-min";
+          description "Max power supported at receiver input";    
+        }
+      }
+    }
+  }
+
+  augment "/gnpyeqpt:equipment/gnpyeqpt:Roadm/gnpyeqpt:roadm-path-impairments/"
+    + "gnpyeqpt:impairment-type/gnpyeqpt:roadm-express-path/"
+    + "gnpyeqpt:roadm-express-path" {
+    description
+      "Definition of an OSNR contribution for a ROADM express path.";
+    leaf roadm-osnr {
+      type l0-types:snr-or-null;
+      description
+        "Optical Signal-to-Noise Ratio (OSNR).
+        If the express path contains an integrated amplifier,
+        this reflects its OSNR contribution.";
+    }
+  }
+
+  typedef module-with-revision-date {
+    type string {
+      pattern '[a-zA-Z_][a-zA-Z0-9\-_.]*'
+            + '(@\d{4}-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1]))?';
+      pattern '.|..|[^xX].*|.[^mM].*|..[^lL].*';
+    }
+    description
+      "A type defining a module name and an optional revision
+        date, e.g., ietf-yang-library@2019-01-04.";
+  }
+
+  grouping library-info {
+    description "This grouping is reusing leaves from RFC9195";
+    container library-information {
+      description
+        "Meta data for the equipment library.";
+      leaf name {
+        type string;
+        description
+          "An arbitrary name for the YANG instance data set.  This
+          value is primarily used for descriptive purposes.  However,
+          when the instance data set is saved to a file, then the
+          filename MUST encode the name's value per Section 2
+          of RFC 9195.";
+      }
+      container content-schema {
+        description
+          "The content schema (i.e., YANG modules) used to create
+          the instance data set.
+          If not present, the user needs to obtain the information
+          through external documents.";
+        leaf-list module {
+          type module-with-revision-date;
+          // min-elements 1;
+          description
+            "The list of content-defining YANG modules.
+
+            The value SHALL start with the module name.
+            If the module contains a revision statement, the
+            revision date SHALL be included in the leaf-list
+            entry, e.g., ietf-yang-library@2019-01-04.
+
+            Usage of this leaf-list implies the modules are
+            used without any deviations and with all features
+            supported. Multiple revisions of the same module
+            MUST NOT be specified.";
+        }
+      }
+      leaf-list description {
+        type string;
+        description
+          "Description of the instance data set.";
+      }
+      leaf-list contact {
+        type string;
+        description
+          "Contact information for the person or
+          organization to whom queries concerning this
+          instance data set should be sent.";
+      }
+      leaf organization {
+        type string;
+        description
+          "Organization responsible for the instance
+          data set.";
+      }
+      list revision {
+        key "date";
+        description
+          "Instance data sets that are produced as
+          a result of some sort of specification or design effort
+          SHOULD have at least one revision entry.  For every
+          published editorial change, a new unique revision SHOULD
+          be added in front of the revisions sequence so that all
+          revisions are in reverse chronological order.
+
+          In cases of instance data sets that are read from
+          or produced by a server or otherwise subject to
+          frequent updates or changes, revision
+          SHOULD NOT be present.";
+        leaf date {
+          type string {
+            pattern '\d{4}-(1[0-2]|0[1-9])-(0[1-9]|[1|2][0-9]|3[0-1])';
+          }
+          description
+            "Specifies the date the instance data set
+            was last modified. Formatted as YYYY-MM-DD.";
+        }
+        leaf description {
+          type string;
+          description
+            "Description of this revision of the instance data set.";
+        }
+      }
+    }
+  }
+
+  grouping equipment {
+    description
+      "Equipment library definition for GNPy release 2.12";
+    container equipment {
+      description
+        "Equipment library definition for GNPy release 2.12";
+      uses library-info;
+      uses eqpt;
+    }
+  }
+
+  container equipment {
+    description
+      "Equipment library definition for GNPy release 2.12";
+    uses library-info;
+    uses eqpt;
+  }
+
+  augment "/gapi:api" {
+    description "Add the gnpy-eqpt-config input in the API request.";
+    uses equipment;
+  }
+
+  augment "/gapi:api/gapi:extra-eqpts" {
+    description "Add the list of extra equipment libraries
+    (eg used pluggables) in the API request.";
+    uses equipment;
+  }
+}

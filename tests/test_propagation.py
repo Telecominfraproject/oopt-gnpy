@@ -19,11 +19,11 @@ import re
 
 from gnpy.core.exceptions import SpectrumError
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
-from gnpy.core.utils import db2lin
+from gnpy.core.utils import db2lin, dbm2watt
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment, network_from_json
-
+from gnpy.topology.request import PathRequest
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -41,6 +41,40 @@ def nch_and_spacing(request):
     yield request.param
 
 
+def pathrequest(pch_dbm, p_tot_dbm):
+    """create ref channel for defined power settings
+    """
+    params = {
+        "power": dbm2watt(pch_dbm),
+        "tx_power": dbm2watt(pch_dbm),
+        "nb_channel": round(dbm2watt(p_tot_dbm) / dbm2watt(pch_dbm), 0),
+        'request_id': None,
+        'trx_type': None,
+        'trx_mode': None,
+        'source': None,
+        'destination': None,
+        'bidir': False,
+        'nodes_list': [],
+        'loose_list': [],
+        'format': '',
+        'baud_rate': None,
+        'bit_rate': None,
+        'roll_off': None,
+        'OSNR': None,
+        'penalties': None,
+        'path_bandwidth': None,
+        'effective_freq_slot': None,
+        'f_min': None,
+        'f_max': None,
+        'spacing': None,
+        'min_spacing': None,
+        'cost': None,
+        'equalization_offset_db': None,
+        'tx_osnr': None
+    }
+    return PathRequest(**params)
+
+
 def propagation(input_power, con_in, con_out, dest):
     equipment = load_equipment(eqpt_library_name, EXTRA_CONFIGS)
     network = load_network(network_file_name, equipment)
@@ -55,7 +89,7 @@ def propagation(input_power, con_in, con_out, dest):
         if isinstance(e, Edfa):
             e.operational.gain_target = loss + con_in + con_out
 
-    build_network(network, equipment, 0, 20)
+    build_network(network, equipment, pathrequest(0, 20))
 
     transceivers = {n.uid: n for n in network.nodes() if isinstance(n, Transceiver)}
 

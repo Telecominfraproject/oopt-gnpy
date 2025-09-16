@@ -1,0 +1,47 @@
+module gnpy-api {
+  yang-version 1.1;
+  namespace "urn:gnpy-api";
+
+  prefix gapi;
+
+  organization
+    "Telecom Infra Project OOPT PSE Working Group";
+  contact
+    "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
+     contact:  <mailto:esther.lerouzic@orange.com>
+    ";
+  description
+    "YANG model for gnpy network input for path computation simulation params- 2025";
+
+  revision 2025-06-13 {
+    description
+      "First yang model for api";
+    reference
+      "YANG model for network input for API path computation with gnpy";
+  }
+
+  container api {
+    description
+      "Top container for the API data.";
+    list extra-configs {
+      key name;
+      description
+        "List of extra configurations for the amplifiers defined in the
+        equipment libraries.";
+      leaf name {
+        type string;
+        description "Unique name used in the equipment library to reference this config.";
+      }
+    }
+
+    list extra-eqpts {
+      key name;
+      description
+        "List of additional libraries, eg for third party pluggables definitions.";
+      leaf name {
+        type string;
+        description "Unique name of the extra library.";
+      }
+    }
+  }
+}
