@@ -33,6 +33,24 @@
       "message": "shouldn\u0027t we change this to the page https://telecominfraproject.github.io/oopt-gnpy/ ?",
       "revId": "238ff3731453a75ec7d80abc29ff3adb6bf62310",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f954c761_55efa338",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-09-17T11:19:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9571d31_17293222",
+      "revId": "238ff3731453a75ec7d80abc29ff3adb6bf62310",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
