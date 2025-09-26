@@ -1,0 +1,265 @@
+module: gnpy-network-topology
+  +--rw topology
+     +--rw elements* [uid]
+     |  +--rw uid                 string
+     |  +--rw type                identityref
+     |  +--rw type_variety?       string
+     |  +--rw metadata
+     |  |  +--rw location
+     |  |     +--rw city?        union
+     |  |     +--rw region?      union
+     |  |     +--rw latitude?    Coordinate
+     |  |     +--rw longitude?   Coordinate
+     |  +--rw operational
+     |  |  +--rw (ramanfiber)?
+     |  |     +--:(RamanFiber)
+     |  |     |  +--rw temperature?   decimal64
+     |  |     |  +--rw raman_pumps* [frequency]
+     |  |     |     +--rw power?                   decimal64
+     |  |     |     +--rw frequency                decimal64
+     |  |     |     +--rw propagation_direction?   identityref
+     |  |     +--:(Edfa)
+     |  |        +--rw gain_target?   union
+     |  |        +--rw tilt_target?   union
+     |  |        +--rw out_voa?       union
+     |  |        +--rw in_voa?        union
+     |  |        +--rw delta_p?       union
+     |  |        +--rw f_min?         decimal64
+     |  |        +--rw f_max?         decimal64
+     |  +--rw (element-type)?
+     |     +--:(FiberRoadm)
+     |     |  +--rw params
+     |     |     +--rw (fiberroadmfused)?
+     |     |        +--:(Fiber)
+     |     |        |  +--rw length                                   decimal64
+     |     |        |  +--rw pmd_coef?                                decimal64
+     |     |        |  +--rw (ref_freq_or_wl)?
+     |     |        |  |  +--:(frequency)
+     |     |        |  |  |  +--rw ref_frequency?                     decimal64
+     |     |        |  |  +--:(wavelength)
+     |     |        |  |     +--rw ref_wavelength?                    decimal64
+     |     |        |  +--rw (dispersion-vector-or-scalar)?
+     |     |        |  |  +--:(scalar)
+     |     |        |  |  |  +--rw dispersion?                        decimal64
+     |     |        |  |  |  +--rw dispersion_slope?                  decimal64
+     |     |        |  |  +--:(vector)
+     |     |        |  |     +--rw dispersion_per_frequency* [frequency]
+     |     |        |  |        +--rw frequency     decimal64
+     |     |        |  |        +--rw dispersion?   decimal64
+     |     |        |  +--rw effective_area?                          decimal64
+     |     |        |  +--rw gamma?                                   decimal64
+     |     |        |  +--rw raman_coefficient
+     |     |        |  |  +--rw reference_frequency?   decimal64
+     |     |        |  |  +--rw g0_per_frequency* [frequency_offset]
+     |     |        |  |     +--rw frequency_offset    decimal64
+     |     |        |  |     +--rw g0?                 decimal64
+     |     |        |  +--rw lumped_losses* [position]
+     |     |        |  |  +--rw position    decimal64
+     |     |        |  |  +--rw loss        decimal64
+     |     |        |  +--rw (loss_coef-vector-or-scalar)?
+     |     |        |  |  +--:(scalar)
+     |     |        |  |  |  +--rw loss_coef                          decimal64
+     |     |        |  |  +--:(vector)
+     |     |        |  |     +--rw loss_coef_per_frequency* [frequency]
+     |     |        |  |        +--rw frequency          decimal64
+     |     |        |  |        +--rw loss_coef_value?   decimal64
+     |     |        |  +--rw length_units                             identityref
+     |     |        |  +--rw att_in?                                  decimal64
+     |     |        |  +--rw con_in?                                  union
+     |     |        |  +--rw con_out?                                 union
+     |     |        +--:(RoadmTransceiver)
+     |     |        |  +--rw design_bands* [f_min]
+     |     |        |  |  +--rw f_min                       decimal64
+     |     |        |  |  +--rw f_max?                      decimal64
+     |     |        |  |  +--rw (parameter-used-for-design)?
+     |     |        |  |     +--:(spacing)
+     |     |        |  |     |  +--rw spacing?              decimal64
+     |     |        |  |     +--:(number-of-channels)
+     |     |        |  |        +--rw number-of-channels?   uint16
+     |     |        |  +--rw per_degree_design_bands_targets* [degree_uid]
+     |     |        |  |  +--rw degree_uid      -> ../../../../elements/uid
+     |     |        |  |  +--rw design_bands* [f_min]
+     |     |        |  |     +--rw f_min                       decimal64
+     |     |        |  |     +--rw f_max?                      decimal64
+     |     |        |  |     +--rw (parameter-used-for-design)?
+     |     |        |  |        +--:(spacing)
+     |     |        |  |        |  +--rw spacing?              decimal64
+     |     |        |  |        +--:(number-of-channels)
+     |     |        |  |           +--rw number-of-channels?   uint16
+     |     |        |  +--rw (roadm)?
+     |     |        |     +--:(roadm)
+     |     |        |        +--rw (target_type)?
+     |     |        |        |  +--:(constant_power)
+     |     |        |        |  |  +--rw target_pch_out_db?           decimal64
+     |     |        |        |  +--:(constant_psd)
+     |     |        |        |  |  +--rw target_psd_out_mWperGHz?     decimal64
+     |     |        |        |  +--:(constant_psw)
+     |     |        |        |     +--rw target_out_mWperSlotWidth?   decimal64
+     |     |        |        +--rw restrictions
+     |     |        |        |  +--rw preamp_variety_list*    string
+     |     |        |        |  +--rw booster_variety_list*   string
+     |     |        |        +--rw per_degree_power_targets* [degree_uid]
+     |     |        |        |  +--rw degree_uid                                 -> ../../../../elements/uid
+     |     |        |        |  +--rw (per_degree_target_type)?
+     |     |        |        |     +--:(constant_power)
+     |     |        |        |     |  +--rw per_degree_pch_out_db?               decimal64
+     |     |        |        |     +--:(constant_psd)
+     |     |        |        |     |  +--rw per_degree_psd_out_mWperGHz?         decimal64
+     |     |        |        |     +--:(constant_psw)
+     |     |        |        |        +--rw per_degree_psd_out_mWperSlotWidth?   decimal64
+     |     |        |        +--rw per_degree_impairments* [from_degree to_degree]
+     |     |        |           +--rw from_degree      -> ../../../../elements/uid
+     |     |        |           +--rw to_degree        -> ../../../../elements/uid
+     |     |        |           +--rw impairment_id?   uint32
+     |     |        +--:(Fused)
+     |     |        |  +--rw loss?                                    union
+     |     |        +--:(Multiband_amplifier)
+     |     |           +--rw variety_list*                            string
+     |     +--:(Multiband_amplifier)
+     |        +--rw amplifiers* [type_variety]
+     |           +--rw type_variety    string
+     |           +--rw operational
+     |              +--rw gain_target?   union
+     |              +--rw tilt_target?   union
+     |              +--rw out_voa?       union
+     |              +--rw in_voa?        union
+     |              +--rw delta_p?       union
+     |              +--rw f_min?         decimal64
+     |              +--rw f_max?         decimal64
+     +--rw connections* [from_node to_node]
+     |  +--rw from_node    -> ../../elements/uid
+     |  +--rw to_node      -> ../../elements/uid
+     +--rw network_name?   string
+
+  augment /gapi:api:
+    +--rw topology
+       +--rw elements* [uid]
+       |  +--rw uid                 string
+       |  +--rw type                identityref
+       |  +--rw type_variety?       string
+       |  +--rw metadata
+       |  |  +--rw location
+       |  |     +--rw city?        union
+       |  |     +--rw region?      union
+       |  |     +--rw latitude?    Coordinate
+       |  |     +--rw longitude?   Coordinate
+       |  +--rw operational
+       |  |  +--rw (ramanfiber)?
+       |  |     +--:(RamanFiber)
+       |  |     |  +--rw temperature?   decimal64
+       |  |     |  +--rw raman_pumps* [frequency]
+       |  |     |     +--rw power?                   decimal64
+       |  |     |     +--rw frequency                decimal64
+       |  |     |     +--rw propagation_direction?   identityref
+       |  |     +--:(Edfa)
+       |  |        +--rw gain_target?   union
+       |  |        +--rw tilt_target?   union
+       |  |        +--rw out_voa?       union
+       |  |        +--rw in_voa?        union
+       |  |        +--rw delta_p?       union
+       |  |        +--rw f_min?         decimal64
+       |  |        +--rw f_max?         decimal64
+       |  +--rw (element-type)?
+       |     +--:(FiberRoadm)
+       |     |  +--rw params
+       |     |     +--rw (fiberroadmfused)?
+       |     |        +--:(Fiber)
+       |     |        |  +--rw length                                   decimal64
+       |     |        |  +--rw pmd_coef?                                decimal64
+       |     |        |  +--rw (ref_freq_or_wl)?
+       |     |        |  |  +--:(frequency)
+       |     |        |  |  |  +--rw ref_frequency?                     decimal64
+       |     |        |  |  +--:(wavelength)
+       |     |        |  |     +--rw ref_wavelength?                    decimal64
+       |     |        |  +--rw (dispersion-vector-or-scalar)?
+       |     |        |  |  +--:(scalar)
+       |     |        |  |  |  +--rw dispersion?                        decimal64
+       |     |        |  |  |  +--rw dispersion_slope?                  decimal64
+       |     |        |  |  +--:(vector)
+       |     |        |  |     +--rw dispersion_per_frequency* [frequency]
+       |     |        |  |        +--rw frequency     decimal64
+       |     |        |  |        +--rw dispersion?   decimal64
+       |     |        |  +--rw effective_area?                          decimal64
+       |     |        |  +--rw gamma?                                   decimal64
+       |     |        |  +--rw raman_coefficient
+       |     |        |  |  +--rw reference_frequency?   decimal64
+       |     |        |  |  +--rw g0_per_frequency* [frequency_offset]
+       |     |        |  |     +--rw frequency_offset    decimal64
+       |     |        |  |     +--rw g0?                 decimal64
+       |     |        |  +--rw lumped_losses* [position]
+       |     |        |  |  +--rw position    decimal64
+       |     |        |  |  +--rw loss        decimal64
+       |     |        |  +--rw (loss_coef-vector-or-scalar)?
+       |     |        |  |  +--:(scalar)
+       |     |        |  |  |  +--rw loss_coef                          decimal64
+       |     |        |  |  +--:(vector)
+       |     |        |  |     +--rw loss_coef_per_frequency* [frequency]
+       |     |        |  |        +--rw frequency          decimal64
+       |     |        |  |        +--rw loss_coef_value?   decimal64
+       |     |        |  +--rw length_units                             identityref
+       |     |        |  +--rw att_in?                                  decimal64
+       |     |        |  +--rw con_in?                                  union
+       |     |        |  +--rw con_out?                                 union
+       |     |        +--:(RoadmTransceiver)
+       |     |        |  +--rw design_bands* [f_min]
+       |     |        |  |  +--rw f_min                       decimal64
+       |     |        |  |  +--rw f_max?                      decimal64
+       |     |        |  |  +--rw (parameter-used-for-design)?
+       |     |        |  |     +--:(spacing)
+       |     |        |  |     |  +--rw spacing?              decimal64
+       |     |        |  |     +--:(number-of-channels)
+       |     |        |  |        +--rw number-of-channels?   uint16
+       |     |        |  +--rw per_degree_design_bands_targets* [degree_uid]
+       |     |        |  |  +--rw degree_uid      -> ../../../../elements/uid
+       |     |        |  |  +--rw design_bands* [f_min]
+       |     |        |  |     +--rw f_min                       decimal64
+       |     |        |  |     +--rw f_max?                      decimal64
+       |     |        |  |     +--rw (parameter-used-for-design)?
+       |     |        |  |        +--:(spacing)
+       |     |        |  |        |  +--rw spacing?              decimal64
+       |     |        |  |        +--:(number-of-channels)
+       |     |        |  |           +--rw number-of-channels?   uint16
+       |     |        |  +--rw (roadm)?
+       |     |        |     +--:(roadm)
+       |     |        |        +--rw (target_type)?
+       |     |        |        |  +--:(constant_power)
+       |     |        |        |  |  +--rw target_pch_out_db?           decimal64
+       |     |        |        |  +--:(constant_psd)
+       |     |        |        |  |  +--rw target_psd_out_mWperGHz?     decimal64
+       |     |        |        |  +--:(constant_psw)
+       |     |        |        |     +--rw target_out_mWperSlotWidth?   decimal64
+       |     |        |        +--rw restrictions
+       |     |        |        |  +--rw preamp_variety_list*    string
+       |     |        |        |  +--rw booster_variety_list*   string
+       |     |        |        +--rw per_degree_power_targets* [degree_uid]
+       |     |        |        |  +--rw degree_uid                                 -> ../../../../elements/uid
+       |     |        |        |  +--rw (per_degree_target_type)?
+       |     |        |        |     +--:(constant_power)
+       |     |        |        |     |  +--rw per_degree_pch_out_db?               decimal64
+       |     |        |        |     +--:(constant_psd)
+       |     |        |        |     |  +--rw per_degree_psd_out_mWperGHz?         decimal64
+       |     |        |        |     +--:(constant_psw)
+       |     |        |        |        +--rw per_degree_psd_out_mWperSlotWidth?   decimal64
+       |     |        |        +--rw per_degree_impairments* [from_degree to_degree]
+       |     |        |           +--rw from_degree      -> ../../../../elements/uid
+       |     |        |           +--rw to_degree        -> ../../../../elements/uid
+       |     |        |           +--rw impairment_id?   uint32
+       |     |        +--:(Fused)
+       |     |        |  +--rw loss?                                    union
+       |     |        +--:(Multiband_amplifier)
+       |     |           +--rw variety_list*                            string
+       |     +--:(Multiband_amplifier)
+       |        +--rw amplifiers* [type_variety]
+       |           +--rw type_variety    string
+       |           +--rw operational
+       |              +--rw gain_target?   union
+       |              +--rw tilt_target?   union
+       |              +--rw out_voa?       union
+       |              +--rw in_voa?        union
+       |              +--rw delta_p?       union
+       |              +--rw f_min?         decimal64
+       |              +--rw f_max?         decimal64
+       +--rw connections* [from_node to_node]
+       |  +--rw from_node    -> ../../elements/uid
+       |  +--rw to_node      -> ../../elements/uid
+       +--rw network_name?   string

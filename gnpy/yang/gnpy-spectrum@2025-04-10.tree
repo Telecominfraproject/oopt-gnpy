@@ -1,0 +1,23 @@
+module: gnpy-spectrum
+  +--rw spectrum* [f_min]
+     +--rw f_min           decimal64
+     +--rw f_max           decimal64
+     +--rw slot_width      decimal64
+     +--rw delta_pdb?      decimal64
+     +--rw baud_rate?      decimal64
+     +--rw tx_osnr?        decimal64
+     +--rw roll_off?       union
+     +--rw tx_power_dbm?   decimal64
+     +--rw label?          string
+
+  augment /gapi:api:
+    +--rw spectrum* [f_min]
+       +--rw f_min           decimal64
+       +--rw f_max           decimal64
+       +--rw slot_width      decimal64
+       +--rw delta_pdb?      decimal64
+       +--rw baud_rate?      decimal64
+       +--rw tx_osnr?        decimal64
+       +--rw roll_off?       union
+       +--rw tx_power_dbm?   decimal64
+       +--rw label?          string

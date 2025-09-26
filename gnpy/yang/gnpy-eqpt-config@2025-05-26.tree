@@ -1,0 +1,602 @@
+module: gnpy-eqpt-config
+  +--rw equipment
+     +--rw library-information
+     |  +--rw name?             string
+     |  +--rw content-schema
+     |  |  +--rw module*   module-with-revision-date
+     |  +--rw description*      string
+     |  +--rw contact*          string
+     |  +--rw organization?     string
+     |  +--rw revision* [date]
+     |     +--rw date           string
+     |     +--rw description?   string
+     +--rw Edfa* [type_variety]
+     |  +--rw type_variety                       string
+     |  +--rw other_name*                        string
+     |  +--rw f_min?                             decimal64
+     |  +--rw f_max?                             decimal64
+     |  +--rw allowed_for_design?                boolean
+     |  +--rw gain_flatmax?                      decimal64
+     |  +--rw gain_min?                          decimal64
+     |  +--rw extended_gain_range?               decimal64
+     |  +--rw p_max?                             decimal64
+     |  +--rw type_def?                          identityref
+     |  +--rw raman?                             boolean
+     |  +--rw out_voa_auto?                      boolean
+     |  +--rw in_voa_auto?                       boolean
+     |  +--rw voa_step?                          decimal64
+     |  +--rw pmd?                               decimal64
+     |  +--rw pdl?                               decimal64
+     |  +--rw (type_of_model)?
+     |     +--:(variable_gain)
+     |     |  +--rw nf_min?                      decimal64
+     |     |  +--rw nf_max?                      decimal64
+     |     |  +--rw default_config_from_json?    string
+     |     +--:(fixed_gain)
+     |     |  +--rw nf0?                         decimal64
+     |     +--:(openroadm)
+     |     |  +--rw nf_coef* [coef_order]
+     |     |     +--rw coef_order    uint8
+     |     |     +--rw nf_coef?      decimal64
+     |     +--:(dual_stage)
+     |     |  +--rw preamp_variety?              union
+     |     |  +--rw booster_variety?             union
+     |     +--:(multi_band)
+     |     |  +--rw amplifiers*                  string
+     |     +--:(advanced_model)
+     |        +--rw advanced_config_from_json?   string
+     +--rw Fiber* [type_variety]
+     |  +--rw type_variety            string
+     |  +--rw dispersion?             decimal64
+     |  +--rw gamma?                  decimal64
+     |  +--rw pmd_coef?               decimal64
+     |  +--rw effective_area?         decimal64
+     |  +--rw loss_coef_lut* [freq]
+     |  |  +--rw freq               decimal64
+     |  |  +--rw loss_coef_value?   decimal64
+     |  +--rw (ref_freq_or_wl)?
+     |     +--:(frequency)
+     |     |  +--rw ref_frequency?    decimal64
+     |     +--:(wavelength)
+     |        +--rw ref_wavelength?   decimal64
+     +--rw RamanFiber* [type_variety]
+     |  +--rw type_variety            string
+     |  +--rw dispersion?             decimal64
+     |  +--rw gamma?                  decimal64
+     |  +--rw pmd_coef?               decimal64
+     |  +--rw effective_area?         decimal64
+     |  +--rw loss_coef_lut* [freq]
+     |  |  +--rw freq               decimal64
+     |  |  +--rw loss_coef_value?   decimal64
+     |  +--rw (ref_freq_or_wl)?
+     |  |  +--:(frequency)
+     |  |  |  +--rw ref_frequency?    decimal64
+     |  |  +--:(wavelength)
+     |  |     +--rw ref_wavelength?   decimal64
+     |  +--rw raman_efficiency* [frequency_offset]
+     |     +--rw cr?                 decimal64
+     |     +--rw frequency_offset    decimal64
+     +--ro Span* []
+     |  +--ro power_mode?                        boolean
+     |  +--ro delta_power_range_dict_db
+     |  |  +--ro min_value?   decimal64
+     |  |  +--ro max_value?   decimal64
+     |  |  +--ro step?        decimal64
+     |  +--ro max_length?                        decimal64
+     |  +--ro max_loss?                          decimal64
+     |  +--ro max_fiber_lineic_loss_for_raman?   decimal64
+     |  +--ro target_extended_gain?              decimal64
+     |  +--ro length_units?                      string
+     |  +--ro padding?                           decimal64
+     |  +--ro EOL?                               decimal64
+     |  +--ro con_in?                            decimal64
+     |  +--ro con_out?                           decimal64
+     |  +--ro span_loss_ref?                     decimal64
+     |  +--ro power_slope?                       decimal64
+     |  +--ro voa_margin?                        decimal64
+     |  +--ro voa_step?                          decimal64
+     +--rw Roadm* [type_variety]
+     |  +--rw type_variety                       string
+     |  +--rw (target_type)?
+     |  |  +--:(constant_power)
+     |  |  |  +--rw target_pch_out_db?           decimal64
+     |  |  +--:(constant_psd)
+     |  |  |  +--rw target_psd_out_mWperGHz?     decimal64
+     |  |  +--:(constant_psw)
+     |  |     +--rw target_out_mWperSlotWidth?   decimal64
+     |  +--rw add_drop_osnr?                     decimal64
+     |  +--rw pmd?                               decimal64
+     |  +--rw pdl?                               decimal64
+     |  +--rw restrictions
+     |  |  +--rw preamp_variety_list*    string
+     |  |  +--rw booster_variety_list*   string
+     |  +--rw roadm-path-impairments* [roadm-path-impairments-id]
+     |     +--rw roadm-path-impairments-id    uint32
+     |     +--rw (impairment-type)?
+     |        +--:(roadm-express-path)
+     |        |  +--ro roadm-express-path* []
+     |        |     +--ro frequency-range
+     |        |     |  +--ro lower-frequency    union
+     |        |     |  +--ro upper-frequency    union
+     |        |     +--ro roadm-pmd?                union
+     |        |     +--ro roadm-cd?                 l0-types:decimal-5-or-null
+     |        |     +--ro roadm-pdl?                l0-types:power-loss-or-null
+     |        |     +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |        |     +--ro roadm-maxloss?            l0-types:power-loss-or-null
+     |        |     +--ro roadm-osnr?               l0-types:snr-or-null
+     |        +--:(roadm-add-path)
+     |        |  +--ro roadm-add-path* []
+     |        |     +--ro frequency-range
+     |        |     |  +--ro lower-frequency    union
+     |        |     |  +--ro upper-frequency    union
+     |        |     +--ro roadm-pmd?                union
+     |        |     +--ro roadm-cd?                 l0-types:decimal-5-or-null
+     |        |     +--ro roadm-pdl?                l0-types:power-loss-or-null
+     |        |     +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |        |     +--ro roadm-maxloss?            l0-types:power-loss-or-null
+     |        |     +--ro roadm-pmax?               l0-types:power-dbm-or-null
+     |        |     +--ro roadm-osnr?               l0-types:snr-or-null
+     |        |     +--ro roadm-noise-figure?       l0-types:decimal-5-or-null
+     |        +--:(roadm-drop-path)
+     |           +--ro roadm-drop-path* []
+     |              +--ro frequency-range
+     |              |  +--ro lower-frequency    union
+     |              |  +--ro upper-frequency    union
+     |              +--ro roadm-pmd?                union
+     |              +--ro roadm-cd?                 l0-types:decimal-5-or-null
+     |              +--ro roadm-pdl?                l0-types:power-loss-or-null
+     |              +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |              +--ro roadm-maxloss?            l0-types:power-loss-or-null
+     |              +--ro roadm-minloss?            l0-types:power-loss-or-null
+     |              +--ro roadm-typloss?            l0-types:power-loss-or-null
+     |              +--ro roadm-pmin?               l0-types:power-dbm-or-null
+     |              +--ro roadm-pmax?               l0-types:power-dbm-or-null
+     |              +--ro roadm-ptyp?               l0-types:power-dbm-or-null
+     |              +--ro roadm-osnr?               l0-types:snr-or-null
+     |              +--ro roadm-noise-figure?       l0-types:decimal-5-or-null
+     +--ro SI* []
+     |  +--ro f_min?                             decimal64
+     |  +--ro f_max?                             decimal64
+     |  +--ro spacing?                           decimal64
+     |  +--ro power_dbm?                         decimal64
+     |  +--ro power_range_dict_db
+     |  |  +--ro min_value?   decimal64
+     |  |  +--ro max_value?   decimal64
+     |  |  +--ro step?        decimal64
+     |  +--ro type_variety?                      string
+     |  +--ro sys_margins?                       decimal64
+     |  +--ro use_si_channel_count_for_design?   boolean
+     |  +--ro baud_rate?                         decimal64
+     |  +--ro tx_osnr?                           decimal64
+     |  +--ro roll_off?                          union
+     |  +--ro tx_power_dbm?                      decimal64
+     +--rw Transceiver* [type_variety]
+        +--rw type_variety    string
+        +--rw other_name*     string
+        +--rw comment?        string
+        +--rw frequency
+        |  +--rw min?   decimal64
+        |  +--rw max?   decimal64
+        +--rw mode* [format]
+           +--rw format                    string
+           +--rw other_name*               string
+           +--rw OSNR?                     decimal64
+           +--rw min_spacing?              decimal64
+           +--rw bit_rate?                 decimal64
+           +--rw cost?                     decimal64
+           +--rw baud_rate?                decimal64
+           +--rw tx_osnr?                  decimal64
+           +--rw roll_off?                 union
+           +--rw tx_power_dbm?             decimal64
+           +--ro penalties* []
+           |  +--ro chromatic_dispersion?     decimal64
+           |  +--ro pmd?                      decimal64
+           |  +--ro pdl?                      decimal64
+           |  +--ro rx-channel-power-value?   decimal64
+           |  +--ro penalty_value?            decimal64
+           +--rw equalization_offset_db?   decimal64
+           +--rw tx-channel-power-min?     decimal64
+           +--rw tx-channel-power-max?     decimal64
+           +--rw rx-channel-power-min?     decimal64
+           +--rw rx-channel-power-max?     decimal64
+
+  augment /gapi:api:
+    +--rw equipment
+       +--rw library-information
+       |  +--rw name?             string
+       |  +--rw content-schema
+       |  |  +--rw module*   module-with-revision-date
+       |  +--rw description*      string
+       |  +--rw contact*          string
+       |  +--rw organization?     string
+       |  +--rw revision* [date]
+       |     +--rw date           string
+       |     +--rw description?   string
+       +--rw Edfa* [type_variety]
+       |  +--rw type_variety                       string
+       |  +--rw other_name*                        string
+       |  +--rw f_min?                             decimal64
+       |  +--rw f_max?                             decimal64
+       |  +--rw allowed_for_design?                boolean
+       |  +--rw gain_flatmax?                      decimal64
+       |  +--rw gain_min?                          decimal64
+       |  +--rw extended_gain_range?               decimal64
+       |  +--rw p_max?                             decimal64
+       |  +--rw type_def?                          identityref
+       |  +--rw raman?                             boolean
+       |  +--rw out_voa_auto?                      boolean
+       |  +--rw in_voa_auto?                       boolean
+       |  +--rw voa_step?                          decimal64
+       |  +--rw pmd?                               decimal64
+       |  +--rw pdl?                               decimal64
+       |  +--rw (type_of_model)?
+       |     +--:(variable_gain)
+       |     |  +--rw nf_min?                      decimal64
+       |     |  +--rw nf_max?                      decimal64
+       |     |  +--rw default_config_from_json?    string
+       |     +--:(fixed_gain)
+       |     |  +--rw nf0?                         decimal64
+       |     +--:(openroadm)
+       |     |  +--rw nf_coef* [coef_order]
+       |     |     +--rw coef_order    uint8
+       |     |     +--rw nf_coef?      decimal64
+       |     +--:(dual_stage)
+       |     |  +--rw preamp_variety?              union
+       |     |  +--rw booster_variety?             union
+       |     +--:(multi_band)
+       |     |  +--rw amplifiers*                  string
+       |     +--:(advanced_model)
+       |        +--rw advanced_config_from_json?   string
+       +--rw Fiber* [type_variety]
+       |  +--rw type_variety            string
+       |  +--rw dispersion?             decimal64
+       |  +--rw gamma?                  decimal64
+       |  +--rw pmd_coef?               decimal64
+       |  +--rw effective_area?         decimal64
+       |  +--rw loss_coef_lut* [freq]
+       |  |  +--rw freq               decimal64
+       |  |  +--rw loss_coef_value?   decimal64
+       |  +--rw (ref_freq_or_wl)?
+       |     +--:(frequency)
+       |     |  +--rw ref_frequency?    decimal64
+       |     +--:(wavelength)
+       |        +--rw ref_wavelength?   decimal64
+       +--rw RamanFiber* [type_variety]
+       |  +--rw type_variety            string
+       |  +--rw dispersion?             decimal64
+       |  +--rw gamma?                  decimal64
+       |  +--rw pmd_coef?               decimal64
+       |  +--rw effective_area?         decimal64
+       |  +--rw loss_coef_lut* [freq]
+       |  |  +--rw freq               decimal64
+       |  |  +--rw loss_coef_value?   decimal64
+       |  +--rw (ref_freq_or_wl)?
+       |  |  +--:(frequency)
+       |  |  |  +--rw ref_frequency?    decimal64
+       |  |  +--:(wavelength)
+       |  |     +--rw ref_wavelength?   decimal64
+       |  +--rw raman_efficiency* [frequency_offset]
+       |     +--rw cr?                 decimal64
+       |     +--rw frequency_offset    decimal64
+       +--ro Span* []
+       |  +--ro power_mode?                        boolean
+       |  +--ro delta_power_range_dict_db
+       |  |  +--ro min_value?   decimal64
+       |  |  +--ro max_value?   decimal64
+       |  |  +--ro step?        decimal64
+       |  +--ro max_length?                        decimal64
+       |  +--ro max_loss?                          decimal64
+       |  +--ro max_fiber_lineic_loss_for_raman?   decimal64
+       |  +--ro target_extended_gain?              decimal64
+       |  +--ro length_units?                      string
+       |  +--ro padding?                           decimal64
+       |  +--ro EOL?                               decimal64
+       |  +--ro con_in?                            decimal64
+       |  +--ro con_out?                           decimal64
+       |  +--ro span_loss_ref?                     decimal64
+       |  +--ro power_slope?                       decimal64
+       |  +--ro voa_margin?                        decimal64
+       |  +--ro voa_step?                          decimal64
+       +--rw Roadm* [type_variety]
+       |  +--rw type_variety                       string
+       |  +--rw (target_type)?
+       |  |  +--:(constant_power)
+       |  |  |  +--rw target_pch_out_db?           decimal64
+       |  |  +--:(constant_psd)
+       |  |  |  +--rw target_psd_out_mWperGHz?     decimal64
+       |  |  +--:(constant_psw)
+       |  |     +--rw target_out_mWperSlotWidth?   decimal64
+       |  +--rw add_drop_osnr?                     decimal64
+       |  +--rw pmd?                               decimal64
+       |  +--rw pdl?                               decimal64
+       |  +--rw restrictions
+       |  |  +--rw preamp_variety_list*    string
+       |  |  +--rw booster_variety_list*   string
+       |  +--rw roadm-path-impairments* [roadm-path-impairments-id]
+       |     +--rw roadm-path-impairments-id    uint32
+       |     +--rw (impairment-type)?
+       |        +--:(roadm-express-path)
+       |        |  +--ro roadm-express-path* []
+       |        |     +--ro frequency-range
+       |        |     |  +--ro lower-frequency    union
+       |        |     |  +--ro upper-frequency    union
+       |        |     +--ro roadm-pmd?                union
+       |        |     +--ro roadm-cd?                 l0-types:decimal-5-or-null
+       |        |     +--ro roadm-pdl?                l0-types:power-loss-or-null
+       |        |     +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+       |        |     +--ro roadm-maxloss?            l0-types:power-loss-or-null
+       |        +--:(roadm-add-path)
+       |        |  +--ro roadm-add-path* []
+       |        |     +--ro frequency-range
+       |        |     |  +--ro lower-frequency    union
+       |        |     |  +--ro upper-frequency    union
+       |        |     +--ro roadm-pmd?                union
+       |        |     +--ro roadm-cd?                 l0-types:decimal-5-or-null
+       |        |     +--ro roadm-pdl?                l0-types:power-loss-or-null
+       |        |     +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+       |        |     +--ro roadm-maxloss?            l0-types:power-loss-or-null
+       |        |     +--ro roadm-pmax?               l0-types:power-dbm-or-null
+       |        |     +--ro roadm-osnr?               l0-types:snr-or-null
+       |        |     +--ro roadm-noise-figure?       l0-types:decimal-5-or-null
+       |        +--:(roadm-drop-path)
+       |           +--ro roadm-drop-path* []
+       |              +--ro frequency-range
+       |              |  +--ro lower-frequency    union
+       |              |  +--ro upper-frequency    union
+       |              +--ro roadm-pmd?                union
+       |              +--ro roadm-cd?                 l0-types:decimal-5-or-null
+       |              +--ro roadm-pdl?                l0-types:power-loss-or-null
+       |              +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+       |              +--ro roadm-maxloss?            l0-types:power-loss-or-null
+       |              +--ro roadm-minloss?            l0-types:power-loss-or-null
+       |              +--ro roadm-typloss?            l0-types:power-loss-or-null
+       |              +--ro roadm-pmin?               l0-types:power-dbm-or-null
+       |              +--ro roadm-pmax?               l0-types:power-dbm-or-null
+       |              +--ro roadm-ptyp?               l0-types:power-dbm-or-null
+       |              +--ro roadm-osnr?               l0-types:snr-or-null
+       |              +--ro roadm-noise-figure?       l0-types:decimal-5-or-null
+       +--ro SI* []
+       |  +--ro f_min?                             decimal64
+       |  +--ro f_max?                             decimal64
+       |  +--ro spacing?                           decimal64
+       |  +--ro power_dbm?                         decimal64
+       |  +--ro power_range_dict_db
+       |  |  +--ro min_value?   decimal64
+       |  |  +--ro max_value?   decimal64
+       |  |  +--ro step?        decimal64
+       |  +--ro type_variety?                      string
+       |  +--ro sys_margins?                       decimal64
+       |  +--ro use_si_channel_count_for_design?   boolean
+       |  +--ro baud_rate?                         decimal64
+       |  +--ro tx_osnr?                           decimal64
+       |  +--ro roll_off?                          union
+       |  +--ro tx_power_dbm?                      decimal64
+       +--rw Transceiver* [type_variety]
+          +--rw type_variety    string
+          +--rw other_name*     string
+          +--rw comment?        string
+          +--rw frequency
+          |  +--rw min?   decimal64
+          |  +--rw max?   decimal64
+          +--rw mode* [format]
+             +--rw format                    string
+             +--rw other_name*               string
+             +--rw OSNR?                     decimal64
+             +--rw min_spacing?              decimal64
+             +--rw bit_rate?                 decimal64
+             +--rw cost?                     decimal64
+             +--rw baud_rate?                decimal64
+             +--rw tx_osnr?                  decimal64
+             +--rw roll_off?                 union
+             +--rw tx_power_dbm?             decimal64
+             +--ro penalties* []
+             |  +--ro chromatic_dispersion?     decimal64
+             |  +--ro pmd?                      decimal64
+             |  +--ro pdl?                      decimal64
+             |  +--ro rx-channel-power-value?   decimal64
+             |  +--ro penalty_value?            decimal64
+             +--rw equalization_offset_db?   decimal64
+             +--rw tx-channel-power-min?     decimal64
+             +--rw tx-channel-power-max?     decimal64
+             +--rw rx-channel-power-min?     decimal64
+             +--rw rx-channel-power-max?     decimal64
+  augment /gapi:api/gapi:extra-eqpts:
+    +--rw equipment
+       +--rw library-information
+       |  +--rw name?             string
+       |  +--rw content-schema
+       |  |  +--rw module*   module-with-revision-date
+       |  +--rw description*      string
+       |  +--rw contact*          string
+       |  +--rw organization?     string
+       |  +--rw revision* [date]
+       |     +--rw date           string
+       |     +--rw description?   string
+       +--rw Edfa* [type_variety]
+       |  +--rw type_variety                       string
+       |  +--rw other_name*                        string
+       |  +--rw f_min?                             decimal64
+       |  +--rw f_max?                             decimal64
+       |  +--rw allowed_for_design?                boolean
+       |  +--rw gain_flatmax?                      decimal64
+       |  +--rw gain_min?                          decimal64
+       |  +--rw extended_gain_range?               decimal64
+       |  +--rw p_max?                             decimal64
+       |  +--rw type_def?                          identityref
+       |  +--rw raman?                             boolean
+       |  +--rw out_voa_auto?                      boolean
+       |  +--rw in_voa_auto?                       boolean
+       |  +--rw voa_step?                          decimal64
+       |  +--rw pmd?                               decimal64
+       |  +--rw pdl?                               decimal64
+       |  +--rw (type_of_model)?
+       |     +--:(variable_gain)
+       |     |  +--rw nf_min?                      decimal64
+       |     |  +--rw nf_max?                      decimal64
+       |     |  +--rw default_config_from_json?    string
+       |     +--:(fixed_gain)
+       |     |  +--rw nf0?                         decimal64
+       |     +--:(openroadm)
+       |     |  +--rw nf_coef* [coef_order]
+       |     |     +--rw coef_order    uint8
+       |     |     +--rw nf_coef?      decimal64
+       |     +--:(dual_stage)
+       |     |  +--rw preamp_variety?              union
+       |     |  +--rw booster_variety?             union
+       |     +--:(multi_band)
+       |     |  +--rw amplifiers*                  string
+       |     +--:(advanced_model)
+       |        +--rw advanced_config_from_json?   string
+       +--rw Fiber* [type_variety]
+       |  +--rw type_variety            string
+       |  +--rw dispersion?             decimal64
+       |  +--rw gamma?                  decimal64
+       |  +--rw pmd_coef?               decimal64
+       |  +--rw effective_area?         decimal64
+       |  +--rw loss_coef_lut* [freq]
+       |  |  +--rw freq               decimal64
+       |  |  +--rw loss_coef_value?   decimal64
+       |  +--rw (ref_freq_or_wl)?
+       |     +--:(frequency)
+       |     |  +--rw ref_frequency?    decimal64
+       |     +--:(wavelength)
+       |        +--rw ref_wavelength?   decimal64
+       +--rw RamanFiber* [type_variety]
+       |  +--rw type_variety            string
+       |  +--rw dispersion?             decimal64
+       |  +--rw gamma?                  decimal64
+       |  +--rw pmd_coef?               decimal64
+       |  +--rw effective_area?         decimal64
+       |  +--rw loss_coef_lut* [freq]
+       |  |  +--rw freq               decimal64
+       |  |  +--rw loss_coef_value?   decimal64
+       |  +--rw (ref_freq_or_wl)?
+       |  |  +--:(frequency)
+       |  |  |  +--rw ref_frequency?    decimal64
+       |  |  +--:(wavelength)
+       |  |     +--rw ref_wavelength?   decimal64
+       |  +--rw raman_efficiency* [frequency_offset]
+       |     +--rw cr?                 decimal64
+       |     +--rw frequency_offset    decimal64
+       +--ro Span* []
+       |  +--ro power_mode?                        boolean
+       |  +--ro delta_power_range_dict_db
+       |  |  +--ro min_value?   decimal64
+       |  |  +--ro max_value?   decimal64
+       |  |  +--ro step?        decimal64
+       |  +--ro max_length?                        decimal64
+       |  +--ro max_loss?                          decimal64
+       |  +--ro max_fiber_lineic_loss_for_raman?   decimal64
+       |  +--ro target_extended_gain?              decimal64
+       |  +--ro length_units?                      string
+       |  +--ro padding?                           decimal64
+       |  +--ro EOL?                               decimal64
+       |  +--ro con_in?                            decimal64
+       |  +--ro con_out?                           decimal64
+       |  +--ro span_loss_ref?                     decimal64
+       |  +--ro power_slope?                       decimal64
+       |  +--ro voa_margin?                        decimal64
+       |  +--ro voa_step?                          decimal64
+       +--rw Roadm* [type_variety]
+       |  +--rw type_variety                       string
+       |  +--rw (target_type)?
+       |  |  +--:(constant_power)
+       |  |  |  +--rw target_pch_out_db?           decimal64
+       |  |  +--:(constant_psd)
+       |  |  |  +--rw target_psd_out_mWperGHz?     decimal64
+       |  |  +--:(constant_psw)
+       |  |     +--rw target_out_mWperSlotWidth?   decimal64
+       |  +--rw add_drop_osnr?                     decimal64
+       |  +--rw pmd?                               decimal64
+       |  +--rw pdl?                               decimal64
+       |  +--rw restrictions
+       |  |  +--rw preamp_variety_list*    string
+       |  |  +--rw booster_variety_list*   string
+       |  +--rw roadm-path-impairments* [roadm-path-impairments-id]
+       |     +--rw roadm-path-impairments-id    uint32
+       |     +--rw (impairment-type)?
+       |        +--:(roadm-express-path)
+       |        |  +--ro roadm-express-path* []
+       |        |     +--ro frequency-range
+       |        |     |  +--ro lower-frequency    union
+       |        |     |  +--ro upper-frequency    union
+       |        |     +--ro roadm-pmd?                union
+       |        |     +--ro roadm-cd?                 l0-types:decimal-5-or-null
+       |        |     +--ro roadm-pdl?                l0-types:power-loss-or-null
+       |        |     +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+       |        |     +--ro roadm-maxloss?            l0-types:power-loss-or-null
+       |        +--:(roadm-add-path)
+       |        |  +--ro roadm-add-path* []
+       |        |     +--ro frequency-range
+       |        |     |  +--ro lower-frequency    union
+       |        |     |  +--ro upper-frequency    union
+       |        |     +--ro roadm-pmd?                union
+       |        |     +--ro roadm-cd?                 l0-types:decimal-5-or-null
+       |        |     +--ro roadm-pdl?                l0-types:power-loss-or-null
+       |        |     +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+       |        |     +--ro roadm-maxloss?            l0-types:power-loss-or-null
+       |        |     +--ro roadm-pmax?               l0-types:power-dbm-or-null
+       |        |     +--ro roadm-osnr?               l0-types:snr-or-null
+       |        |     +--ro roadm-noise-figure?       l0-types:decimal-5-or-null
+       |        +--:(roadm-drop-path)
+       |           +--ro roadm-drop-path* []
+       |              +--ro frequency-range
+       |              |  +--ro lower-frequency    union
+       |              |  +--ro upper-frequency    union
+       |              +--ro roadm-pmd?                union
+       |              +--ro roadm-cd?                 l0-types:decimal-5-or-null
+       |              +--ro roadm-pdl?                l0-types:power-loss-or-null
+       |              +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+       |              +--ro roadm-maxloss?            l0-types:power-loss-or-null
+       |              +--ro roadm-minloss?            l0-types:power-loss-or-null
+       |              +--ro roadm-typloss?            l0-types:power-loss-or-null
+       |              +--ro roadm-pmin?               l0-types:power-dbm-or-null
+       |              +--ro roadm-pmax?               l0-types:power-dbm-or-null
+       |              +--ro roadm-ptyp?               l0-types:power-dbm-or-null
+       |              +--ro roadm-osnr?               l0-types:snr-or-null
+       |              +--ro roadm-noise-figure?       l0-types:decimal-5-or-null
+       +--ro SI* []
+       |  +--ro f_min?                             decimal64
+       |  +--ro f_max?                             decimal64
+       |  +--ro spacing?                           decimal64
+       |  +--ro power_dbm?                         decimal64
+       |  +--ro power_range_dict_db
+       |  |  +--ro min_value?   decimal64
+       |  |  +--ro max_value?   decimal64
+       |  |  +--ro step?        decimal64
+       |  +--ro type_variety?                      string
+       |  +--ro sys_margins?                       decimal64
+       |  +--ro use_si_channel_count_for_design?   boolean
+       |  +--ro baud_rate?                         decimal64
+       |  +--ro tx_osnr?                           decimal64
+       |  +--ro roll_off?                          union
+       |  +--ro tx_power_dbm?                      decimal64
+       +--rw Transceiver* [type_variety]
+          +--rw type_variety    string
+          +--rw other_name*     string
+          +--rw comment?        string
+          +--rw frequency
+          |  +--rw min?   decimal64
+          |  +--rw max?   decimal64
+          +--rw mode* [format]
+             +--rw format                    string
+             +--rw other_name*               string
+             +--rw OSNR?                     decimal64
+             +--rw min_spacing?              decimal64
+             +--rw bit_rate?                 decimal64
+             +--rw cost?                     decimal64
+             +--rw baud_rate?                decimal64
+             +--rw tx_osnr?                  decimal64
+             +--rw roll_off?                 union
+             +--rw tx_power_dbm?             decimal64
+             +--ro penalties* []
+             |  +--ro chromatic_dispersion?     decimal64
+             |  +--ro pmd?                      decimal64
+             |  +--ro pdl?                      decimal64
+             |  +--ro rx-channel-power-value?   decimal64
+             |  +--ro penalty_value?            decimal64
+             +--rw equalization_offset_db?   decimal64
+             +--rw tx-channel-power-min?     decimal64
+             +--rw tx-channel-power-max?     decimal64
+             +--rw rx-channel-power-min?     decimal64
+             +--rw rx-channel-power-max?     decimal64

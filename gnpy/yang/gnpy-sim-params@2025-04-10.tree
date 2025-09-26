@@ -1,0 +1,35 @@
+module: gnpy-sim-params
+  +--rw sim-params
+     +--rw raman_params
+     |  +--rw flag?                        boolean
+     |  +--rw order?                       uint16
+     |  +--rw method?                      identityref
+     |  +--rw result_spatial_resolution?   decimal64
+     |  +--rw solver_spatial_resolution?   decimal64
+     +--rw nli_params
+        +--rw method?                              identityref
+        +--rw dispersion_tolerance?                decimal64
+        +--rw phase_shift_tolerance?               decimal64
+        +--rw (computation)?
+           +--:(explicit-channels)
+           |  +--rw computed_channels*             uint16
+           +--:(nb_of_channels)
+              +--rw computed_number_of_channels?   uint16
+
+  augment /gapi:api:
+    +--rw sim-params
+       +--rw raman_params
+       |  +--rw flag?                        boolean
+       |  +--rw order?                       uint16
+       |  +--rw method?                      identityref
+       |  +--rw result_spatial_resolution?   decimal64
+       |  +--rw solver_spatial_resolution?   decimal64
+       +--rw nli_params
+          +--rw method?                              identityref
+          +--rw dispersion_tolerance?                decimal64
+          +--rw phase_shift_tolerance?               decimal64
+          +--rw (computation)?
+             +--:(explicit-channels)
+             |  +--rw computed_channels*             uint16
+             +--:(nb_of_channels)
+                +--rw computed_number_of_channels?   uint16

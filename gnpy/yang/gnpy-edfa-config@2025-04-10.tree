@@ -1,0 +1,21 @@
+module: gnpy-edfa-config
+  +--rw edfa-config
+     +--rw f_min           decimal64
+     +--rw f_max           decimal64
+     +--ro nf_ripple*      decimal64
+     +--ro dgt*            decimal64
+     +--ro gain_ripple*    decimal64
+     +--ro nf_fit_coeff* [coef_order]
+        +--ro coef_order    uint8
+        +--ro nf_coef?      decimal64
+
+  augment /gapi:api/gapi:extra-configs:
+    +--rw edfa-config
+       +--rw f_min           decimal64
+       +--rw f_max           decimal64
+       +--ro nf_ripple*      decimal64
+       +--ro dgt*            decimal64
+       +--ro gain_ripple*    decimal64
+       +--ro nf_fit_coeff* [coef_order]
+          +--ro coef_order    uint8
+          +--ro nf_coef?      decimal64

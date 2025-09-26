@@ -1,0 +1,1867 @@
+module: gnpy-api
+  +--rw api
+     +--rw extra-configs* [name]
+     |  +--rw name                       string
+     |  +--rw edfa-config:edfa-config
+     |     +--rw edfa-config:f_min           decimal64
+     |     +--rw edfa-config:f_max           decimal64
+     |     +--ro edfa-config:nf_ripple*      decimal64
+     |     +--ro edfa-config:dgt*            decimal64
+     |     +--ro edfa-config:gain_ripple*    decimal64
+     |     +--ro edfa-config:nf_fit_coeff* [coef_order]
+     |        +--ro edfa-config:coef_order    uint8
+     |        +--ro edfa-config:nf_coef?      decimal64
+     +--rw extra-eqpts* [name]
+     |  +--rw name                  string
+     |  +--rw gnpyeqpt:equipment
+     |     +--rw gnpyeqpt:library-information
+     |     |  +--rw gnpyeqpt:name?             string
+     |     |  +--rw gnpyeqpt:content-schema
+     |     |  |  +--rw gnpyeqpt:module*   module-with-revision-date
+     |     |  +--rw gnpyeqpt:description*      string
+     |     |  +--rw gnpyeqpt:contact*          string
+     |     |  +--rw gnpyeqpt:organization?     string
+     |     |  +--rw gnpyeqpt:revision* [date]
+     |     |     +--rw gnpyeqpt:date           string
+     |     |     +--rw gnpyeqpt:description?   string
+     |     +--rw gnpyeqpt:Edfa* [type_variety]
+     |     |  +--rw gnpyeqpt:type_variety                       string
+     |     |  +--rw gnpyeqpt:other_name*                        string
+     |     |  +--rw gnpyeqpt:f_min?                             decimal64
+     |     |  +--rw gnpyeqpt:f_max?                             decimal64
+     |     |  +--rw gnpyeqpt:allowed_for_design?                boolean
+     |     |  +--rw gnpyeqpt:gain_flatmax?                      decimal64
+     |     |  +--rw gnpyeqpt:gain_min?                          decimal64
+     |     |  +--rw gnpyeqpt:extended_gain_range?               decimal64
+     |     |  +--rw gnpyeqpt:p_max?                             decimal64
+     |     |  +--rw gnpyeqpt:type_def?                          identityref
+     |     |  +--rw gnpyeqpt:raman?                             boolean
+     |     |  +--rw gnpyeqpt:out_voa_auto?                      boolean
+     |     |  +--rw gnpyeqpt:in_voa_auto?                       boolean
+     |     |  +--rw gnpyeqpt:voa_step?                          decimal64
+     |     |  +--rw gnpyeqpt:pmd?                               decimal64
+     |     |  +--rw gnpyeqpt:pdl?                               decimal64
+     |     |  +--rw (gnpyeqpt:type_of_model)?
+     |     |     +--:(gnpyeqpt:variable_gain)
+     |     |     |  +--rw gnpyeqpt:nf_min?                      decimal64
+     |     |     |  +--rw gnpyeqpt:nf_max?                      decimal64
+     |     |     |  +--rw gnpyeqpt:default_config_from_json?    string
+     |     |     +--:(gnpyeqpt:fixed_gain)
+     |     |     |  +--rw gnpyeqpt:nf0?                         decimal64
+     |     |     +--:(gnpyeqpt:openroadm)
+     |     |     |  +--rw gnpyeqpt:nf_coef* [coef_order]
+     |     |     |     +--rw gnpyeqpt:coef_order    uint8
+     |     |     |     +--rw gnpyeqpt:nf_coef?      decimal64
+     |     |     +--:(gnpyeqpt:dual_stage)
+     |     |     |  +--rw gnpyeqpt:preamp_variety?              union
+     |     |     |  +--rw gnpyeqpt:booster_variety?             union
+     |     |     +--:(gnpyeqpt:multi_band)
+     |     |     |  +--rw gnpyeqpt:amplifiers*                  string
+     |     |     +--:(gnpyeqpt:advanced_model)
+     |     |        +--rw gnpyeqpt:advanced_config_from_json?   string
+     |     +--rw gnpyeqpt:Fiber* [type_variety]
+     |     |  +--rw gnpyeqpt:type_variety            string
+     |     |  +--rw gnpyeqpt:dispersion?             decimal64
+     |     |  +--rw gnpyeqpt:gamma?                  decimal64
+     |     |  +--rw gnpyeqpt:pmd_coef?               decimal64
+     |     |  +--rw gnpyeqpt:effective_area?         decimal64
+     |     |  +--rw gnpyeqpt:loss_coef_lut* [freq]
+     |     |  |  +--rw gnpyeqpt:freq               decimal64
+     |     |  |  +--rw gnpyeqpt:loss_coef_value?   decimal64
+     |     |  +--rw (gnpyeqpt:ref_freq_or_wl)?
+     |     |     +--:(gnpyeqpt:frequency)
+     |     |     |  +--rw gnpyeqpt:ref_frequency?    decimal64
+     |     |     +--:(gnpyeqpt:wavelength)
+     |     |        +--rw gnpyeqpt:ref_wavelength?   decimal64
+     |     +--rw gnpyeqpt:RamanFiber* [type_variety]
+     |     |  +--rw gnpyeqpt:type_variety            string
+     |     |  +--rw gnpyeqpt:dispersion?             decimal64
+     |     |  +--rw gnpyeqpt:gamma?                  decimal64
+     |     |  +--rw gnpyeqpt:pmd_coef?               decimal64
+     |     |  +--rw gnpyeqpt:effective_area?         decimal64
+     |     |  +--rw gnpyeqpt:loss_coef_lut* [freq]
+     |     |  |  +--rw gnpyeqpt:freq               decimal64
+     |     |  |  +--rw gnpyeqpt:loss_coef_value?   decimal64
+     |     |  +--rw (gnpyeqpt:ref_freq_or_wl)?
+     |     |  |  +--:(gnpyeqpt:frequency)
+     |     |  |  |  +--rw gnpyeqpt:ref_frequency?    decimal64
+     |     |  |  +--:(gnpyeqpt:wavelength)
+     |     |  |     +--rw gnpyeqpt:ref_wavelength?   decimal64
+     |     |  +--rw gnpyeqpt:raman_efficiency* [frequency_offset]
+     |     |     +--rw gnpyeqpt:cr?                 decimal64
+     |     |     +--rw gnpyeqpt:frequency_offset    decimal64
+     |     +--ro gnpyeqpt:Span* []
+     |     |  +--ro gnpyeqpt:power_mode?                        boolean
+     |     |  +--ro gnpyeqpt:delta_power_range_dict_db
+     |     |  |  +--ro gnpyeqpt:min_value?   decimal64
+     |     |  |  +--ro gnpyeqpt:max_value?   decimal64
+     |     |  |  +--ro gnpyeqpt:step?        decimal64
+     |     |  +--ro gnpyeqpt:max_length?                        decimal64
+     |     |  +--ro gnpyeqpt:max_loss?                          decimal64
+     |     |  +--ro gnpyeqpt:max_fiber_lineic_loss_for_raman?   decimal64
+     |     |  +--ro gnpyeqpt:target_extended_gain?              decimal64
+     |     |  +--ro gnpyeqpt:length_units?                      string
+     |     |  +--ro gnpyeqpt:padding?                           decimal64
+     |     |  +--ro gnpyeqpt:EOL?                               decimal64
+     |     |  +--ro gnpyeqpt:con_in?                            decimal64
+     |     |  +--ro gnpyeqpt:con_out?                           decimal64
+     |     |  +--ro gnpyeqpt:span_loss_ref?                     decimal64
+     |     |  +--ro gnpyeqpt:power_slope?                       decimal64
+     |     |  +--ro gnpyeqpt:voa_margin?                        decimal64
+     |     |  +--ro gnpyeqpt:voa_step?                          decimal64
+     |     +--rw gnpyeqpt:Roadm* [type_variety]
+     |     |  +--rw gnpyeqpt:type_variety                       string
+     |     |  +--rw (gnpyeqpt:target_type)?
+     |     |  |  +--:(gnpyeqpt:constant_power)
+     |     |  |  |  +--rw gnpyeqpt:target_pch_out_db?           decimal64
+     |     |  |  +--:(gnpyeqpt:constant_psd)
+     |     |  |  |  +--rw gnpyeqpt:target_psd_out_mWperGHz?     decimal64
+     |     |  |  +--:(gnpyeqpt:constant_psw)
+     |     |  |     +--rw gnpyeqpt:target_out_mWperSlotWidth?   decimal64
+     |     |  +--rw gnpyeqpt:add_drop_osnr?                     decimal64
+     |     |  +--rw gnpyeqpt:pmd?                               decimal64
+     |     |  +--rw gnpyeqpt:pdl?                               decimal64
+     |     |  +--rw gnpyeqpt:restrictions
+     |     |  |  +--rw gnpyeqpt:preamp_variety_list*    string
+     |     |  |  +--rw gnpyeqpt:booster_variety_list*   string
+     |     |  +--rw gnpyeqpt:roadm-path-impairments* [roadm-path-impairments-id]
+     |     |     +--rw gnpyeqpt:roadm-path-impairments-id    uint32
+     |     |     +--rw (gnpyeqpt:impairment-type)?
+     |     |        +--:(gnpyeqpt:roadm-express-path)
+     |     |        |  +--ro gnpyeqpt:roadm-express-path* []
+     |     |        |     +--ro gnpyeqpt:frequency-range
+     |     |        |     |  +--ro gnpyeqpt:lower-frequency    union
+     |     |        |     |  +--ro gnpyeqpt:upper-frequency    union
+     |     |        |     +--ro gnpyeqpt:roadm-pmd?                union
+     |     |        |     +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |     |        +--:(gnpyeqpt:roadm-add-path)
+     |     |        |  +--ro gnpyeqpt:roadm-add-path* []
+     |     |        |     +--ro gnpyeqpt:frequency-range
+     |     |        |     |  +--ro gnpyeqpt:lower-frequency    union
+     |     |        |     |  +--ro gnpyeqpt:upper-frequency    union
+     |     |        |     +--ro gnpyeqpt:roadm-pmd?                union
+     |     |        |     +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-pmax?               l0-types:power-dbm-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-osnr?               l0-types:snr-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-noise-figure?       l0-types:decimal-5-or-null
+     |     |        +--:(gnpyeqpt:roadm-drop-path)
+     |     |           +--ro gnpyeqpt:roadm-drop-path* []
+     |     |              +--ro gnpyeqpt:frequency-range
+     |     |              |  +--ro gnpyeqpt:lower-frequency    union
+     |     |              |  +--ro gnpyeqpt:upper-frequency    union
+     |     |              +--ro gnpyeqpt:roadm-pmd?                union
+     |     |              +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |     |              +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |     |              +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |     |              +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |     |              +--ro gnpyeqpt:roadm-minloss?            l0-types:power-loss-or-null
+     |     |              +--ro gnpyeqpt:roadm-typloss?            l0-types:power-loss-or-null
+     |     |              +--ro gnpyeqpt:roadm-pmin?               l0-types:power-dbm-or-null
+     |     |              +--ro gnpyeqpt:roadm-pmax?               l0-types:power-dbm-or-null
+     |     |              +--ro gnpyeqpt:roadm-ptyp?               l0-types:power-dbm-or-null
+     |     |              +--ro gnpyeqpt:roadm-osnr?               l0-types:snr-or-null
+     |     |              +--ro gnpyeqpt:roadm-noise-figure?       l0-types:decimal-5-or-null
+     |     +--ro gnpyeqpt:SI* []
+     |     |  +--ro gnpyeqpt:f_min?                             decimal64
+     |     |  +--ro gnpyeqpt:f_max?                             decimal64
+     |     |  +--ro gnpyeqpt:spacing?                           decimal64
+     |     |  +--ro gnpyeqpt:power_dbm?                         decimal64
+     |     |  +--ro gnpyeqpt:power_range_dict_db
+     |     |  |  +--ro gnpyeqpt:min_value?   decimal64
+     |     |  |  +--ro gnpyeqpt:max_value?   decimal64
+     |     |  |  +--ro gnpyeqpt:step?        decimal64
+     |     |  +--ro gnpyeqpt:type_variety?                      string
+     |     |  +--ro gnpyeqpt:sys_margins?                       decimal64
+     |     |  +--ro gnpyeqpt:use_si_channel_count_for_design?   boolean
+     |     |  +--ro gnpyeqpt:baud_rate?                         decimal64
+     |     |  +--ro gnpyeqpt:tx_osnr?                           decimal64
+     |     |  +--ro gnpyeqpt:roll_off?                          union
+     |     |  +--ro gnpyeqpt:tx_power_dbm?                      decimal64
+     |     +--rw gnpyeqpt:Transceiver* [type_variety]
+     |        +--rw gnpyeqpt:type_variety    string
+     |        +--rw gnpyeqpt:other_name*     string
+     |        +--rw gnpyeqpt:comment?        string
+     |        +--rw gnpyeqpt:frequency
+     |        |  +--rw gnpyeqpt:min?   decimal64
+     |        |  +--rw gnpyeqpt:max?   decimal64
+     |        +--rw gnpyeqpt:mode* [format]
+     |           +--rw gnpyeqpt:format                    string
+     |           +--rw gnpyeqpt:other_name*               string
+     |           +--rw gnpyeqpt:OSNR?                     decimal64
+     |           +--rw gnpyeqpt:min_spacing?              decimal64
+     |           +--rw gnpyeqpt:bit_rate?                 decimal64
+     |           +--rw gnpyeqpt:cost?                     decimal64
+     |           +--rw gnpyeqpt:baud_rate?                decimal64
+     |           +--rw gnpyeqpt:tx_osnr?                  decimal64
+     |           +--rw gnpyeqpt:roll_off?                 union
+     |           +--rw gnpyeqpt:tx_power_dbm?             decimal64
+     |           +--ro gnpyeqpt:penalties* []
+     |           |  +--ro gnpyeqpt:chromatic_dispersion?     decimal64
+     |           |  +--ro gnpyeqpt:pmd?                      decimal64
+     |           |  +--ro gnpyeqpt:pdl?                      decimal64
+     |           |  +--ro gnpyeqpt:rx-channel-power-value?   decimal64
+     |           |  +--ro gnpyeqpt:penalty_value?            decimal64
+     |           +--rw gnpyeqpt:equalization_offset_db?   decimal64
+     |           +--rw gnpyeqpt:tx-channel-power-min?     decimal64
+     |           +--rw gnpyeqpt:tx-channel-power-max?     decimal64
+     |           +--rw gnpyeqpt:rx-channel-power-min?     decimal64
+     |           +--rw gnpyeqpt:rx-channel-power-max?     decimal64
+     +--rw gnpyeqpt:equipment
+     |  +--rw gnpyeqpt:library-information
+     |  |  +--rw gnpyeqpt:name?             string
+     |  |  +--rw gnpyeqpt:content-schema
+     |  |  |  +--rw gnpyeqpt:module*   module-with-revision-date
+     |  |  +--rw gnpyeqpt:description*      string
+     |  |  +--rw gnpyeqpt:contact*          string
+     |  |  +--rw gnpyeqpt:organization?     string
+     |  |  +--rw gnpyeqpt:revision* [date]
+     |  |     +--rw gnpyeqpt:date           string
+     |  |     +--rw gnpyeqpt:description?   string
+     |  +--rw gnpyeqpt:Edfa* [type_variety]
+     |  |  +--rw gnpyeqpt:type_variety                       string
+     |  |  +--rw gnpyeqpt:other_name*                        string
+     |  |  +--rw gnpyeqpt:f_min?                             decimal64
+     |  |  +--rw gnpyeqpt:f_max?                             decimal64
+     |  |  +--rw gnpyeqpt:allowed_for_design?                boolean
+     |  |  +--rw gnpyeqpt:gain_flatmax?                      decimal64
+     |  |  +--rw gnpyeqpt:gain_min?                          decimal64
+     |  |  +--rw gnpyeqpt:extended_gain_range?               decimal64
+     |  |  +--rw gnpyeqpt:p_max?                             decimal64
+     |  |  +--rw gnpyeqpt:type_def?                          identityref
+     |  |  +--rw gnpyeqpt:raman?                             boolean
+     |  |  +--rw gnpyeqpt:out_voa_auto?                      boolean
+     |  |  +--rw gnpyeqpt:in_voa_auto?                       boolean
+     |  |  +--rw gnpyeqpt:voa_step?                          decimal64
+     |  |  +--rw gnpyeqpt:pmd?                               decimal64
+     |  |  +--rw gnpyeqpt:pdl?                               decimal64
+     |  |  +--rw (gnpyeqpt:type_of_model)?
+     |  |     +--:(gnpyeqpt:variable_gain)
+     |  |     |  +--rw gnpyeqpt:nf_min?                      decimal64
+     |  |     |  +--rw gnpyeqpt:nf_max?                      decimal64
+     |  |     |  +--rw gnpyeqpt:default_config_from_json?    string
+     |  |     +--:(gnpyeqpt:fixed_gain)
+     |  |     |  +--rw gnpyeqpt:nf0?                         decimal64
+     |  |     +--:(gnpyeqpt:openroadm)
+     |  |     |  +--rw gnpyeqpt:nf_coef* [coef_order]
+     |  |     |     +--rw gnpyeqpt:coef_order    uint8
+     |  |     |     +--rw gnpyeqpt:nf_coef?      decimal64
+     |  |     +--:(gnpyeqpt:dual_stage)
+     |  |     |  +--rw gnpyeqpt:preamp_variety?              union
+     |  |     |  +--rw gnpyeqpt:booster_variety?             union
+     |  |     +--:(gnpyeqpt:multi_band)
+     |  |     |  +--rw gnpyeqpt:amplifiers*                  string
+     |  |     +--:(gnpyeqpt:advanced_model)
+     |  |        +--rw gnpyeqpt:advanced_config_from_json?   string
+     |  +--rw gnpyeqpt:Fiber* [type_variety]
+     |  |  +--rw gnpyeqpt:type_variety            string
+     |  |  +--rw gnpyeqpt:dispersion?             decimal64
+     |  |  +--rw gnpyeqpt:gamma?                  decimal64
+     |  |  +--rw gnpyeqpt:pmd_coef?               decimal64
+     |  |  +--rw gnpyeqpt:effective_area?         decimal64
+     |  |  +--rw gnpyeqpt:loss_coef_lut* [freq]
+     |  |  |  +--rw gnpyeqpt:freq               decimal64
+     |  |  |  +--rw gnpyeqpt:loss_coef_value?   decimal64
+     |  |  +--rw (gnpyeqpt:ref_freq_or_wl)?
+     |  |     +--:(gnpyeqpt:frequency)
+     |  |     |  +--rw gnpyeqpt:ref_frequency?    decimal64
+     |  |     +--:(gnpyeqpt:wavelength)
+     |  |        +--rw gnpyeqpt:ref_wavelength?   decimal64
+     |  +--rw gnpyeqpt:RamanFiber* [type_variety]
+     |  |  +--rw gnpyeqpt:type_variety            string
+     |  |  +--rw gnpyeqpt:dispersion?             decimal64
+     |  |  +--rw gnpyeqpt:gamma?                  decimal64
+     |  |  +--rw gnpyeqpt:pmd_coef?               decimal64
+     |  |  +--rw gnpyeqpt:effective_area?         decimal64
+     |  |  +--rw gnpyeqpt:loss_coef_lut* [freq]
+     |  |  |  +--rw gnpyeqpt:freq               decimal64
+     |  |  |  +--rw gnpyeqpt:loss_coef_value?   decimal64
+     |  |  +--rw (gnpyeqpt:ref_freq_or_wl)?
+     |  |  |  +--:(gnpyeqpt:frequency)
+     |  |  |  |  +--rw gnpyeqpt:ref_frequency?    decimal64
+     |  |  |  +--:(gnpyeqpt:wavelength)
+     |  |  |     +--rw gnpyeqpt:ref_wavelength?   decimal64
+     |  |  +--rw gnpyeqpt:raman_efficiency* [frequency_offset]
+     |  |     +--rw gnpyeqpt:cr?                 decimal64
+     |  |     +--rw gnpyeqpt:frequency_offset    decimal64
+     |  +--ro gnpyeqpt:Span* []
+     |  |  +--ro gnpyeqpt:power_mode?                        boolean
+     |  |  +--ro gnpyeqpt:delta_power_range_dict_db
+     |  |  |  +--ro gnpyeqpt:min_value?   decimal64
+     |  |  |  +--ro gnpyeqpt:max_value?   decimal64
+     |  |  |  +--ro gnpyeqpt:step?        decimal64
+     |  |  +--ro gnpyeqpt:max_length?                        decimal64
+     |  |  +--ro gnpyeqpt:max_loss?                          decimal64
+     |  |  +--ro gnpyeqpt:max_fiber_lineic_loss_for_raman?   decimal64
+     |  |  +--ro gnpyeqpt:target_extended_gain?              decimal64
+     |  |  +--ro gnpyeqpt:length_units?                      string
+     |  |  +--ro gnpyeqpt:padding?                           decimal64
+     |  |  +--ro gnpyeqpt:EOL?                               decimal64
+     |  |  +--ro gnpyeqpt:con_in?                            decimal64
+     |  |  +--ro gnpyeqpt:con_out?                           decimal64
+     |  |  +--ro gnpyeqpt:span_loss_ref?                     decimal64
+     |  |  +--ro gnpyeqpt:power_slope?                       decimal64
+     |  |  +--ro gnpyeqpt:voa_margin?                        decimal64
+     |  |  +--ro gnpyeqpt:voa_step?                          decimal64
+     |  +--rw gnpyeqpt:Roadm* [type_variety]
+     |  |  +--rw gnpyeqpt:type_variety                       string
+     |  |  +--rw (gnpyeqpt:target_type)?
+     |  |  |  +--:(gnpyeqpt:constant_power)
+     |  |  |  |  +--rw gnpyeqpt:target_pch_out_db?           decimal64
+     |  |  |  +--:(gnpyeqpt:constant_psd)
+     |  |  |  |  +--rw gnpyeqpt:target_psd_out_mWperGHz?     decimal64
+     |  |  |  +--:(gnpyeqpt:constant_psw)
+     |  |  |     +--rw gnpyeqpt:target_out_mWperSlotWidth?   decimal64
+     |  |  +--rw gnpyeqpt:add_drop_osnr?                     decimal64
+     |  |  +--rw gnpyeqpt:pmd?                               decimal64
+     |  |  +--rw gnpyeqpt:pdl?                               decimal64
+     |  |  +--rw gnpyeqpt:restrictions
+     |  |  |  +--rw gnpyeqpt:preamp_variety_list*    string
+     |  |  |  +--rw gnpyeqpt:booster_variety_list*   string
+     |  |  +--rw gnpyeqpt:roadm-path-impairments* [roadm-path-impairments-id]
+     |  |     +--rw gnpyeqpt:roadm-path-impairments-id    uint32
+     |  |     +--rw (gnpyeqpt:impairment-type)?
+     |  |        +--:(gnpyeqpt:roadm-express-path)
+     |  |        |  +--ro gnpyeqpt:roadm-express-path* []
+     |  |        |     +--ro gnpyeqpt:frequency-range
+     |  |        |     |  +--ro gnpyeqpt:lower-frequency    union
+     |  |        |     |  +--ro gnpyeqpt:upper-frequency    union
+     |  |        |     +--ro gnpyeqpt:roadm-pmd?                union
+     |  |        |     +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |  |        +--:(gnpyeqpt:roadm-add-path)
+     |  |        |  +--ro gnpyeqpt:roadm-add-path* []
+     |  |        |     +--ro gnpyeqpt:frequency-range
+     |  |        |     |  +--ro gnpyeqpt:lower-frequency    union
+     |  |        |     |  +--ro gnpyeqpt:upper-frequency    union
+     |  |        |     +--ro gnpyeqpt:roadm-pmd?                union
+     |  |        |     +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-pmax?               l0-types:power-dbm-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-osnr?               l0-types:snr-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-noise-figure?       l0-types:decimal-5-or-null
+     |  |        +--:(gnpyeqpt:roadm-drop-path)
+     |  |           +--ro gnpyeqpt:roadm-drop-path* []
+     |  |              +--ro gnpyeqpt:frequency-range
+     |  |              |  +--ro gnpyeqpt:lower-frequency    union
+     |  |              |  +--ro gnpyeqpt:upper-frequency    union
+     |  |              +--ro gnpyeqpt:roadm-pmd?                union
+     |  |              +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |  |              +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |  |              +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |  |              +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |  |              +--ro gnpyeqpt:roadm-minloss?            l0-types:power-loss-or-null
+     |  |              +--ro gnpyeqpt:roadm-typloss?            l0-types:power-loss-or-null
+     |  |              +--ro gnpyeqpt:roadm-pmin?               l0-types:power-dbm-or-null
+     |  |              +--ro gnpyeqpt:roadm-pmax?               l0-types:power-dbm-or-null
+     |  |              +--ro gnpyeqpt:roadm-ptyp?               l0-types:power-dbm-or-null
+     |  |              +--ro gnpyeqpt:roadm-osnr?               l0-types:snr-or-null
+     |  |              +--ro gnpyeqpt:roadm-noise-figure?       l0-types:decimal-5-or-null
+     |  +--ro gnpyeqpt:SI* []
+     |  |  +--ro gnpyeqpt:f_min?                             decimal64
+     |  |  +--ro gnpyeqpt:f_max?                             decimal64
+     |  |  +--ro gnpyeqpt:spacing?                           decimal64
+     |  |  +--ro gnpyeqpt:power_dbm?                         decimal64
+     |  |  +--ro gnpyeqpt:power_range_dict_db
+     |  |  |  +--ro gnpyeqpt:min_value?   decimal64
+     |  |  |  +--ro gnpyeqpt:max_value?   decimal64
+     |  |  |  +--ro gnpyeqpt:step?        decimal64
+     |  |  +--ro gnpyeqpt:type_variety?                      string
+     |  |  +--ro gnpyeqpt:sys_margins?                       decimal64
+     |  |  +--ro gnpyeqpt:use_si_channel_count_for_design?   boolean
+     |  |  +--ro gnpyeqpt:baud_rate?                         decimal64
+     |  |  +--ro gnpyeqpt:tx_osnr?                           decimal64
+     |  |  +--ro gnpyeqpt:roll_off?                          union
+     |  |  +--ro gnpyeqpt:tx_power_dbm?                      decimal64
+     |  +--rw gnpyeqpt:Transceiver* [type_variety]
+     |     +--rw gnpyeqpt:type_variety    string
+     |     +--rw gnpyeqpt:other_name*     string
+     |     +--rw gnpyeqpt:comment?        string
+     |     +--rw gnpyeqpt:frequency
+     |     |  +--rw gnpyeqpt:min?   decimal64
+     |     |  +--rw gnpyeqpt:max?   decimal64
+     |     +--rw gnpyeqpt:mode* [format]
+     |        +--rw gnpyeqpt:format                    string
+     |        +--rw gnpyeqpt:other_name*               string
+     |        +--rw gnpyeqpt:OSNR?                     decimal64
+     |        +--rw gnpyeqpt:min_spacing?              decimal64
+     |        +--rw gnpyeqpt:bit_rate?                 decimal64
+     |        +--rw gnpyeqpt:cost?                     decimal64
+     |        +--rw gnpyeqpt:baud_rate?                decimal64
+     |        +--rw gnpyeqpt:tx_osnr?                  decimal64
+     |        +--rw gnpyeqpt:roll_off?                 union
+     |        +--rw gnpyeqpt:tx_power_dbm?             decimal64
+     |        +--ro gnpyeqpt:penalties* []
+     |        |  +--ro gnpyeqpt:chromatic_dispersion?     decimal64
+     |        |  +--ro gnpyeqpt:pmd?                      decimal64
+     |        |  +--ro gnpyeqpt:pdl?                      decimal64
+     |        |  +--ro gnpyeqpt:rx-channel-power-value?   decimal64
+     |        |  +--ro gnpyeqpt:penalty_value?            decimal64
+     |        +--rw gnpyeqpt:equalization_offset_db?   decimal64
+     |        +--rw gnpyeqpt:tx-channel-power-min?     decimal64
+     |        +--rw gnpyeqpt:tx-channel-power-max?     decimal64
+     |        +--rw gnpyeqpt:rx-channel-power-min?     decimal64
+     |        +--rw gnpyeqpt:rx-channel-power-max?     decimal64
+     +--rw gnpynt:topology
+     |  +--rw gnpynt:elements* [uid]
+     |  |  +--rw gnpynt:uid                 string
+     |  |  +--rw gnpynt:type                identityref
+     |  |  +--rw gnpynt:type_variety?       string
+     |  |  +--rw gnpynt:metadata
+     |  |  |  +--rw gnpynt:location
+     |  |  |     +--rw gnpynt:city?        union
+     |  |  |     +--rw gnpynt:region?      union
+     |  |  |     +--rw gnpynt:latitude?    Coordinate
+     |  |  |     +--rw gnpynt:longitude?   Coordinate
+     |  |  +--rw gnpynt:operational
+     |  |  |  +--rw (gnpynt:ramanfiber)?
+     |  |  |     +--:(gnpynt:RamanFiber)
+     |  |  |     |  +--rw gnpynt:temperature?   decimal64
+     |  |  |     |  +--rw gnpynt:raman_pumps* [frequency]
+     |  |  |     |     +--rw gnpynt:power?                   decimal64
+     |  |  |     |     +--rw gnpynt:frequency                decimal64
+     |  |  |     |     +--rw gnpynt:propagation_direction?   identityref
+     |  |  |     +--:(gnpynt:Edfa)
+     |  |  |        +--rw gnpynt:gain_target?   union
+     |  |  |        +--rw gnpynt:tilt_target?   union
+     |  |  |        +--rw gnpynt:out_voa?       union
+     |  |  |        +--rw gnpynt:in_voa?        union
+     |  |  |        +--rw gnpynt:delta_p?       union
+     |  |  |        +--rw gnpynt:f_min?         decimal64
+     |  |  |        +--rw gnpynt:f_max?         decimal64
+     |  |  +--rw (gnpynt:element-type)?
+     |  |     +--:(gnpynt:FiberRoadm)
+     |  |     |  +--rw gnpynt:params
+     |  |     |     +--rw (gnpynt:fiberroadmfused)?
+     |  |     |        +--:(gnpynt:Fiber)
+     |  |     |        |  +--rw gnpynt:length                                   decimal64
+     |  |     |        |  +--rw gnpynt:pmd_coef?                                decimal64
+     |  |     |        |  +--rw (gnpynt:ref_freq_or_wl)?
+     |  |     |        |  |  +--:(gnpynt:frequency)
+     |  |     |        |  |  |  +--rw gnpynt:ref_frequency?                     decimal64
+     |  |     |        |  |  +--:(gnpynt:wavelength)
+     |  |     |        |  |     +--rw gnpynt:ref_wavelength?                    decimal64
+     |  |     |        |  +--rw (gnpynt:dispersion-vector-or-scalar)?
+     |  |     |        |  |  +--:(gnpynt:scalar)
+     |  |     |        |  |  |  +--rw gnpynt:dispersion?                        decimal64
+     |  |     |        |  |  |  +--rw gnpynt:dispersion_slope?                  decimal64
+     |  |     |        |  |  +--:(gnpynt:vector)
+     |  |     |        |  |     +--rw gnpynt:dispersion_per_frequency* [frequency]
+     |  |     |        |  |        +--rw gnpynt:frequency     decimal64
+     |  |     |        |  |        +--rw gnpynt:dispersion?   decimal64
+     |  |     |        |  +--rw gnpynt:effective_area?                          decimal64
+     |  |     |        |  +--rw gnpynt:gamma?                                   decimal64
+     |  |     |        |  +--rw gnpynt:raman_coefficient
+     |  |     |        |  |  +--rw gnpynt:reference_frequency?   decimal64
+     |  |     |        |  |  +--rw gnpynt:g0_per_frequency* [frequency_offset]
+     |  |     |        |  |     +--rw gnpynt:frequency_offset    decimal64
+     |  |     |        |  |     +--rw gnpynt:g0?                 decimal64
+     |  |     |        |  +--rw gnpynt:lumped_losses* [position]
+     |  |     |        |  |  +--rw gnpynt:position    decimal64
+     |  |     |        |  |  +--rw gnpynt:loss        decimal64
+     |  |     |        |  +--rw (gnpynt:loss_coef-vector-or-scalar)?
+     |  |     |        |  |  +--:(gnpynt:scalar)
+     |  |     |        |  |  |  +--rw gnpynt:loss_coef                          decimal64
+     |  |     |        |  |  +--:(gnpynt:vector)
+     |  |     |        |  |     +--rw gnpynt:loss_coef_per_frequency* [frequency]
+     |  |     |        |  |        +--rw gnpynt:frequency          decimal64
+     |  |     |        |  |        +--rw gnpynt:loss_coef_value?   decimal64
+     |  |     |        |  +--rw gnpynt:length_units                             identityref
+     |  |     |        |  +--rw gnpynt:att_in?                                  decimal64
+     |  |     |        |  +--rw gnpynt:con_in?                                  union
+     |  |     |        |  +--rw gnpynt:con_out?                                 union
+     |  |     |        +--:(gnpynt:RoadmTransceiver)
+     |  |     |        |  +--rw gnpynt:design_bands* [f_min]
+     |  |     |        |  |  +--rw gnpynt:f_min                       decimal64
+     |  |     |        |  |  +--rw gnpynt:f_max?                      decimal64
+     |  |     |        |  |  +--rw (gnpynt:parameter-used-for-design)?
+     |  |     |        |  |     +--:(gnpynt:spacing)
+     |  |     |        |  |     |  +--rw gnpynt:spacing?              decimal64
+     |  |     |        |  |     +--:(gnpynt:number-of-channels)
+     |  |     |        |  |        +--rw gnpynt:number-of-channels?   uint16
+     |  |     |        |  +--rw gnpynt:per_degree_design_bands_targets* [degree_uid]
+     |  |     |        |  |  +--rw gnpynt:degree_uid      -> ../../../../elements/uid
+     |  |     |        |  |  +--rw gnpynt:design_bands* [f_min]
+     |  |     |        |  |     +--rw gnpynt:f_min                       decimal64
+     |  |     |        |  |     +--rw gnpynt:f_max?                      decimal64
+     |  |     |        |  |     +--rw (gnpynt:parameter-used-for-design)?
+     |  |     |        |  |        +--:(gnpynt:spacing)
+     |  |     |        |  |        |  +--rw gnpynt:spacing?              decimal64
+     |  |     |        |  |        +--:(gnpynt:number-of-channels)
+     |  |     |        |  |           +--rw gnpynt:number-of-channels?   uint16
+     |  |     |        |  +--rw (gnpynt:roadm)?
+     |  |     |        |     +--:(gnpynt:roadm)
+     |  |     |        |        +--rw (gnpynt:target_type)?
+     |  |     |        |        |  +--:(gnpynt:constant_power)
+     |  |     |        |        |  |  +--rw gnpynt:target_pch_out_db?           decimal64
+     |  |     |        |        |  +--:(gnpynt:constant_psd)
+     |  |     |        |        |  |  +--rw gnpynt:target_psd_out_mWperGHz?     decimal64
+     |  |     |        |        |  +--:(gnpynt:constant_psw)
+     |  |     |        |        |     +--rw gnpynt:target_out_mWperSlotWidth?   decimal64
+     |  |     |        |        +--rw gnpynt:restrictions
+     |  |     |        |        |  +--rw gnpynt:preamp_variety_list*    string
+     |  |     |        |        |  +--rw gnpynt:booster_variety_list*   string
+     |  |     |        |        +--rw gnpynt:per_degree_power_targets* [degree_uid]
+     |  |     |        |        |  +--rw gnpynt:degree_uid                                 -> ../../../../elements/uid
+     |  |     |        |        |  +--rw (gnpynt:per_degree_target_type)?
+     |  |     |        |        |     +--:(gnpynt:constant_power)
+     |  |     |        |        |     |  +--rw gnpynt:per_degree_pch_out_db?               decimal64
+     |  |     |        |        |     +--:(gnpynt:constant_psd)
+     |  |     |        |        |     |  +--rw gnpynt:per_degree_psd_out_mWperGHz?         decimal64
+     |  |     |        |        |     +--:(gnpynt:constant_psw)
+     |  |     |        |        |        +--rw gnpynt:per_degree_psd_out_mWperSlotWidth?   decimal64
+     |  |     |        |        +--rw gnpynt:per_degree_impairments* [from_degree to_degree]
+     |  |     |        |           +--rw gnpynt:from_degree      -> ../../../../elements/uid
+     |  |     |        |           +--rw gnpynt:to_degree        -> ../../../../elements/uid
+     |  |     |        |           +--rw gnpynt:impairment_id?   uint32
+     |  |     |        +--:(gnpynt:Fused)
+     |  |     |        |  +--rw gnpynt:loss?                                    union
+     |  |     |        +--:(gnpynt:Multiband_amplifier)
+     |  |     |           +--rw gnpynt:variety_list*                            string
+     |  |     +--:(gnpynt:Multiband_amplifier)
+     |  |        +--rw gnpynt:amplifiers* [type_variety]
+     |  |           +--rw gnpynt:type_variety    string
+     |  |           +--rw gnpynt:operational
+     |  |              +--rw gnpynt:gain_target?   union
+     |  |              +--rw gnpynt:tilt_target?   union
+     |  |              +--rw gnpynt:out_voa?       union
+     |  |              +--rw gnpynt:in_voa?        union
+     |  |              +--rw gnpynt:delta_p?       union
+     |  |              +--rw gnpynt:f_min?         decimal64
+     |  |              +--rw gnpynt:f_max?         decimal64
+     |  +--rw gnpynt:connections* [from_node to_node]
+     |  |  +--rw gnpynt:from_node    -> ../../elements/uid
+     |  |  +--rw gnpynt:to_node      -> ../../elements/uid
+     |  +--rw gnpynt:network_name?   string
+     +--rw gnpypc:services
+     |  +--rw gnpypc:path-request* [request-id]
+     |  |  +--rw gnpypc:request-id                string
+     |  |  +--rw gnpypc:bidirectional             boolean
+     |  |  +--rw gnpypc:source?                   string
+     |  |  +--rw gnpypc:destination?              string
+     |  |  +--rw gnpypc:src-tp-id?                string
+     |  |  +--rw gnpypc:dst-tp-id?                string
+     |  |  +--rw gnpypc:explicit-route-objects
+     |  |  |  +--ro gnpypc:route-object-include-exclude* [index]
+     |  |  |     +--ro gnpypc:explicit-route-usage?      identityref
+     |  |  |     +--ro gnpypc:index                      uint32
+     |  |  |     +--ro (gnpypc:subobject-type)?
+     |  |  |        +--:(gnpypc:num-unnum-hop)
+     |  |  |        |  +--ro gnpypc:num-unnum-hop
+     |  |  |        |     +--ro gnpypc:node-id?      string
+     |  |  |        |     +--ro gnpypc:link-tp-id?   string
+     |  |  |        |     +--ro gnpypc:hop-type?     te-hop-type
+     |  |  |        +--:(gnpypc:label)
+     |  |  |        |  +--ro gnpypc:label-hop* [N]
+     |  |  |        |     +--ro gnpypc:N    union
+     |  |  |        |     +--ro gnpypc:M?   union
+     |  |  |        +--:(gnpypc:hop-attribute)
+     |  |  |           +--ro (gnpypc:hop-type)?
+     |  |  |              +--:(gnpypc:tsp)
+     |  |  |              |  +--ro gnpypc:transponder
+     |  |  |              |     +--ro gnpypc:transponder-type?   string
+     |  |  |              |     +--ro gnpypc:transponder-mode?   string
+     |  |  |              +--:(gnpypc:regen)
+     |  |  |                 +--ro gnpypc:regenerator
+     |  |  |                    +--ro gnpypc:transponder-type?   string
+     |  |  |                    +--ro gnpypc:transponder-mode?   string
+     |  |  +--rw gnpypc:path-constraints
+     |  |     +--rw gnpypc:te-bandwidth
+     |  |        +--rw gnpypc:technology?            string
+     |  |        +--rw gnpypc:trx_type               string
+     |  |        +--rw gnpypc:trx_mode?              union
+     |  |        +--rw gnpypc:effective-freq-slot* [N]
+     |  |        |  +--rw gnpypc:N    union
+     |  |        |  +--rw gnpypc:M?   union
+     |  |        +--rw gnpypc:spacing                decimal64
+     |  |        +--rw gnpypc:max-nb-of-channel?     union
+     |  |        +--rw gnpypc:output-power?          union
+     |  |        +--rw gnpypc:tx_power?              union
+     |  |        +--rw gnpypc:path_bandwidth         decimal64
+     |  +--rw gnpypc:synchronization* [synchronization-id]
+     |     +--rw gnpypc:synchronization-id    string
+     |     +--rw gnpypc:svec
+     |        +--rw gnpypc:relaxable?           boolean
+     |        +--rw gnpypc:disjointness?        te-path-disjointness
+     |        +--rw gnpypc:request-id-number*   string
+     +--rw gnpypc:responses
+     |  +--rw gnpypc:response* [response-id]
+     |     +--rw gnpypc:response-id        string
+     |     +--rw gnpypc:path-properties
+     |     |  +--rw gnpypc:path-metric* [metric-type]
+     |     |  |  +--rw gnpypc:metric-type           identityref
+     |     |  |  +--rw gnpypc:accumulative-value?   union
+     |     |  +--rw gnpypc:z-a-path-metric* [metric-type]
+     |     |  |  +--rw gnpypc:metric-type           identityref
+     |     |  |  +--rw gnpypc:accumulative-value?   union
+     |     |  +--ro gnpypc:path-route-objects* []
+     |     |     +--ro gnpypc:path-route-object
+     |     |        +--ro gnpypc:index?                     uint32
+     |     |        +--ro (gnpypc:subobject-type)?
+     |     |           +--:(gnpypc:num-unnum-hop)
+     |     |           |  +--ro gnpypc:num-unnum-hop
+     |     |           |     +--ro gnpypc:node-id?      string
+     |     |           |     +--ro gnpypc:link-tp-id?   string
+     |     |           |     +--ro gnpypc:hop-type?     te-hop-type
+     |     |           +--:(gnpypc:label)
+     |     |           |  +--ro gnpypc:label-hop* [N]
+     |     |           |     +--ro gnpypc:N    union
+     |     |           |     +--ro gnpypc:M?   union
+     |     |           +--:(gnpypc:hop-attribute)
+     |     |              +--ro (gnpypc:hop-type)?
+     |     |                 +--:(gnpypc:tsp)
+     |     |                 |  +--ro gnpypc:transponder
+     |     |                 |     +--ro gnpypc:transponder-type?   string
+     |     |                 |     +--ro gnpypc:transponder-mode?   string
+     |     |                 +--:(gnpypc:regen)
+     |     |                    +--ro gnpypc:regenerator
+     |     |                       +--ro gnpypc:transponder-type?   string
+     |     |                       +--ro gnpypc:transponder-mode?   string
+     |     +--rw gnpypc:no-path
+     |        +--rw gnpypc:no-path?           identityref
+     |        +--rw gnpypc:path-properties
+     |           +--rw gnpypc:path-metric* [metric-type]
+     |           |  +--rw gnpypc:metric-type           identityref
+     |           |  +--rw gnpypc:accumulative-value?   union
+     |           +--rw gnpypc:z-a-path-metric* [metric-type]
+     |           |  +--rw gnpypc:metric-type           identityref
+     |           |  +--rw gnpypc:accumulative-value?   union
+     |           +--ro gnpypc:path-route-objects* []
+     |              +--ro gnpypc:path-route-object
+     |                 +--ro gnpypc:index?                     uint32
+     |                 +--ro (gnpypc:subobject-type)?
+     |                    +--:(gnpypc:num-unnum-hop)
+     |                    |  +--ro gnpypc:num-unnum-hop
+     |                    |     +--ro gnpypc:node-id?      string
+     |                    |     +--ro gnpypc:link-tp-id?   string
+     |                    |     +--ro gnpypc:hop-type?     te-hop-type
+     |                    +--:(gnpypc:label)
+     |                    |  +--ro gnpypc:label-hop* [N]
+     |                    |     +--ro gnpypc:N    union
+     |                    |     +--ro gnpypc:M?   union
+     |                    +--:(gnpypc:hop-attribute)
+     |                       +--ro (gnpypc:hop-type)?
+     |                          +--:(gnpypc:tsp)
+     |                          |  +--ro gnpypc:transponder
+     |                          |     +--ro gnpypc:transponder-type?   string
+     |                          |     +--ro gnpypc:transponder-mode?   string
+     |                          +--:(gnpypc:regen)
+     |                             +--ro gnpypc:regenerator
+     |                                +--ro gnpypc:transponder-type?   string
+     |                                +--ro gnpypc:transponder-mode?   string
+     +--rw sim-params:sim-params
+     |  +--rw sim-params:raman_params
+     |  |  +--rw sim-params:flag?                        boolean
+     |  |  +--rw sim-params:order?                       uint16
+     |  |  +--rw sim-params:method?                      identityref
+     |  |  +--rw sim-params:result_spatial_resolution?   decimal64
+     |  |  +--rw sim-params:solver_spatial_resolution?   decimal64
+     |  +--rw sim-params:nli_params
+     |     +--rw sim-params:method?                              identityref
+     |     +--rw sim-params:dispersion_tolerance?                decimal64
+     |     +--rw sim-params:phase_shift_tolerance?               decimal64
+     |     +--rw (sim-params:computation)?
+     |        +--:(sim-params:explicit-channels)
+     |        |  +--rw sim-params:computed_channels*             uint16
+     |        +--:(sim-params:nb_of_channels)
+     |           +--rw sim-params:computed_number_of_channels?   uint16
+     +--rw spectrum:spectrum* [f_min]
+        +--rw spectrum:f_min           decimal64
+        +--rw spectrum:f_max           decimal64
+        +--rw spectrum:slot_width      decimal64
+        +--rw spectrum:delta_pdb?      decimal64
+        +--rw spectrum:baud_rate?      decimal64
+        +--rw spectrum:tx_osnr?        decimal64
+        +--rw spectrum:roll_off?       union
+        +--rw spectrum:tx_power_dbm?   decimal64
+        +--rw spectrum:label?          string
+
+module: gnpy-edfa-config
+  +--rw edfa-config
+     +--rw f_min           decimal64
+     +--rw f_max           decimal64
+     +--ro nf_ripple*      decimal64
+     +--ro dgt*            decimal64
+     +--ro gain_ripple*    decimal64
+     +--ro nf_fit_coeff* [coef_order]
+        +--ro coef_order    uint8
+        +--ro nf_coef?      decimal64
+
+module: gnpy-eqpt-config
+  +--rw equipment
+     +--rw library-information
+     |  +--rw name?             string
+     |  +--rw content-schema
+     |  |  +--rw module*   module-with-revision-date
+     |  +--rw description*      string
+     |  +--rw contact*          string
+     |  +--rw organization?     string
+     |  +--rw revision* [date]
+     |     +--rw date           string
+     |     +--rw description?   string
+     +--rw Edfa* [type_variety]
+     |  +--rw type_variety                       string
+     |  +--rw other_name*                        string
+     |  +--rw f_min?                             decimal64
+     |  +--rw f_max?                             decimal64
+     |  +--rw allowed_for_design?                boolean
+     |  +--rw gain_flatmax?                      decimal64
+     |  +--rw gain_min?                          decimal64
+     |  +--rw extended_gain_range?               decimal64
+     |  +--rw p_max?                             decimal64
+     |  +--rw type_def?                          identityref
+     |  +--rw raman?                             boolean
+     |  +--rw out_voa_auto?                      boolean
+     |  +--rw in_voa_auto?                       boolean
+     |  +--rw voa_step?                          decimal64
+     |  +--rw pmd?                               decimal64
+     |  +--rw pdl?                               decimal64
+     |  +--rw (type_of_model)?
+     |     +--:(variable_gain)
+     |     |  +--rw nf_min?                      decimal64
+     |     |  +--rw nf_max?                      decimal64
+     |     |  +--rw default_config_from_json?    string
+     |     +--:(fixed_gain)
+     |     |  +--rw nf0?                         decimal64
+     |     +--:(openroadm)
+     |     |  +--rw nf_coef* [coef_order]
+     |     |     +--rw coef_order    uint8
+     |     |     +--rw nf_coef?      decimal64
+     |     +--:(dual_stage)
+     |     |  +--rw preamp_variety?              union
+     |     |  +--rw booster_variety?             union
+     |     +--:(multi_band)
+     |     |  +--rw amplifiers*                  string
+     |     +--:(advanced_model)
+     |        +--rw advanced_config_from_json?   string
+     +--rw Fiber* [type_variety]
+     |  +--rw type_variety            string
+     |  +--rw dispersion?             decimal64
+     |  +--rw gamma?                  decimal64
+     |  +--rw pmd_coef?               decimal64
+     |  +--rw effective_area?         decimal64
+     |  +--rw loss_coef_lut* [freq]
+     |  |  +--rw freq               decimal64
+     |  |  +--rw loss_coef_value?   decimal64
+     |  +--rw (ref_freq_or_wl)?
+     |     +--:(frequency)
+     |     |  +--rw ref_frequency?    decimal64
+     |     +--:(wavelength)
+     |        +--rw ref_wavelength?   decimal64
+     +--rw RamanFiber* [type_variety]
+     |  +--rw type_variety            string
+     |  +--rw dispersion?             decimal64
+     |  +--rw gamma?                  decimal64
+     |  +--rw pmd_coef?               decimal64
+     |  +--rw effective_area?         decimal64
+     |  +--rw loss_coef_lut* [freq]
+     |  |  +--rw freq               decimal64
+     |  |  +--rw loss_coef_value?   decimal64
+     |  +--rw (ref_freq_or_wl)?
+     |  |  +--:(frequency)
+     |  |  |  +--rw ref_frequency?    decimal64
+     |  |  +--:(wavelength)
+     |  |     +--rw ref_wavelength?   decimal64
+     |  +--rw raman_efficiency* [frequency_offset]
+     |     +--rw cr?                 decimal64
+     |     +--rw frequency_offset    decimal64
+     +--ro Span* []
+     |  +--ro power_mode?                        boolean
+     |  +--ro delta_power_range_dict_db
+     |  |  +--ro min_value?   decimal64
+     |  |  +--ro max_value?   decimal64
+     |  |  +--ro step?        decimal64
+     |  +--ro max_length?                        decimal64
+     |  +--ro max_loss?                          decimal64
+     |  +--ro max_fiber_lineic_loss_for_raman?   decimal64
+     |  +--ro target_extended_gain?              decimal64
+     |  +--ro length_units?                      string
+     |  +--ro padding?                           decimal64
+     |  +--ro EOL?                               decimal64
+     |  +--ro con_in?                            decimal64
+     |  +--ro con_out?                           decimal64
+     |  +--ro span_loss_ref?                     decimal64
+     |  +--ro power_slope?                       decimal64
+     |  +--ro voa_margin?                        decimal64
+     |  +--ro voa_step?                          decimal64
+     +--rw Roadm* [type_variety]
+     |  +--rw type_variety                       string
+     |  +--rw (target_type)?
+     |  |  +--:(constant_power)
+     |  |  |  +--rw target_pch_out_db?           decimal64
+     |  |  +--:(constant_psd)
+     |  |  |  +--rw target_psd_out_mWperGHz?     decimal64
+     |  |  +--:(constant_psw)
+     |  |     +--rw target_out_mWperSlotWidth?   decimal64
+     |  +--rw add_drop_osnr?                     decimal64
+     |  +--rw pmd?                               decimal64
+     |  +--rw pdl?                               decimal64
+     |  +--rw restrictions
+     |  |  +--rw preamp_variety_list*    string
+     |  |  +--rw booster_variety_list*   string
+     |  +--rw roadm-path-impairments* [roadm-path-impairments-id]
+     |     +--rw roadm-path-impairments-id    uint32
+     |     +--rw (impairment-type)?
+     |        +--:(roadm-express-path)
+     |        |  +--ro roadm-express-path* []
+     |        |     +--ro frequency-range
+     |        |     |  +--ro lower-frequency    union
+     |        |     |  +--ro upper-frequency    union
+     |        |     +--ro roadm-pmd?                union
+     |        |     +--ro roadm-cd?                 l0-types:decimal-5-or-null
+     |        |     +--ro roadm-pdl?                l0-types:power-loss-or-null
+     |        |     +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |        |     +--ro roadm-maxloss?            l0-types:power-loss-or-null
+     |        |     +--ro roadm-osnr?               l0-types:snr-or-null
+     |        +--:(roadm-add-path)
+     |        |  +--ro roadm-add-path* []
+     |        |     +--ro frequency-range
+     |        |     |  +--ro lower-frequency    union
+     |        |     |  +--ro upper-frequency    union
+     |        |     +--ro roadm-pmd?                union
+     |        |     +--ro roadm-cd?                 l0-types:decimal-5-or-null
+     |        |     +--ro roadm-pdl?                l0-types:power-loss-or-null
+     |        |     +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |        |     +--ro roadm-maxloss?            l0-types:power-loss-or-null
+     |        |     +--ro roadm-pmax?               l0-types:power-dbm-or-null
+     |        |     +--ro roadm-osnr?               l0-types:snr-or-null
+     |        |     +--ro roadm-noise-figure?       l0-types:decimal-5-or-null
+     |        +--:(roadm-drop-path)
+     |           +--ro roadm-drop-path* []
+     |              +--ro frequency-range
+     |              |  +--ro lower-frequency    union
+     |              |  +--ro upper-frequency    union
+     |              +--ro roadm-pmd?                union
+     |              +--ro roadm-cd?                 l0-types:decimal-5-or-null
+     |              +--ro roadm-pdl?                l0-types:power-loss-or-null
+     |              +--ro roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |              +--ro roadm-maxloss?            l0-types:power-loss-or-null
+     |              +--ro roadm-minloss?            l0-types:power-loss-or-null
+     |              +--ro roadm-typloss?            l0-types:power-loss-or-null
+     |              +--ro roadm-pmin?               l0-types:power-dbm-or-null
+     |              +--ro roadm-pmax?               l0-types:power-dbm-or-null
+     |              +--ro roadm-ptyp?               l0-types:power-dbm-or-null
+     |              +--ro roadm-osnr?               l0-types:snr-or-null
+     |              +--ro roadm-noise-figure?       l0-types:decimal-5-or-null
+     +--ro SI* []
+     |  +--ro f_min?                             decimal64
+     |  +--ro f_max?                             decimal64
+     |  +--ro spacing?                           decimal64
+     |  +--ro power_dbm?                         decimal64
+     |  +--ro power_range_dict_db
+     |  |  +--ro min_value?   decimal64
+     |  |  +--ro max_value?   decimal64
+     |  |  +--ro step?        decimal64
+     |  +--ro type_variety?                      string
+     |  +--ro sys_margins?                       decimal64
+     |  +--ro use_si_channel_count_for_design?   boolean
+     |  +--ro baud_rate?                         decimal64
+     |  +--ro tx_osnr?                           decimal64
+     |  +--ro roll_off?                          union
+     |  +--ro tx_power_dbm?                      decimal64
+     +--rw Transceiver* [type_variety]
+        +--rw type_variety    string
+        +--rw other_name*     string
+        +--rw comment?        string
+        +--rw frequency
+        |  +--rw min?   decimal64
+        |  +--rw max?   decimal64
+        +--rw mode* [format]
+           +--rw format                    string
+           +--rw other_name*               string
+           +--rw OSNR?                     decimal64
+           +--rw min_spacing?              decimal64
+           +--rw bit_rate?                 decimal64
+           +--rw cost?                     decimal64
+           +--rw baud_rate?                decimal64
+           +--rw tx_osnr?                  decimal64
+           +--rw roll_off?                 union
+           +--rw tx_power_dbm?             decimal64
+           +--ro penalties* []
+           |  +--ro chromatic_dispersion?     decimal64
+           |  +--ro pmd?                      decimal64
+           |  +--ro pdl?                      decimal64
+           |  +--ro rx-channel-power-value?   decimal64
+           |  +--ro penalty_value?            decimal64
+           +--rw equalization_offset_db?   decimal64
+           +--rw tx-channel-power-min?     decimal64
+           +--rw tx-channel-power-max?     decimal64
+           +--rw rx-channel-power-min?     decimal64
+           +--rw rx-channel-power-max?     decimal64
+
+module: gnpy-network-topology
+  +--rw topology
+     +--rw elements* [uid]
+     |  +--rw uid                 string
+     |  +--rw type                identityref
+     |  +--rw type_variety?       string
+     |  +--rw metadata
+     |  |  +--rw location
+     |  |     +--rw city?        union
+     |  |     +--rw region?      union
+     |  |     +--rw latitude?    Coordinate
+     |  |     +--rw longitude?   Coordinate
+     |  +--rw operational
+     |  |  +--rw (ramanfiber)?
+     |  |     +--:(RamanFiber)
+     |  |     |  +--rw temperature?   decimal64
+     |  |     |  +--rw raman_pumps* [frequency]
+     |  |     |     +--rw power?                   decimal64
+     |  |     |     +--rw frequency                decimal64
+     |  |     |     +--rw propagation_direction?   identityref
+     |  |     +--:(Edfa)
+     |  |        +--rw gain_target?   union
+     |  |        +--rw tilt_target?   union
+     |  |        +--rw out_voa?       union
+     |  |        +--rw in_voa?        union
+     |  |        +--rw delta_p?       union
+     |  |        +--rw f_min?         decimal64
+     |  |        +--rw f_max?         decimal64
+     |  +--rw (element-type)?
+     |     +--:(FiberRoadm)
+     |     |  +--rw params
+     |     |     +--rw (fiberroadmfused)?
+     |     |        +--:(Fiber)
+     |     |        |  +--rw length                                   decimal64
+     |     |        |  +--rw pmd_coef?                                decimal64
+     |     |        |  +--rw (ref_freq_or_wl)?
+     |     |        |  |  +--:(frequency)
+     |     |        |  |  |  +--rw ref_frequency?                     decimal64
+     |     |        |  |  +--:(wavelength)
+     |     |        |  |     +--rw ref_wavelength?                    decimal64
+     |     |        |  +--rw (dispersion-vector-or-scalar)?
+     |     |        |  |  +--:(scalar)
+     |     |        |  |  |  +--rw dispersion?                        decimal64
+     |     |        |  |  |  +--rw dispersion_slope?                  decimal64
+     |     |        |  |  +--:(vector)
+     |     |        |  |     +--rw dispersion_per_frequency* [frequency]
+     |     |        |  |        +--rw frequency     decimal64
+     |     |        |  |        +--rw dispersion?   decimal64
+     |     |        |  +--rw effective_area?                          decimal64
+     |     |        |  +--rw gamma?                                   decimal64
+     |     |        |  +--rw raman_coefficient
+     |     |        |  |  +--rw reference_frequency?   decimal64
+     |     |        |  |  +--rw g0_per_frequency* [frequency_offset]
+     |     |        |  |     +--rw frequency_offset    decimal64
+     |     |        |  |     +--rw g0?                 decimal64
+     |     |        |  +--rw lumped_losses* [position]
+     |     |        |  |  +--rw position    decimal64
+     |     |        |  |  +--rw loss        decimal64
+     |     |        |  +--rw (loss_coef-vector-or-scalar)?
+     |     |        |  |  +--:(scalar)
+     |     |        |  |  |  +--rw loss_coef                          decimal64
+     |     |        |  |  +--:(vector)
+     |     |        |  |     +--rw loss_coef_per_frequency* [frequency]
+     |     |        |  |        +--rw frequency          decimal64
+     |     |        |  |        +--rw loss_coef_value?   decimal64
+     |     |        |  +--rw length_units                             identityref
+     |     |        |  +--rw att_in?                                  decimal64
+     |     |        |  +--rw con_in?                                  union
+     |     |        |  +--rw con_out?                                 union
+     |     |        +--:(RoadmTransceiver)
+     |     |        |  +--rw design_bands* [f_min]
+     |     |        |  |  +--rw f_min                       decimal64
+     |     |        |  |  +--rw f_max?                      decimal64
+     |     |        |  |  +--rw (parameter-used-for-design)?
+     |     |        |  |     +--:(spacing)
+     |     |        |  |     |  +--rw spacing?              decimal64
+     |     |        |  |     +--:(number-of-channels)
+     |     |        |  |        +--rw number-of-channels?   uint16
+     |     |        |  +--rw per_degree_design_bands_targets* [degree_uid]
+     |     |        |  |  +--rw degree_uid      -> ../../../../elements/uid
+     |     |        |  |  +--rw design_bands* [f_min]
+     |     |        |  |     +--rw f_min                       decimal64
+     |     |        |  |     +--rw f_max?                      decimal64
+     |     |        |  |     +--rw (parameter-used-for-design)?
+     |     |        |  |        +--:(spacing)
+     |     |        |  |        |  +--rw spacing?              decimal64
+     |     |        |  |        +--:(number-of-channels)
+     |     |        |  |           +--rw number-of-channels?   uint16
+     |     |        |  +--rw (roadm)?
+     |     |        |     +--:(roadm)
+     |     |        |        +--rw (target_type)?
+     |     |        |        |  +--:(constant_power)
+     |     |        |        |  |  +--rw target_pch_out_db?           decimal64
+     |     |        |        |  +--:(constant_psd)
+     |     |        |        |  |  +--rw target_psd_out_mWperGHz?     decimal64
+     |     |        |        |  +--:(constant_psw)
+     |     |        |        |     +--rw target_out_mWperSlotWidth?   decimal64
+     |     |        |        +--rw restrictions
+     |     |        |        |  +--rw preamp_variety_list*    string
+     |     |        |        |  +--rw booster_variety_list*   string
+     |     |        |        +--rw per_degree_power_targets* [degree_uid]
+     |     |        |        |  +--rw degree_uid                                 -> ../../../../elements/uid
+     |     |        |        |  +--rw (per_degree_target_type)?
+     |     |        |        |     +--:(constant_power)
+     |     |        |        |     |  +--rw per_degree_pch_out_db?               decimal64
+     |     |        |        |     +--:(constant_psd)
+     |     |        |        |     |  +--rw per_degree_psd_out_mWperGHz?         decimal64
+     |     |        |        |     +--:(constant_psw)
+     |     |        |        |        +--rw per_degree_psd_out_mWperSlotWidth?   decimal64
+     |     |        |        +--rw per_degree_impairments* [from_degree to_degree]
+     |     |        |           +--rw from_degree      -> ../../../../elements/uid
+     |     |        |           +--rw to_degree        -> ../../../../elements/uid
+     |     |        |           +--rw impairment_id?   uint32
+     |     |        +--:(Fused)
+     |     |        |  +--rw loss?                                    union
+     |     |        +--:(Multiband_amplifier)
+     |     |           +--rw variety_list*                            string
+     |     +--:(Multiband_amplifier)
+     |        +--rw amplifiers* [type_variety]
+     |           +--rw type_variety    string
+     |           +--rw operational
+     |              +--rw gain_target?   union
+     |              +--rw tilt_target?   union
+     |              +--rw out_voa?       union
+     |              +--rw in_voa?        union
+     |              +--rw delta_p?       union
+     |              +--rw f_min?         decimal64
+     |              +--rw f_max?         decimal64
+     +--rw connections* [from_node to_node]
+     |  +--rw from_node    -> ../../elements/uid
+     |  +--rw to_node      -> ../../elements/uid
+     +--rw network_name?   string
+
+module: gnpy-path-computation
+  +--rw services
+  |  +--rw path-request* [request-id]
+  |  |  +--rw request-id                string
+  |  |  +--rw bidirectional             boolean
+  |  |  +--rw source?                   string
+  |  |  +--rw destination?              string
+  |  |  +--rw src-tp-id?                string
+  |  |  +--rw dst-tp-id?                string
+  |  |  +--rw explicit-route-objects
+  |  |  |  +--ro route-object-include-exclude* [index]
+  |  |  |     +--ro explicit-route-usage?      identityref
+  |  |  |     +--ro index                      uint32
+  |  |  |     +--ro (subobject-type)?
+  |  |  |        +--:(num-unnum-hop)
+  |  |  |        |  +--ro num-unnum-hop
+  |  |  |        |     +--ro node-id?      string
+  |  |  |        |     +--ro link-tp-id?   string
+  |  |  |        |     +--ro hop-type?     te-hop-type
+  |  |  |        +--:(label)
+  |  |  |        |  +--ro label-hop* [N]
+  |  |  |        |     +--ro N    union
+  |  |  |        |     +--ro M?   union
+  |  |  |        +--:(hop-attribute)
+  |  |  |           +--ro (hop-type)?
+  |  |  |              +--:(tsp)
+  |  |  |              |  +--ro transponder
+  |  |  |              |     +--ro transponder-type?   string
+  |  |  |              |     +--ro transponder-mode?   string
+  |  |  |              +--:(regen)
+  |  |  |                 +--ro regenerator
+  |  |  |                    +--ro transponder-type?   string
+  |  |  |                    +--ro transponder-mode?   string
+  |  |  +--rw path-constraints
+  |  |     +--rw te-bandwidth
+  |  |        +--rw technology?            string
+  |  |        +--rw trx_type               string
+  |  |        +--rw trx_mode?              union
+  |  |        +--rw effective-freq-slot* [N]
+  |  |        |  +--rw N    union
+  |  |        |  +--rw M?   union
+  |  |        +--rw spacing                decimal64
+  |  |        +--rw max-nb-of-channel?     union
+  |  |        +--rw output-power?          union
+  |  |        +--rw tx_power?              union
+  |  |        +--rw path_bandwidth         decimal64
+  |  +--rw synchronization* [synchronization-id]
+  |     +--rw synchronization-id    string
+  |     +--rw svec
+  |        +--rw relaxable?           boolean
+  |        +--rw disjointness?        te-path-disjointness
+  |        +--rw request-id-number*   string
+  +--rw responses
+     +--rw response* [response-id]
+        +--rw response-id        string
+        +--rw path-properties
+        |  +--rw path-metric* [metric-type]
+        |  |  +--rw metric-type           identityref
+        |  |  +--rw accumulative-value?   union
+        |  +--rw z-a-path-metric* [metric-type]
+        |  |  +--rw metric-type           identityref
+        |  |  +--rw accumulative-value?   union
+        |  +--ro path-route-objects* []
+        |     +--ro path-route-object
+        |        +--ro index?                     uint32
+        |        +--ro (subobject-type)?
+        |           +--:(num-unnum-hop)
+        |           |  +--ro num-unnum-hop
+        |           |     +--ro node-id?      string
+        |           |     +--ro link-tp-id?   string
+        |           |     +--ro hop-type?     te-hop-type
+        |           +--:(label)
+        |           |  +--ro label-hop* [N]
+        |           |     +--ro N    union
+        |           |     +--ro M?   union
+        |           +--:(hop-attribute)
+        |              +--ro (hop-type)?
+        |                 +--:(tsp)
+        |                 |  +--ro transponder
+        |                 |     +--ro transponder-type?   string
+        |                 |     +--ro transponder-mode?   string
+        |                 +--:(regen)
+        |                    +--ro regenerator
+        |                       +--ro transponder-type?   string
+        |                       +--ro transponder-mode?   string
+        +--rw no-path
+           +--rw no-path?           identityref
+           +--rw path-properties
+              +--rw path-metric* [metric-type]
+              |  +--rw metric-type           identityref
+              |  +--rw accumulative-value?   union
+              +--rw z-a-path-metric* [metric-type]
+              |  +--rw metric-type           identityref
+              |  +--rw accumulative-value?   union
+              +--ro path-route-objects* []
+                 +--ro path-route-object
+                    +--ro index?                     uint32
+                    +--ro (subobject-type)?
+                       +--:(num-unnum-hop)
+                       |  +--ro num-unnum-hop
+                       |     +--ro node-id?      string
+                       |     +--ro link-tp-id?   string
+                       |     +--ro hop-type?     te-hop-type
+                       +--:(label)
+                       |  +--ro label-hop* [N]
+                       |     +--ro N    union
+                       |     +--ro M?   union
+                       +--:(hop-attribute)
+                          +--ro (hop-type)?
+                             +--:(tsp)
+                             |  +--ro transponder
+                             |     +--ro transponder-type?   string
+                             |     +--ro transponder-mode?   string
+                             +--:(regen)
+                                +--ro regenerator
+                                   +--ro transponder-type?   string
+                                   +--ro transponder-mode?   string
+
+module: gnpy-sim-params
+  +--rw sim-params
+     +--rw raman_params
+     |  +--rw flag?                        boolean
+     |  +--rw order?                       uint16
+     |  +--rw method?                      identityref
+     |  +--rw result_spatial_resolution?   decimal64
+     |  +--rw solver_spatial_resolution?   decimal64
+     +--rw nli_params
+        +--rw method?                              identityref
+        +--rw dispersion_tolerance?                decimal64
+        +--rw phase_shift_tolerance?               decimal64
+        +--rw (computation)?
+           +--:(explicit-channels)
+           |  +--rw computed_channels*             uint16
+           +--:(nb_of_channels)
+              +--rw computed_number_of_channels?   uint16
+
+module: gnpy-spectrum
+  +--rw spectrum* [f_min]
+     +--rw f_min           decimal64
+     +--rw f_max           decimal64
+     +--rw slot_width      decimal64
+     +--rw delta_pdb?      decimal64
+     +--rw baud_rate?      decimal64
+     +--rw tx_osnr?        decimal64
+     +--rw roll_off?       union
+     +--rw tx_power_dbm?   decimal64
+     +--rw label?          string
+
+module: gnpy-api
+  +--rw api
+     +--rw extra-configs* [name]
+     |  +--rw name                       string
+     |  +--rw edfa-config:edfa-config
+     |     +--rw edfa-config:f_min           decimal64
+     |     +--rw edfa-config:f_max           decimal64
+     |     +--ro edfa-config:nf_ripple*      decimal64
+     |     +--ro edfa-config:dgt*            decimal64
+     |     +--ro edfa-config:gain_ripple*    decimal64
+     |     +--ro edfa-config:nf_fit_coeff* [coef_order]
+     |        +--ro edfa-config:coef_order    uint8
+     |        +--ro edfa-config:nf_coef?      decimal64
+     +--rw extra-eqpts* [name]
+     |  +--rw name                  string
+     |  +--rw gnpyeqpt:equipment
+     |     +--rw gnpyeqpt:library-information
+     |     |  +--rw gnpyeqpt:name?             string
+     |     |  +--rw gnpyeqpt:content-schema
+     |     |  |  +--rw gnpyeqpt:module*   module-with-revision-date
+     |     |  +--rw gnpyeqpt:description*      string
+     |     |  +--rw gnpyeqpt:contact*          string
+     |     |  +--rw gnpyeqpt:organization?     string
+     |     |  +--rw gnpyeqpt:revision* [date]
+     |     |     +--rw gnpyeqpt:date           string
+     |     |     +--rw gnpyeqpt:description?   string
+     |     +--rw gnpyeqpt:Edfa* [type_variety]
+     |     |  +--rw gnpyeqpt:type_variety                       string
+     |     |  +--rw gnpyeqpt:other_name*                        string
+     |     |  +--rw gnpyeqpt:f_min?                             decimal64
+     |     |  +--rw gnpyeqpt:f_max?                             decimal64
+     |     |  +--rw gnpyeqpt:allowed_for_design?                boolean
+     |     |  +--rw gnpyeqpt:gain_flatmax?                      decimal64
+     |     |  +--rw gnpyeqpt:gain_min?                          decimal64
+     |     |  +--rw gnpyeqpt:extended_gain_range?               decimal64
+     |     |  +--rw gnpyeqpt:p_max?                             decimal64
+     |     |  +--rw gnpyeqpt:type_def?                          identityref
+     |     |  +--rw gnpyeqpt:raman?                             boolean
+     |     |  +--rw gnpyeqpt:out_voa_auto?                      boolean
+     |     |  +--rw gnpyeqpt:in_voa_auto?                       boolean
+     |     |  +--rw gnpyeqpt:voa_step?                          decimal64
+     |     |  +--rw gnpyeqpt:pmd?                               decimal64
+     |     |  +--rw gnpyeqpt:pdl?                               decimal64
+     |     |  +--rw (gnpyeqpt:type_of_model)?
+     |     |     +--:(gnpyeqpt:variable_gain)
+     |     |     |  +--rw gnpyeqpt:nf_min?                      decimal64
+     |     |     |  +--rw gnpyeqpt:nf_max?                      decimal64
+     |     |     |  +--rw gnpyeqpt:default_config_from_json?    string
+     |     |     +--:(gnpyeqpt:fixed_gain)
+     |     |     |  +--rw gnpyeqpt:nf0?                         decimal64
+     |     |     +--:(gnpyeqpt:openroadm)
+     |     |     |  +--rw gnpyeqpt:nf_coef* [coef_order]
+     |     |     |     +--rw gnpyeqpt:coef_order    uint8
+     |     |     |     +--rw gnpyeqpt:nf_coef?      decimal64
+     |     |     +--:(gnpyeqpt:dual_stage)
+     |     |     |  +--rw gnpyeqpt:preamp_variety?              union
+     |     |     |  +--rw gnpyeqpt:booster_variety?             union
+     |     |     +--:(gnpyeqpt:multi_band)
+     |     |     |  +--rw gnpyeqpt:amplifiers*                  string
+     |     |     +--:(gnpyeqpt:advanced_model)
+     |     |        +--rw gnpyeqpt:advanced_config_from_json?   string
+     |     +--rw gnpyeqpt:Fiber* [type_variety]
+     |     |  +--rw gnpyeqpt:type_variety            string
+     |     |  +--rw gnpyeqpt:dispersion?             decimal64
+     |     |  +--rw gnpyeqpt:gamma?                  decimal64
+     |     |  +--rw gnpyeqpt:pmd_coef?               decimal64
+     |     |  +--rw gnpyeqpt:effective_area?         decimal64
+     |     |  +--rw gnpyeqpt:loss_coef_lut* [freq]
+     |     |  |  +--rw gnpyeqpt:freq               decimal64
+     |     |  |  +--rw gnpyeqpt:loss_coef_value?   decimal64
+     |     |  +--rw (gnpyeqpt:ref_freq_or_wl)?
+     |     |     +--:(gnpyeqpt:frequency)
+     |     |     |  +--rw gnpyeqpt:ref_frequency?    decimal64
+     |     |     +--:(gnpyeqpt:wavelength)
+     |     |        +--rw gnpyeqpt:ref_wavelength?   decimal64
+     |     +--rw gnpyeqpt:RamanFiber* [type_variety]
+     |     |  +--rw gnpyeqpt:type_variety            string
+     |     |  +--rw gnpyeqpt:dispersion?             decimal64
+     |     |  +--rw gnpyeqpt:gamma?                  decimal64
+     |     |  +--rw gnpyeqpt:pmd_coef?               decimal64
+     |     |  +--rw gnpyeqpt:effective_area?         decimal64
+     |     |  +--rw gnpyeqpt:loss_coef_lut* [freq]
+     |     |  |  +--rw gnpyeqpt:freq               decimal64
+     |     |  |  +--rw gnpyeqpt:loss_coef_value?   decimal64
+     |     |  +--rw (gnpyeqpt:ref_freq_or_wl)?
+     |     |  |  +--:(gnpyeqpt:frequency)
+     |     |  |  |  +--rw gnpyeqpt:ref_frequency?    decimal64
+     |     |  |  +--:(gnpyeqpt:wavelength)
+     |     |  |     +--rw gnpyeqpt:ref_wavelength?   decimal64
+     |     |  +--rw gnpyeqpt:raman_efficiency* [frequency_offset]
+     |     |     +--rw gnpyeqpt:cr?                 decimal64
+     |     |     +--rw gnpyeqpt:frequency_offset    decimal64
+     |     +--ro gnpyeqpt:Span* []
+     |     |  +--ro gnpyeqpt:power_mode?                        boolean
+     |     |  +--ro gnpyeqpt:delta_power_range_dict_db
+     |     |  |  +--ro gnpyeqpt:min_value?   decimal64
+     |     |  |  +--ro gnpyeqpt:max_value?   decimal64
+     |     |  |  +--ro gnpyeqpt:step?        decimal64
+     |     |  +--ro gnpyeqpt:max_length?                        decimal64
+     |     |  +--ro gnpyeqpt:max_loss?                          decimal64
+     |     |  +--ro gnpyeqpt:max_fiber_lineic_loss_for_raman?   decimal64
+     |     |  +--ro gnpyeqpt:target_extended_gain?              decimal64
+     |     |  +--ro gnpyeqpt:length_units?                      string
+     |     |  +--ro gnpyeqpt:padding?                           decimal64
+     |     |  +--ro gnpyeqpt:EOL?                               decimal64
+     |     |  +--ro gnpyeqpt:con_in?                            decimal64
+     |     |  +--ro gnpyeqpt:con_out?                           decimal64
+     |     |  +--ro gnpyeqpt:span_loss_ref?                     decimal64
+     |     |  +--ro gnpyeqpt:power_slope?                       decimal64
+     |     |  +--ro gnpyeqpt:voa_margin?                        decimal64
+     |     |  +--ro gnpyeqpt:voa_step?                          decimal64
+     |     +--rw gnpyeqpt:Roadm* [type_variety]
+     |     |  +--rw gnpyeqpt:type_variety                       string
+     |     |  +--rw (gnpyeqpt:target_type)?
+     |     |  |  +--:(gnpyeqpt:constant_power)
+     |     |  |  |  +--rw gnpyeqpt:target_pch_out_db?           decimal64
+     |     |  |  +--:(gnpyeqpt:constant_psd)
+     |     |  |  |  +--rw gnpyeqpt:target_psd_out_mWperGHz?     decimal64
+     |     |  |  +--:(gnpyeqpt:constant_psw)
+     |     |  |     +--rw gnpyeqpt:target_out_mWperSlotWidth?   decimal64
+     |     |  +--rw gnpyeqpt:add_drop_osnr?                     decimal64
+     |     |  +--rw gnpyeqpt:pmd?                               decimal64
+     |     |  +--rw gnpyeqpt:pdl?                               decimal64
+     |     |  +--rw gnpyeqpt:restrictions
+     |     |  |  +--rw gnpyeqpt:preamp_variety_list*    string
+     |     |  |  +--rw gnpyeqpt:booster_variety_list*   string
+     |     |  +--rw gnpyeqpt:roadm-path-impairments* [roadm-path-impairments-id]
+     |     |     +--rw gnpyeqpt:roadm-path-impairments-id    uint32
+     |     |     +--rw (gnpyeqpt:impairment-type)?
+     |     |        +--:(gnpyeqpt:roadm-express-path)
+     |     |        |  +--ro gnpyeqpt:roadm-express-path* []
+     |     |        |     +--ro gnpyeqpt:frequency-range
+     |     |        |     |  +--ro gnpyeqpt:lower-frequency    union
+     |     |        |     |  +--ro gnpyeqpt:upper-frequency    union
+     |     |        |     +--ro gnpyeqpt:roadm-pmd?                union
+     |     |        |     +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |     |        +--:(gnpyeqpt:roadm-add-path)
+     |     |        |  +--ro gnpyeqpt:roadm-add-path* []
+     |     |        |     +--ro gnpyeqpt:frequency-range
+     |     |        |     |  +--ro gnpyeqpt:lower-frequency    union
+     |     |        |     |  +--ro gnpyeqpt:upper-frequency    union
+     |     |        |     +--ro gnpyeqpt:roadm-pmd?                union
+     |     |        |     +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-pmax?               l0-types:power-dbm-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-osnr?               l0-types:snr-or-null
+     |     |        |     +--ro gnpyeqpt:roadm-noise-figure?       l0-types:decimal-5-or-null
+     |     |        +--:(gnpyeqpt:roadm-drop-path)
+     |     |           +--ro gnpyeqpt:roadm-drop-path* []
+     |     |              +--ro gnpyeqpt:frequency-range
+     |     |              |  +--ro gnpyeqpt:lower-frequency    union
+     |     |              |  +--ro gnpyeqpt:upper-frequency    union
+     |     |              +--ro gnpyeqpt:roadm-pmd?                union
+     |     |              +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |     |              +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |     |              +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |     |              +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |     |              +--ro gnpyeqpt:roadm-minloss?            l0-types:power-loss-or-null
+     |     |              +--ro gnpyeqpt:roadm-typloss?            l0-types:power-loss-or-null
+     |     |              +--ro gnpyeqpt:roadm-pmin?               l0-types:power-dbm-or-null
+     |     |              +--ro gnpyeqpt:roadm-pmax?               l0-types:power-dbm-or-null
+     |     |              +--ro gnpyeqpt:roadm-ptyp?               l0-types:power-dbm-or-null
+     |     |              +--ro gnpyeqpt:roadm-osnr?               l0-types:snr-or-null
+     |     |              +--ro gnpyeqpt:roadm-noise-figure?       l0-types:decimal-5-or-null
+     |     +--ro gnpyeqpt:SI* []
+     |     |  +--ro gnpyeqpt:f_min?                             decimal64
+     |     |  +--ro gnpyeqpt:f_max?                             decimal64
+     |     |  +--ro gnpyeqpt:spacing?                           decimal64
+     |     |  +--ro gnpyeqpt:power_dbm?                         decimal64
+     |     |  +--ro gnpyeqpt:power_range_dict_db
+     |     |  |  +--ro gnpyeqpt:min_value?   decimal64
+     |     |  |  +--ro gnpyeqpt:max_value?   decimal64
+     |     |  |  +--ro gnpyeqpt:step?        decimal64
+     |     |  +--ro gnpyeqpt:type_variety?                      string
+     |     |  +--ro gnpyeqpt:sys_margins?                       decimal64
+     |     |  +--ro gnpyeqpt:use_si_channel_count_for_design?   boolean
+     |     |  +--ro gnpyeqpt:baud_rate?                         decimal64
+     |     |  +--ro gnpyeqpt:tx_osnr?                           decimal64
+     |     |  +--ro gnpyeqpt:roll_off?                          union
+     |     |  +--ro gnpyeqpt:tx_power_dbm?                      decimal64
+     |     +--rw gnpyeqpt:Transceiver* [type_variety]
+     |        +--rw gnpyeqpt:type_variety    string
+     |        +--rw gnpyeqpt:other_name*     string
+     |        +--rw gnpyeqpt:comment?        string
+     |        +--rw gnpyeqpt:frequency
+     |        |  +--rw gnpyeqpt:min?   decimal64
+     |        |  +--rw gnpyeqpt:max?   decimal64
+     |        +--rw gnpyeqpt:mode* [format]
+     |           +--rw gnpyeqpt:format                    string
+     |           +--rw gnpyeqpt:other_name*               string
+     |           +--rw gnpyeqpt:OSNR?                     decimal64
+     |           +--rw gnpyeqpt:min_spacing?              decimal64
+     |           +--rw gnpyeqpt:bit_rate?                 decimal64
+     |           +--rw gnpyeqpt:cost?                     decimal64
+     |           +--rw gnpyeqpt:baud_rate?                decimal64
+     |           +--rw gnpyeqpt:tx_osnr?                  decimal64
+     |           +--rw gnpyeqpt:roll_off?                 union
+     |           +--rw gnpyeqpt:tx_power_dbm?             decimal64
+     |           +--ro gnpyeqpt:penalties* []
+     |           |  +--ro gnpyeqpt:chromatic_dispersion?     decimal64
+     |           |  +--ro gnpyeqpt:pmd?                      decimal64
+     |           |  +--ro gnpyeqpt:pdl?                      decimal64
+     |           |  +--ro gnpyeqpt:rx-channel-power-value?   decimal64
+     |           |  +--ro gnpyeqpt:penalty_value?            decimal64
+     |           +--rw gnpyeqpt:equalization_offset_db?   decimal64
+     |           +--rw gnpyeqpt:tx-channel-power-min?     decimal64
+     |           +--rw gnpyeqpt:tx-channel-power-max?     decimal64
+     |           +--rw gnpyeqpt:rx-channel-power-min?     decimal64
+     |           +--rw gnpyeqpt:rx-channel-power-max?     decimal64
+     +--rw gnpyeqpt:equipment
+     |  +--rw gnpyeqpt:library-information
+     |  |  +--rw gnpyeqpt:name?             string
+     |  |  +--rw gnpyeqpt:content-schema
+     |  |  |  +--rw gnpyeqpt:module*   module-with-revision-date
+     |  |  +--rw gnpyeqpt:description*      string
+     |  |  +--rw gnpyeqpt:contact*          string
+     |  |  +--rw gnpyeqpt:organization?     string
+     |  |  +--rw gnpyeqpt:revision* [date]
+     |  |     +--rw gnpyeqpt:date           string
+     |  |     +--rw gnpyeqpt:description?   string
+     |  +--rw gnpyeqpt:Edfa* [type_variety]
+     |  |  +--rw gnpyeqpt:type_variety                       string
+     |  |  +--rw gnpyeqpt:other_name*                        string
+     |  |  +--rw gnpyeqpt:f_min?                             decimal64
+     |  |  +--rw gnpyeqpt:f_max?                             decimal64
+     |  |  +--rw gnpyeqpt:allowed_for_design?                boolean
+     |  |  +--rw gnpyeqpt:gain_flatmax?                      decimal64
+     |  |  +--rw gnpyeqpt:gain_min?                          decimal64
+     |  |  +--rw gnpyeqpt:extended_gain_range?               decimal64
+     |  |  +--rw gnpyeqpt:p_max?                             decimal64
+     |  |  +--rw gnpyeqpt:type_def?                          identityref
+     |  |  +--rw gnpyeqpt:raman?                             boolean
+     |  |  +--rw gnpyeqpt:out_voa_auto?                      boolean
+     |  |  +--rw gnpyeqpt:in_voa_auto?                       boolean
+     |  |  +--rw gnpyeqpt:voa_step?                          decimal64
+     |  |  +--rw gnpyeqpt:pmd?                               decimal64
+     |  |  +--rw gnpyeqpt:pdl?                               decimal64
+     |  |  +--rw (gnpyeqpt:type_of_model)?
+     |  |     +--:(gnpyeqpt:variable_gain)
+     |  |     |  +--rw gnpyeqpt:nf_min?                      decimal64
+     |  |     |  +--rw gnpyeqpt:nf_max?                      decimal64
+     |  |     |  +--rw gnpyeqpt:default_config_from_json?    string
+     |  |     +--:(gnpyeqpt:fixed_gain)
+     |  |     |  +--rw gnpyeqpt:nf0?                         decimal64
+     |  |     +--:(gnpyeqpt:openroadm)
+     |  |     |  +--rw gnpyeqpt:nf_coef* [coef_order]
+     |  |     |     +--rw gnpyeqpt:coef_order    uint8
+     |  |     |     +--rw gnpyeqpt:nf_coef?      decimal64
+     |  |     +--:(gnpyeqpt:dual_stage)
+     |  |     |  +--rw gnpyeqpt:preamp_variety?              union
+     |  |     |  +--rw gnpyeqpt:booster_variety?             union
+     |  |     +--:(gnpyeqpt:multi_band)
+     |  |     |  +--rw gnpyeqpt:amplifiers*                  string
+     |  |     +--:(gnpyeqpt:advanced_model)
+     |  |        +--rw gnpyeqpt:advanced_config_from_json?   string
+     |  +--rw gnpyeqpt:Fiber* [type_variety]
+     |  |  +--rw gnpyeqpt:type_variety            string
+     |  |  +--rw gnpyeqpt:dispersion?             decimal64
+     |  |  +--rw gnpyeqpt:gamma?                  decimal64
+     |  |  +--rw gnpyeqpt:pmd_coef?               decimal64
+     |  |  +--rw gnpyeqpt:effective_area?         decimal64
+     |  |  +--rw gnpyeqpt:loss_coef_lut* [freq]
+     |  |  |  +--rw gnpyeqpt:freq               decimal64
+     |  |  |  +--rw gnpyeqpt:loss_coef_value?   decimal64
+     |  |  +--rw (gnpyeqpt:ref_freq_or_wl)?
+     |  |     +--:(gnpyeqpt:frequency)
+     |  |     |  +--rw gnpyeqpt:ref_frequency?    decimal64
+     |  |     +--:(gnpyeqpt:wavelength)
+     |  |        +--rw gnpyeqpt:ref_wavelength?   decimal64
+     |  +--rw gnpyeqpt:RamanFiber* [type_variety]
+     |  |  +--rw gnpyeqpt:type_variety            string
+     |  |  +--rw gnpyeqpt:dispersion?             decimal64
+     |  |  +--rw gnpyeqpt:gamma?                  decimal64
+     |  |  +--rw gnpyeqpt:pmd_coef?               decimal64
+     |  |  +--rw gnpyeqpt:effective_area?         decimal64
+     |  |  +--rw gnpyeqpt:loss_coef_lut* [freq]
+     |  |  |  +--rw gnpyeqpt:freq               decimal64
+     |  |  |  +--rw gnpyeqpt:loss_coef_value?   decimal64
+     |  |  +--rw (gnpyeqpt:ref_freq_or_wl)?
+     |  |  |  +--:(gnpyeqpt:frequency)
+     |  |  |  |  +--rw gnpyeqpt:ref_frequency?    decimal64
+     |  |  |  +--:(gnpyeqpt:wavelength)
+     |  |  |     +--rw gnpyeqpt:ref_wavelength?   decimal64
+     |  |  +--rw gnpyeqpt:raman_efficiency* [frequency_offset]
+     |  |     +--rw gnpyeqpt:cr?                 decimal64
+     |  |     +--rw gnpyeqpt:frequency_offset    decimal64
+     |  +--ro gnpyeqpt:Span* []
+     |  |  +--ro gnpyeqpt:power_mode?                        boolean
+     |  |  +--ro gnpyeqpt:delta_power_range_dict_db
+     |  |  |  +--ro gnpyeqpt:min_value?   decimal64
+     |  |  |  +--ro gnpyeqpt:max_value?   decimal64
+     |  |  |  +--ro gnpyeqpt:step?        decimal64
+     |  |  +--ro gnpyeqpt:max_length?                        decimal64
+     |  |  +--ro gnpyeqpt:max_loss?                          decimal64
+     |  |  +--ro gnpyeqpt:max_fiber_lineic_loss_for_raman?   decimal64
+     |  |  +--ro gnpyeqpt:target_extended_gain?              decimal64
+     |  |  +--ro gnpyeqpt:length_units?                      string
+     |  |  +--ro gnpyeqpt:padding?                           decimal64
+     |  |  +--ro gnpyeqpt:EOL?                               decimal64
+     |  |  +--ro gnpyeqpt:con_in?                            decimal64
+     |  |  +--ro gnpyeqpt:con_out?                           decimal64
+     |  |  +--ro gnpyeqpt:span_loss_ref?                     decimal64
+     |  |  +--ro gnpyeqpt:power_slope?                       decimal64
+     |  |  +--ro gnpyeqpt:voa_margin?                        decimal64
+     |  |  +--ro gnpyeqpt:voa_step?                          decimal64
+     |  +--rw gnpyeqpt:Roadm* [type_variety]
+     |  |  +--rw gnpyeqpt:type_variety                       string
+     |  |  +--rw (gnpyeqpt:target_type)?
+     |  |  |  +--:(gnpyeqpt:constant_power)
+     |  |  |  |  +--rw gnpyeqpt:target_pch_out_db?           decimal64
+     |  |  |  +--:(gnpyeqpt:constant_psd)
+     |  |  |  |  +--rw gnpyeqpt:target_psd_out_mWperGHz?     decimal64
+     |  |  |  +--:(gnpyeqpt:constant_psw)
+     |  |  |     +--rw gnpyeqpt:target_out_mWperSlotWidth?   decimal64
+     |  |  +--rw gnpyeqpt:add_drop_osnr?                     decimal64
+     |  |  +--rw gnpyeqpt:pmd?                               decimal64
+     |  |  +--rw gnpyeqpt:pdl?                               decimal64
+     |  |  +--rw gnpyeqpt:restrictions
+     |  |  |  +--rw gnpyeqpt:preamp_variety_list*    string
+     |  |  |  +--rw gnpyeqpt:booster_variety_list*   string
+     |  |  +--rw gnpyeqpt:roadm-path-impairments* [roadm-path-impairments-id]
+     |  |     +--rw gnpyeqpt:roadm-path-impairments-id    uint32
+     |  |     +--rw (gnpyeqpt:impairment-type)?
+     |  |        +--:(gnpyeqpt:roadm-express-path)
+     |  |        |  +--ro gnpyeqpt:roadm-express-path* []
+     |  |        |     +--ro gnpyeqpt:frequency-range
+     |  |        |     |  +--ro gnpyeqpt:lower-frequency    union
+     |  |        |     |  +--ro gnpyeqpt:upper-frequency    union
+     |  |        |     +--ro gnpyeqpt:roadm-pmd?                union
+     |  |        |     +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |  |        +--:(gnpyeqpt:roadm-add-path)
+     |  |        |  +--ro gnpyeqpt:roadm-add-path* []
+     |  |        |     +--ro gnpyeqpt:frequency-range
+     |  |        |     |  +--ro gnpyeqpt:lower-frequency    union
+     |  |        |     |  +--ro gnpyeqpt:upper-frequency    union
+     |  |        |     +--ro gnpyeqpt:roadm-pmd?                union
+     |  |        |     +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-pmax?               l0-types:power-dbm-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-osnr?               l0-types:snr-or-null
+     |  |        |     +--ro gnpyeqpt:roadm-noise-figure?       l0-types:decimal-5-or-null
+     |  |        +--:(gnpyeqpt:roadm-drop-path)
+     |  |           +--ro gnpyeqpt:roadm-drop-path* []
+     |  |              +--ro gnpyeqpt:frequency-range
+     |  |              |  +--ro gnpyeqpt:lower-frequency    union
+     |  |              |  +--ro gnpyeqpt:upper-frequency    union
+     |  |              +--ro gnpyeqpt:roadm-pmd?                union
+     |  |              +--ro gnpyeqpt:roadm-cd?                 l0-types:decimal-5-or-null
+     |  |              +--ro gnpyeqpt:roadm-pdl?                l0-types:power-loss-or-null
+     |  |              +--ro gnpyeqpt:roadm-inband-crosstalk?   l0-types:decimal-2-or-null
+     |  |              +--ro gnpyeqpt:roadm-maxloss?            l0-types:power-loss-or-null
+     |  |              +--ro gnpyeqpt:roadm-minloss?            l0-types:power-loss-or-null
+     |  |              +--ro gnpyeqpt:roadm-typloss?            l0-types:power-loss-or-null
+     |  |              +--ro gnpyeqpt:roadm-pmin?               l0-types:power-dbm-or-null
+     |  |              +--ro gnpyeqpt:roadm-pmax?               l0-types:power-dbm-or-null
+     |  |              +--ro gnpyeqpt:roadm-ptyp?               l0-types:power-dbm-or-null
+     |  |              +--ro gnpyeqpt:roadm-osnr?               l0-types:snr-or-null
+     |  |              +--ro gnpyeqpt:roadm-noise-figure?       l0-types:decimal-5-or-null
+     |  +--ro gnpyeqpt:SI* []
+     |  |  +--ro gnpyeqpt:f_min?                             decimal64
+     |  |  +--ro gnpyeqpt:f_max?                             decimal64
+     |  |  +--ro gnpyeqpt:spacing?                           decimal64
+     |  |  +--ro gnpyeqpt:power_dbm?                         decimal64
+     |  |  +--ro gnpyeqpt:power_range_dict_db
+     |  |  |  +--ro gnpyeqpt:min_value?   decimal64
+     |  |  |  +--ro gnpyeqpt:max_value?   decimal64
+     |  |  |  +--ro gnpyeqpt:step?        decimal64
+     |  |  +--ro gnpyeqpt:type_variety?                      string
+     |  |  +--ro gnpyeqpt:sys_margins?                       decimal64
+     |  |  +--ro gnpyeqpt:use_si_channel_count_for_design?   boolean
+     |  |  +--ro gnpyeqpt:baud_rate?                         decimal64
+     |  |  +--ro gnpyeqpt:tx_osnr?                           decimal64
+     |  |  +--ro gnpyeqpt:roll_off?                          union
+     |  |  +--ro gnpyeqpt:tx_power_dbm?                      decimal64
+     |  +--rw gnpyeqpt:Transceiver* [type_variety]
+     |     +--rw gnpyeqpt:type_variety    string
+     |     +--rw gnpyeqpt:other_name*     string
+     |     +--rw gnpyeqpt:comment?        string
+     |     +--rw gnpyeqpt:frequency
+     |     |  +--rw gnpyeqpt:min?   decimal64
+     |     |  +--rw gnpyeqpt:max?   decimal64
+     |     +--rw gnpyeqpt:mode* [format]
+     |        +--rw gnpyeqpt:format                    string
+     |        +--rw gnpyeqpt:other_name*               string
+     |        +--rw gnpyeqpt:OSNR?                     decimal64
+     |        +--rw gnpyeqpt:min_spacing?              decimal64
+     |        +--rw gnpyeqpt:bit_rate?                 decimal64
+     |        +--rw gnpyeqpt:cost?                     decimal64
+     |        +--rw gnpyeqpt:baud_rate?                decimal64
+     |        +--rw gnpyeqpt:tx_osnr?                  decimal64
+     |        +--rw gnpyeqpt:roll_off?                 union
+     |        +--rw gnpyeqpt:tx_power_dbm?             decimal64
+     |        +--ro gnpyeqpt:penalties* []
+     |        |  +--ro gnpyeqpt:chromatic_dispersion?     decimal64
+     |        |  +--ro gnpyeqpt:pmd?                      decimal64
+     |        |  +--ro gnpyeqpt:pdl?                      decimal64
+     |        |  +--ro gnpyeqpt:rx-channel-power-value?   decimal64
+     |        |  +--ro gnpyeqpt:penalty_value?            decimal64
+     |        +--rw gnpyeqpt:equalization_offset_db?   decimal64
+     |        +--rw gnpyeqpt:tx-channel-power-min?     decimal64
+     |        +--rw gnpyeqpt:tx-channel-power-max?     decimal64
+     |        +--rw gnpyeqpt:rx-channel-power-min?     decimal64
+     |        +--rw gnpyeqpt:rx-channel-power-max?     decimal64
+     +--rw gnpynt:topology
+     |  +--rw gnpynt:elements* [uid]
+     |  |  +--rw gnpynt:uid                 string
+     |  |  +--rw gnpynt:type                identityref
+     |  |  +--rw gnpynt:type_variety?       string
+     |  |  +--rw gnpynt:metadata
+     |  |  |  +--rw gnpynt:location
+     |  |  |     +--rw gnpynt:city?        union
+     |  |  |     +--rw gnpynt:region?      union
+     |  |  |     +--rw gnpynt:latitude?    Coordinate
+     |  |  |     +--rw gnpynt:longitude?   Coordinate
+     |  |  +--rw gnpynt:operational
+     |  |  |  +--rw (gnpynt:ramanfiber)?
+     |  |  |     +--:(gnpynt:RamanFiber)
+     |  |  |     |  +--rw gnpynt:temperature?   decimal64
+     |  |  |     |  +--rw gnpynt:raman_pumps* [frequency]
+     |  |  |     |     +--rw gnpynt:power?                   decimal64
+     |  |  |     |     +--rw gnpynt:frequency                decimal64
+     |  |  |     |     +--rw gnpynt:propagation_direction?   identityref
+     |  |  |     +--:(gnpynt:Edfa)
+     |  |  |        +--rw gnpynt:gain_target?   union
+     |  |  |        +--rw gnpynt:tilt_target?   union
+     |  |  |        +--rw gnpynt:out_voa?       union
+     |  |  |        +--rw gnpynt:in_voa?        union
+     |  |  |        +--rw gnpynt:delta_p?       union
+     |  |  |        +--rw gnpynt:f_min?         decimal64
+     |  |  |        +--rw gnpynt:f_max?         decimal64
+     |  |  +--rw (gnpynt:element-type)?
+     |  |     +--:(gnpynt:FiberRoadm)
+     |  |     |  +--rw gnpynt:params
+     |  |     |     +--rw (gnpynt:fiberroadmfused)?
+     |  |     |        +--:(gnpynt:Fiber)
+     |  |     |        |  +--rw gnpynt:length                                   decimal64
+     |  |     |        |  +--rw gnpynt:pmd_coef?                                decimal64
+     |  |     |        |  +--rw (gnpynt:ref_freq_or_wl)?
+     |  |     |        |  |  +--:(gnpynt:frequency)
+     |  |     |        |  |  |  +--rw gnpynt:ref_frequency?                     decimal64
+     |  |     |        |  |  +--:(gnpynt:wavelength)
+     |  |     |        |  |     +--rw gnpynt:ref_wavelength?                    decimal64
+     |  |     |        |  +--rw (gnpynt:dispersion-vector-or-scalar)?
+     |  |     |        |  |  +--:(gnpynt:scalar)
+     |  |     |        |  |  |  +--rw gnpynt:dispersion?                        decimal64
+     |  |     |        |  |  |  +--rw gnpynt:dispersion_slope?                  decimal64
+     |  |     |        |  |  +--:(gnpynt:vector)
+     |  |     |        |  |     +--rw gnpynt:dispersion_per_frequency* [frequency]
+     |  |     |        |  |        +--rw gnpynt:frequency     decimal64
+     |  |     |        |  |        +--rw gnpynt:dispersion?   decimal64
+     |  |     |        |  +--rw gnpynt:effective_area?                          decimal64
+     |  |     |        |  +--rw gnpynt:gamma?                                   decimal64
+     |  |     |        |  +--rw gnpynt:raman_coefficient
+     |  |     |        |  |  +--rw gnpynt:reference_frequency?   decimal64
+     |  |     |        |  |  +--rw gnpynt:g0_per_frequency* [frequency_offset]
+     |  |     |        |  |     +--rw gnpynt:frequency_offset    decimal64
+     |  |     |        |  |     +--rw gnpynt:g0?                 decimal64
+     |  |     |        |  +--rw gnpynt:lumped_losses* [position]
+     |  |     |        |  |  +--rw gnpynt:position    decimal64
+     |  |     |        |  |  +--rw gnpynt:loss        decimal64
+     |  |     |        |  +--rw (gnpynt:loss_coef-vector-or-scalar)?
+     |  |     |        |  |  +--:(gnpynt:scalar)
+     |  |     |        |  |  |  +--rw gnpynt:loss_coef                          decimal64
+     |  |     |        |  |  +--:(gnpynt:vector)
+     |  |     |        |  |     +--rw gnpynt:loss_coef_per_frequency* [frequency]
+     |  |     |        |  |        +--rw gnpynt:frequency          decimal64
+     |  |     |        |  |        +--rw gnpynt:loss_coef_value?   decimal64
+     |  |     |        |  +--rw gnpynt:length_units                             identityref
+     |  |     |        |  +--rw gnpynt:att_in?                                  decimal64
+     |  |     |        |  +--rw gnpynt:con_in?                                  union
+     |  |     |        |  +--rw gnpynt:con_out?                                 union
+     |  |     |        +--:(gnpynt:RoadmTransceiver)
+     |  |     |        |  +--rw gnpynt:design_bands* [f_min]
+     |  |     |        |  |  +--rw gnpynt:f_min                       decimal64
+     |  |     |        |  |  +--rw gnpynt:f_max?                      decimal64
+     |  |     |        |  |  +--rw (gnpynt:parameter-used-for-design)?
+     |  |     |        |  |     +--:(gnpynt:spacing)
+     |  |     |        |  |     |  +--rw gnpynt:spacing?              decimal64
+     |  |     |        |  |     +--:(gnpynt:number-of-channels)
+     |  |     |        |  |        +--rw gnpynt:number-of-channels?   uint16
+     |  |     |        |  +--rw gnpynt:per_degree_design_bands_targets* [degree_uid]
+     |  |     |        |  |  +--rw gnpynt:degree_uid      -> ../../../../elements/uid
+     |  |     |        |  |  +--rw gnpynt:design_bands* [f_min]
+     |  |     |        |  |     +--rw gnpynt:f_min                       decimal64
+     |  |     |        |  |     +--rw gnpynt:f_max?                      decimal64
+     |  |     |        |  |     +--rw (gnpynt:parameter-used-for-design)?
+     |  |     |        |  |        +--:(gnpynt:spacing)
+     |  |     |        |  |        |  +--rw gnpynt:spacing?              decimal64
+     |  |     |        |  |        +--:(gnpynt:number-of-channels)
+     |  |     |        |  |           +--rw gnpynt:number-of-channels?   uint16
+     |  |     |        |  +--rw (gnpynt:roadm)?
+     |  |     |        |     +--:(gnpynt:roadm)
+     |  |     |        |        +--rw (gnpynt:target_type)?
+     |  |     |        |        |  +--:(gnpynt:constant_power)
+     |  |     |        |        |  |  +--rw gnpynt:target_pch_out_db?           decimal64
+     |  |     |        |        |  +--:(gnpynt:constant_psd)
+     |  |     |        |        |  |  +--rw gnpynt:target_psd_out_mWperGHz?     decimal64
+     |  |     |        |        |  +--:(gnpynt:constant_psw)
+     |  |     |        |        |     +--rw gnpynt:target_out_mWperSlotWidth?   decimal64
+     |  |     |        |        +--rw gnpynt:restrictions
+     |  |     |        |        |  +--rw gnpynt:preamp_variety_list*    string
+     |  |     |        |        |  +--rw gnpynt:booster_variety_list*   string
+     |  |     |        |        +--rw gnpynt:per_degree_power_targets* [degree_uid]
+     |  |     |        |        |  +--rw gnpynt:degree_uid                                 -> ../../../../elements/uid
+     |  |     |        |        |  +--rw (gnpynt:per_degree_target_type)?
+     |  |     |        |        |     +--:(gnpynt:constant_power)
+     |  |     |        |        |     |  +--rw gnpynt:per_degree_pch_out_db?               decimal64
+     |  |     |        |        |     +--:(gnpynt:constant_psd)
+     |  |     |        |        |     |  +--rw gnpynt:per_degree_psd_out_mWperGHz?         decimal64
+     |  |     |        |        |     +--:(gnpynt:constant_psw)
+     |  |     |        |        |        +--rw gnpynt:per_degree_psd_out_mWperSlotWidth?   decimal64
+     |  |     |        |        +--rw gnpynt:per_degree_impairments* [from_degree to_degree]
+     |  |     |        |           +--rw gnpynt:from_degree      -> ../../../../elements/uid
+     |  |     |        |           +--rw gnpynt:to_degree        -> ../../../../elements/uid
+     |  |     |        |           +--rw gnpynt:impairment_id?   uint32
+     |  |     |        +--:(gnpynt:Fused)
+     |  |     |        |  +--rw gnpynt:loss?                                    union
+     |  |     |        +--:(gnpynt:Multiband_amplifier)
+     |  |     |           +--rw gnpynt:variety_list*                            string
+     |  |     +--:(gnpynt:Multiband_amplifier)
+     |  |        +--rw gnpynt:amplifiers* [type_variety]
+     |  |           +--rw gnpynt:type_variety    string
+     |  |           +--rw gnpynt:operational
+     |  |              +--rw gnpynt:gain_target?   union
+     |  |              +--rw gnpynt:tilt_target?   union
+     |  |              +--rw gnpynt:out_voa?       union
+     |  |              +--rw gnpynt:in_voa?        union
+     |  |              +--rw gnpynt:delta_p?       union
+     |  |              +--rw gnpynt:f_min?         decimal64
+     |  |              +--rw gnpynt:f_max?         decimal64
+     |  +--rw gnpynt:connections* [from_node to_node]
+     |  |  +--rw gnpynt:from_node    -> ../../elements/uid
+     |  |  +--rw gnpynt:to_node      -> ../../elements/uid
+     |  +--rw gnpynt:network_name?   string
+     +--rw gnpypc:services
+     |  +--rw gnpypc:path-request* [request-id]
+     |  |  +--rw gnpypc:request-id                string
+     |  |  +--rw gnpypc:bidirectional             boolean
+     |  |  +--rw gnpypc:source?                   string
+     |  |  +--rw gnpypc:destination?              string
+     |  |  +--rw gnpypc:src-tp-id?                string
+     |  |  +--rw gnpypc:dst-tp-id?                string
+     |  |  +--rw gnpypc:explicit-route-objects
+     |  |  |  +--ro gnpypc:route-object-include-exclude* [index]
+     |  |  |     +--ro gnpypc:explicit-route-usage?      identityref
+     |  |  |     +--ro gnpypc:index                      uint32
+     |  |  |     +--ro (gnpypc:subobject-type)?
+     |  |  |        +--:(gnpypc:num-unnum-hop)
+     |  |  |        |  +--ro gnpypc:num-unnum-hop
+     |  |  |        |     +--ro gnpypc:node-id?      string
+     |  |  |        |     +--ro gnpypc:link-tp-id?   string
+     |  |  |        |     +--ro gnpypc:hop-type?     te-hop-type
+     |  |  |        +--:(gnpypc:label)
+     |  |  |        |  +--ro gnpypc:label-hop* [N]
+     |  |  |        |     +--ro gnpypc:N    union
+     |  |  |        |     +--ro gnpypc:M?   union
+     |  |  |        +--:(gnpypc:hop-attribute)
+     |  |  |           +--ro (gnpypc:hop-type)?
+     |  |  |              +--:(gnpypc:tsp)
+     |  |  |              |  +--ro gnpypc:transponder
+     |  |  |              |     +--ro gnpypc:transponder-type?   string
+     |  |  |              |     +--ro gnpypc:transponder-mode?   string
+     |  |  |              +--:(gnpypc:regen)
+     |  |  |                 +--ro gnpypc:regenerator
+     |  |  |                    +--ro gnpypc:transponder-type?   string
+     |  |  |                    +--ro gnpypc:transponder-mode?   string
+     |  |  +--rw gnpypc:path-constraints
+     |  |     +--rw gnpypc:te-bandwidth
+     |  |        +--rw gnpypc:technology?            string
+     |  |        +--rw gnpypc:trx_type               string
+     |  |        +--rw gnpypc:trx_mode?              union
+     |  |        +--rw gnpypc:effective-freq-slot* [N]
+     |  |        |  +--rw gnpypc:N    union
+     |  |        |  +--rw gnpypc:M?   union
+     |  |        +--rw gnpypc:spacing                decimal64
+     |  |        +--rw gnpypc:max-nb-of-channel?     union
+     |  |        +--rw gnpypc:output-power?          union
+     |  |        +--rw gnpypc:tx_power?              union
+     |  |        +--rw gnpypc:path_bandwidth         decimal64
+     |  +--rw gnpypc:synchronization* [synchronization-id]
+     |     +--rw gnpypc:synchronization-id    string
+     |     +--rw gnpypc:svec
+     |        +--rw gnpypc:relaxable?           boolean
+     |        +--rw gnpypc:disjointness?        te-path-disjointness
+     |        +--rw gnpypc:request-id-number*   string
+     +--rw gnpypc:responses
+     |  +--rw gnpypc:response* [response-id]
+     |     +--rw gnpypc:response-id        string
+     |     +--rw gnpypc:path-properties
+     |     |  +--rw gnpypc:path-metric* [metric-type]
+     |     |  |  +--rw gnpypc:metric-type           identityref
+     |     |  |  +--rw gnpypc:accumulative-value?   union
+     |     |  +--rw gnpypc:z-a-path-metric* [metric-type]
+     |     |  |  +--rw gnpypc:metric-type           identityref
+     |     |  |  +--rw gnpypc:accumulative-value?   union
+     |     |  +--ro gnpypc:path-route-objects* []
+     |     |     +--ro gnpypc:path-route-object
+     |     |        +--ro gnpypc:index?                     uint32
+     |     |        +--ro (gnpypc:subobject-type)?
+     |     |           +--:(gnpypc:num-unnum-hop)
+     |     |           |  +--ro gnpypc:num-unnum-hop
+     |     |           |     +--ro gnpypc:node-id?      string
+     |     |           |     +--ro gnpypc:link-tp-id?   string
+     |     |           |     +--ro gnpypc:hop-type?     te-hop-type
+     |     |           +--:(gnpypc:label)
+     |     |           |  +--ro gnpypc:label-hop* [N]
+     |     |           |     +--ro gnpypc:N    union
+     |     |           |     +--ro gnpypc:M?   union
+     |     |           +--:(gnpypc:hop-attribute)
+     |     |              +--ro (gnpypc:hop-type)?
+     |     |                 +--:(gnpypc:tsp)
+     |     |                 |  +--ro gnpypc:transponder
+     |     |                 |     +--ro gnpypc:transponder-type?   string
+     |     |                 |     +--ro gnpypc:transponder-mode?   string
+     |     |                 +--:(gnpypc:regen)
+     |     |                    +--ro gnpypc:regenerator
+     |     |                       +--ro gnpypc:transponder-type?   string
+     |     |                       +--ro gnpypc:transponder-mode?   string
+     |     +--rw gnpypc:no-path
+     |        +--rw gnpypc:no-path?           identityref
+     |        +--rw gnpypc:path-properties
+     |           +--rw gnpypc:path-metric* [metric-type]
+     |           |  +--rw gnpypc:metric-type           identityref
+     |           |  +--rw gnpypc:accumulative-value?   union
+     |           +--rw gnpypc:z-a-path-metric* [metric-type]
+     |           |  +--rw gnpypc:metric-type           identityref
+     |           |  +--rw gnpypc:accumulative-value?   union
+     |           +--ro gnpypc:path-route-objects* []
+     |              +--ro gnpypc:path-route-object
+     |                 +--ro gnpypc:index?                     uint32
+     |                 +--ro (gnpypc:subobject-type)?
+     |                    +--:(gnpypc:num-unnum-hop)
+     |                    |  +--ro gnpypc:num-unnum-hop
+     |                    |     +--ro gnpypc:node-id?      string
+     |                    |     +--ro gnpypc:link-tp-id?   string
+     |                    |     +--ro gnpypc:hop-type?     te-hop-type
+     |                    +--:(gnpypc:label)
+     |                    |  +--ro gnpypc:label-hop* [N]
+     |                    |     +--ro gnpypc:N    union
+     |                    |     +--ro gnpypc:M?   union
+     |                    +--:(gnpypc:hop-attribute)
+     |                       +--ro (gnpypc:hop-type)?
+     |                          +--:(gnpypc:tsp)
+     |                          |  +--ro gnpypc:transponder
+     |                          |     +--ro gnpypc:transponder-type?   string
+     |                          |     +--ro gnpypc:transponder-mode?   string
+     |                          +--:(gnpypc:regen)
+     |                             +--ro gnpypc:regenerator
+     |                                +--ro gnpypc:transponder-type?   string
+     |                                +--ro gnpypc:transponder-mode?   string
+     +--rw sim-params:sim-params
+     |  +--rw sim-params:raman_params
+     |  |  +--rw sim-params:flag?                        boolean
+     |  |  +--rw sim-params:order?                       uint16
+     |  |  +--rw sim-params:method?                      identityref
+     |  |  +--rw sim-params:result_spatial_resolution?   decimal64
+     |  |  +--rw sim-params:solver_spatial_resolution?   decimal64
+     |  +--rw sim-params:nli_params
+     |     +--rw sim-params:method?                              identityref
+     |     +--rw sim-params:dispersion_tolerance?                decimal64
+     |     +--rw sim-params:phase_shift_tolerance?               decimal64
+     |     +--rw (sim-params:computation)?
+     |        +--:(sim-params:explicit-channels)
+     |        |  +--rw sim-params:computed_channels*             uint16
+     |        +--:(sim-params:nb_of_channels)
+     |           +--rw sim-params:computed_number_of_channels?   uint16
+     +--rw spectrum:spectrum* [f_min]
+        +--rw spectrum:f_min           decimal64
+        +--rw spectrum:f_max           decimal64
+        +--rw spectrum:slot_width      decimal64
+        +--rw spectrum:delta_pdb?      decimal64
+        +--rw spectrum:baud_rate?      decimal64
+        +--rw spectrum:tx_osnr?        decimal64
+        +--rw spectrum:roll_off?       union
+        +--rw spectrum:tx_power_dbm?   decimal64
+        +--rw spectrum:label?          string
