@@ -8,6 +8,9 @@ Each release introduces some changes and new features.
 
 (prepare text for next release)
 
+v2.13
+=====
+
 **Environment**
 
 The windows-2019 environment is no more supported.
