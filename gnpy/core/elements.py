@@ -194,6 +194,11 @@ class Transceiver(_Node):
         """
         self.latency = spectral_info.latency * 1e3
 
+    def _calc_rx_power(self, spectral_info):
+        """Updates the Transceiver property with the rx power received by the received channels. rx_power is in dBm.
+        """
+        self.rx_power = spectral_info.rx_power
+
     def _calc_penalty(self, impairment_value, boundary_list):
         """Computes the SNR penalty given the impairment value.
 

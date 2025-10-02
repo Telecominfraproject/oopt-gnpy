@@ -137,7 +137,12 @@ class RequestParams(BaseParams):
         'power': None,
         'equalization_offset_db': None,
         'tx_power': None,
-        'tx_osnr': None
+        'tx_osnr': None,
+        'tx_channel_power_min': None,
+        'tx_channel_power_max': None,
+        'rx_channel_power_min': None,
+        'rx_channel_power_max': None,
+        'rx_ref_channel_power': None
     }
 
 

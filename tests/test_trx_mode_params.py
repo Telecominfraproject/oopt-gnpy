@@ -66,6 +66,11 @@ def test_trx_mode_params(trx_type, trx_mode, error_message, no_error, expected_r
         'roll_off': 0.15,
         'spacing': 50000000000.0,
         'tx_osnr': 100,
+        'tx_channel_power_min': None,
+        'tx_channel_power_max': None,
+        'rx_channel_power_min': None,
+        'rx_channel_power_max': None,
+        'rx_ref_channel_power': None
     }
     possible_results["mode 2"] = {
         'format': 'mode 2',
@@ -80,6 +85,7 @@ def test_trx_mode_params(trx_type, trx_mode, error_message, no_error, expected_r
         'f_min': 191350000000000.0,
         'penalties': {},
         'cost': 1
+
     }
     possible_results["None"] = {
         'format': 'undetermined',
@@ -93,7 +99,12 @@ def test_trx_mode_params(trx_type, trx_mode, error_message, no_error, expected_r
         'f_max': 196100000000000.0,
         'f_min': 191350000000000.0,
         'penalties': None,
-        'cost': None
+        'cost': None,
+        'tx_channel_power_min': None,
+        'tx_channel_power_max': None,
+        'rx_channel_power_min': None,
+        'rx_channel_power_max': None,
+        'rx_ref_channel_power': None
     }
     equipment = load_equipment(EQPT_LIBRARY_NAME, DEFAULT_EXTRA_CONFIG)
     if no_error:
