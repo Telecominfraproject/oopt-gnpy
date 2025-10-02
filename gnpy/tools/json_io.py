@@ -170,6 +170,10 @@ class Transceiver(_JsonThing):
             penalties = mode_params.get('penalties')
             mode_params['penalties'] = {}
             mode_params['equalization_offset_db'] = mode_params.get('equalization_offset_db', 0)
+            # internal model with _ instead of -
+            for key in ['tx-channel-power-min', 'tx-channel-power-max', 'rx-channel-power-min', 'rx-channel-power-max']:
+                if key in mode_params:
+                    mode_params[key.replace('-', '_')] = mode_params.pop(key)
             if penalties:
                 for impairment in ('chromatic_dispersion', 'pmd', 'pdl'):
                     imp_penalties = [p for p in penalties if impairment in p]

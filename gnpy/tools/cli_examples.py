@@ -328,6 +328,10 @@ def _get_rq_from_service(service: Path, route_id: str, network, equipment,
             rqs[0].penalties = trx_params['penalties']
             rqs[0].cost = trx_params['cost']
             rqs[0].offset_db = trx_params['equalization_offset_db']
+            for key in ['tx_channel_power_min_dbm', 'tx_channel_power_max_dbm', 'rx_channel_power_min_dbm',
+                        'rx_channel_power_max_dbm']:
+                if key in trx_params:
+                    setattr(rqs[0], key, trx_params[key])
             mode_name = trx_params['format']
             baud_rate_ghz = rqs[0].baud_rate * 1e-9  # Convert to GHz
             spacing_ghz = rqs[0].spacing * 1e-9  # Convert to GHz

@@ -101,6 +101,10 @@ class PathRequest:
             self.M = [s['M'] for s in params.effective_freq_slot]
         self.initial_spectrum = None
         self.offset_db = params.equalization_offset_db
+        self.tx_channel_power_min_dbm = params.tx_channel_power_min_dbm
+        self.tx_channel_power_max_dbm = params.tx_channel_power_max_dbm
+        self.rx_channel_power_min_dbm = params.rx_channel_power_min_dbm
+        self.rx_channel_power_max_dbm = params.rx_channel_power_max_dbm
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',

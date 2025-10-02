@@ -42,7 +42,11 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         'roll_off': default_si_data.roll_off,
         'tx_osnr': default_si_data.tx_osnr,
         'min_spacing': None,
-        'equalization_offset_db': 0
+        'equalization_offset_db': 0,
+        "tx_channel_power_min_dbm": None,
+        "tx_channel_power_max_dbm": None,
+        "rx_channel_power_min_dbm": None,
+        "rx_channel_power_max_dbm": None
     }
     # Undetermined transponder characteristics
     # mainly used with path_request_run.py for the automatic mode computation case
@@ -56,7 +60,11 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         "tx_osnr": None,
         "min_spacing": None,
         "cost": None,
-        "equalization_offset_db": 0
+        "equalization_offset_db": 0,
+        "tx_channel_power_min_dbm": None,
+        "tx_channel_power_max_dbm": None,
+        "rx_channel_power_min_dbm": None,
+        "rx_channel_power_max_dbm": None
     }
 
     trxs = equipment['Transceiver']
