@@ -171,7 +171,8 @@ class Transceiver(_JsonThing):
             mode_params['penalties'] = {}
             mode_params['equalization_offset_db'] = mode_params.get('equalization_offset_db', 0)
             # internal model with _ instead of -
-            for key in ['tx-channel-power-min', 'tx-channel-power-max', 'rx-channel-power-min', 'rx-channel-power-max']:
+            for key in ['tx-channel-power-min-dbm', 'tx-channel-power-max-dbm', 'rx-channel-power-min-dbm',
+                        'rx-channel-power-max-dbm']:
                 if key in mode_params:
                     mode_params[key.replace('-', '_')] = mode_params.pop(key)
             if penalties:
