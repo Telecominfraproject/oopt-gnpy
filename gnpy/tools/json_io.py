@@ -176,8 +176,29 @@ class Transceiver(_JsonThing):
                         'rx-ref-channel-power']:
                 if key in mode_params:
                     mode_params[key.replace('-', '_')] = mode_params.pop(key)
+            if not penalties and 'rx_channel_power_max' in mode_params and 'rx_channel_power_min' in mode_params:
+                penalties = [{'rx_power_dbm': mode_params['rx_channel_power_max'], 'penalty_value': 0},
+                             {'rx_power_dbm': mode_params['rx_channel_power_min'], 'penalty_value': 0}]
+            elif not penalties and 'rx_channel_power_max' in mode_params:
+                penalties = [{'rx_power_dbm': mode_params['rx_channel_power_max'], 'penalty_value': 0},
+                             {'rx_power_dbm': -100, 'penalty_value': 0}]
+            elif not penalties and 'rx_channel_power_min' in mode_params:
+                penalties = [{'rx_power_dbm': mode_params['rx_channel_power_min'], 'penalty_value': 0},
+                             {'rx_power_dbm': 0, 'penalty_value': 0}]
             if penalties:
-                for impairment in ('chromatic_dispersion', 'pmd', 'pdl', 'rx_power'):
+                self.penalty_cases(penalties, mode_params)
+                if (not any('rx_power_dbm' in p for p in penalties)
+                    and 'rx_channel_power_max' in mode_params
+                   and 'rx_channel_power_min' in mode_params):
+                    penalties = [{'rx_power_dbm': mode_params['rx_channel_power_max'], 'penalty_value': 0},
+                                 {'rx_power_dbm': mode_params['rx_channel_power_min'], 'penalty_value': 0}]
+                if not any('rx_power_dbm' in p for p in penalties) and 'rx_channel_power_max' in mode_params:
+                    penalties = [{'rx_power_dbm': mode_params['rx_channel_power_max'], 'penalty_value': 0},
+                                 {'rx_power_dbm': -100, 'penalty_value': 0}]
+                if not any('rx_power_dbm' in p for p in penalties) and 'rx_channel_power_min' in mode_params:
+                    penalties = [{'rx_power_dbm': mode_params['rx_channel_power_min'], 'penalty_value': 0},
+                                 {'rx_power_dbm': 0, 'penalty_value': 0}]
+                for impairment in ('chromatic_dispersion', 'pmd', 'pdl', 'rx_power_dbm'):
                     imp_penalties = [p for p in penalties if impairment in p]
                     if not imp_penalties:
                         continue
@@ -201,6 +222,54 @@ class Transceiver(_JsonThing):
                     other_modes.append(other_mode)
                 mode_params.pop('other_name')
         self.mode.extend(other_modes)
+
+    def penalty_cases(self, penalties, mode_params):
+        """Manage the different cases and set rx power range based on penalty data.
+        If these power range values are not set, they are automatically derived from the penalty data.
+
+        :param penalties: List of penalty dictionaries (rx_power_dbm' and 'penalty_value' keys).
+        :type penalties: list
+        :param mode_params: Mode configuration dictionary that may contain
+                            'rx_channel_power_min' and 'rx_channel_power_max' keys.
+        :type mode_params: dict
+        :return: None
+        :rtype: None
+        :raises ValueError: If rx_channel_power_min is not equal to the minimum
+                            rx_power_dbm value found in penalties.
+        :raises ValueError: If rx_channel_power_max is less than the maximum
+                            rx_power_dbm value found in penalties.
+        """
+
+        if 'rx_channel_power_min' in mode_params:
+            rx_power_min = mode_params['rx_channel_power_min']
+        else:
+            rx_power_min = None
+
+        if 'rx_channel_power_max' in mode_params:
+            rx_power_max = mode_params['rx_channel_power_max']
+        else:
+            rx_power_max = None
+
+        rx_powers_dbm = [p["rx_power_dbm"] for p in penalties if "rx_power_dbm" in p]
+        if rx_powers_dbm:
+            if rx_power_min is None:
+                rx_power_min = min(rx_powers_dbm)
+                mode_params['rx_channel_power_min'] = rx_power_min
+            if rx_power_max is None:
+                rx_power_max = max(rx_powers_dbm)
+                mode_params['rx_channel_power_max'] = rx_power_max
+            if rx_power_min == min(rx_powers_dbm):
+                pass
+            elif rx_power_min != min(rx_powers_dbm):
+                raise ValueError("rx_channel_power_min value must be set to the minimum rx_power_dbm value"
+                                 " defined in penalties")
+            if rx_power_max == max(rx_powers_dbm):
+                pass
+            elif rx_power_max < max(rx_powers_dbm):
+                raise ValueError("rx_channel_power_max value must be set to the maximum rx_power_dbm value"
+                                 " defined in penalties")
+            elif rx_power_max > max(rx_powers_dbm) or rx_power_max is None:
+                penalties.append({'rx_power_dbm': mode_params['rx_channel_power_max'], 'penalty_value': 0})
 
 
 class Fiber(_JsonThing):

@@ -196,7 +196,7 @@ class Transceiver(_Node):
         self.latency = spectral_info.latency * 1e3
 
     def _calc_rx_power_dbm(self, spectral_info):
-        """Updates the Transceiver property with the rx power received by the received channels. rx_power is in dBm.
+        """Updates the Transceiver property with the rx power received by the received channels. rx_power_dbm is in dBm.
         """
         self.rx_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
 
@@ -325,6 +325,9 @@ class Transceiver(_Node):
         pdl_penalty = self.penalties.get('pdl')
         if pdl_penalty is not None:
             result += f'\n  PDL penalty (dB):          {mean(pdl_penalty):.2f}'
+        rx_power_dbm_penalty = self.penalties.get('rx_power_dbm')
+        if rx_power_dbm_penalty is not None:
+            result += f'\n  rx_power_dbm penalty (dB): {mean(rx_power_dbm_penalty):.2f}'
 
         return result
 
