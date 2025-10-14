@@ -106,7 +106,7 @@ class PathRequest:
         self.tx_channel_power_max = params.tx_channel_power_max
         self.rx_channel_power_min = params.rx_channel_power_min
         self.rx_channel_power_max = params.rx_channel_power_max
-        self.rx_ref_channel_power = params.tx_channel_power_min
+        self.rx_ref_channel_power = params.rx_ref_channel_power
 
     def __str__(self):
         return '\n\t'.join([f'{type(self).__name__} {self.request_id}',

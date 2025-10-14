@@ -11,12 +11,15 @@ checks all possibilities of this function
 """
 
 from pathlib import Path
+from numpy.testing import assert_allclose
 import pytest
 
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import EquipmentConfigError
-from gnpy.tools.json_io import load_equipment, load_json, _equipment_from_json
+from gnpy.tools.json_io import load_equipment, load_json, _equipment_from_json, requests_from_json
 from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG
+from gnpy.core.elements import Transceiver
+from gnpy.core.info import create_input_spectral_information
 
 
 TEST_DIR = Path(__file__).parent
@@ -169,3 +172,105 @@ def test_wrong_baudrate_spacing(baudrate, spacing, error_message):
 
     with pytest.raises(EquipmentConfigError, match=error_message):
         _ = trx_mode_params(equipment, 'vendorB_trx-type1', 'wrong mode', error_message=False)
+
+
+def test_transceiver_power_range():
+    """
+    """
+
+    trx_lib = {
+        "SI": [{
+            "type_variety": "default",
+            "f_min": 191.3e12,
+            "f_max": 196.1e12,
+            "baud_rate": 32e9,
+            "spacing": 50e9,
+            "power_dbm": 0,
+            "tx_power_dbm": -1,
+            "power_range_db": [
+                0,
+                0,
+                0.5
+            ],
+            "roll_off": 0.15,
+            "tx_osnr": 100,
+            "sys_margins": 0,
+            "use_si_channel_count_for_design": False
+        }],
+        "Transceiver": [{
+            "type_variety": "Voyager",
+            "frequency": {
+                "min": 191.35e12,
+                "max": 196.1e12
+            },
+            "mode": [{
+                "format": "mode 1",
+                "baud_rate": 32e9,
+                "OSNR": 11,
+                "bit_rate": 100e9,
+                "roll_off": 0.15,
+                "tx_osnr": 40,
+                "min_spacing": 50e9,
+                "tx-channel-power-min": 0,
+                "tx-channel-power-max": 5,
+                "rx-channel-power-min": -29,
+                "rx-channel-power-max": -19,
+                "rx-ref-channel-power": -20,
+                "penalties": [{
+                    "rx_power": -20,
+                    "penalty_value": 0
+                }, {
+                    "rx_power": -21,
+                    "penalty_value": 1
+                }, {
+                    "rx_power": -25,
+                    "penalty_value": 2
+                }],
+                "cost": 1
+            }]
+        }]
+    }
+
+    request_data = {
+        "path-request": [{
+            "request-id": "0",
+            "source": "trx Lorient_KMA",
+            "destination": "trx Vannes_KBE",
+            "src-tp-id": "trx Lorient_KMA",
+            "dst-tp-id": "trx Vannes_KBE",
+            "bidirectional": False,
+            "path-constraints": {
+                "te-bandwidth": {
+                    "technology": "flexi-grid",
+                    "trx_type": "Voyager",
+                    "trx_mode": "mode 1",
+                    "spacing": 50e9,
+                    "path_bandwidth": 100e9
+                }
+            }
+        }]
+    }
+
+    eqpt_trx = _equipment_from_json(trx_lib, DEFAULT_EXTRA_CONFIG)
+
+    # transceiver
+    trx = Transceiver(uid='transceiver_1')
+
+    # request
+    [rq] = requests_from_json(request_data, eqpt_trx)
+
+    assert rq.tx_channel_power_min == 0
+    assert rq.tx_channel_power_max == 5
+    assert rq.rx_channel_power_min == -29
+    assert rq.rx_channel_power_max == -19
+    assert rq.rx_ref_channel_power == -20
+
+    # peigne WDM
+    spectral_info = create_input_spectral_information(
+        f_min=rq.f_min, f_max=rq.f_max, roll_off=rq.roll_off, baud_rate=rq.baud_rate,
+        spacing=rq.spacing, tx_osnr=rq.tx_osnr, tx_power=rq.tx_power, delta_pdb=rq.offset_db)
+
+    assert trx.rx_power_dbm is None
+    trx(spectral_info)
+    assert_allclose(trx.rx_power_dbm, -1, 1e-3)
+    print(trx)

@@ -173,6 +173,7 @@ class Transceiver(_Node):
         self.tx_power = None
         self.design_bands = self.params.design_bands
         self.per_degree_design_bands = self.params.per_degree_design_bands
+        self.rx_power_dbm = None
 
     def _calc_cd(self, spectral_info):
         """Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -194,10 +195,10 @@ class Transceiver(_Node):
         """
         self.latency = spectral_info.latency * 1e3
 
-    def _calc_rx_power(self, spectral_info):
+    def _calc_rx_power_dbm(self, spectral_info):
         """Updates the Transceiver property with the rx power received by the received channels. rx_power is in dBm.
         """
-        self.rx_power = spectral_info.rx_power
+        self.rx_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
 
     def _calc_penalty(self, impairment_value, boundary_list):
         """Computes the SNR penalty given the impairment value.
@@ -342,6 +343,7 @@ class Transceiver(_Node):
         self._calc_pmd(spectral_info)
         self._calc_pdl(spectral_info)
         self._calc_latency(spectral_info)
+        self._calc_rx_power_dbm(spectral_info)
         return spectral_info
 
 
