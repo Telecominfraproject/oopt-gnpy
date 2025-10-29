@@ -14,7 +14,6 @@ check that combinations of inputs are correctly converted
 from pathlib import Path
 import json
 import subprocess    # nosec
-import os
 import pytest
 
 from gnpy.tools.json_io import load_gnpy_json
@@ -280,10 +279,10 @@ def test_gnpy_convert(input, expected_output):
     [['--legacy-to-yang', DATA_DIR / 'testTopology_testservices.json', '-o'], 'essaireq.json']))
 def test_example_invocation(tmpdir, args, fileout):
     """test the main function of converter"""
-    os.environ['PYTHONPATH'] = str(SRC_ROOT)
+    from sys import executable
     proc = subprocess.run(
-        ('python', SRC_ROOT / 'gnpy' / 'tools' / 'convert_legacy_yang.py', *args, tmpdir / fileout),
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, universal_newlines=True)     # nosec
+        (executable, "-m", "gnpy.tools.convert_legacy_yang", *map(str, args), str(tmpdir / fileout)),
+        stdout = subprocess.PIPE, stderr = subprocess.PIPE, check = True, universal_newlines = True)  # nosec
     assert proc.stderr == ''
 
 
@@ -291,10 +290,10 @@ def test_example_invocation(tmpdir, args, fileout):
     [['--validate', DATA_DIR / 'GNPy_api_example.json']]))
 def test_example_invocation2(args):
     """test the main function of converter"""
-    os.environ['PYTHONPATH'] = str(SRC_ROOT)
+    from sys import executable
     proc = subprocess.run(
-        ('python', SRC_ROOT / 'gnpy' / 'tools' / 'convert_legacy_yang.py', *args),
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, universal_newlines=True)     # nosec
+        (executable, "-m", "gnpy.tools.convert_legacy_yang", *map(str, args)),
+        stdout = subprocess.PIPE, stderr = subprocess.PIPE, check = True, universal_newlines = True)  # nosec
     assert proc.stderr == ''
 
 
