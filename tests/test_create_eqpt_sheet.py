@@ -10,12 +10,12 @@
 Checks create_eqpt_sheet.py: verify that output is as expected
 """
 from pathlib import Path
-from os import symlink, unlink
+from os import symlink, unlink, link
+from shutil import copy2
 
 import pytest
 from gnpy.tools.create_eqpt_sheet import Node, read_excel, create_eqpt_template
 from gnpy.core.exceptions import NetworkTopologyError
-
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data' / 'create_eqpt_sheet'
@@ -79,17 +79,31 @@ def test_create_eqpt_template(tmpdir, test_nodes_list):
     create_eqpt_template(test_nodes_list, DATA_DIR / TEST_FILE_NO_ERR,
                          tmpdir / PYTEST_OUTPUT_FILE_NAME)
     with open((tmpdir / PYTEST_OUTPUT_FILE_NAME).strpath, 'r') as actual, \
-         open(TEST_OUTPUT_FILE_CSV, 'r') as expected:
+            open(TEST_OUTPUT_FILE_CSV, 'r') as expected:
         assert set(actual.readlines()) == set(expected.readlines())
     unlink(tmpdir / PYTEST_OUTPUT_FILE_NAME)
 
 
-def test_create_eqpt(tmpdir):
-    """Test method create_eqt_template()."""
-    # create a fake file in tempdir in order to test the automatic output filename generation
-    symlink(DATA_DIR / TEST_FILE, tmpdir / TEST_FILE)
-    create_eqpt_template(read_excel(DATA_DIR / TEST_FILE), Path((tmpdir / TEST_FILE).strpath))
-    with open(DATA_DIR / EXPECTED_OUTPUT_CSV_NAME, 'r') as expected, \
-         open(tmpdir / EXPECTED_OUTPUT_CSV_NAME, 'r') as actual:
-        assert set(actual.readlines()) == set(expected.readlines())
-    unlink(tmpdir / EXPECTED_OUTPUT_CSV_NAME)
+def test_create_eqpt(tmp_path):
+    def safe_link_or_copy(src_path: Path, dst_path: Path) -> None:
+        try:
+            symlink(src_path, dst_path)
+            return
+        except (OSError, NotImplementedError):
+            pass
+        try:
+            link(src_path, dst_path)
+            return
+        except OSError:
+            pass
+        copy2(src_path, dst_path)
+
+    src = DATA_DIR / TEST_FILE
+    dst = tmp_path / TEST_FILE
+    safe_link_or_copy(src, dst)
+    nodes = read_excel(dst)
+    create_eqpt_template(nodes, dst)
+    actual = (tmp_path / EXPECTED_OUTPUT_CSV_NAME).read_text().splitlines(True)
+    expected = (DATA_DIR / EXPECTED_OUTPUT_CSV_NAME).read_text().splitlines(True)
+    assert set(actual) == set(expected)
+    (tmp_path / EXPECTED_OUTPUT_CSV_NAME).unlink()
