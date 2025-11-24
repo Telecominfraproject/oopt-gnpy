@@ -35,7 +35,11 @@ EXAMPLE_DIR = SRC_ROOT / 'gnpy' / 'example-data'
     ('GNPy_yang_formatted-testTopology_auto_design_expected.json',
      'GNPy_legacy_formatted-testTopology_auto_design_expected.json',
      'testTopology_auto_design_expected.json',
-     'eqpt_config.json')])
+     'eqpt_config.json'),
+    ('network_per_frequency_loss_yang.json',
+     'network_per_frequency_loss_expected.json',
+     'network_per_frequency_loss_autodesign_expected.json',
+     None)])
 def test_gnpy(tmpdir, yang_input, expected_output, expected_autodesign, eqpt):
     """Convert back from yang to legacy format, and checks that GNPy can run on the converted file
     """

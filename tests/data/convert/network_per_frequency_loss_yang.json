@@ -1,0 +1,167 @@
+{
+  "gnpy-network-topology:topology": {
+    "elements": [
+      {
+        "uid": "Site_A",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "Site A",
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "Span1",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "80.0",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0",
+          "loss_coef": "0.25"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "1.0",
+            "longitude": "0.0",
+            "city": [null],
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "Edfa1",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": "20.5",
+          "delta_p": "0.5",
+          "tilt_target": "0.0",
+          "out_voa": "0.0",
+          "in_voa": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.0",
+            "city": [null],
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "Span2",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "80.0",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0",
+          "loss_coef_per_frequency": [
+            {
+              "frequency": "186300000000000.0",
+              "loss_coef_value": "0.29"
+            },
+            {
+              "frequency": "194000000000000.0",
+              "loss_coef_value": "0.28"
+            },
+            {
+              "frequency": "197000000000000.0",
+              "loss_coef_value": "0.29"
+            }
+          ]
+        },
+        "metadata": {
+          "location": {
+            "latitude": "1.0",
+            "longitude": "0.0",
+            "city": [null],
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "Edfa2",
+        "type": "Edfa",
+        "type_variety": "std_low_gain",
+        "operational": {
+          "gain_target": "20.960832",
+          "delta_p": "-1.0",
+          "tilt_target": "0.0",
+          "out_voa": "0.0",
+          "in_voa": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.0",
+            "city": [null],
+            "region": ""
+          }
+        }
+      },
+      {
+        "uid": "Att_B",
+        "type": "Fused",
+        "params": {
+          "loss": "16.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.0",
+            "city": "Corlay",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "Site_B",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "3.0",
+            "longitude": "0.0",
+            "city": "Site B",
+            "region": ""
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from_node": "Site_A",
+        "to_node": "Span1"
+      },
+      {
+        "from_node": "Span1",
+        "to_node": "Edfa1"
+      },
+      {
+        "from_node": "Edfa1",
+        "to_node": "Span2"
+      },
+      {
+        "from_node": "Span2",
+        "to_node": "Edfa2"
+      },
+      {
+        "from_node": "Edfa2",
+        "to_node": "Att_B"
+      },
+      {
+        "from_node": "Att_B",
+        "to_node": "Site_B"
+      }
+    ],
+    "network_name": "EDFA Example Network - P2P"
+  }
+}

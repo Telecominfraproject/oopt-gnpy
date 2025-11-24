@@ -899,12 +899,17 @@ class Fiber(_Node):
         params = {
             # have to specify each because namedtupple cannot be updated :(
             'length': round(self.params.length * 1e-3, 6),
-            'loss_coef': round(self.params.loss_coef * 1e3, 6),
             'length_units': 'km',
             'att_in': self.params.att_in,
             'con_in': self.params.con_in,
             'con_out': self.params.con_out
         }
+        if isinstance(self.params.loss_coef, ndarray):
+            params["loss_coef_per_frequency"] = [
+                {"frequency": frequency, "loss_coef_value": round(loss * 1e3, 6)}
+                for frequency, loss in zip(self.params.f_loss_ref, self.params.loss_coef)]
+        else:
+            params["loss_coef"] = round(self.params.loss_coef * 1e3, 6)
         # Export pmd_coef only if it is not a default from library.
         if self.params.pmd_coef_defined:
             params['pmd_coef'] = self.params.pmd_coef
