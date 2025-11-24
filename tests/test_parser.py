@@ -134,6 +134,8 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
                           DATA_DIR / 'testTopology_auto_design_expected.json':
                           False,
                           DATA_DIR / 'perdegreemeshTopologyExampleV2_auto_design_expected.json':
+                          True,
+                          DATA_DIR / 'network_per_frequency_loss_expected.json':
                           True
                           }.items())
 def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):

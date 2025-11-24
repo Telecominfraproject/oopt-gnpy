@@ -370,7 +370,7 @@ def convert_loss_coeff_list(json_data: Dict) -> Dict:
         if PARAMS_KEY in elem and LOSS_COEF_KEY in elem[PARAMS_KEY] \
                 and isinstance(elem[PARAMS_KEY][LOSS_COEF_KEY], dict):
             loss_coef_per_frequency = elem[PARAMS_KEY].pop(LOSS_COEF_KEY)
-            loss_coef_list = loss_coef_per_frequency.pop('loss_coef_value', None)
+            loss_coef_list = loss_coef_per_frequency.pop('value', None)
             frequency_list = loss_coef_per_frequency.pop('frequency', None)
             if loss_coef_list:
                 new_loss_coef_per_frequency = [{'frequency': f, 'loss_coef_value': v}
@@ -393,7 +393,7 @@ def convert_back_loss_coeff_list(json_data: Dict) -> Dict:
             if loss_coef_per_frequency:
                 new_loss_coef_per_frequency = {
                     'frequency': [item['frequency'] for item in loss_coef_per_frequency],
-                    'loss_coef_value': [item['loss_coef_value'] for item in loss_coef_per_frequency]}
+                    'value': [item['loss_coef_value'] for item in loss_coef_per_frequency]}
                 elem[PARAMS_KEY]['loss_coef'] = new_loss_coef_per_frequency
     return json_data
 
