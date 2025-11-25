@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d8e66a7_086755c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017895
+      },
+      "writtenOn": "2025-11-25T17:31:03Z",
+      "side": 1,
+      "message": "I have uploaded the updated patch. Thanks!",
+      "revId": "d8baf30521cb72a4545ef15b06c057f59b0604fa",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
