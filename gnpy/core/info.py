@@ -28,13 +28,10 @@ DEFAULT_SLOT_WIDTH_STEP = 12.5e9  # Hz
 multiple of the DEFAULT_SLOT_WIDTH_STEP (the baud rate is extended including the roll off in this evaluation)"""
 
 
-class Power(namedtuple('Power', 'signal nli ase')):
-    """carriers power in W"""
-
-
 class Channel(
     namedtuple('Channel',
-               'channel_number frequency baud_rate slot_width roll_off power chromatic_dispersion pmd pdl latency')):
+               'channel_number frequency baud_rate slot_width roll_off signal ase nli chromatic_dispersion '
+               'pmd pdl latency')):
     """Class containing the parameters of a WDM signal.
 
     :param channel_number: channel number in the WDM grid
@@ -42,7 +39,9 @@ class Channel(
     :param baud_rate: the symbol rate of the signal (Baud)
     :param slot_width: the slot width (Hz)
     :param roll_off: the roll off of the signal. It is a pure number between 0 and 1
-    :param power (gnpy.core.info.Power): power of signal, ASE noise and NLI (W)
+    :param signal: signal power (dBm)
+    :param ase: ASE noise power (dBm)
+    :param nli: NLI noise power (dBm)
     :param chromatic_dispersion: chromatic dispersion (s/m)
     :param pmd: polarization mode dispersion (s)
     :param pdl: polarization dependent loss (dB)
@@ -108,11 +107,6 @@ class SpectralInformation(object):
     @property
     def number_of_channels(self):
         return self._number_of_channels
-
-    @property
-    def powers(self):
-        powers = zip(self.signal, self.nli, self.ase)
-        return [Power(*p) for p in powers]
 
     @property
     def signal(self):
@@ -208,8 +202,8 @@ class SpectralInformation(object):
 
     @property
     def carriers(self):
-        entries = zip(self.channel_number, self.frequency, self.baud_rate, self.slot_width,
-                      self.roll_off, self.powers, self.chromatic_dispersion, self.pmd, self.pdl, self.latency)
+        entries = (zip(self.channel_number, self.frequency, self.baud_rate, self.slot_width, self.roll_off,
+                       self.signal, self.ase, self.nli, self.chromatic_dispersion, self.pmd, self.pdl, self.latency))
         return [Channel(*entry) for entry in entries]
 
     def apply_attenuation_lin(self, attenuation_lin):
@@ -322,42 +316,37 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, spacing
                                                  tx_osnr=tx_osnr, tx_power=tx_power, label=label)
 
 
-def is_in_band(frequency: float, band: dict) -> bool:
+def select_channels(spectrum: SpectralInformation, select: array) -> SpectralInformation:
+    """
+    select: boolean array of indices to keep
+    """
+    return SpectralInformation(frequency=spectrum.frequency[select], baud_rate=spectrum.baud_rate[select],
+                               slot_width=spectrum.slot_width[select], signal=spectrum.signal[select],
+                               nli=spectrum.nli[select], ase=spectrum.ase[select], roll_off=spectrum.roll_off[select],
+                               chromatic_dispersion=spectrum.chromatic_dispersion[select], pmd=spectrum.pmd[select],
+                               pdl=spectrum.pdl[select], latency=spectrum.latency[select],
+                               delta_pdb_per_channel=spectrum.delta_pdb_per_channel[select],
+                               tx_osnr=spectrum.tx_osnr[select], tx_power=spectrum.tx_power[select],
+                               label=spectrum.label[select])
+
+
+def is_in_band(frequency: array, slot_width: array, band: dict) -> array:
     """band has {"f_min": value, "f_max": value} format
     """
-    if frequency >= band['f_min'] and frequency <= band['f_max']:
-        return True
-    return False
+    return (frequency - slot_width / 2 >= band['f_min']) * (frequency + slot_width / 2 <= band['f_max']) == 1
 
 
 def demuxed_spectral_information(input_si: SpectralInformation, band: dict) -> Optional[SpectralInformation]:
     """extract a si based on band
     """
-    filtered_indices = [i for i, f in enumerate(input_si.frequency)
-                        if is_in_band(f - input_si.slot_width[i] / 2, band)
-                        and is_in_band(f + input_si.slot_width[i] / 2, band)]
-    if filtered_indices:
-        frequency = input_si.frequency[filtered_indices]
-        baud_rate = input_si.baud_rate[filtered_indices]
-        slot_width = input_si.slot_width[filtered_indices]
-        signal = input_si.signal[filtered_indices]
-        nli = input_si.nli[filtered_indices]
-        ase = input_si.ase[filtered_indices]
-        roll_off = input_si.roll_off[filtered_indices]
-        chromatic_dispersion = input_si.chromatic_dispersion[filtered_indices]
-        pmd = input_si.pmd[filtered_indices]
-        pdl = input_si.pdl[filtered_indices]
-        latency = input_si.latency[filtered_indices]
-        delta_pdb_per_channel = input_si.delta_pdb_per_channel[filtered_indices]
-        tx_osnr = input_si.tx_osnr[filtered_indices]
-        tx_power = input_si.tx_power[filtered_indices]
-        label = input_si.label[filtered_indices]
 
-        return SpectralInformation(frequency=frequency, baud_rate=baud_rate, slot_width=slot_width, signal=signal,
-                                   nli=nli, ase=ase, roll_off=roll_off, chromatic_dispersion=chromatic_dispersion,
-                                   pmd=pmd, pdl=pdl, latency=latency, delta_pdb_per_channel=delta_pdb_per_channel,
-                                   tx_osnr=tx_osnr, tx_power=tx_power, label=label)
-    return None
+    select = is_in_band(input_si.frequency, input_si.slot_width, band)
+
+    if any(select):
+        spectrum = select_channels(input_si, select)
+    else:
+        spectrum = None
+    return spectrum
 
 
 def muxed_spectral_information(input_si_list: List[SpectralInformation]) -> SpectralInformation:
