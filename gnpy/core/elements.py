@@ -1689,10 +1689,11 @@ class Edfa(_Node):
         # filter out carriers outside the amplifier band
         band = next(b for b in self.params.bands)
         spectral_info = demuxed_spectral_information(spectral_info, band)
-        if spectral_info.carriers:
-            self.propagate(spectral_info)
-            return spectral_info
-        raise ValueError(f'Amp {self.uid} Defined propagation band does not match amplifiers band.')
+        if spectral_info is None:
+            raise ValueError(f'Amp {self.uid} Defined propagation band does not match amplifiers band.')
+        self.propagate(spectral_info)
+        return spectral_info
+
 
 
 class Multiband_amplifier(_Node):
