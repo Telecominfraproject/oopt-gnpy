@@ -309,9 +309,9 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
         spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.tx_power)
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
-            power_in_roadm = si.signal + si.ase + si.nli
+            pch_in_roadm = si.pch
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
-            power_out_roadm = si.signal + si.ase + si.nli
+            pch_out_roadm = si.pch
             if el.uid == 'roadm node B':
                 # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
                 # target power (as specified in equipment ie -20 dBm)
@@ -324,7 +324,7 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
                     # check that target power is correctly set in the ROADM
                     assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
                     # Check that egress power of roadm is equal to target power
-                    assert_allclose(power_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
+                    assert_allclose(pch_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
                 if prev_node_type == 'fused':
                     # fused prev_node does not reamplify power after fiber propagation, so input power
                     # to roadm is low.
@@ -332,9 +332,9 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
                     assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm - roadm_b_maxloss, rtol=1e-3)
                     # Check that egress power of roadm is not equalized:
                     # power out is the same as power in minus the ROADM loss.
-                    assert_allclose(power_out_roadm, power_in_roadm / db2lin(roadm_b_maxloss), rtol=1e-3)
+                    assert_allclose(pch_out_roadm, pch_in_roadm / db2lin(roadm_b_maxloss), rtol=1e-3)
                     assert effective_pch_out_db + power_dbm ==\
-                        pytest.approx(lin2db(min(power_in_roadm) * 1e3), rel=1e-3)
+                        pytest.approx(lin2db(min(pch_in_roadm) * 1e3), rel=1e-3)
         else:
             si = el(si)
 

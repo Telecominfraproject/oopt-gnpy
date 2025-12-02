@@ -20,7 +20,7 @@ from typing import Union, List, Optional
 from dataclasses import dataclass
 from numpy import argsort, mean, array, append, ones, ceil, any, zeros, outer, full, ndarray, asarray
 
-from gnpy.core.utils import automatic_nch, db2lin, watt2dbm
+from gnpy.core.utils import automatic_nch, db2lin, watt2dbm, lin2db
 from gnpy.core.exceptions import SpectrumError
 
 DEFAULT_SLOT_WIDTH_STEP = 12.5e9  # Hz
@@ -112,11 +112,19 @@ class SpectralInformation(object):
 
     @property
     def pch(self):
-        return self._pch
+        return array(self._pch)
+
+    @property
+    def pch_dBm(self):
+        return watt2dbm(self.pch)
 
     @property
     def ptot(self):
         return sum(self._pch)
+
+    @property
+    def ptot_dBm(self):
+        return watt2dbm(self.ptot)
 
     @pch.setter
     def pch(self, pch):
@@ -127,8 +135,16 @@ class SpectralInformation(object):
         return self._signal_ratio * self._pch
 
     @property
+    def signal_dBm(self):
+        return watt2dbm(self.signal)
+
+    @property
     def nli(self):
         return self._nli_ratio * self._pch
+
+    @property
+    def nli_dBm(self):
+        return watt2dbm(self.nli)
 
     def add_nli(self, nli):
         pch = self.pch + nli
@@ -140,6 +156,10 @@ class SpectralInformation(object):
     @property
     def ase(self):
         return self._ase_ratio * self._pch
+
+    @property
+    def ase_dBm(self):
+        return watt2dbm(self.ase)
 
     def add_ase(self, ase):
         pch = self.pch + ase
@@ -153,12 +173,36 @@ class SpectralInformation(object):
         return self._signal_ratio / self._ase_ratio
 
     @property
+    def snr_lin_dB(self):
+        return lin2db(self.snr_lin)
+
+    @property
+    def opt_snr_lin_dB(self):
+        return self.snr_lin_dB - lin2db(12.5e9/self.baud_rate)
+
+    @property
     def snr_nli(self):
         return self._signal_ratio / self._nli_ratio
 
     @property
+    def snr_nli_dB(self):
+        return lin2db(self.snr_nli)
+
+    @property
+    def opt_snr_nli_dB(self):
+        return self.snr_nli_dB - lin2db(12.5e9/self.baud_rate)
+
+    @property
     def gsnr(self):
         return self._signal_ratio / (self._ase_ratio + self._nli_ratio)
+
+    @property
+    def gsnr_dB(self):
+        return lin2db(self.gsnr)
+
+    @property
+    def opt_gsnr_dB(self):
+        return self.gsnr_dB - lin2db(12.5e9/self.baud_rate)
 
     @property
     def roll_off(self):
