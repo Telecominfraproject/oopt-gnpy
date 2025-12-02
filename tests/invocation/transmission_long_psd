@@ -74,7 +74,7 @@ Fiber          Span2
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.98, mode_2: -12.97
 Edfa Edfa2
   type_variety:           test_fixed_gain
@@ -97,7 +97,7 @@ Fiber          Span3
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.97, mode_2: -12.95
 Edfa Edfa3
   type_variety:           test
@@ -120,7 +120,7 @@ Fiber          Span4
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.96, mode_2: -12.94
 Edfa Edfa4
   type_variety:           test_fixed_gain
@@ -143,7 +143,7 @@ Fiber          Span5
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.95, mode_2: -12.93
 Edfa Edfa5
   type_variety:           test
@@ -209,8 +209,8 @@ Fiber          Span7
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
-  actual pch out (dBm):        mode_1: -15.98, mode_2: -12.97
+  reference pch out (dBm):     -15.99
+  actual pch out (dBm):        mode_1: -15.98, mode_2: -12.96
 Edfa Edfa7
   type_variety:           test
   effective gain(dB):     16.00
@@ -232,7 +232,7 @@ Fiber          Span8
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.97, mode_2: -12.95
 Edfa Edfa8
   type_variety:           test_fixed_gain
@@ -255,7 +255,7 @@ Fiber          Span9
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.96, mode_2: -12.94
 Edfa Edfa9
   type_variety:           test
@@ -278,7 +278,7 @@ Fiber          Span10
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.95, mode_2: -12.93
 Edfa Edfa10
   type_variety:           test_fixed_gain
@@ -289,7 +289,7 @@ Edfa Edfa10
   (including att_in)
   pad att_in (dB):        4.00
   Power In (dBm):         3.35
-  Power Out (dBm):        19.35
+  Power Out (dBm):        19.36
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   actual pch out (dBm):   mode_1: 0.06, mode_2: 3.07
@@ -344,7 +344,7 @@ Fiber          Span12
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.98, mode_2: -12.97
 Edfa Edfa12
   type_variety:           test_fixed_gain
@@ -410,7 +410,7 @@ Fiber          Span14
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
+  reference pch out (dBm):     -15.99
   actual pch out (dBm):        mode_1: -15.98, mode_2: -12.97
 Edfa Edfa14
   type_variety:           test_fixed_gain
@@ -433,8 +433,8 @@ Fiber          Span15
   total loss (dB):             16.00
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
-  reference pch out (dBm):     -16.00
-  actual pch out (dBm):        mode_1: -15.97, mode_2: -12.96
+  reference pch out (dBm):     -15.99
+  actual pch out (dBm):        mode_1: -15.97, mode_2: -12.95
 Edfa Edfa15
   type_variety:           test
   effective gain(dB):     16.00
@@ -456,8 +456,8 @@ Roadm roadm Site B
   Reference pch out (dBm): -20.00
   Actual pch out (dBm):    mode_1: -20.00, mode_2: -16.99
 Transceiver Site_B
-  GSNR (0.1nm, dB):          mode_1: 17.91, mode_2: 20.37
-  GSNR (signal bw, dB):      mode_1: 13.83, mode_2: 13.28
+  GSNR (0.1nm, dB):          mode_1: 17.82, mode_2: 20.26
+  GSNR (signal bw, dB):      mode_1: 13.74, mode_2: 13.17
   OSNR ASE (0.1nm, dB):      mode_1: 19.69, mode_2: 22.55
   OSNR ASE (signal bw, dB):  mode_1: 15.61, mode_2: 15.46
   CD (ps/nm):                20040.00
@@ -467,7 +467,7 @@ Transceiver Site_B
   Actual pch out (dBm):      mode_1: 0.00, mode_2: 0.00
 
 Transmission result for input optical power reference in span = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m18.94 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m18.84 dB[0m
 
 (No source node specified: picked Site_A)
 
