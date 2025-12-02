@@ -243,10 +243,10 @@ Edfa Edfa8
   (including att_in)
   pad att_in (dB):        4.00
   Power In (dBm):         1.82
-  Power Out (dBm):        17.82
+  Power Out (dBm):        17.83
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  actual pch out (dBm):   mode_1: 0.03, mode_2: 0.05
+  actual pch out (dBm):   mode_1: 0.04, mode_2: 0.05
   output VOA (dB):        0.00
 Fiber          Span9
   type_variety:                SSMF
@@ -266,7 +266,7 @@ Edfa Edfa9
   (including att_in)
   pad att_in (dB):        0.00
   Power In (dBm):         1.83
-  Power Out (dBm):        17.83
+  Power Out (dBm):        17.84
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
   actual pch out (dBm):   mode_1: 0.04, mode_2: 0.07
@@ -447,17 +447,17 @@ Edfa Edfa15
   Power Out (dBm):        17.82
   Delta_P (dB):           0.00
   target pch (dBm):       0.00
-  actual pch out (dBm):   mode_1: 0.03, mode_2: 0.05
+  actual pch out (dBm):   mode_1: 0.04, mode_2: 0.05
   output VOA (dB):        0.00
 Roadm roadm Site B
   Type_variety:            default
   Reference loss (dB):     20.00
-  Actual loss (dB):        mode_1: 20.03, mode_2: 20.05
+  Actual loss (dB):        mode_1: 20.04, mode_2: 20.05
   Reference pch out (dBm): -20.00
   Actual pch out (dBm):    mode_1: -20.00, mode_2: -20.00
 Transceiver Site_B
-  GSNR (0.1nm, dB):          mode_1: 18.11, mode_2: 19.18
-  GSNR (signal bw, dB):      mode_1: 14.02, mode_2: 12.09
+  GSNR (0.1nm, dB):          mode_1: 18.03, mode_2: 19.15
+  GSNR (signal bw, dB):      mode_1: 13.95, mode_2: 12.06
   OSNR ASE (0.1nm, dB):      mode_1: 19.69, mode_2: 19.62
   OSNR ASE (signal bw, dB):  mode_1: 15.61, mode_2: 12.53
   CD (ps/nm):                20040.00
@@ -467,7 +467,7 @@ Transceiver Site_B
   Actual pch out (dBm):      mode_1: 0.00, mode_2: 0.00
 
 Transmission result for input optical power reference in span = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m18.56 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m18.50 dB[0m
 
 (No source node specified: picked Site_A)
 
