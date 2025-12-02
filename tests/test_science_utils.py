@@ -98,6 +98,7 @@ def test_raman_fiber():
     p_nli = spectral_info_out.nli
 
     expected_results = read_csv(TEST_DIR / 'data' / 'test_raman_fiber_expected_results.csv')
+
     assert_allclose(p_signal, expected_results['signal'], rtol=1e-3)
     assert_allclose(p_ase, expected_results['ase'], rtol=1e-3)
     assert_allclose(p_nli, expected_results['nli'], rtol=1e-3)
@@ -171,4 +172,3 @@ def test_nli_solver():
     spectral_info_output_approx = fiber(deepcopy(spectral_info_input))
 
     assert_allclose(spectral_info_output.nli, spectral_info_output_approx.nli, rtol=1e-1)
-

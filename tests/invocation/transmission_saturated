@@ -51,7 +51,7 @@ Fiber          fiber (Lannion_CAS → Corlay)-F061
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -2.82
-  actual pch out (dBm):        -2.81
+  actual pch out (dBm):        -2.82
 Fused west fused spans in Corlay
   loss (dB): 1.00
 Fiber          fiber (Corlay → Loudeac)-F010
@@ -62,7 +62,7 @@ Fiber          fiber (Corlay → Loudeac)-F010
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -13.82
-  actual pch out (dBm):        -13.81
+  actual pch out (dBm):        -13.82
 Fused west fused spans in Loudeac
   loss (dB): 1.00
 Fiber          fiber (Loudeac → Lorient_KMA)-F054
@@ -73,7 +73,7 @@ Fiber          fiber (Loudeac → Lorient_KMA)-F054
   (includes conn loss (dB) in: 0.00 out: 0.00)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -26.82
-  actual pch out (dBm):        -26.81
+  actual pch out (dBm):        -26.82
 Edfa west edfa in Lorient_KMA to Loudeac
   type_variety:           std_medium_gain
   effective gain(dB):     27.99

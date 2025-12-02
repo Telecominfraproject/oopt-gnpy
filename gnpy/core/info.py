@@ -147,11 +147,11 @@ class SpectralInformation(object):
         return watt2dbm(self.nli)
 
     def add_nli(self, nli):
-        pch = self.pch + nli
-        self._signal_ratio *= self.pch / pch
-        self._ase_ratio *= self.pch / pch
-        self._nli_ratio = (self._nli_ratio * self.pch + nli) / pch
-        self.pch = pch
+        # NLI power is interpreted exclusively as a power transfer from pch to nli thus it only affects the ratios
+        nli_ratio = nli / self.pch
+        self._signal_ratio *= (1 - nli_ratio)
+        self._ase_ratio *= (1 - nli_ratio)
+        self._nli_ratio = (self._nli_ratio * (1 - nli_ratio) + nli_ratio)
 
     @property
     def ase(self):
