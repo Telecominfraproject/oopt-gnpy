@@ -13,7 +13,7 @@ Checks spectral information utilities
 import pytest
 from numpy import array, zeros, ones
 from numpy.testing import assert_array_equal
-from gnpy.core.info import create_arbitrary_spectral_information
+from gnpy.core.info import create_arbitrary_spectral_information, create_input_spectral_information
 from gnpy.core.exceptions import SpectrumError
 
 
@@ -63,3 +63,44 @@ def test_create_arbitrary_spectral_information():
                        match='Dimension mismatch in input fields.'):
         create_arbitrary_spectral_information(frequency=[193.25e12, 193.3e12, 193.35e12], pch=[1, 2], baud_rate=49e9,
                                               tx_osnr=40.0, tx_power=1)
+
+
+def test_noise_ratios():
+    tx_power = 0.001
+    si = create_input_spectral_information(f_min=191.5e12, f_max=196e12, baud_rate=32e9, spacing=50e9, roll_off=0.1,
+                                           tx_osnr=40.0, tx_power=tx_power)
+
+
+    assert all(si.pch == tx_power)
+    assert all(si.signal == si.pch)
+    assert all(si._signal_ratio == 1)
+    assert all(si._ase_ratio == 0)
+    assert all(si._nli_ratio == 0)
+
+    add_ase = tx_power / 100
+    pch_in = si.pch
+    sig_in = si.signal
+    ase_in = si.ase
+    nli_in = si.nli
+
+    si.add_ase(add_ase)
+
+    assert all(si.pch == pch_in + add_ase)
+    assert all(si.signal == sig_in)
+    assert all(si.ase == ase_in + add_ase)
+    assert all(si.nli == nli_in)
+    assert all(si._signal_ratio + si._ase_ratio + si._nli_ratio == 1)
+
+    add_nli = tx_power / 200
+    pch_in = si.pch
+    sig_in = si.signal
+    ase_in = si.ase
+    nli_in = si.nli
+
+    si.add_nli(add_nli)
+
+    assert all(si.pch == pch_in)
+    assert all(si.signal == sig_in * (1 - add_nli/pch_in))
+    assert all(si.ase == ase_in * (1 - add_nli/pch_in))
+    assert all(si.nli == nli_in * (1 - add_nli/pch_in) + add_nli)
+    assert all(si._signal_ratio + si._ase_ratio + si._nli_ratio == 1)

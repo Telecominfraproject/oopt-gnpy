@@ -98,7 +98,7 @@ class RamanSolver:
         frequency = spectral_info.frequency
         alpha = fiber.alpha(frequency)
         loss_profile = exp(- outer(alpha, z)) * lumped_loss_acc
-        power_profile = outer(spectral_info.signal, ones(z.size)) * loss_profile
+        power_profile = outer(spectral_info.pch, ones(z.size)) * loss_profile
         return StimulatedRamanScattering(power_profile, loss_profile, spectral_info.frequency, z)
 
     @staticmethod
@@ -127,7 +127,7 @@ class RamanSolver:
                 co_raman_pump_frequency = array([pump.frequency for pump in fiber.raman_pumps
                                                  if pump.propagation_direction == 'coprop'])
 
-                co_power = concatenate((spectral_info.signal, co_raman_pump_power))
+                co_power = concatenate((spectral_info.pch, co_raman_pump_power))
                 co_frequency = concatenate((spectral_info.frequency, co_raman_pump_frequency))
 
                 # Counter-propagating spectrum definition
@@ -171,10 +171,10 @@ class RamanSolver:
                 cr = fiber.cr(spectral_info.frequency)
                 # Power profile
                 power_profile = (
-                    RamanSolver.calculate_unidirectional_stimulated_raman_scattering(spectral_info.signal, alpha, cr, z,
+                    RamanSolver.calculate_unidirectional_stimulated_raman_scattering(spectral_info.pch, alpha, cr, z,
                                                                                      lumped_losses))
                 # Loss profile
-                loss_profile = power_profile / outer(spectral_info.signal, ones(z.size))
+                loss_profile = power_profile / outer(spectral_info.pch, ones(z.size))
                 frequency = spectral_info.frequency
             power_profile = interp1d(z, power_profile, axis=1)(z_final)
             loss_profile = interp1d(z, loss_profile, axis=1)(z_final)
@@ -355,8 +355,8 @@ class NliSolver:
         if 'gn_model_analytic' == sim_params.nli_params.method:
             eta = NliSolver._gn_analytic(spectral_info, fiber)
 
-            cut_power = outer(spectral_info.signal, ones(spectral_info.number_of_channels))
-            pump_power = outer(ones(spectral_info.number_of_channels), spectral_info.signal)
+            cut_power = outer(spectral_info.pch, ones(spectral_info.number_of_channels))
+            pump_power = outer(ones(spectral_info.number_of_channels), spectral_info.pch)
             nli_matrix = cut_power * pump_power ** 2 * eta
             nli = sum(nli_matrix, 1)
         elif 'ggn_spectrally_separated' in sim_params.nli_params.method:
@@ -372,9 +372,9 @@ class NliSolver:
             eta = NliSolver._ggn_spectrally_separated(cut_indices, spectral_info, fiber, srs)
 
             # Interpolation over the channels not indicated as compted channels in simulation parameters
-            cut_power = outer(spectral_info.signal[cut_indices], ones(spectral_info.number_of_channels))
+            cut_power = outer(spectral_info.pch[cut_indices], ones(spectral_info.number_of_channels))
             cut_frequency = spectral_info.frequency[cut_indices]
-            pump_power = outer(ones(cut_indices.size), spectral_info.signal)
+            pump_power = outer(ones(cut_indices.size), spectral_info.pch)
             cut_baud_rate = outer(spectral_info.baud_rate[cut_indices], ones(spectral_info.number_of_channels))
 
             g_nli = eta * cut_power * pump_power**2 / cut_baud_rate
@@ -394,9 +394,9 @@ class NliSolver:
             eta = NliSolver._ggn_approx(cut_indices, spectral_info, fiber, srs)
 
             # Interpolation over the channels not indicated as computed channels in simulation parameters
-            cut_power = outer(spectral_info.signal[cut_indices], ones(spectral_info.number_of_channels))
+            cut_power = outer(spectral_info.pch[cut_indices], ones(spectral_info.number_of_channels))
             cut_frequency = spectral_info.frequency[cut_indices]
-            pump_power = outer(ones(cut_indices.size), spectral_info.signal)
+            pump_power = outer(ones(cut_indices.size), spectral_info.pch)
             cut_baud_rate = outer(spectral_info.baud_rate[cut_indices], ones(spectral_info.number_of_channels))
 
             g_nli = eta * cut_power * pump_power ** 2 / cut_baud_rate

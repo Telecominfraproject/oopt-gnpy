@@ -87,17 +87,17 @@ Edfa west edfa in Lorient_KMA to Loudeac
   Power Out (dBm):        19.85
   Delta_P (dB):           1.00
   target pch (dBm):       1.00
-  actual pch out (dBm):   1.05
+  actual pch out (dBm):   1.04
   output VOA (dB):        0.00
 Roadm roadm Lorient_KMA
   Type_variety:            default
   Reference loss (dB):     21.00
-  Actual loss (dB):        21.05
+  Actual loss (dB):        21.04
   Reference pch out (dBm): -20.00
   Actual pch out (dBm):    -20.00
 Transceiver trx Lorient_KMA
-  GSNR (0.1nm, dB):          23.61
-  GSNR (signal bw, dB):      19.53
+  GSNR (0.1nm, dB):          23.60
+  GSNR (signal bw, dB):      19.52
   OSNR ASE (0.1nm, dB):      23.89
   OSNR ASE (signal bw, dB):  19.81
   CD (ps/nm):                2171.00
@@ -107,7 +107,7 @@ Transceiver trx Lorient_KMA
   Actual pch out (dBm):      0.00
 
 Transmission result for input optical power reference in span = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m23.61 dB[0m
+  Final GSNR (0.1 nm): [1;36;40m23.60 dB[0m
 
 (No source node specified: picked trx Lannion_CAS)
 
