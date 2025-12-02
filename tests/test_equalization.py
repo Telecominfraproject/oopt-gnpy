@@ -88,9 +88,9 @@ def test_equalization_combination_degree(delta_pdb_per_channel, degree, equaliza
     frequency = 191e12 + array([0, 50e9, 150e9, 225e9, 275e9])
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
-    signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
+    pch = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
-                                               signal=signal, baud_rate=baud_rate, roll_off=0.15,
+                                               pch=pch, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
                                                tx_osnr=None)
     to_json_before_propagation = {
@@ -225,10 +225,10 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
     frequency = 191e12 + array([0, 50e9, 150e9, 225e9, 275e9])
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
-    signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
+    pch = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     target = target_out + array(delta_pdb_per_channel)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
-                                               signal=signal, baud_rate=baud_rate, roll_off=0.15,
+                                               pch=pch, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
                                                tx_osnr=None)
     roadm_config = {
@@ -262,7 +262,7 @@ def test_low_input_power(target_out, delta_pdb_per_channel, correction):
     si = roadm(si, degree='toto', from_degree='tata')
     assert_allclose(watt2dbm(si.signal), target - correction, rtol=1e-5)
     # in other words check that if target is below input power, target is applied else power is unchanged
-    assert_allclose((watt2dbm(signal) >= target) * target + (watt2dbm(signal) < target) * watt2dbm(signal),
+    assert_allclose((watt2dbm(pch) >= target) * target + (watt2dbm(pch) < target) * watt2dbm(pch),
                     watt2dbm(si.signal), rtol=1e-5)
 
 
@@ -280,10 +280,10 @@ def test_2low_input_power(target_out, delta_pdb_per_channel, correction):
     frequency = 191e12 + array([0, 50e9, 150e9, 225e9, 275e9])
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
-    signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
+    pch = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]))
     target = psd2powerdbm(target_out, baud_rate) + array(delta_pdb_per_channel)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
-                                               signal=signal, baud_rate=baud_rate, roll_off=0.15,
+                                               pch=pch, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
                                                tx_osnr=None)
     roadm_config = {
