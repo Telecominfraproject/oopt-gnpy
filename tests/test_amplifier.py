@@ -146,7 +146,7 @@ def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
 def test_si(si, nch_and_spacing):
     """basic total power check of the channel comb generation"""
     nb_channel = nch_and_spacing[0]
-    p_tot = sum(si.signal + si.ase + si.nli)
+    p_tot = si.ptot
     expected_p_tot = si.signal[0] * nb_channel
     assert pytest.approx(expected_p_tot, abs=0.01) == p_tot
 
@@ -219,12 +219,12 @@ def test_ase_noise(gain, si, setup_trx, bw):
     edfa.interpol_params(si)
     nf = edfa.nf
     print('nf', nf)
-    pin = lin2db((si.signal[0] + si.ase[0] + si.nli[0]) * 1e3)
+    pin = watt2dbm(si.pch[0])
     osnr_expected = pin - nf[0] + 58
 
     si = edfa(si)
     print(edfa)
-    osnr = lin2db(si.signal[0] / si.ase[0]) - lin2db(12.5e9 / bw)
+    osnr = si.opt_snr_lin_db[0]
     assert pytest.approx(osnr_expected, abs=0.01) == osnr
 
     trx = setup_trx
@@ -280,7 +280,7 @@ def test_amp_behaviour(tilt_target, delta_p):
     expected_total_power_out = total_sig_powerin * 100 * db2lin(delta_p) if delta_p else total_sig_powerin * 100
     assert pytest.approx(total_sig_powerout, abs=1e-6) == min(expected_total_power_out, dbm2watt(21))
     assert pytest.approx(edfa.effective_gain, 1e-5) == gain
-    assert watt2dbm(sum(si.signal + si.nli + si.ase)) <= 21.01
+    assert si.ptot_dbm <= 21.01
     # If there is no tilt on the amp: the gain is identical for all carriers
     if tilt_target == 0:
         assert_allclose(sig_in + gain, sig_out, rtol=1e-13)
@@ -363,7 +363,7 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
     sig_out = lin2db(si.signal)
     total_sig_powerout = sum(si.signal)
     gain = lin2db(total_sig_powerout / total_sig_powerin)
-    assert watt2dbm(sum(si.signal + si.nli + si.ase)) <= 21.02
+    assert si.ptot_dbm <= 21.02
     assert pytest.approx(edfa.effective_gain, 1e-13) == gain
     assert_allclose(sig_in + gain, sig_out, rtol=1e-13)
 
