@@ -166,27 +166,36 @@ class Transceiver(_JsonThing):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, 'Transceiver')
+        other_modes = []
         for mode_params in self.mode:
             penalties = mode_params.get('penalties')
             mode_params['penalties'] = {}
             mode_params['equalization_offset_db'] = mode_params.get('equalization_offset_db', 0)
-            if not penalties:
-                continue
-            for impairment in ('chromatic_dispersion', 'pmd', 'pdl'):
-                imp_penalties = [p for p in penalties if impairment in p]
-                if not imp_penalties:
-                    continue
-                if all(p[impairment] > 0 for p in imp_penalties):
-                    # make sure the list of penalty values include a proper lower boundary
-                    # (we assume 0 penalty for 0 impairment)
-                    imp_penalties.insert(0, {impairment: 0, 'penalty_value': 0})
-                # make sure the list of penalty values are sorted by impairment value
-                imp_penalties.sort(key=lambda i: i[impairment])
-                # rearrange as dict of lists instead of list of dicts
-                mode_params['penalties'][impairment] = {
-                    'up_to_boundary': [p[impairment] for p in imp_penalties],
-                    'penalty_value': [p['penalty_value'] for p in imp_penalties]
-                }
+            if penalties:
+                for impairment in ('chromatic_dispersion', 'pmd', 'pdl'):
+                    imp_penalties = [p for p in penalties if impairment in p]
+                    if not imp_penalties:
+                        continue
+                    if all(p[impairment] > 0 for p in imp_penalties):
+                        # make sure the list of penalty values include a proper lower boundary
+                        # (we assume 0 penalty for 0 impairment)
+                        imp_penalties.insert(0, {impairment: 0, 'penalty_value': 0})
+                    # make sure the list of penalty values are sorted by impairment value
+                    imp_penalties.sort(key=lambda i: i[impairment])
+                    # rearrange as dict of lists instead of list of dicts
+                    mode_params['penalties'][impairment] = {
+                        'up_to_boundary': [p[impairment] for p in imp_penalties],
+                        'penalty_value': [p['penalty_value'] for p in imp_penalties]
+                    }
+            # duplicate modes with other_names, and remove other_name key
+            if 'other_name' in mode_params:
+                for other_name in mode_params['other_name']:
+                    other_mode = deepcopy(mode_params)
+                    other_mode.pop('other_name')
+                    other_mode['format'] = other_name
+                    other_modes.append(other_mode)
+                mode_params.pop('other_name')
+        self.mode.extend(other_modes)
 
 
 class Fiber(_JsonThing):
@@ -567,7 +576,16 @@ def _equipment_from_json(json_data: dict, extra_configs: Dict[str, Dict]) -> Dic
         for entry in entries:
             subkey = entry.get('type_variety', 'default')
             if key == 'Edfa':
-                equipment[key][subkey] = Amp.from_json(extra_configs, **entry)
+                # this is added to enable multiple names in the library definition
+                if 'other_name' not in entry:
+                    equipment[key][subkey] = Amp.from_json(extra_configs, **entry)
+                else:
+                    for other_name in entry['other_name'] + [subkey]:
+                        # use a deepcopy of entry and remove other_name key from equipment
+                        entry_without_other_name = deepcopy(entry)
+                        entry_without_other_name['type_variety'] = other_name
+                        entry_without_other_name.pop('other_name')
+                        equipment[key][other_name] = Amp.from_json(extra_configs, **entry_without_other_name)
             elif key == 'Fiber':
                 equipment[key][subkey] = Fiber(**entry)
             elif key == 'Span':
@@ -580,7 +598,18 @@ def _equipment_from_json(json_data: dict, extra_configs: Dict[str, Dict]) -> Dic
                 #     entry['tx_power_dbm'] = entry['power_dbm']
                 equipment[key][subkey] = SI(**entry)
             elif key == 'Transceiver':
-                equipment[key][subkey] = Transceiver(**entry)
+                # this is added to enable multiple names in the library definition
+                # Transceiver init changes penalty from list to dict. use a deep copy to keep initial entry
+                # in order to create copies of the transceiver type with the correct formating of penalties
+                # for each other_names entries of type_variety. Remove trx other_name key from transciver.
+                if 'other_name' not in entry:
+                    equipment[key][subkey] = Transceiver(**entry)
+                else:
+                    for other_name in entry['other_name'] + [subkey]:
+                        entry_without_other_name = deepcopy(entry)
+                        entry_without_other_name.pop('other_name')
+                        entry['type_variety'] = other_name
+                        equipment[key][other_name] = Transceiver(**entry_without_other_name)
             elif key == 'RamanFiber':
                 equipment[key][subkey] = RamanFiber(**entry)
             else:
