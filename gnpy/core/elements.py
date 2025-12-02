@@ -1121,7 +1121,8 @@ class Fiber(_Node):
         stimulated_raman_scattering = RamanSolver.calculate_stimulated_raman_scattering(spectral_info, self)
 
         # NLI noise evaluated at the fiber input
-        spectral_info.nli += NliSolver.compute_nli(spectral_info, stimulated_raman_scattering, self)
+        nli = NliSolver.compute_nli(spectral_info, stimulated_raman_scattering, self)
+        spectral_info.add_nli(nli)
 
         # chromatic dispersion and pmd variations
         spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
@@ -1221,8 +1222,10 @@ class RamanFiber(Fiber):
             RamanSolver.calculate_spontaneous_raman_scattering(spectral_info, stimulated_raman_scattering, self)
 
         # nli and ase noise evaluated at the fiber input
-        spectral_info.nli += NliSolver.compute_nli(spectral_info, stimulated_raman_scattering, self)
-        spectral_info.ase += spontaneous_raman_scattering
+        nli = NliSolver.compute_nli(spectral_info, stimulated_raman_scattering, self)
+        spectral_info.add_nli(nli)
+        ase = spontaneous_raman_scattering
+        spectral_info.add_ase(ase)
 
         # chromatic dispersion and pmd variations
         spectral_info.chromatic_dispersion += self.chromatic_dispersion(spectral_info.frequency)
@@ -1675,7 +1678,7 @@ class Edfa(_Node):
         self.interpol_params(spectral_info)
 
         ase = self.noise_profile(spectral_info)
-        spectral_info.ase += ase
+        spectral_info.add_ase(ase)
 
         spectral_info.apply_gain_db(self.gprofile - self.out_voa)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
