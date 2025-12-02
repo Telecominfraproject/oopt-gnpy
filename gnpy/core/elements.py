@@ -219,13 +219,12 @@ class Transceiver(_Node):
         with errstate(divide='ignore'):
             self.propagated_labels = spectral_info.label
             self.baud_rate = spectral_info.baud_rate
-            ratio_01nm = lin2db(12.5e9 / self.baud_rate)
             # set raw values to record original calculation, before update_snr()
-            self.raw_osnr_ase = lin2db(spectral_info.signal / spectral_info.ase)
-            self.raw_osnr_ase_01nm = self.raw_osnr_ase - ratio_01nm
-            self.raw_osnr_nli = lin2db(spectral_info.signal / spectral_info.nli)
-            self.raw_snr = lin2db(spectral_info.signal / (spectral_info.ase + spectral_info.nli))
-            self.raw_snr_01nm = self.raw_snr - ratio_01nm
+            self.raw_osnr_ase = spectral_info.snr_lin_db
+            self.raw_osnr_ase_01nm = spectral_info.opt_snr_lin_db
+            self.raw_osnr_nli = spectral_info.snr_nli_db
+            self.raw_snr = spectral_info.gsnr_db
+            self.raw_snr_01nm = spectral_info.opt_gsnr_db
 
             self.osnr_ase = self.raw_osnr_ase
             self.osnr_ase_01nm = self.raw_osnr_ase_01nm
@@ -588,12 +587,12 @@ class Roadm(_Node):
         :type from_degree: str
         """
         # record input powers to compute the actual loss at the end of the process
-        input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        input_pch_dbm = spectral_info.pch_dbm
         # apply min ROADM loss if it exists
         roadm_maxloss_db = self.get_impairment('roadm-maxloss', spectral_info.frequency, from_degree, degree)
         spectral_info.apply_attenuation_db(roadm_maxloss_db)
         # records the total power after applying minimum loss
-        net_input_power_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        net_input_pch_dbm = spectral_info.pch_dbm
         # find the target power for the reference carrier
         ref_per_degree_pch = self.get_per_degree_ref_power(degree)
         # find the target powers for each signal carrier
@@ -630,9 +629,9 @@ class Roadm(_Node):
         # that had the min power.
         # This change corresponds to a discussion held during coders call. Please look at this document for
         # a reference: https://telecominfraproject.atlassian.net/wiki/spaces/OOPT/pages/669679645/PSE+Meeting+Minutes
-        correction = calculate_absolute_min_or_zero(net_input_power_dbm - target_power_per_channel)
+        correction = calculate_absolute_min_or_zero(net_input_pch_dbm - target_power_per_channel)
         new_target = target_power_per_channel - correction
-        delta_power = net_input_power_dbm - new_target
+        delta_power = net_input_pch_dbm - new_target
 
         spectral_info.apply_attenuation_db(delta_power)
 
@@ -645,10 +644,10 @@ class Roadm(_Node):
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + pdl_impairment ** 2)
 
         # Update the per channel power with the result of propagation
-        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.pch_out_dbm = spectral_info.pch_dbm
 
         # Update the loss per channel and the labels
-        self.loss_pch_db = input_power_dbm - self.pch_out_dbm
+        self.loss_pch_db = input_pch_dbm - self.pch_out_dbm
         self.propagated_labels = spectral_info.label
 
     def set_roadm_paths(self, from_degree, to_degree, path_type, impairment_id=None):
@@ -1133,7 +1132,7 @@ class Fiber(_Node):
         # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
-        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.pch_out_dbm = spectral_info.pch_dbm
         self.propagated_labels = spectral_info.label
 
     def __call__(self, spectral_info):
@@ -1237,7 +1236,7 @@ class RamanFiber(Fiber):
         # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
-        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.pch_out_dbm = watt2dbm(spectral_info.pch)
         self.propagated_labels = spectral_info.label
         pout = watt2dbm(sum(spectral_info.signal))
         self.actual_raman_gain = self.loss + pout - pin
@@ -1428,8 +1427,8 @@ class Edfa(_Node):
         self.interpol_nf_ripple = interp(spectral_info.frequency, amplifier_freq, self.params.nf_ripple)
 
         self.nch = spectral_info.number_of_channels
-        pin = spectral_info.signal + spectral_info.ase + spectral_info.nli
-        self.pin_db = watt2dbm(sum(pin))
+        pch_in = spectral_info.pch
+        self.pin_db = watt2dbm(spectral_info.ptot)
         # The following should be changed when we have the new spectral information including slot widths.
         # For now, with homogeneous spectrum, we can calculate it as the difference between neighbouring channels.
         self.slot_width = self.channel_freq[1] - self.channel_freq[0]
@@ -1443,10 +1442,10 @@ class Edfa(_Node):
 
         # check power saturation and correct target_gain accordingly:
         self.nf = self._calc_nf()
-        self.gprofile = self._gain_profile(pin)
+        self.gprofile = self._gain_profile(pch_in)
 
-        pout = (pin + self.noise_profile(spectral_info)) * db2lin(self.gprofile)
-        self.pout_db = lin2db(sum(pout * 1e3))
+        pch_out = (pch_in + self.noise_profile(spectral_info)) * db2lin(self.gprofile)
+        self.pout_db = watt2dbm(sum(pch_out))
         # ase & nli are only calculated in signal bandwidth
         #    pout_db is not the absolute full output power (negligible if sufficient channels)
 
@@ -1621,13 +1620,13 @@ class Edfa(_Node):
         # second estimate of amp ch gain using the channel input profile
         g2nd = g1st - voa
 
-        pout_db = lin2db(sum(pin * 1e3 * db2lin(g2nd)))
+        pout_db = watt2dbm(sum(pin * db2lin(g2nd)))
         dgts2 = self.effective_gain - (pout_db - tot_in_power_db)
 
         # center estimate of amp ch gain
         xcent = dgts2
         gcent = g1st - voa + array(self.interpol_dgt) * xcent
-        pout_db = lin2db(sum(pin * 1e3 * db2lin(gcent)))
+        pout_db = watt2dbm(sum(pin * db2lin(gcent)))
         gavg_cent = pout_db - tot_in_power_db
 
         # Lower estimate of amp ch gain
@@ -1639,13 +1638,13 @@ class Edfa(_Node):
 
         xlow = dgts2 - deltax
         glow = g1st - voa + array(self.interpol_dgt) * xlow
-        pout_db = lin2db(sum(pin * 1e3 * db2lin(glow)))
+        pout_db = watt2dbm(sum(pin * db2lin(glow)))
         gavg_low = pout_db - tot_in_power_db
 
         # upper gain estimate
         xhigh = dgts2 + deltax
         ghigh = g1st - voa + array(self.interpol_dgt) * xhigh
-        pout_db = lin2db(sum(pin * 1e3 * db2lin(ghigh)))
+        pout_db = watt2dbm(sum(pin * db2lin(ghigh)))
         gavg_high = pout_db - tot_in_power_db
 
         # compute slope
@@ -1678,7 +1677,7 @@ class Edfa(_Node):
         spectral_info.apply_gain_db(self.gprofile - self.out_voa)
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + self.params.pmd ** 2)
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + self.params.pdl ** 2)
-        self.pch_out_dbm = watt2dbm(spectral_info.signal + spectral_info.nli + spectral_info.ase)
+        self.pch_out_dbm = spectral_info.pch_dbm
         self.propagated_labels = spectral_info.label
 
     def __call__(self, spectral_info):
