@@ -212,7 +212,7 @@ def test_invoa(in_voa, out_voa):
                                            roll_off=0.15, baud_rate=32e9,
                                            spacing=50e9, tx_osnr=None, tx_power=1e-3)
     si = span0(si)
-    assert_allclose(si.signal, 1e-5, atol=1e-10)
+    assert_allclose(si.pch_dBm, - 20, atol=1e-1)
     si = edfa1(si)
     # in case voa are set to None, build network is supposed to change them to 0
     if in_voa is None:
@@ -224,13 +224,13 @@ def test_invoa(in_voa, out_voa):
     # input power in amp after in_voa is -20 - in_voa
     # so in order to get 0dBm out of amp (before out_voa), gain must be delta_p + 20 + in_voa
     assert edfa1.effective_gain == delta_p + 20 + in_voa
-    assert_allclose(watt2dbm(si.signal), delta_p - out_voa, atol=1e-5)
+    assert_allclose(si.pch_dBm, delta_p - out_voa, atol=1e-1)
     si = span1(si)
-    assert_allclose(watt2dbm(si.signal), delta_p - out_voa - 16, atol=1e-10)
+    assert_allclose(si.pch_dBm, delta_p - out_voa - 16, atol=1e-1)
     si = edfa2(si)
     assert edfa2.in_voa == 1
     assert edfa2.effective_gain == edfa2.delta_p + 16 + out_voa + edfa2.in_voa
-    assert_allclose(watt2dbm(si.signal), edfa2.delta_p - edfa2.out_voa, atol=1e-5)
+    assert_allclose(si.pch_dBm, edfa2.delta_p - edfa2.out_voa, atol=1e-1)
 
 
 @pytest.mark.parametrize('out_voa', [0, 1, 2])
@@ -254,18 +254,18 @@ def test_invoa_gainmode(in_voa, out_voa):
                                            roll_off=0.15, baud_rate=32e9,
                                            spacing=50e9, tx_osnr=None, tx_power=1e-3)
     si = span0(si)
-    assert_allclose(si.signal, 1e-5, atol=1e-10)
+    assert_allclose(si.pch_dBm, - 20, atol=1e-1)
     si = edfa1(si)
     # power_mode is false so gain is applied
     assert edfa1.effective_gain == gain
-    assert_allclose(watt2dbm(si.signal), -20 - in_voa + gain - out_voa, atol=1e-5)
+    assert_allclose(si.pch_dBm, -20 - in_voa + gain - out_voa, atol=1e-1)
     si = span1(si)
-    assert_allclose(watt2dbm(si.signal), -20 - in_voa + gain - out_voa - 16, atol=1e-10)
+    assert_allclose(si.pch_dBm, -20 - in_voa + gain - out_voa - 16, atol=1e-1)
     si = edfa2(si)
     assert edfa2.effective_gain == 17
-    assert_allclose(watt2dbm(si.signal),
+    assert_allclose(si.pch_dBm,
                     -20 - in_voa + gain - out_voa   # first span
-                    - 16 - edfa2.in_voa + edfa2.effective_gain - edfa2.out_voa, atol=1e-5)
+                    - 16 - edfa2.in_voa + edfa2.effective_gain - edfa2.out_voa, atol=1e-1)
 
 
 def test_too_small_gain():

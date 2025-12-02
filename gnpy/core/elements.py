@@ -1143,14 +1143,13 @@ class Fiber(_Node):
 
         :return SpectralInformation: The updated spectral information object.
         """
-        # _psig_in records the total signal power of the spectral information before propagation.
-        self._psig_in = sum(spectral_info.signal)
+        pin = spectral_info.ptot_dBm
         self.propagate(spectral_info)
+        pout = spectral_info.ptot_dBm
         # In case of Raman, the resulting loss of the fiber is not equivalent to self.loss
         # because of Raman gain. The resulting loss is:
-        # power_out - power_in. We use the total signal power (sum on all channels) to compute
-        # this loss.
-        loss = round(lin2db(self._psig_in / sum(spectral_info.signal)), 2)
+        # power_out - power_in.
+        loss = - round(pout - pin, 2)
         self.pch_out_db = self.ref_pch_in_dbm - loss
         return spectral_info
 
@@ -1206,7 +1205,7 @@ class RamanFiber(Fiber):
         the CD and PMD accumulation.
         """
         # apply the attenuation due to the input connector loss
-        pin = watt2dbm(sum(spectral_info.signal))
+        pin = spectral_info.ptot_dBm
         attenuation_in_db = self.params.con_in + self.params.att_in
         spectral_info.apply_attenuation_db(attenuation_in_db)
 
@@ -1236,9 +1235,9 @@ class RamanFiber(Fiber):
         # apply the attenuation due to the output connector loss
         attenuation_out_db = self.params.con_out
         spectral_info.apply_attenuation_db(attenuation_out_db)
-        self.pch_out_dbm = watt2dbm(spectral_info.pch)
+        self.pch_out_dbm = spectral_info.pch_dBm
         self.propagated_labels = spectral_info.label
-        pout = watt2dbm(sum(spectral_info.signal))
+        pout = spectral_info.ptot_dBm
         self.actual_raman_gain = self.loss + pout - pin
 
 
