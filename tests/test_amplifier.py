@@ -124,9 +124,7 @@ def si(nch_and_spacing, bw):
 def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
     """=> unitary test for variable gain model Edfa._calc_nf() (and Edfa.interpol_params)"""
     edfa = setup_edfa_variable_gain
-    si.signal /= db2lin(gain)
-    si.nli /= db2lin(gain)
-    si.ase /= db2lin(gain)
+    si.apply_attenuation_db(gain)
     edfa.operational.gain_target = gain
     edfa.effective_gain = gain
     edfa.interpol_params(si)
@@ -138,9 +136,7 @@ def test_variable_gain_nf(gain, nf_expected, setup_edfa_variable_gain, si):
 def test_fixed_gain_nf(gain, nf_expected, setup_edfa_fixed_gain, si):
     """=> unitary test for fixed gain model Edfa._calc_nf() (and Edfa.interpol_params)"""
     edfa = setup_edfa_fixed_gain
-    si.signal /= db2lin(gain)
-    si.nli /= db2lin(gain)
-    si.ase /= db2lin(gain)
+    si.apply_attenuation_db(gain)
     edfa.operational.gain_target = gain
     edfa.effective_gain = gain
     edfa.interpol_params(si)
@@ -162,9 +158,7 @@ def test_compare_nf_models(gain, setup_edfa_variable_gain, si):
      between gain_min and gain_flatmax some discrepancy is expected but target < 0.5dB
      => unitary test for Edfa._calc_nf (and Edfa.interpol_params)"""
     edfa = setup_edfa_variable_gain
-    si.signal /= db2lin(gain)
-    si.nli /= db2lin(gain)
-    si.ase /= db2lin(gain)
+    si.apply_attenuation_db(gain)
     edfa.operational.gain_target = gain
     edfa.effective_gain = gain
     # edfa is variable gain type
@@ -358,9 +352,9 @@ def test_amp_saturation(delta_pdb_per_channel, base_power, delta_p):
     frequency = 193e12 + array([0, 50e9, 150e9, 225e9, 275e9])
     slot_width = array([37.5e9, 50e9, 75e9, 50e9, 37.5e9])
     baud_rate = array([32e9, 42e9, 64e9, 42e9, 32e9])
-    signal = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]) + array(delta_pdb_per_channel) + base_power)
+    pch = dbm2watt(array([-20.0, -18.0, -22.0, -25.0, -16.0]) + array(delta_pdb_per_channel) + base_power)
     si = create_arbitrary_spectral_information(frequency=frequency, slot_width=slot_width,
-                                               signal=signal, baud_rate=baud_rate, roll_off=0.15,
+                                               pch=pch, baud_rate=baud_rate, roll_off=0.15,
                                                delta_pdb_per_channel=delta_pdb_per_channel,
                                                tx_osnr=None, tx_power=None)
     total_sig_powerin = sum(si.signal)
