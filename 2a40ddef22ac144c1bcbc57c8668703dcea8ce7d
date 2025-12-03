@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f95a60a_2ff228d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-03T12:58:17Z",
+      "side": 1,
+      "message": "Thanks! looks good to me!\n\nas a minor comment: would it be possible to shorten the commit title to fit in less than 50 char ? for example : remove power from info, simplify demux function",
+      "revId": "2a40ddef22ac144c1bcbc57c8668703dcea8ce7d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
