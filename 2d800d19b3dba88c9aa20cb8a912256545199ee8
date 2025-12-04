@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab4ee1e_a4930269",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:24:43Z",
+      "side": 1,
+      "message": "Looks good to me apart from these minor comments. Could you please make sure that all your commits are rebased on the correct parent patch ?",
+      "revId": "2d800d19b3dba88c9aa20cb8a912256545199ee8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7dc1bcf_226c1a12",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:24:43Z",
+      "side": 1,
+      "message": "missing whitespace around arithmetic operatorFlake8(E226)",
+      "revId": "2d800d19b3dba88c9aa20cb8a912256545199ee8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5257de5d_2445b80b",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:24:43Z",
+      "side": 1,
+      "message": "missing whitespace around arithmetic operatorFlake8(E226)",
+      "revId": "2d800d19b3dba88c9aa20cb8a912256545199ee8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c4b74a3_a50a5320",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:24:43Z",
+      "side": 1,
+      "message": "missing whitespace around arithmetic operatorFlake8(E226)",
+      "revId": "2d800d19b3dba88c9aa20cb8a912256545199ee8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0cd4160_45a8540d",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:24:43Z",
+      "side": 1,
+      "message": "missing whitespace around arithmetic operatorFlake8(E226)",
+      "revId": "2d800d19b3dba88c9aa20cb8a912256545199ee8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3650c69_f739d7fa",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:24:43Z",
+      "side": 1,
+      "message": "missing whitespace around arithmetic operatorFlake8(E226)",
+      "revId": "2d800d19b3dba88c9aa20cb8a912256545199ee8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4009f969_6a28585a",
+        "filename": "gnpy/core/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:24:43Z",
+      "side": 1,
+      "message": "missing whitespace around arithmetic operatorFlake8(E226)",
+      "revId": "2d800d19b3dba88c9aa20cb8a912256545199ee8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
