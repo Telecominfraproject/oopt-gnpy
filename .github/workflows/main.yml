@@ -7,6 +7,8 @@ on:
 name: CI
 
 jobs:
+  flake8-check:
+    uses: ./.github/workflows/flake8.yml
   build:
     name: Tox test
     runs-on: ubuntu-latest
