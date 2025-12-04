@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7acd159_76099d48",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:32:28Z",
+      "side": 1,
+      "message": "each line in the commit description should not exceed 80 char: can you please reformat accordingly ?",
+      "revId": "638eed80ad55ae01edcbc3c46d171102f66db754",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05cbbfea_0adbc23c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:32:28Z",
+      "side": 1,
+      "message": "Looks good to me except for minor comments + Can you rebase on the correct parent patch ?",
+      "revId": "638eed80ad55ae01edcbc3c46d171102f66db754",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
