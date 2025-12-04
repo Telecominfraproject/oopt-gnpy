@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac93d49c_cff4945d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:30:03Z",
+      "side": 1,
+      "message": "Can you reformat the text to have \u003c80 char lines ?",
+      "revId": "7df2959de151d14a641f362aba253b4cbfc320f1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dfe7873_b640d36a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2025-12-04T09:30:03Z",
+      "side": 1,
+      "message": "Looks good to me, except for the commit message that is not correctly formated",
+      "revId": "7df2959de151d14a641f362aba253b4cbfc320f1",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
