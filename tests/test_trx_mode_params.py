@@ -420,7 +420,7 @@ def test_transceiver_calc_penalties(key: str, tx_power: float, expected_penalty:
 
     # simulation of back to back transceiver, received power to tx power
     trx(spectral_info)
-    trx.calc_penalties(rq.penalties)
+    trx.calc_penalties(rq.penalties, trx.rx_power_dbm, rq.rx_channel_power_min, rq.rx_channel_power_max)
 
     assert_allclose(trx.rx_power_dbm, tx_power, 1e-3)
     assert_allclose(trx.penalties.get('rx_power_dbm'), expected_penalty, 1e-3)

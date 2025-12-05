@@ -21,7 +21,7 @@ See: draft-ietf-teas-yang-path-computation-01.txt
 """
 
 from collections import OrderedDict
-from typing import List
+from typing import List, Union
 from logging import getLogger
 from copy import deepcopy
 from csv import DictWriter
@@ -400,7 +400,7 @@ def filter_si(path: list, equipment: dict, si: SpectralInformation) -> SpectralI
     return muxed_spectral_information(filtered_si)
 
 
-def propagate(path, req, equipment):
+def propagate(path: List[Union[Transceiver, Roadm]], req, equipment):
     """propagates signals in each element according to initial spectrum set by user
     Spectrum is specified in request through f_min, f_max and spacing, or initial_spectrum
     and amps frequency band on the path is used to filter out frequencies"""
@@ -427,6 +427,7 @@ def propagate(path, req, equipment):
     path[-1].update_snr(*roadm_osnr)
     path[-1].calc_penalties(req.penalties)
     return si
+
 
 def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the

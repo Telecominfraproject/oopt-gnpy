@@ -30,8 +30,9 @@ from collections import namedtuple
 from typing import Union, List
 from logging import getLogger
 import warnings
+import numpy as np
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, \
-    full, squeeze, zeros, outer, ndarray
+    full, squeeze, zeros, outer, ndarray, inf
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 
@@ -213,12 +214,41 @@ class Transceiver(_Node):
         return interp(impairment_value, boundary_list['up_to_boundary'], boundary_list['penalty_value'],
                       left=float('inf'), right=float('inf'))
 
-    def calc_penalties(self, penalties):
+    def _calc_penalty_rx(self, impairment_value, rx_min, rx_max):
+        """Computes the SNR penalty given the rx_power_dbm value.
+
+        :param impairment_value: The impairment value.
+        :type impairment_value: float
+        :param rx_min: the min value fot the rx_power.
+        :type rx_min: Dict[str, Any]
+        :param rx_max: the max value for the rx_power.
+        :type rx_max: Dict[str, Any]
+
+        :return float: The computed penalty.
+        """
+        return inf
+
+    def calc_penalties(self, penalties, rx_power_dbm, rx_min, rx_max):
         """Updates the Transceiver property with penalties (CD, PMD, etc.) of the received channels in dB.
            Penalties are linearly interpolated between given points and set to 'inf' outside interval.
         """
         self.penalties = {impairment: self._calc_penalty(getattr(self, impairment), boundary_list)
-                          for impairment, boundary_list in penalties.items()}
+                          for impairment, boundary_list in penalties.items()
+                          if impairment != 'rx_power_dbm'}
+
+        if 'rx_power_dbm' in penalties:
+            if (rx_min is not None and rx_max is not None):
+                if np.any(rx_power_dbm <= rx_min) or np.any(rx_power_dbm >= rx_max):
+                    self.penalties['rx_power_dbm'] = self._calc_penalty_rx(rx_power_dbm, rx_min, rx_max)
+                # elif np.any(rx_power_dbm >= rx_min) and np.any(rx_power_dbm <= rx_max):
+                #     self.penalties['rx_power_dbm'] = 0
+            elif rx_min is not None:
+                if np.any(rx_power_dbm <= rx_min):
+                    self.penalties['rx_power_dbm'] = self._calc_penalty_rx(rx_power_dbm, rx_min, rx_max)
+            elif rx_max is not None:
+                if np.any(rx_power_dbm >= rx_max):
+                    self.penalties['rx_power_dbm'] = self._calc_penalty_rx(rx_power_dbm, rx_min, rx_max)
+
         self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
     def _calc_snr(self, spectral_info):
