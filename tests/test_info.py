@@ -11,10 +11,11 @@ Checks spectral information utilities
 """
 
 import pytest
-from numpy import array, zeros, ones
+from numpy import array, zeros, ones, linspace
 from numpy.testing import assert_array_equal
 from gnpy.core.info import create_arbitrary_spectral_information, create_input_spectral_information
 from gnpy.core.exceptions import SpectrumError
+from gnpy.core.utils import dbm2watt
 
 
 def test_create_arbitrary_spectral_information():
@@ -70,7 +71,6 @@ def test_noise_ratios():
     si = create_input_spectral_information(f_min=191.5e12, f_max=196e12, baud_rate=32e9, spacing=50e9, roll_off=0.1,
                                            tx_osnr=40.0, tx_power=tx_power)
 
-
     assert all(si.pch == tx_power)
     assert all(si.signal == si.pch)
     assert all(si._signal_ratio == 1)
@@ -100,7 +100,45 @@ def test_noise_ratios():
     si.add_nli(add_nli)
 
     assert all(si.pch == pch_in)
-    assert all(si.signal == sig_in * (1 - add_nli/pch_in))
-    assert all(si.ase == ase_in * (1 - add_nli/pch_in))
-    assert all(si.nli == nli_in * (1 - add_nli/pch_in) + add_nli)
+    assert all(si.signal == sig_in * (1 - add_nli / pch_in))
+    assert all(si.ase == ase_in * (1 - add_nli / pch_in))
+    assert all(si.nli == nli_in * (1 - add_nli / pch_in) + add_nli)
     assert all(si._signal_ratio + si._ase_ratio + si._nli_ratio == 1)
+
+
+def test_spectral_information_add():
+    """
+    Testing Spectral Information add method.
+    """
+    n_ch = 40
+    grid = 100e9
+    baud_rate = 32e9
+    delta_pdb_per_channel = 0.0
+    tx_osnr = 40.0
+
+    # C band
+    start_frequency_c_band = 191.5e12
+    frequency_c_band = array([start_frequency_c_band + i * grid for i in range(n_ch)])
+    pch_c = dbm2watt(linspace(-1.0, 1.0, n_ch))
+
+    si_c_band = create_arbitrary_spectral_information(frequency=frequency_c_band,
+                                                      baud_rate=baud_rate, pch=pch_c,
+                                                      delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr)
+
+    # L band
+    start_frequency_l_band = 185.5e12
+    frequency_l_band = array([start_frequency_l_band + i * grid for i in range(n_ch)])
+    pch_l = dbm2watt(linspace(1.0, -1.0, n_ch))
+
+    si_l_band = create_arbitrary_spectral_information(frequency=frequency_l_band,
+                                                      baud_rate=baud_rate, pch=pch_l,
+                                                      delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr)
+
+    # C+L spectrum
+    si_c_plus_l = si_c_band + si_l_band
+    si_l_plus_c = si_l_band + si_c_band
+
+    assert_array_equal(si_c_plus_l.pch, si_l_plus_c.pch)
+    assert_array_equal(si_c_plus_l.channel_number, si_l_plus_c.channel_number)
+    assert_array_equal(si_c_plus_l.number_of_channels, si_l_plus_c.number_of_channels)
+    assert_array_equal(si_c_plus_l.df, si_l_plus_c.df)

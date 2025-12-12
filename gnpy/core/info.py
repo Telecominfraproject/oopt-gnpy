@@ -60,7 +60,7 @@ class SpectralInformation(object):
                  delta_pdb_per_channel: array, tx_osnr: array, tx_power: array, label: array):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
-        self._df = outer(ones(frequency.shape), frequency) - outer(frequency, ones(frequency.shape))
+        self._df = outer(ones(frequency.shape), self._frequency) - outer(self._frequency, ones(frequency.shape))
         self._number_of_channels = len(self._frequency)
         self._channel_number = [*range(1, self._number_of_channels + 1)]
         self._slot_width = slot_width[indices]
