@@ -18,6 +18,24 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8478a7ef_ab6c9007",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2025-12-15T06:35:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7acd159_76099d48",
+      "revId": "638eed80ad55ae01edcbc3c46d171102f66db754",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05cbbfea_0adbc23c",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-12-04T09:32:28Z",
       "side": 1,
       "message": "Looks good to me except for minor comments + Can you rebase on the correct parent patch ?",
+      "revId": "638eed80ad55ae01edcbc3c46d171102f66db754",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "756d9e6f_aaace684",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2025-12-15T06:35:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05cbbfea_0adbc23c",
       "revId": "638eed80ad55ae01edcbc3c46d171102f66db754",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
