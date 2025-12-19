@@ -19,7 +19,7 @@ from gnpy.tools.cli_examples import transmission_main_example, path_requests_run
 
 SRC_ROOT = Path(__file__).parent.parent
 
-
+# flake8: noqa: E501
 @pytest.mark.parametrize("output, log, handler, args", (
     ('transmission_main_example', None, transmission_main_example, []),
     ('transmission_saturated', 'logs_transmission_saturated', transmission_main_example,

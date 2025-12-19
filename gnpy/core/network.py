@@ -1921,9 +1921,9 @@ def split_fiber(network, fiber, bounds, target_length):
     ypos = [prev_node.lat + (next_node.lat - prev_node.lat) * (n + 0.5) / n_spans for n in range(n_spans)]
     for span, lng, lat in zip(range(n_spans), xpos, ypos):
         new_span = elements.Fiber(
-            uid=f'{fiber.uid}_({span+1}/{n_spans})',
-            type_variety=fiber.type_variety,
-            metadata={
+            uid=f'{fiber.uid}_({span + 1}/{n_spans})',
+            type_variety=fiber.type_variety,   # noqa E226
+            metadata={    # noqa E226
                 'location': {
                     'latitude': lat,
                     'longitude': lng,
@@ -1931,7 +1931,7 @@ def split_fiber(network, fiber, bounds, target_length):
                     'region': fiber.loc.region,
                 }
             },
-            params=fiber.params.asdict())
+            params=fiber.params.asdict())    # noqa E226
         if isinstance(prev_node, elements.Fiber):
             edgeweight = prev_node.params.length
         else:

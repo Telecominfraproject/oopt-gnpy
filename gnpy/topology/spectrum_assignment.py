@@ -73,7 +73,8 @@ class Bitmap:
         elif len(bitmap) == len(self.freq_index):
             self.bitmap = bitmap
         else:
-            raise SpectrumError(f'bitmap is not consistant with f_min{f_min} - n: {n_min} and f_max{f_max} - n:{n_max}')
+            raise SpectrumError(
+                f'bitmap is not consistant with f_min{f_min} - n: {n_min} and f_max{f_max} - n: {n_max}')
 
     def getn(self, i):
         """converts the n (itu grid) into a local index"""

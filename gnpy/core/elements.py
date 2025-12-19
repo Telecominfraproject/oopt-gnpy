@@ -1204,8 +1204,8 @@ class RamanFiber(Fiber):
     def __str__(self):
         if hasattr(self, "estimated_gain"):
             return super().__str__() + f'\n  reference gain (dB):         {round(self.estimated_gain, 2)}' \
-                + f'\n  actual gain (dB):            {round(self.actual_raman_gain, 2)}'
-        return super().__str__() + f'\n  actual gain (dB):            {round(self.actual_raman_gain, 2)}'
+                + f'\n  actual gain (dB):            {round(self.actual_raman_gain, 2)}'    # noqa E241
+        return super().__str__() + f'\n  actual gain (dB):            {round(self.actual_raman_gain, 2)}'    # noqa E241
 
     def propagate(self, spectral_info: SpectralInformation):
         """Modifies the spectral information computing the attenuation, the non-linear interference generation,

@@ -584,7 +584,7 @@ def jsontocsv(json_data, equipment, fileout):
     nb_tsp_field = 'nb of tsp pairs'
     rev_path_metric_fields = ('reversed path OSNR-0.1nm (average)', 'reversed path SNR-0.1nm (average)',
                               'reversed path SNR-bandwidth (average)', 'reversed path SNR-0.1nm (min)',
-                              'reversed path SNR-0.1nm (max)','reversed path PDL_penalty', 'reversed path CD_penalty',
+                              'reversed path SNR-0.1nm (max)', 'reversed path PDL_penalty', 'reversed path CD_penalty',
                               'reversed path PMD_penalty')
     path_metric_fields = ('OSNR-0.1nm (average)', 'SNR-0.1nm (average)', 'SNR-bandwidth (average)',
                           'SNR-0.1nm (min)', 'SNR-0.1nm (max)', 'PDL_penalty', 'CD_penalty', 'PMD_penalty',
@@ -616,8 +616,8 @@ def jsontocsv(json_data, equipment, fileout):
                 # - label (N,M)
                 # - transponder for source and destination only
                 # as spectrum assignment is not performed for blocked demands: there is no label object in the answer
-                # so the hop_attribute with trx_type and mode is second object or last object, while id of hop is first and
-                # penultimate
+                # so the hop_attribute with trx_type and mode is second object or last object, while id of hop is first
+                # and penultimate
                 no_path_properties = pth_el['no-path']['path-properties']
                 values['source'], values['destination'], values['transponder-type'], values['transponder-mode'] = \
                     _get_srce_dest_trx(no_path_properties['path-route-objects'], 1, -2)
@@ -1171,7 +1171,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 min_ind = argmin(snr01nm_with_penalty)
                 if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
-                          + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}'
+                        + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}'
                     msg = penalty_msg(total_path[-1], msg, min_ind, pathreq.OSNR,
                                       equipment["SI"]["default"].sys_margins)
                     LOGGER.warning(msg)
@@ -1220,7 +1220,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 min_ind = argmin(snr01nm_with_penalty)
                 if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
-                          + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}'
+                        + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}'
                     msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.OSNR, equipment["SI"]["default"].sys_margins)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
