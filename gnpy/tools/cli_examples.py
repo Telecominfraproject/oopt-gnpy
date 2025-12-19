@@ -159,7 +159,7 @@ def _add_common_options(parser: argparse.ArgumentParser, network_default: Path):
                         metavar=_help_fname_json,
                         help='List of additional config files as referenced in equipment files with '
                              '"advanced_config_from_json" or "default_config_from_json".'
-                             f'Existing configs:\n{_default_config_files}')
+                             f'Existing configs: \n{_default_config_files}')
 
 
 def _infer_trx(target_roadm_uid: str, all_roadms: Dict, network: DiGraph):
@@ -333,7 +333,7 @@ def _get_rq_from_service(service: Path, route_id: str, network, equipment,
             baud_rate_ghz = rqs[0].baud_rate * 1e-9  # Convert to GHz
             spacing_ghz = rqs[0].spacing * 1e-9  # Convert to GHz
             msg = 'Choosing first compatible mode.' \
-                + f'Selected mode: {mode_name}, Baud rate: {baud_rate_ghz:.2f} GHz, Spacing: {spacing_ghz:.2f} GHz'
+                + f'Selected mode: {mode_name}, Baud rate: {baud_rate_ghz:.2f} GHz, Spacing: {spacing_ghz:.2f} GHz'  # noqa E231
             _logger.warning(msg)
 
         else:
@@ -616,13 +616,13 @@ def path_requests_run(args=None):
         _, propagatedpths, reversed_propagatedpths, rqs, dsjn, result = \
             planning(network, equipment, data, redesign=args.redesign_per_request, user_policy=user_policy)
     except exceptions.NetworkTopologyError as e:
-        print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
+        print(f'{ansi_escapes.red}Invalid network definition: {ansi_escapes.reset}{e}')
         sys.exit(1)
     except exceptions.ConfigurationError as e:
-        print(f'{ansi_escapes.red}Configuration error:{ansi_escapes.reset} {e}')
+        print(f'{ansi_escapes.red}Configuration error: {ansi_escapes.reset}{e}')
         sys.exit(1)
     except exceptions.DisjunctionError as this_e:
-        print(f'{ansi_escapes.red}Disjunction error:{ansi_escapes.reset} {this_e}')
+        print(f'{ansi_escapes.red}Disjunction error: {ansi_escapes.reset}{this_e}')
         sys.exit(1)
     except exceptions.ServiceError as e:
         print(f'Service error: {e}')
@@ -667,18 +667,18 @@ def path_requests_run(args=None):
         try:
             id_request = rqs[i].request_id[0:min(30, len(rqs[i].request_id))]
             if rqs[i].blocking_reason in BLOCKING_NOPATH:
-                line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination} :',
+                line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ',
                         '-', '-', '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
                         '-', '{rqs[i].blocking_reason}']
             else:
-                line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
+                line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ', psnrb,
                         psnr, posnrb, posnr, '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
                         '-', f'{rqs[i].blocking_reason}']
         except AttributeError:
-            line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination} : ', psnrb,
+            line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ', psnrb,
                     psnr, posnrb, posnr, f'{rqs[i].OSNR + equipment["SI"]["default"].sys_margins}',
                     f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
-                    f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)}', f'({rqs[i].N},{rqs[i].M})']
+                    f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)}', f'({rqs[i].N},{rqs[i].M})']  # noqa E231
         data.append(line)
 
     df = pd.DataFrame(data, columns=header)

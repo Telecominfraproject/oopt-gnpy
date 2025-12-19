@@ -16,7 +16,6 @@ checks that empty info on mode, power, nbchannel in service file are supported
 
 from logging import INFO
 from pathlib import Path
-from logging import INFO
 from numpy.testing import assert_allclose
 import pytest
 

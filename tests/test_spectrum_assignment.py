@@ -413,12 +413,12 @@ def test_inconsistant_freq_slot(setup, equipment, request_set):
     ([-88, -100, -116], [4, None, 4], None, None, 'first_fit', 'NO_SPECTRUM', False),
     # only 4 slots remains between  -96 (-88 -8) and -104 (-116 + 12), and centered on -100, so N = -101 is not
     # feasible whatever the M.
-    ([-88, -101, -116, None], [8, 4, 12, None], None,  None, 'first_fit', 'NO_SPECTRUM', False),
-    ([-88, -101, -116, -250], [4, 4, 12, 12], None,  None, 'first_fit', 'NO_SPECTRUM', False),
+    ([-88, -101, -116, None], [8, 4, 12, None], None, None, 'first_fit', 'NO_SPECTRUM', False),
+    ([-88, -101, -116, -250], [4, 4, 12, 12], None, None, 'first_fit', 'NO_SPECTRUM', False),
     ([-88, -101, -116, None], [8, None, 12, None], None, None, 'first_fit', 'NO_SPECTRUM', False),
     # raises service error: slots overlap
     ([-88, -81, -116, -136], [8, 8, 12, 8], None, None, 'first_fit', 'NO_SPECTRUM', True),
-    ])
+])
 def test_n_m_requests(setup, equipment, req_n, req_m, final_n, final_m, user_policy, blocking_reason,
                       raises_error, request_set):
     """test that various N and M values for a request end up with the correct path assignment"""

@@ -159,9 +159,9 @@ def test_excel_service_json_generation(xls_input, expected_json_output):
 # test xls answers creation
 
 
-@pytest.mark.parametrize('json_input',
-    (DATA_DIR / 'testTopology_response.json', 
-     DATA_DIR / 'testTopology_response_with_more_cases.json')
+@pytest.mark.parametrize('json_input', (
+    DATA_DIR / 'testTopology_response.json',
+    DATA_DIR / 'testTopology_response_with_more_cases.json')
 )
 def test_csv_response_generation(tmpdir, json_input):
     """tests if generated csv is consistant with expected generation same columns (order not important)"""

@@ -15,7 +15,7 @@ checks behaviour of gain mode
 
 from pathlib import Path
 
-from gnpy.tools.json_io import  load_json, load_eqpt_topo_from_json, load_gnpy_json, _equipment_from_json
+from gnpy.tools.json_io import load_json, load_eqpt_topo_from_json, load_gnpy_json, _equipment_from_json
 import networkx as nx
 
 
