@@ -16,7 +16,7 @@ The solvers take as input instances of the spectral information, the fiber and t
 
 from logging import getLogger
 from math import isclose, factorial
-from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, clip, abs, sum, \
+from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapezoid, arcsinh, clip, abs, sum, \
     concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, argsort, cumprod, \
     polyfit, log, reshape, swapaxes, full, nan, cumsum
 from scipy.constants import k, h
@@ -202,7 +202,7 @@ class RamanSolver:
             pump_power = srs.power_profile[spectral_info.number_of_channels + i, :]
             df = pump.frequency - frequency
             eta = - 1 / (1 - exp(h * df / (k * fiber.temperature)))
-            integral = trapz(pump_power / channels_loss, z, axis=1)
+            integral = trapezoid(pump_power / channels_loss, z, axis=1)
             ase += 2 * h * baud_rate * frequency * (1 + eta) * cr[:, i] * (df > 0) * integral  # 2 factor for double pol
         return ase
 
@@ -550,9 +550,9 @@ class NliSolver:
         integrand_f1 = zeros(f1_array.size)
         for f1_index, f1 in enumerate(f1_array):
             delta_beta = 4 * pi ** 2 * (f1 - f_eval) * (f2_array - f_eval) * (
-                        beta2 + pi * beta3 * (f1 + f2_array - 2 * f_ref_beta))
+                beta2 + pi * beta3 * (f1 + f2_array - 2 * f_ref_beta))
             integrand_f2 = NliSolver._generalized_rho_nli(delta_beta, rho_pump, z, alpha)
-            integrand_f1[f1_index] = 2 * trapz(integrand_f2, f2_array)  # 2x since integrand_f2 is symmetric in f2
+            integrand_f1[f1_index] = 2 * trapezoid(integrand_f2, f2_array)  # 2x since integrand_f2 is symmetric in f2
         generalized_psi = 0.5 * sum(integrand_f1) * pump_baud_rate
         return generalized_psi
 
@@ -578,10 +578,10 @@ class NliSolver:
             rc2 = raised_cosine(f2_array, cut_frequency, cut_baud_rate, cut_roll_off)
             rc3 = raised_cosine(f3_array, pump_frequency, pump_baud_rate, pump_roll_off)
             delta_beta = 4 * pi ** 2 * (f1_array[i] - f_eval) * (f2_array - f_eval) * (
-                        beta2 + pi * beta3 * (f1_array[i] + f2_array - 2 * f_ref_beta))
+                beta2 + pi * beta3 * (f1_array[i] + f2_array - 2 * f_ref_beta))
             integrand_f2 = rc1[i] * rc2 * rc3 * NliSolver._generalized_rho_nli(delta_beta, rho_pump, z, alpha)
-            integrand_f1[i] = trapz(integrand_f2, f2_array)
-        generalized_psi = trapz(integrand_f1, f1_array)
+            integrand_f1[i] = trapezoid(integrand_f2, f2_array)
+        generalized_psi = trapezoid(integrand_f1, f1_array)
         return generalized_psi
 
     @staticmethod
@@ -677,7 +677,7 @@ class NliSolver:
         loss_lin = log(loss_profile)
         pump_alpha = (loss_lin[:, 1:] - loss_lin[:, :-1]) / delta_z
         leff = abs((loss_profile[:, 1:] - loss_profile[:, :-1]) / sqrt(abs(pump_alpha))) * pump_alpha / abs(pump_alpha)
-        leff = reshape(outer(leff, ones(z.size - 1)), newshape=[leff.shape[0], leff.shape[1], leff.shape[1]])
+        leff = reshape(outer(leff, ones(z.size - 1)), shape=[leff.shape[0], leff.shape[1], leff.shape[1]])
         leff2 = leff * swapaxes(leff, 2, 1)
         leff2 = sum(leff2, axis=(1, 2))
         z_int = outer(ones(frequency.size), leff2)

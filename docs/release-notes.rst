@@ -6,6 +6,34 @@ Release change log
 
 Each release introduces some changes and new features.
 
+(prepare text for next release)
+
+MAJOR Change end of support for python < 3.11
+
+GNPy is moving to most recent releases for the following packages.
+Execution of the scripts requires in particular updates for numpy:
+    
+    | package              | from   | to     |
+    | -------------------- | ------ | ------ |
+    | alabaster            | 0.7.21 | 1.0.0  |
+    | docutils             | 0.21.2 | 0.22.4 |
+    | matplotlib           | 3.10.3 | 3.10.8 |
+    | networkx             | 3.4.2  | 3.6.1  |
+    | numpy                | 1.26.4 | 2.4.0  |
+    | pandas               | 2.3.0  | 2.3.3  |
+    | pbr                  | 6.1.1  | 7.0.3  |
+    | psutil               | 7.0.0  | 7.2.1  |
+    | pygments             | 2.11.2 | 2.19.2 |
+    | scipy                | 1.15.3 | 1.16.3 |
+    | sphinx               | 8.1.3  | 9.1.0  |
+    | sphinxcontrib-bibtex | 2.6.4  | 2.6.5  |
+    | sphinx_rtd_theme     | 3.0.2  | 3.10.8 |
+    | xlrd                 | 2.0.1  | 2.0.2  |
+
+- numpy.trapz function has been deprecated and replaced by numpy.trapezoid.
+- numpy.reshape newshape option has been deprecated and replaced by shape.
+
+
 v2.14
 =====
 

@@ -7,3 +7,6 @@ through the :py:mod:`.network`.
 The simulation is controlled via :py:mod:`.parameters` and implemented mainly
 via :py:mod:`.science_utils`.
 """
+# make sure to print scalars without their types
+from numpy import set_printoptions
+set_printoptions(legacy='1.25')
