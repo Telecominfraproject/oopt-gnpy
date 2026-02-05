@@ -6,7 +6,34 @@ Release change log
 
 Each release introduces some changes and new features.
 
-(prepare text for next release)
+v2.14
+=====
+
+**Environment**
+
+The macos-13 environment is no more supported.
+
+**Accuracy improvements**
+
+We changed power behavior to use total channel power (signal + ASE + NLI) instead of just signal.
+This slightly changes the propagation results as more power is considered to
+be injected in the fiber span and increases accuracy.
+
+We also fixed a bug occurring with multiband computation: the computation now considers the input
+frequencies following an increasing order and not the order definition of the band (e.g. C+L or L+C).
+
+**Features**
+
+In order to ease user work with library we introduced 2 new features:
+
+- the support for multiple equipment names using "other_name" keyword for amplifiers and transceivers, in case the same equipment exists with different names in its topology instances.
+- the support for library metadata when loading equipment, containing detailed information concerning date, contacts, suppliers references, ...
+
+We also introduced new option for the gnpy-transmission-example script to enable user path definition, either using a succession of node names or using a service ID in a service file with the same structure as with gnpy-path-request script.
+
+We have added a spectrum assignment policy argument with last fit policy implementation.
+
+More information are also displayed in results in order to facilitate diagnosis in case of non-feasible path
 
 v2.13
 =====
