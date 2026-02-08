@@ -34,6 +34,8 @@ RESPONSE_KEY = 'response'
 SPECTRUM_KEY = 'spectrum'
 LOSS_COEF_KEY = 'loss_coef'
 LOSS_COEF_KEY_PER_FREQ = 'loss_coef_per_frequency'
+TOTAL_LOSS_KEY = 'total_loss'
+TOTAL_LOSS_KEY_PER_FREQ = 'total_loss_per_frequency'
 RAMAN_COEF_KEY = 'raman_coefficient'
 RAMAN_EFFICIENCY_KEY = 'raman_efficiency'
 EQPT_TYPES = ['Edfa', 'Transceiver', 'Fiber', 'Roadm']
@@ -396,6 +398,46 @@ def convert_back_loss_coeff_list(json_data: Dict) -> Dict:
                     'frequency': [item['frequency'] for item in loss_coef_per_frequency],
                     'value': [item['loss_coef_value'] for item in loss_coef_per_frequency]}
                 elem[PARAMS_KEY]['loss_coef'] = new_loss_coef_per_frequency
+    return json_data
+
+
+def convert_total_loss_list(json_data: Dict) -> Dict:
+    """Convert total_loss per-frequency dict format to YANG list format.
+
+    :param json_data: The input JSON topology data to convert.
+    :type json_data: Dict
+    :return: the converted JSON data
+    :rtype: Dict
+    """
+    for elem in json_data[ELEMENTS_KEY]:
+        if PARAMS_KEY in elem and TOTAL_LOSS_KEY in elem[PARAMS_KEY] \
+                and isinstance(elem[PARAMS_KEY][TOTAL_LOSS_KEY], dict):
+            total_loss_per_frequency = elem[PARAMS_KEY].pop(TOTAL_LOSS_KEY)
+            total_loss_list = total_loss_per_frequency.pop('value', None)
+            frequency_list = total_loss_per_frequency.pop('frequency', None)
+            if total_loss_list:
+                new_total_loss_per_frequency = [{'frequency': f, 'total_loss_value': v}
+                                                for f, v in zip(frequency_list, total_loss_list)]
+                elem[PARAMS_KEY][TOTAL_LOSS_KEY_PER_FREQ] = new_total_loss_per_frequency
+    return json_data
+
+
+def convert_back_total_loss_list(json_data: Dict) -> Dict:
+    """Convert YANG total_loss list format back to dict format.
+
+    :param json_data: The input JSON topology data to convert back
+    :type json_data: Dict
+    :return: the converted JSON data
+    :rtype: Dict
+    """
+    for elem in json_data[ELEMENTS_KEY]:
+        if PARAMS_KEY in elem and TOTAL_LOSS_KEY_PER_FREQ in elem[PARAMS_KEY]:
+            total_loss_per_frequency = elem[PARAMS_KEY].pop(TOTAL_LOSS_KEY_PER_FREQ)
+            if total_loss_per_frequency:
+                new_total_loss_per_frequency = {
+                    'frequency': [item['frequency'] for item in total_loss_per_frequency],
+                    'value': [item['total_loss_value'] for item in total_loss_per_frequency]}
+                elem[PARAMS_KEY][TOTAL_LOSS_KEY] = new_total_loss_per_frequency
     return json_data
 
 

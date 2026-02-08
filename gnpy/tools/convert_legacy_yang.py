@@ -25,6 +25,7 @@ from gnpy.tools.yang_convert_utils import convert_degree, convert_back_degree, \
     convert_design_band, convert_back_design_band, \
     convert_none_to_empty, convert_empty_to_none, \
     convert_loss_coeff_list, convert_back_loss_coeff_list, \
+    convert_total_loss_list, convert_back_total_loss_list, \
     ELEMENTS_KEY, PATH_REQUEST_KEY, RESPONSE_KEY, SPECTRUM_KEY, EQPT_TYPES, EDFA_CONFIG_KEYS, SIM_PARAMS_KEYS, \
     TOPO_NMSP, SERV_NMSP, EQPT_NMSP, SPECTRUM_NMSP, SIM_PARAMS_NMSP, EDFA_CONFIG_NMSP, RESP_NMSP, \
     dump_data, add_missing_default_type_variety, \
@@ -56,6 +57,7 @@ def legacy_to_yang(json_data: Dict) -> Dict:
         json_data = convert_degree(json_data)
         json_data = convert_design_band(json_data)
         json_data = convert_loss_coeff_list(json_data)
+        json_data = convert_total_loss_list(json_data)
         json_data = convert_raman_coef(json_data)
         json_data = {TOPO_NMSP: json_data}
     elif TOPO_NMSP in json_data:
@@ -63,6 +65,7 @@ def legacy_to_yang(json_data: Dict) -> Dict:
         json_data[TOPO_NMSP] = convert_degree(json_data[TOPO_NMSP])
         json_data[TOPO_NMSP] = convert_design_band(json_data[TOPO_NMSP])
         json_data[TOPO_NMSP] = convert_loss_coeff_list(json_data[TOPO_NMSP])
+        json_data[TOPO_NMSP] = convert_total_loss_list(json_data[TOPO_NMSP])
         json_data[TOPO_NMSP] = remove_null_region_city(json_data[TOPO_NMSP])
 
     # case of equipment json
@@ -149,11 +152,13 @@ def yang_to_legacy(json_data: Dict) -> Dict:
         json_data = convert_back_degree(json_data)
         json_data = convert_back_design_band(json_data)
         json_data = convert_back_loss_coeff_list(json_data)
+        json_data = convert_back_total_loss_list(json_data)
         json_data = convert_back_raman_coef(json_data)
     elif TOPO_NMSP in json_data:
         json_data = convert_back_degree(json_data[TOPO_NMSP])
         json_data = convert_back_design_band(json_data)
         json_data = convert_back_loss_coeff_list(json_data)
+        json_data = convert_back_total_loss_list(json_data)
         json_data = convert_back_raman_coef(json_data)
 
     # case of equipment json
