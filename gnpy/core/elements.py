@@ -903,7 +903,14 @@ class Fiber(_Node):
             'con_in': self.params.con_in,
             'con_out': self.params.con_out
         }
-        if isinstance(self.params.loss_coef, ndarray):
+        if self.params.total_loss is not None:
+            if self.params.total_loss.size > 1:
+                params["total_loss_per_frequency"] = [
+                    {"frequency": frequency, "total_loss_value": round(float(tl), 6)}
+                    for frequency, tl in zip(self.params.f_loss_ref, self.params.total_loss)]
+            else:
+                params["total_loss"] = round(float(self.params.total_loss), 6)
+        elif isinstance(self.params.loss_coef, ndarray):
             params["loss_coef_per_frequency"] = [
                 {"frequency": frequency, "loss_coef_value": round(loss * 1e3, 6)}
                 for frequency, loss in zip(self.params.f_loss_ref, self.params.loss_coef)]

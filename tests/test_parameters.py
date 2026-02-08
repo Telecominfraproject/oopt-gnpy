@@ -61,3 +61,83 @@ def test_fiber_parameters():
     norm_gamma_raman_default_g0_no_ssmf = no_ssmf_fiber_params.raman_coefficient.normalized_gamma_raman
 
     assert_allclose(norm_gamma_raman_explicit_g0, norm_gamma_raman_default_g0_no_ssmf, rtol=1e-10)
+
+
+def test_fiber_total_loss_scalar():
+    """Test that total_loss parameter correctly computes loss_coef from total_loss / length."""
+    fiber_dict = {
+        'length': 80,
+        'length_units': 'km',
+        'att_in': 0,
+        'con_in': 0.5,
+        'con_out': 0.5,
+        'dispersion': 1.67e-05,
+        'effective_area': 8.3e-11,
+        'pmd_coef': 1.265e-15,
+        'total_loss': 16.0,  # 16 dB total loss for 80 km → 0.2 dB/km
+    }
+    params = FiberParams(**fiber_dict)
+    # total_loss = 16 dB, length = 80 km → loss_coef should be 0.2 dB/km = 0.0002 dB/m
+    assert_allclose(params.loss_coef, 0.0002, rtol=1e-10)
+    assert_allclose(params.total_loss, 16.0, rtol=1e-10)
+
+
+def test_fiber_total_loss_per_frequency():
+    """Test that frequency-dependent total_loss correctly computes loss_coef per frequency."""
+    fiber_dict = {
+        'length': 80,
+        'length_units': 'km',
+        'att_in': 0,
+        'con_in': 0.5,
+        'con_out': 0.5,
+        'dispersion': 1.67e-05,
+        'effective_area': 8.3e-11,
+        'pmd_coef': 1.265e-15,
+        'total_loss': {
+            'value': [16.0, 17.6],  # dB at two frequencies
+            'frequency': [191.35e12, 196.1e12],
+        },
+    }
+    params = FiberParams(**fiber_dict)
+    # 16.0 / 80 = 0.2 dB/km = 0.0002 dB/m
+    # 17.6 / 80 = 0.22 dB/km = 0.00022 dB/m
+    assert_allclose(params.loss_coef, [0.0002, 0.00022], rtol=1e-10)
+    assert_allclose(params.total_loss, [16.0, 17.6], rtol=1e-10)
+
+
+def test_fiber_total_loss_backward_compat():
+    """Ensure loss_coef still works when total_loss is not provided."""
+    fiber_dict = {
+        'length': 80,
+        'length_units': 'km',
+        'att_in': 0,
+        'con_in': 0.5,
+        'con_out': 0.5,
+        'dispersion': 1.67e-05,
+        'effective_area': 8.3e-11,
+        'pmd_coef': 1.265e-15,
+        'loss_coef': 0.2,  # dB/km
+    }
+    params = FiberParams(**fiber_dict)
+    assert_allclose(params.loss_coef, 0.0002, rtol=1e-10)
+    assert params.total_loss is None
+
+
+def test_fiber_total_loss_asdict():
+    """Test that asdict preserves total_loss when it was the original input."""
+    fiber_dict = {
+        'length': 80,
+        'length_units': 'km',
+        'att_in': 0,
+        'con_in': 0.5,
+        'con_out': 0.5,
+        'dispersion': 1.67e-05,
+        'effective_area': 8.3e-11,
+        'pmd_coef': 1.265e-15,
+        'total_loss': 16.0,
+    }
+    params = FiberParams(**fiber_dict)
+    d = params.asdict()
+    assert 'total_loss' in d
+    assert 'loss_coef' not in d
+    assert_allclose(d['total_loss'], 16.0, rtol=1e-10)

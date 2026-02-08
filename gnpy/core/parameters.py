@@ -351,12 +351,32 @@ class FiberParams(Parameters):
             self._pmd_coef_defined = kwargs.get('pmd_coef_defined', kwargs['pmd_coef'] is True)
 
             # Loss Coefficient
-            if isinstance(kwargs['loss_coef'], dict):
-                self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
-                self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
+            # Support total_loss (dB) as an alternative to loss_coef (dB/km).
+            # When total_loss is provided, it represents the total fiber attenuation
+            # (excluding connectors), as typically measured by OTDR.
+            # The effective loss_coef is then derived as total_loss / length.
+            self._total_loss = None
+            if 'total_loss' in kwargs and kwargs['total_loss'] is not None:
+                total_loss = kwargs['total_loss']
+                if isinstance(total_loss, dict):
+                    # Frequency-dependent total loss: {value: [...], frequency: [...]}
+                    self._total_loss = asarray(total_loss['value'])  # dB
+                    self._f_loss_ref = asarray(total_loss['frequency'])  # Hz
+                    self._loss_coef = self._total_loss / (self._length * 1e-3)  # dB/km -> dB/m (*1e-3)
+                    self._loss_coef = self._loss_coef * 1e-3  # dB/m
+                else:
+                    self._total_loss = asarray(float(total_loss))  # dB
+                    self._f_loss_ref = asarray(self._ref_frequency)  # Hz
+                    self._loss_coef = asarray(self._total_loss / (self._length * 1e-3)) * 1e-3  # dB/m
+            elif 'loss_coef' in kwargs:
+                if isinstance(kwargs['loss_coef'], dict):
+                    self._loss_coef = asarray(kwargs['loss_coef']['value']) * 1e-3  # lineic loss dB/m
+                    self._f_loss_ref = asarray(kwargs['loss_coef']['frequency'])  # Hz
+                else:
+                    self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
+                    self._f_loss_ref = asarray(self._ref_frequency)  # Hz
             else:
-                self._loss_coef = asarray(kwargs['loss_coef']) * 1e-3  # lineic loss dB/m
-                self._f_loss_ref = asarray(self._ref_frequency)  # Hz
+                raise KeyError('loss_coef')
             # Lumped Losses
             self._lumped_losses = kwargs['lumped_losses'] if 'lumped_losses' in kwargs else array([])
             self._latency = self._length / (c / self._n1)  # s
@@ -447,6 +467,10 @@ class FiberParams(Parameters):
         return self._ref_frequency
 
     @property
+    def total_loss(self):
+        return self._total_loss
+
+    @property
     def loss_coef(self):
         return self._loss_coef
 
@@ -464,7 +488,15 @@ class FiberParams(Parameters):
 
     def asdict(self):
         dictionary = super().asdict()
-        dictionary['loss_coef'] = self.loss_coef * 1e3
+        if self._total_loss is not None:
+            if self._total_loss.size > 1:
+                dictionary['total_loss'] = {'value': self._total_loss.tolist(),
+                                            'frequency': self._f_loss_ref.tolist()}
+            else:
+                dictionary['total_loss'] = float(self._total_loss)
+            dictionary.pop('loss_coef', None)
+        else:
+            dictionary['loss_coef'] = self.loss_coef * 1e3
         dictionary['length_units'] = 'm'
         if len(self.lumped_losses) == 0:
             dictionary.pop('lumped_losses')
