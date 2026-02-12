@@ -18,6 +18,7 @@ To learn how to contribute, please see CONTRIBUTING.md
 - Gabriele Galimberti (Cisco) <ggalimbe@cisco.com>
 - Gert Grammel (Juniper Networks) <ggrammel@juniper.net>
 - Giacomo Borraccini (NEC Laboratories America) <gborraccini@nec-labs.com>
+- Linqi Xiao (University of Texas at Dallas) <linqixiao2021@gmail.com>, <73268562+LynchXLQ@users.noreply.github.com>
 - Gilad Goldfarb (Facebook) <giladg@fb.com>
 - James Powell (Telecom Infra Project) <james.powell@telecominfraproject.com>
 - Jan Kundrát (Telecom Infra Project) <jkt@jankundrat.com>
