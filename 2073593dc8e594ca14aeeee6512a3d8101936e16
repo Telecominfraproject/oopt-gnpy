@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f39f731_3a1fe0ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:59:45Z",
+      "side": 1,
+      "message": "Looks good to me (except for flake8 issue) , but I would prefer that Andrea or Giaccomo have a look",
+      "revId": "2073593dc8e594ca14aeeee6512a3d8101936e16",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70caf662_64c7403e",
+        "filename": "tests/test_raman_simulation.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:59:45Z",
+      "side": 1,
+      "message": "Please correct these: flake8 tests/test_raman_simulation.py \ntests/test_raman_simulation.py:23:1: F401 \u0027numpy.outer\u0027 imported but unused\ntests/test_raman_simulation.py:23:1: F401 \u0027numpy.allclose\u0027 imported but unused\ntests/test_raman_simulation.py:24:1: F401 \u0027numpy.testing.assert_array_less\u0027 imported but unused",
+      "revId": "2073593dc8e594ca14aeeee6512a3d8101936e16",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
