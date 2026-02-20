@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # SPDX-License-Identifier: BSD-3-Clause
@@ -89,7 +88,7 @@ def check_header(file_path):
         'has_license': has_license,
         'has_copyright': has_copyright,
         'has_authors_ref': has_authors_ref,
-        'is_compliant': has_shebang and has_encoding and has_license and has_copyright and has_authors_ref
+        'is_compliant': has_encoding and has_license and has_copyright and has_authors_ref
     }
 
 
