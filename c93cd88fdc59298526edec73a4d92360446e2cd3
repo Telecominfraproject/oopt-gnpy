@@ -1,0 +1,265 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "564e757a_4dc8c84c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "Thanks for the submission!\nI have made some change suggestions.\n- yang part is missing, could you please add it ? I have provided a suggestion\n- I would prefer to avoid definig \u0027legacy-like\u0027 user input and directly target 2 definitions: for the interface: total_loss is scalar, total_loss_per_frequency is a list of dict. This simplifies a lot the patch (no conversion yang-legacy needed). In the core, total loss can behave the same as loss_coef.\n\nPlease see the details in the comments.",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff53116d_90c762fa",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "I suggest to add a mandatory true in the yang and min-elements 1; in the yang list to ensure that if the total_loss_per_frequency exists it must have at least 2 elements",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13485814_42092017",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "total_loss_per_frequency also needs a definition in yang model. This is also a way to ensure that if total_loss_per_frequency is defined, there should not be any other definition for loss.\nsomthing like: \n\n    choice loss_coef-vector-or-scalar {\n      mandatory true;        \u003c- ensure that at least one of these cases must be implemented\n      description\n        \"Loss coef definition: scalar or per frequency vector\";\n      case scalar {...}\n      ...\n      case total_loss_vector {\n        list total_loss_per_frequency {\n          key frequency;\n          min-elements 2;\n          description\n            \"Per frequency loss_coef definition.\";\n          leaf frequency {\n            type decimal64 {\n              fraction-digits 1;\n            }\n            units \"Hz\";\n            description\n              \"Frequency of the loss coef value.\";\n          }\n          leaf total_loss_value {\n            type decimal64 {\n              fraction-digits 6;\n            }\n            units \"dB\";\n            description\n              \"Loss at the frequency value.\";\n          }\n        }\n      }\n      case total_loss_scalar {\n        leaf total_loss {\n          type decimal64 {\n            fraction-digits 3;\n          }\n          units \"dB\";\n          description\n            \"Loss of the fiber span.\";\n        }\n      }\n\nand the precision dict must be updated accordinglygnpy/yang/precision_dict.py, \n    \"total_loss_value\": 6, \"total_loss\": 6,",
+      "range": {
+        "startLine": 908,
+        "startChar": 24,
+        "endLine": 908,
+        "endChar": 48
+      },
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c27d2c03_3e12ab1d",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "to be yang compliant (the target is to progressively remove legacy formats), I suggest to define 2 parameters: total_loss for the scalar case and total_loss_per_frequency for the array case, and avoid the conversion.. So total_loss can only be a scalar (verified with yang) and total_loss_per_frequency can only be an list of dict with at least 2 items",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ed1d3db_f57581a4",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "this would change to something like:\n\n            if \u0027total_loss\u0027 in kwargs:\n                self._total_loss \u003d asarray(kwargs[\u0027total_loss\u0027])\n                self._f_loss_ref \u003d asarray(self._ref_frequency)  # Hz\n                self._loss_coef \u003d asarray(self._total_loss / (self._length * 1e-3)) * 1e-3  # dB/m\n            elif \u0027total_loss_per_frequency\u0027 in kwargs:\n                # Frequency-dependent total loss: list of frequency-value\n                self._total_loss \u003d asarray([v[\u0027total_loss_value\u0027] for v in kwargs[\u0027total_loss_per_frequency\u0027]])  # dB\n                self._f_loss_ref \u003d asarray([v[\u0027frequency\u0027] for v in kwargs[\u0027total_loss_per_frequency\u0027]])  # Hz\n                self._loss_coef \u003d self._total_loss / (self._length * 1e-3)  # dB/km -\u003e dB/m (*1e-3)\n                self._loss_coef \u003d self._loss_coef * 1e-3  # dB/m\n            elif \u0027loss_coef\u0027 in kwargs and isinstance(kwargs[\u0027loss_coef\u0027], dict):\n                self._loss_coef \u003d asarray(kwargs[\u0027loss_coef\u0027][\u0027value\u0027]) * 1e-3  # lineic loss dB/m\n                self._f_loss_ref \u003d asarray(kwargs[\u0027loss_coef\u0027][\u0027frequency\u0027])  # Hz\n            else:\n                self._loss_coef \u003d asarray(kwargs[\u0027loss_coef\u0027]) * 1e-3  # lineic loss dB/m\n                self._f_loss_ref \u003d asarray(self._ref_frequency)  # Hz\n                \nno need to cascade multiple if/else: the yang validation takes care of the data quality.",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11093178_151117ce",
+        "filename": "gnpy/tools/convert_legacy_yang.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "remove this: no need for conversion if the total loss is already in the target format",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20bd0880_818f140c",
+        "filename": "gnpy/tools/convert_legacy_yang.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e7f2ab8_921ce222",
+        "filename": "gnpy/tools/convert_legacy_yang.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "445fb9fb_358d3288",
+        "filename": "gnpy/tools/convert_legacy_yang.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57cb5a82_110c59f9",
+        "filename": "gnpy/tools/convert_legacy_yang.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6d5ce7e_1cb36355",
+        "filename": "gnpy/tools/yang_convert_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f56107_91bda934",
+        "filename": "gnpy/tools/yang_convert_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56132e90_bdace4ab",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "could be nice to add an example in test_invocation.py case so that it gives an example of invocation result and network definition",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8227bbd6_3f3e5300",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "use the list of dict definition instead, like:\n\n        \u0027total_loss_per_frequency\u0027: [\n            {\u0027total_loss_value\u0027: 16.0, \u0027frequency\u0027: 191.35e12},  # dB at two frequencies\n            {\u0027frequency\u0027: 196.1e12, \u0027total_loss_value\u0027: 17.6}]",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ccec18f_ffcb9930",
+        "filename": "tests/test_parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-02-20T13:39:20Z",
+      "side": 1,
+      "message": "add the same test with total_loss_per_frequency definition",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
