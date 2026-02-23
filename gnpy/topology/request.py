@@ -166,6 +166,57 @@ BLOCKING_NOMODE = ['NO_FEASIBLE_MODE', 'MODE_NOT_FEASIBLE']
 BLOCKING_NOSPECTRUM = ['NO_SPECTRUM', 'NOT_ENOUGH_RESERVED_SPECTRUM']
 
 
+def _get_element_computed_metrics(element):
+    """Extract computed metrics from a network element after propagation.
+
+    Returns a dictionary with available power/gain/loss metrics for the element,
+    or None if no metrics are available (element not yet propagated).
+
+    :param element: A network element (Fiber, Edfa, Roadm, Transceiver, etc.)
+    :return: Dictionary with computed metrics, or None
+    """
+    metrics = {}
+
+    if isinstance(element, Edfa):
+        # Amplifier metrics
+        if element.pin_db is not None:
+            metrics['power-in-dbm'] = round(float(element.pin_db), 2)
+        if element.pout_db is not None:
+            metrics['power-out-dbm'] = round(float(element.pout_db), 2)
+        if element.effective_gain is not None:
+            metrics['gain-db'] = round(float(element.effective_gain), 2)
+        if element.nf is not None:
+            metrics['noise-figure-db'] = round(float(mean(element.nf)), 2)
+        if element.out_voa is not None:
+            metrics['output-voa-db'] = round(float(element.out_voa), 2)
+
+    elif isinstance(element, (Roadm, Multiband_amplifier)):
+        # ROADM metrics
+        if hasattr(element, 'ref_pch_out_dbm') and element.ref_pch_out_dbm is not None:
+            metrics['ref-pch-out-dbm'] = round(float(element.ref_pch_out_dbm), 2)
+        if hasattr(element, 'ref_effective_loss') and element.ref_effective_loss is not None:
+            metrics['effective-loss-db'] = round(float(element.ref_effective_loss), 2)
+
+    elif isinstance(element, Transceiver):
+        # Transceiver metrics
+        if hasattr(element, 'tx_power') and element.tx_power is not None:
+            tx_power_dbm = watt2dbm(element.tx_power)
+            # Handle both scalar and array values
+            if hasattr(tx_power_dbm, '__iter__'):
+                metrics['tx-power-dbm'] = round(float(mean(tx_power_dbm)), 2)
+            else:
+                metrics['tx-power-dbm'] = round(float(tx_power_dbm), 2)
+
+    else:
+        # Fiber and other passive elements
+        if hasattr(element, 'pch_out_db') and element.pch_out_db is not None:
+            metrics['ref-pch-out-dbm'] = round(float(element.pch_out_db), 2)
+        if hasattr(element, 'ref_pch_in_dbm') and element.ref_pch_in_dbm is not None:
+            metrics['ref-pch-in-dbm'] = round(float(element.ref_pch_in_dbm), 2)
+
+    return metrics if metrics else None
+
+
 class ResultElement:
     def __init__(self, path_request, computed_path, reversed_computed_path=None):
         self.path_id = path_request.request_id
@@ -179,18 +230,29 @@ class ResultElement:
 
     @property
     def detailed_path_json(self):
-        """a function that builds path object for normal and blocking cases"""
+        """Build path-route-objects for normal and blocking cases.
+
+        Returns path-route-objects with element UIDs and computed metrics
+        (power, gain, loss) when available after propagation.
+        """
         index = 0
         pro_list = []
         for element in self.computed_path:
+            hop_data = {
+                'node-id': element.uid,
+                'link-tp-id': element.uid,
+                # TODO change index in order to insert transponder attribute
+            }
+
+            # Add computed metrics if available (power/gain/loss values)
+            computed_metrics = _get_element_computed_metrics(element)
+            if computed_metrics:
+                hop_data['computed-metrics'] = computed_metrics
+
             temp = {
                 'path-route-object': {
                     'index': index,
-                    'num-unnum-hop': {
-                        'node-id': element.uid,
-                        'link-tp-id': element.uid,
-                        # TODO change index in order to insert transponder attribute
-                    }
+                    'num-unnum-hop': hop_data
                 }
             }
             pro_list.append(temp)
