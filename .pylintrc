@@ -1,0 +1,10 @@
+[pylint]
+disable=C0103, C0112, E0401
+generated-members=db.session.*
+[BASIC]
+max-locals = 20
+max-args = 5
+[pycodestyle]
+max-line-length = 120
+[TYPECHECK]
+extension-pkg-allow-list=oopt_gnpy_libyang
