@@ -647,7 +647,7 @@ def create_east_fiber_element(fiber: Node, nodes_by_city: Dict[str, Node]) -> Di
     :rtype: Dict
     """
     fiber_dict = {
-        'uid': f'fiber ({fiber.from_city} \u2192 {fiber.to_city})-{fiber.east_cable}',
+        'uid': f'fiber ({fiber.from_city} -> {fiber.to_city})-{fiber.east_cable}',
         'metadata': {'location': midpoint(nodes_by_city[fiber.from_city],
                                           nodes_by_city[fiber.to_city])},
         'type': 'Fiber',
@@ -676,7 +676,7 @@ def create_west_fiber_element(fiber: Node, nodes_by_city: Dict[str, Node]) -> Di
     :rtype: Dict
     """
     fiber_dict = {
-        'uid': f'fiber ({fiber.to_city} \u2192 {fiber.from_city})-{fiber.west_cable}',
+        'uid': f'fiber ({fiber.to_city} -> {fiber.from_city})-{fiber.west_cable}',
         'metadata': {'location': midpoint(nodes_by_city[fiber.from_city],
                                           nodes_by_city[fiber.to_city])},
         'type': 'Fiber',
@@ -850,8 +850,9 @@ def corresp_names(input_filename: Path, network: DiGraph) -> Tuple[dict, dict, d
     for my_l in links:
         # create names whatever the type and filter them out
         # from-to direction
-        names = [f'Edfa_preamp_roadm {my_l.from_city}_from_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}',
-                 f'Edfa_booster_roadm {my_l.from_city}_to_fiber ({my_l.from_city} \u2192 {my_l.to_city})-{my_l.east_cable}']
+        names = [
+            f'Edfa_preamp_roadm {my_l.from_city}_from_fiber ({my_l.to_city} -> {my_l.from_city})-{my_l.west_cable}',
+            f'Edfa_booster_roadm {my_l.from_city}_to_fiber ({my_l.from_city} -> {my_l.to_city})-{my_l.east_cable}']
         for name in names:
             if name in ila:
                 # "east edfa in Stbrieuc to Rennes_STA"  is equivalent name as
@@ -861,8 +862,8 @@ def corresp_names(input_filename: Path, network: DiGraph) -> Tuple[dict, dict, d
                 # in case fibers are splitted the name here is a
                 corresp_ila[my_l.from_city].append(name)
         # to-from direction
-        names = [f'Edfa_preamp_roadm {my_l.to_city}_from_fiber ({my_l.from_city} \u2192 {my_l.to_city})-{my_l.east_cable}',
-                 f'Edfa_booster_roadm {my_l.to_city}_to_fiber ({my_l.to_city} \u2192 {my_l.from_city})-{my_l.west_cable}']
+        names = [f'Edfa_preamp_roadm {my_l.to_city}_from_fiber ({my_l.from_city} -> {my_l.to_city})-{my_l.east_cable}',
+                 f'Edfa_booster_roadm {my_l.to_city}_to_fiber ({my_l.to_city} -> {my_l.from_city})-{my_l.west_cable}']
         for name in names:
             if name in ila:
                 corresp_ila[my_l.to_city].append(name)
@@ -1212,9 +1213,9 @@ def fiber_link(from_city: str, to_city: str, links_by_city: DefaultDict[str, Lis
     links = links_by_city[from_city]
     link = next(li for li in links if li.from_city in source_dest and li.to_city in source_dest)
     if link.from_city == from_city:
-        fiber = f'fiber ({link.from_city} \u2192 {link.to_city})-{link.east_cable}'
+        fiber = f'fiber ({link.from_city} -> {link.to_city})-{link.east_cable}'
     else:
-        fiber = f'fiber ({link.to_city} \u2192 {link.from_city})-{link.west_cable}'
+        fiber = f'fiber ({link.to_city} -> {link.from_city})-{link.west_cable}'
     return fiber
 
 

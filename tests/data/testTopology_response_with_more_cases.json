@@ -119,8 +119,8 @@
             "path-route-object": {
               "index": 7,
               "num-unnum-hop": {
-                "node-id": "fiber (Lorient_KMA → Vannes_KBE)-F055",
-                "link-tp-id": "fiber (Lorient_KMA → Vannes_KBE)-F055"
+                "node-id": "fiber (Lorient_KMA -> Vannes_KBE)-F055",
+                "link-tp-id": "fiber (Lorient_KMA -> Vannes_KBE)-F055"
               }
             }
           },
@@ -326,8 +326,8 @@
             "path-route-object": {
               "index": 7,
               "num-unnum-hop": {
-                "node-id": "fiber (Brest_KLA → Morlaix)-F060",
-                "link-tp-id": "fiber (Brest_KLA → Morlaix)-F060"
+                "node-id": "fiber (Brest_KLA -> Morlaix)-F060",
+                "link-tp-id": "fiber (Brest_KLA -> Morlaix)-F060"
               }
             }
           },
@@ -366,8 +366,8 @@
             "path-route-object": {
               "index": 11,
               "num-unnum-hop": {
-                "node-id": "fiber (Morlaix → Lannion_CAS)-F059",
-                "link-tp-id": "fiber (Morlaix → Lannion_CAS)-F059"
+                "node-id": "fiber (Morlaix -> Lannion_CAS)-F059",
+                "link-tp-id": "fiber (Morlaix -> Lannion_CAS)-F059"
               }
             }
           },
@@ -446,8 +446,8 @@
             "path-route-object": {
               "index": 19,
               "num-unnum-hop": {
-                "node-id": "fiber (Lannion_CAS → Corlay)-F061",
-                "link-tp-id": "fiber (Lannion_CAS → Corlay)-F061"
+                "node-id": "fiber (Lannion_CAS -> Corlay)-F061",
+                "link-tp-id": "fiber (Lannion_CAS -> Corlay)-F061"
               }
             }
           },
@@ -486,8 +486,8 @@
             "path-route-object": {
               "index": 23,
               "num-unnum-hop": {
-                "node-id": "fiber (Corlay → Loudeac)-F010",
-                "link-tp-id": "fiber (Corlay → Loudeac)-F010"
+                "node-id": "fiber (Corlay -> Loudeac)-F010",
+                "link-tp-id": "fiber (Corlay -> Loudeac)-F010"
               }
             }
           },
@@ -526,8 +526,8 @@
             "path-route-object": {
               "index": 27,
               "num-unnum-hop": {
-                "node-id": "fiber (Loudeac → Lorient_KMA)-F054",
-                "link-tp-id": "fiber (Loudeac → Lorient_KMA)-F054"
+                "node-id": "fiber (Loudeac -> Lorient_KMA)-F054",
+                "link-tp-id": "fiber (Loudeac -> Lorient_KMA)-F054"
               }
             }
           },
@@ -606,8 +606,8 @@
             "path-route-object": {
               "index": 35,
               "num-unnum-hop": {
-                "node-id": "fiber (Lorient_KMA → Vannes_KBE)-F055",
-                "link-tp-id": "fiber (Lorient_KMA → Vannes_KBE)-F055"
+                "node-id": "fiber (Lorient_KMA -> Vannes_KBE)-F055",
+                "link-tp-id": "fiber (Lorient_KMA -> Vannes_KBE)-F055"
               }
             }
           },
@@ -813,8 +813,8 @@
             "path-route-object": {
               "index": 7,
               "num-unnum-hop": {
-                "node-id": "fiber (Lannion_CAS → Stbrieuc)-F056",
-                "link-tp-id": "fiber (Lannion_CAS → Stbrieuc)-F056"
+                "node-id": "fiber (Lannion_CAS -> Stbrieuc)-F056",
+                "link-tp-id": "fiber (Lannion_CAS -> Stbrieuc)-F056"
               }
             }
           },
@@ -853,8 +853,8 @@
             "path-route-object": {
               "index": 11,
               "num-unnum-hop": {
-                "node-id": "fiber (Stbrieuc → Rennes_STA)-F057",
-                "link-tp-id": "fiber (Stbrieuc → Rennes_STA)-F057"
+                "node-id": "fiber (Stbrieuc -> Rennes_STA)-F057",
+                "link-tp-id": "fiber (Stbrieuc -> Rennes_STA)-F057"
               }
             }
           },
@@ -1060,8 +1060,8 @@
             "path-route-object": {
               "index": 7,
               "num-unnum-hop": {
-                "node-id": "fiber (Rennes_STA → Ploermel)-",
-                "link-tp-id": "fiber (Rennes_STA → Ploermel)-"
+                "node-id": "fiber (Rennes_STA -> Ploermel)-",
+                "link-tp-id": "fiber (Rennes_STA -> Ploermel)-"
               }
             }
           },
@@ -1100,8 +1100,8 @@
             "path-route-object": {
               "index": 11,
               "num-unnum-hop": {
-                "node-id": "fiber (Ploermel → Vannes_KBE)-",
-                "link-tp-id": "fiber (Ploermel → Vannes_KBE)-"
+                "node-id": "fiber (Ploermel -> Vannes_KBE)-",
+                "link-tp-id": "fiber (Ploermel -> Vannes_KBE)-"
               }
             }
           },
@@ -1180,8 +1180,8 @@
             "path-route-object": {
               "index": 19,
               "num-unnum-hop": {
-                "node-id": "fiber (Vannes_KBE → Lorient_KMA)-F055",
-                "link-tp-id": "fiber (Vannes_KBE → Lorient_KMA)-F055"
+                "node-id": "fiber (Vannes_KBE -> Lorient_KMA)-F055",
+                "link-tp-id": "fiber (Vannes_KBE -> Lorient_KMA)-F055"
               }
             }
           },
@@ -1260,8 +1260,8 @@
             "path-route-object": {
               "index": 27,
               "num-unnum-hop": {
-                "node-id": "fiber (Lorient_KMA → Loudeac)-F054",
-                "link-tp-id": "fiber (Lorient_KMA → Loudeac)-F054"
+                "node-id": "fiber (Lorient_KMA -> Loudeac)-F054",
+                "link-tp-id": "fiber (Lorient_KMA -> Loudeac)-F054"
               }
             }
           },
@@ -1300,8 +1300,8 @@
             "path-route-object": {
               "index": 31,
               "num-unnum-hop": {
-                "node-id": "fiber (Loudeac → Corlay)-F010",
-                "link-tp-id": "fiber (Loudeac → Corlay)-F010"
+                "node-id": "fiber (Loudeac -> Corlay)-F010",
+                "link-tp-id": "fiber (Loudeac -> Corlay)-F010"
               }
             }
           },
@@ -1340,8 +1340,8 @@
             "path-route-object": {
               "index": 35,
               "num-unnum-hop": {
-                "node-id": "fiber (Corlay → Lannion_CAS)-F061",
-                "link-tp-id": "fiber (Corlay → Lannion_CAS)-F061"
+                "node-id": "fiber (Corlay -> Lannion_CAS)-F061",
+                "link-tp-id": "fiber (Corlay -> Lannion_CAS)-F061"
               }
             }
           },
@@ -1547,8 +1547,8 @@
             "path-route-object": {
               "index": 7,
               "num-unnum-hop": {
-                "node-id": "fiber (Rennes_STA → Stbrieuc)-F057",
-                "link-tp-id": "fiber (Rennes_STA → Stbrieuc)-F057"
+                "node-id": "fiber (Rennes_STA -> Stbrieuc)-F057",
+                "link-tp-id": "fiber (Rennes_STA -> Stbrieuc)-F057"
               }
             }
           },
@@ -1587,8 +1587,8 @@
             "path-route-object": {
               "index": 11,
               "num-unnum-hop": {
-                "node-id": "fiber (Stbrieuc → Lannion_CAS)-F056",
-                "link-tp-id": "fiber (Stbrieuc → Lannion_CAS)-F056"
+                "node-id": "fiber (Stbrieuc -> Lannion_CAS)-F056",
+                "link-tp-id": "fiber (Stbrieuc -> Lannion_CAS)-F056"
               }
             }
           },
@@ -1810,8 +1810,8 @@
               "path-route-object": {
                 "index": 7,
                 "num-unnum-hop": {
-                  "node-id": "fiber (Rennes_STA → Stbrieuc)-F057",
-                  "link-tp-id": "fiber (Rennes_STA → Stbrieuc)-F057"
+                  "node-id": "fiber (Rennes_STA -> Stbrieuc)-F057",
+                  "link-tp-id": "fiber (Rennes_STA -> Stbrieuc)-F057"
                 }
               }
             },
@@ -1828,8 +1828,8 @@
               "path-route-object": {
                 "index": 11,
                 "num-unnum-hop": {
-                  "node-id": "fiber (Stbrieuc → Lannion_CAS)-F056",
-                  "link-tp-id": "fiber (Stbrieuc → Lannion_CAS)-F056"
+                  "node-id": "fiber (Stbrieuc -> Lannion_CAS)-F056",
+                  "link-tp-id": "fiber (Stbrieuc -> Lannion_CAS)-F056"
                 }
               }
             },
@@ -2033,8 +2033,8 @@
             "path-route-object": {
               "index": 7,
               "num-unnum-hop": {
-                "node-id": "fiber (Rennes_STA → Stbrieuc)-F057",
-                "link-tp-id": "fiber (Rennes_STA → Stbrieuc)-F057"
+                "node-id": "fiber (Rennes_STA -> Stbrieuc)-F057",
+                "link-tp-id": "fiber (Rennes_STA -> Stbrieuc)-F057"
               }
             }
           },
@@ -2073,8 +2073,8 @@
             "path-route-object": {
               "index": 11,
               "num-unnum-hop": {
-                "node-id": "fiber (Stbrieuc → Lannion_CAS)-F056",
-                "link-tp-id": "fiber (Stbrieuc → Lannion_CAS)-F056"
+                "node-id": "fiber (Stbrieuc -> Lannion_CAS)-F056",
+                "link-tp-id": "fiber (Stbrieuc -> Lannion_CAS)-F056"
               }
             }
           },
@@ -2248,8 +2248,8 @@
               "path-route-object": {
                 "index": 7,
                 "num-unnum-hop": {
-                  "node-id": "fiber (Rennes_STA → Stbrieuc)-F057",
-                  "link-tp-id": "fiber (Rennes_STA → Stbrieuc)-F057"
+                  "node-id": "fiber (Rennes_STA -> Stbrieuc)-F057",
+                  "link-tp-id": "fiber (Rennes_STA -> Stbrieuc)-F057"
                 }
               }
             },
@@ -2266,8 +2266,8 @@
               "path-route-object": {
                 "index": 11,
                 "num-unnum-hop": {
-                  "node-id": "fiber (Stbrieuc → Lannion_CAS)-F056",
-                  "link-tp-id": "fiber (Stbrieuc → Lannion_CAS)-F056"
+                  "node-id": "fiber (Stbrieuc -> Lannion_CAS)-F056",
+                  "link-tp-id": "fiber (Stbrieuc -> Lannion_CAS)-F056"
                 }
               }
             },

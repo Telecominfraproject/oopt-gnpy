@@ -44,7 +44,7 @@ Edfa east edfa in Brest_KLA to Quimper
   target pch (dBm):       0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
-Fiber          fiber (Brest_KLA → Quimper)-
+Fiber          fiber (Brest_KLA -> Quimper)-
   type_variety:                SSMF
   length (km):                 75.00
   pad att_in (dB):             0.00
@@ -67,7 +67,7 @@ Edfa east edfa in Quimper to Lorient_KMA
   target pch (dBm):       0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
-Fiber          fiber (Quimper → Lorient_KMA)-
+Fiber          fiber (Quimper -> Lorient_KMA)-
   type_variety:                SSMF
   length (km):                 70.00
   pad att_in (dB):             0.00
@@ -110,7 +110,7 @@ Edfa east edfa in Lorient_KMA to Vannes_KBE
   target pch (dBm):       0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
-Fiber          fiber (Lorient_KMA → Vannes_KBE)-F055
+Fiber          fiber (Lorient_KMA -> Vannes_KBE)-F055
   type_variety:                SSMF
   length (km):                 10.00
   pad att_in (dB):             8.00

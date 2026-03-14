@@ -45,7 +45,7 @@ Multiband_amplifier east edfa in Site_A to Site_B
   target pch (dBm):       0.90                 target pch (dBm):       3.00               
   actual pch out (dBm):   -2.09                actual pch out (dBm):   -0.57              
   output VOA (dB):        3.00                 output VOA (dB):        3.00               
-Fiber          fiber (Site_A → Site_B)-
+Fiber          fiber (Site_A -> Site_B)-
   type_variety:                SSMF
   length (km):                 75.00
   pad att_in (dB):             0.00
@@ -69,7 +69,7 @@ Multiband_amplifier east edfa in Site_B to Site_C
   target pch (dBm):       0.90                 target pch (dBm):       3.00               
   actual pch out (dBm):   -2.09                actual pch out (dBm):   -0.56              
   output VOA (dB):        3.00                 output VOA (dB):        3.00               
-Fiber          fiber (Site_B → Site_C)-
+Fiber          fiber (Site_B -> Site_C)-
   type_variety:                SSMF
   length (km):                 80.00
   pad att_in (dB):             0.00
@@ -93,7 +93,7 @@ Multiband_amplifier east edfa in Site_C to Site_D
   target pch (dBm):       0.90                 target pch (dBm):       3.00               
   actual pch out (dBm):   -2.08                actual pch out (dBm):   -0.56              
   output VOA (dB):        3.00                 output VOA (dB):        3.00               
-Fiber          fiber (Site_C → Site_D)-
+Fiber          fiber (Site_C -> Site_D)-
   type_variety:                SSMF
   length (km):                 85.00
   pad att_in (dB):             0.00

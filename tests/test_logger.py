@@ -358,7 +358,7 @@ def wrong_element():
         "error": ParametersError,
         "json_data": {
             "elements": [{
-                "uid": "fiber (ILA2 → ILA1)",
+                "uid": "fiber (ILA2 -> ILA1)",
                 "type": "Fiber",
                 "type_variety": "SSMF",
                 "params": {
@@ -379,7 +379,7 @@ def wrong_element():
             }],
             "connections": []
         },
-        "expected_msg": "Config error in fiber (ILA2 → ILA1): "
+        "expected_msg": "Config error in fiber (ILA2 -> ILA1): "
                         + "Fiber configurations json must include \'length_units\'. Configuration: "
                         + "{\'length\': 100.0, \'loss_coef\': 0.2, \'att_in\': 0, \'con_in\': 0, \'con_out\': 0, "
                         + "\'pmd_coef_defined': False, \'pmd_coef\': 1.265e-15, "

@@ -104,7 +104,7 @@
       }
     },
     {
-      "uid": "fiber (node A → ila1)-",
+      "uid": "fiber (node A -> ila1)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -125,7 +125,7 @@
       }
     },
     {
-      "uid": "fiber (ila1 → ila2)-",
+      "uid": "fiber (ila1 -> ila2)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -146,7 +146,7 @@
       }
     },
     {
-      "uid": "fiber (ila2 → node B)-",
+      "uid": "fiber (ila2 -> node B)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -167,7 +167,7 @@
       }
     },
     {
-      "uid": "fiber (node B → ila3)-",
+      "uid": "fiber (node B -> ila3)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -188,7 +188,7 @@
       }
     },
     {
-      "uid": "fiber (ila3 → ila4)-",
+      "uid": "fiber (ila3 -> ila4)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -209,7 +209,7 @@
       }
     },
     {
-      "uid": "fiber (ila4 → node C)-",
+      "uid": "fiber (ila4 -> node C)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -230,7 +230,7 @@
       }
     },
     {
-      "uid": "fiber (ila1 → node A)-",
+      "uid": "fiber (ila1 -> node A)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -251,7 +251,7 @@
       }
     },
     {
-      "uid": "fiber (ila2 → ila1)-",
+      "uid": "fiber (ila2 -> ila1)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -272,7 +272,7 @@
       }
     },
     {
-      "uid": "fiber (node B → ila2)-",
+      "uid": "fiber (node B -> ila2)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -293,7 +293,7 @@
       }
     },
     {
-      "uid": "fiber (ila3 → node B)-",
+      "uid": "fiber (ila3 -> node B)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -314,7 +314,7 @@
       }
     },
     {
-      "uid": "fiber (ila4 → ila3)-",
+      "uid": "fiber (ila4 -> ila3)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -335,7 +335,7 @@
       }
     },
     {
-      "uid": "fiber (node C → ila4)-",
+      "uid": "fiber (node C -> ila4)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -447,7 +447,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (node A → ila1)-",
+      "uid": "Edfa0_fiber (node A -> ila1)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -466,7 +466,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (ila1 → ila2)-",
+      "uid": "Edfa0_fiber (ila1 -> ila2)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -485,7 +485,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (node B → ila3)-",
+      "uid": "Edfa0_fiber (node B -> ila3)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -504,7 +504,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (ila3 → ila4)-",
+      "uid": "Edfa0_fiber (ila3 -> ila4)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -523,7 +523,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (ila4 → node C)-",
+      "uid": "Edfa0_fiber (ila4 -> node C)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -542,7 +542,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (ila1 → node A)-",
+      "uid": "Edfa0_fiber (ila1 -> node A)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -561,7 +561,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (ila2 → ila1)-",
+      "uid": "Edfa0_fiber (ila2 -> ila1)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -580,7 +580,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (node B → ila2)-",
+      "uid": "Edfa0_fiber (node B -> ila2)-",
       "type": "Edfa",
       "type_variety": "std_medium_gain",
       "operational": {
@@ -599,7 +599,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (ila3 → node B)-",
+      "uid": "Edfa0_fiber (ila3 -> node B)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -618,7 +618,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (ila4 → ila3)-",
+      "uid": "Edfa0_fiber (ila4 -> ila3)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -637,7 +637,7 @@
       }
     },
     {
-      "uid": "Edfa0_fiber (node C → ila4)-",
+      "uid": "Edfa0_fiber (node C -> ila4)-",
       "type": "Edfa",
       "type_variety": "std_low_gain",
       "operational": {
@@ -698,56 +698,56 @@
       "to_node": "Edfa0_roadm node C"
     },
     {
-      "from_node": "fiber (node A → ila1)-",
-      "to_node": "Edfa0_fiber (node A → ila1)-"
+      "from_node": "fiber (node A -> ila1)-",
+      "to_node": "Edfa0_fiber (node A -> ila1)-"
     },
     {
-      "from_node": "fiber (ila1 → ila2)-",
-      "to_node": "Edfa0_fiber (ila1 → ila2)-"
+      "from_node": "fiber (ila1 -> ila2)-",
+      "to_node": "Edfa0_fiber (ila1 -> ila2)-"
     },
     {
-      "from_node": "fiber (ila2 → node B)-",
+      "from_node": "fiber (ila2 -> node B)-",
       "to_node": "west edfa in node B to ila2"
     },
     {
-      "from_node": "fiber (node B → ila3)-",
-      "to_node": "Edfa0_fiber (node B → ila3)-"
+      "from_node": "fiber (node B -> ila3)-",
+      "to_node": "Edfa0_fiber (node B -> ila3)-"
     },
     {
-      "from_node": "fiber (ila3 → ila4)-",
-      "to_node": "Edfa0_fiber (ila3 → ila4)-"
+      "from_node": "fiber (ila3 -> ila4)-",
+      "to_node": "Edfa0_fiber (ila3 -> ila4)-"
     },
     {
-      "from_node": "fiber (ila4 → node C)-",
-      "to_node": "Edfa0_fiber (ila4 → node C)-"
+      "from_node": "fiber (ila4 -> node C)-",
+      "to_node": "Edfa0_fiber (ila4 -> node C)-"
     },
     {
-      "from_node": "fiber (ila1 → node A)-",
-      "to_node": "Edfa0_fiber (ila1 → node A)-"
+      "from_node": "fiber (ila1 -> node A)-",
+      "to_node": "Edfa0_fiber (ila1 -> node A)-"
     },
     {
-      "from_node": "fiber (ila2 → ila1)-",
-      "to_node": "Edfa0_fiber (ila2 → ila1)-"
+      "from_node": "fiber (ila2 -> ila1)-",
+      "to_node": "Edfa0_fiber (ila2 -> ila1)-"
     },
     {
-      "from_node": "fiber (node B → ila2)-",
-      "to_node": "Edfa0_fiber (node B → ila2)-"
+      "from_node": "fiber (node B -> ila2)-",
+      "to_node": "Edfa0_fiber (node B -> ila2)-"
     },
     {
-      "from_node": "fiber (ila3 → node B)-",
-      "to_node": "Edfa0_fiber (ila3 → node B)-"
+      "from_node": "fiber (ila3 -> node B)-",
+      "to_node": "Edfa0_fiber (ila3 -> node B)-"
     },
     {
-      "from_node": "fiber (ila4 → ila3)-",
-      "to_node": "Edfa0_fiber (ila4 → ila3)-"
+      "from_node": "fiber (ila4 -> ila3)-",
+      "to_node": "Edfa0_fiber (ila4 -> ila3)-"
     },
     {
-      "from_node": "fiber (node C → ila4)-",
-      "to_node": "Edfa0_fiber (node C → ila4)-"
+      "from_node": "fiber (node C -> ila4)-",
+      "to_node": "Edfa0_fiber (node C -> ila4)-"
     },
     {
       "from_node": "east edfa in node B to ila2",
-      "to_node": "fiber (node B → ila2)-"
+      "to_node": "fiber (node B -> ila2)-"
     },
     {
       "from_node": "west edfa in node B to ila2",
@@ -755,59 +755,59 @@
     },
     {
       "from_node": "Edfa0_roadm node A",
-      "to_node": "fiber (node A → ila1)-"
+      "to_node": "fiber (node A -> ila1)-"
     },
     {
       "from_node": "Edfa0_roadm node B",
-      "to_node": "fiber (node B → ila3)-"
+      "to_node": "fiber (node B -> ila3)-"
     },
     {
       "from_node": "Edfa0_roadm node C",
-      "to_node": "fiber (node C → ila4)-"
+      "to_node": "fiber (node C -> ila4)-"
     },
     {
-      "from_node": "Edfa0_fiber (node A → ila1)-",
-      "to_node": "fiber (ila1 → ila2)-"
+      "from_node": "Edfa0_fiber (node A -> ila1)-",
+      "to_node": "fiber (ila1 -> ila2)-"
     },
     {
-      "from_node": "Edfa0_fiber (ila1 → ila2)-",
-      "to_node": "fiber (ila2 → node B)-"
+      "from_node": "Edfa0_fiber (ila1 -> ila2)-",
+      "to_node": "fiber (ila2 -> node B)-"
     },
     {
-      "from_node": "Edfa0_fiber (node B → ila3)-",
-      "to_node": "fiber (ila3 → ila4)-"
+      "from_node": "Edfa0_fiber (node B -> ila3)-",
+      "to_node": "fiber (ila3 -> ila4)-"
     },
     {
-      "from_node": "Edfa0_fiber (ila3 → ila4)-",
-      "to_node": "fiber (ila4 → node C)-"
+      "from_node": "Edfa0_fiber (ila3 -> ila4)-",
+      "to_node": "fiber (ila4 -> node C)-"
     },
     {
-      "from_node": "Edfa0_fiber (ila4 → node C)-",
+      "from_node": "Edfa0_fiber (ila4 -> node C)-",
       "to_node": "roadm node C"
     },
     {
-      "from_node": "Edfa0_fiber (ila1 → node A)-",
+      "from_node": "Edfa0_fiber (ila1 -> node A)-",
       "to_node": "roadm node A"
     },
     {
-      "from_node": "Edfa0_fiber (ila2 → ila1)-",
-      "to_node": "fiber (ila1 → node A)-"
+      "from_node": "Edfa0_fiber (ila2 -> ila1)-",
+      "to_node": "fiber (ila1 -> node A)-"
     },
     {
-      "from_node": "Edfa0_fiber (node B → ila2)-",
-      "to_node": "fiber (ila2 → ila1)-"
+      "from_node": "Edfa0_fiber (node B -> ila2)-",
+      "to_node": "fiber (ila2 -> ila1)-"
     },
     {
-      "from_node": "Edfa0_fiber (ila3 → node B)-",
+      "from_node": "Edfa0_fiber (ila3 -> node B)-",
       "to_node": "roadm node B"
     },
     {
-      "from_node": "Edfa0_fiber (ila4 → ila3)-",
-      "to_node": "fiber (ila3 → node B)-"
+      "from_node": "Edfa0_fiber (ila4 -> ila3)-",
+      "to_node": "fiber (ila3 -> node B)-"
     },
     {
-      "from_node": "Edfa0_fiber (node C → ila4)-",
-      "to_node": "fiber (ila4 → ila3)-"
+      "from_node": "Edfa0_fiber (node C -> ila4)-",
+      "to_node": "fiber (ila4 -> ila3)-"
     }
   ]
 }

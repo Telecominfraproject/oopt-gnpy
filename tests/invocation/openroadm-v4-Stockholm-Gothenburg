@@ -29,7 +29,7 @@ Roadm roadm_Stockholm
   Actual loss (dB):        22.00
   Reference pch out (dBm): -20.00
   Actual pch out (dBm):    -20.00
-Edfa Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)
+Edfa Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Norrköping)_(1/2)
   type_variety:           openroadm_mw_mw_booster
   effective gain(dB):     22.00
   (before att_in and before output VOA)
@@ -43,7 +43,7 @@ Edfa Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)
   target pch (dBm):       2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
-Fiber          fiber (Stockholm → Norrköping)_(1/2)
+Fiber          fiber (Stockholm -> Norrköping)_(1/2)
   type_variety:                SSMF
   length (km):                 81.63
   pad att_in (dB):             0.00
@@ -52,7 +52,7 @@ Fiber          fiber (Stockholm → Norrköping)_(1/2)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -14.33
   actual pch out (dBm):        -14.33
-Edfa Edfa_fiber (Stockholm → Norrköping)_(1/2)
+Edfa Edfa_fiber (Stockholm -> Norrköping)_(1/2)
   type_variety:           openroadm_ila_low_noise
   effective gain(dB):     16.33
   (before att_in and before output VOA)
@@ -66,7 +66,7 @@ Edfa Edfa_fiber (Stockholm → Norrköping)_(1/2)
   target pch (dBm):       2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
-Fiber          fiber (Stockholm → Norrköping)_(2/2)
+Fiber          fiber (Stockholm -> Norrköping)_(2/2)
   type_variety:                SSMF
   length (km):                 81.63
   pad att_in (dB):             0.00
@@ -75,7 +75,7 @@ Fiber          fiber (Stockholm → Norrköping)_(2/2)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -14.33
   actual pch out (dBm):        -14.32
-Edfa Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)
+Edfa Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm -> Norrköping)_(2/2)
   type_variety:           openroadm_mw_mw_preamp
   effective gain(dB):     16.33
   (before att_in and before output VOA)
@@ -95,7 +95,7 @@ Roadm roadm_Norrköping
   Actual loss (dB):        22.01
   Reference pch out (dBm): -20.00
   Actual pch out (dBm):    -20.00
-Edfa Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)
+Edfa Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Linköping)
   type_variety:           openroadm_mw_mw_booster
   effective gain(dB):     22.00
   (before att_in and before output VOA)
@@ -109,7 +109,7 @@ Edfa Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)
   target pch (dBm):       2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
-Fiber          fiber (Norrköping → Linköping)
+Fiber          fiber (Norrköping -> Linköping)
   type_variety:                SSMF
   length (km):                 45.99
   pad att_in (dB):             1.80
@@ -118,7 +118,7 @@ Fiber          fiber (Norrköping → Linköping)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -9.00
   actual pch out (dBm):        -9.00
-Edfa Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)
+Edfa Edfa_preamp_roadm_Linköping_from_fiber (Norrköping -> Linköping)
   type_variety:           openroadm_mw_mw_preamp
   effective gain(dB):     11.00
   (before att_in and before output VOA)
@@ -138,7 +138,7 @@ Roadm roadm_Linköping
   Actual loss (dB):        22.01
   Reference pch out (dBm): -20.00
   Actual pch out (dBm):    -20.00
-Edfa Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)
+Edfa Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Jönköping)
   type_variety:           openroadm_mw_mw_booster
   effective gain(dB):     22.00
   (before att_in and before output VOA)
@@ -152,7 +152,7 @@ Edfa Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)
   target pch (dBm):       2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
-Fiber          fiber (Linköping → Jönköping)
+Fiber          fiber (Linköping -> Jönköping)
   type_variety:                SSMF
   length (km):                 134.02
   pad att_in (dB):             0.00
@@ -161,7 +161,7 @@ Fiber          fiber (Linköping → Jönköping)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -24.80
   actual pch out (dBm):        -24.80
-Edfa Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)
+Edfa Edfa_preamp_roadm_Jönköping_from_fiber (Linköping -> Jönköping)
   type_variety:           openroadm_mw_mw_preamp
   effective gain(dB):     26.80
   (before att_in and before output VOA)
@@ -181,7 +181,7 @@ Roadm roadm_Jönköping
   Actual loss (dB):        22.03
   Reference pch out (dBm): -20.00
   Actual pch out (dBm):    -20.00
-Edfa Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)
+Edfa Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Borås)
   type_variety:           openroadm_mw_mw_booster
   effective gain(dB):     22.00
   (before att_in and before output VOA)
@@ -195,7 +195,7 @@ Edfa Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)
   target pch (dBm):       2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
-Fiber          fiber (Jönköping → Borås)
+Fiber          fiber (Jönköping -> Borås)
   type_variety:                SSMF
   length (km):                 89.12
   pad att_in (dB):             0.00
@@ -204,7 +204,7 @@ Fiber          fiber (Jönköping → Borås)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -15.82
   actual pch out (dBm):        -15.82
-Edfa Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)
+Edfa Edfa_preamp_roadm_Borås_from_fiber (Jönköping -> Borås)
   type_variety:           openroadm_mw_mw_preamp
   effective gain(dB):     17.82
   (before att_in and before output VOA)
@@ -224,7 +224,7 @@ Roadm roadm_Borås
   Actual loss (dB):        22.01
   Reference pch out (dBm): -20.00
   Actual pch out (dBm):    -20.00
-Edfa Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)
+Edfa Edfa_booster_roadm_Borås_to_fiber (Borås -> Gothenburg)
   type_variety:           openroadm_mw_mw_booster
   effective gain(dB):     22.00
   (before att_in and before output VOA)
@@ -238,7 +238,7 @@ Edfa Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)
   target pch (dBm):       2.00
   actual pch out (dBm):   2.00
   output VOA (dB):        0.00
-Fiber          fiber (Borås → Gothenburg)
+Fiber          fiber (Borås -> Gothenburg)
   type_variety:                SSMF
   length (km):                 67.64
   pad att_in (dB):             0.00
@@ -247,7 +247,7 @@ Fiber          fiber (Borås → Gothenburg)
   (conn loss out includes EOL margin defined in eqpt_config.json)
   reference pch out (dBm):     -11.53
   actual pch out (dBm):        -11.53
-Edfa Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)
+Edfa Edfa_preamp_roadm_Gothenburg_from_fiber (Borås -> Gothenburg)
   type_variety:           openroadm_mw_mw_preamp
   effective gain(dB):     13.53
   (before att_in and before output VOA)

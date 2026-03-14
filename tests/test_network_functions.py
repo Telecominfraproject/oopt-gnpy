@@ -356,7 +356,7 @@ def test_eol(typ, expected_loss):
                 "type": "Roadm"
             },
             {
-                "uid": "fiber (SITE1 → ILA1)",
+                "uid": "fiber (SITE1 -> ILA1)",
                 "type": "Fiber",
                 "type_variety": "SSMF",
                 "params": {
@@ -366,7 +366,7 @@ def test_eol(typ, expected_loss):
                 }
             },
             {
-                "uid": "fiber (ILA1 → SITE2)",
+                "uid": "fiber (ILA1 -> SITE2)",
                 "type": "Fiber",
                 "type_variety": "SSMF",
                 "params": {
@@ -399,18 +399,18 @@ def test_eol(typ, expected_loss):
             },
             {
                 "from_node": "east edfa in SITE1 to ILA1",
-                "to_node": "fiber (SITE1 → ILA1)"
+                "to_node": "fiber (SITE1 -> ILA1)"
             },
             {
-                "from_node": "fiber (SITE1 → ILA1)",
+                "from_node": "fiber (SITE1 -> ILA1)",
                 "to_node": "east edfa in ILA1 to SITE2"
             },
             {
                 "from_node": "east edfa in ILA1 to SITE2",
-                "to_node": "fiber (ILA1 → SITE2)"
+                "to_node": "fiber (ILA1 -> SITE2)"
             },
             {
-                "from_node": "fiber (ILA1 → SITE2)",
+                "from_node": "fiber (ILA1 -> SITE2)",
                 "to_node": "west edfa in SITE2 to ILA1"
             },
             {
@@ -527,7 +527,7 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
                 'type': 'Roadm'
             },
             {
-                'uid': 'fiber (SITE1 → ILA1)',
+                'uid': 'fiber (SITE1 -> ILA1)',
                 'type': 'Fiber',
                 'type_variety': 'SSMF',
                 'params': {
@@ -537,7 +537,7 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
                 }
             },
             {
-                'uid': 'fiber (ILA1 → ILA2)',
+                'uid': 'fiber (ILA1 -> ILA2)',
                 'type': 'Fiber',
                 'type_variety': 'SSMF',
                 'params': {
@@ -547,7 +547,7 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
                 }
             },
             {
-                'uid': 'fiber (ILA2 → SITE2)',
+                'uid': 'fiber (ILA2 -> SITE2)',
                 'type': 'Fiber',
                 'type_variety': 'SSMF',
                 'params': {
@@ -583,26 +583,26 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
             },
             {
                 'from_node': 'east edfa in SITE1 to ILA1',
-                'to_node': 'fiber (SITE1 → ILA1)'
+                'to_node': 'fiber (SITE1 -> ILA1)'
             },
             {
-                'from_node': 'fiber (SITE1 → ILA1)',
+                'from_node': 'fiber (SITE1 -> ILA1)',
                 'to_node': 'east edfa or fused in ILA1'
             },
             {
                 'from_node': 'east edfa or fused in ILA1',
-                'to_node': 'fiber (ILA1 → ILA2)'
+                'to_node': 'fiber (ILA1 -> ILA2)'
             },
             {
-                'from_node': 'fiber (ILA1 → ILA2)',
+                'from_node': 'fiber (ILA1 -> ILA2)',
                 'to_node': 'east edfa in ILA2'
             },
             {
                 'from_node': 'east edfa in ILA2',
-                'to_node': 'fiber (ILA2 → SITE2)'
+                'to_node': 'fiber (ILA2 -> SITE2)'
             },
             {
-                'from_node': 'fiber (ILA2 → SITE2)',
+                'from_node': 'fiber (ILA2 -> SITE2)',
                 'to_node': 'west edfa in SITE2 to ILA1'
             },
             {
@@ -790,7 +790,7 @@ def test_get_node_restrictions(cls, defaultparams, variety_list, booster_list, b
     }
     prev_node = Roadm(**roadm_config)
     fiber_config = {
-        "uid": "fiber (SITE1 → ILA1)",
+        "uid": "fiber (SITE1 -> ILA1)",
         "type_variety": "SSMF",
         "params": {
             "length": 100.0,
@@ -861,12 +861,12 @@ def test_tilt_fused():
     json_data = network_base("design", "Multiband_amplifier", length=100)
     equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
-    node = next(n for n in network.nodes() if n.uid == 'fiber (SITE1 → ILA1)')
+    node = next(n for n in network.nodes() if n.uid == 'fiber (SITE1 -> ILA1)')
     tilt_db, tilt_target = estimate_srs_power_deviation(network, node, equipment, design_bands, input_powers)
     json_data = network_base("design", "Fused", length=50)
     equipment = load_equipment(EQPT_MULTBAND_FILENAME, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
-    node = next(n for n in network.nodes() if n.uid == 'fiber (ILA1 → ILA2)')
+    node = next(n for n in network.nodes() if n.uid == 'fiber (ILA1 -> ILA2)')
     fused_tilt_db, fused_tilt_target = \
         estimate_srs_power_deviation(network, node, equipment, design_bands, input_powers)
     # restore simParams
@@ -900,7 +900,7 @@ def network_wo_booster(site_type, bands):
                 'type': 'Roadm'
             },
             {
-                'uid': 'fiber (SITE1 → ILA1)',
+                'uid': 'fiber (SITE1 -> ILA1)',
                 'type': 'Fiber',
                 'type_variety': 'SSMF',
                 'params': {
@@ -910,7 +910,7 @@ def network_wo_booster(site_type, bands):
                 }
             },
             {
-                'uid': 'fiber (ILA1 → ILA2)',
+                'uid': 'fiber (ILA1 -> ILA2)',
                 'type': 'Fiber',
                 'type_variety': 'SSMF',
                 'params': {
@@ -920,7 +920,7 @@ def network_wo_booster(site_type, bands):
                 }
             },
             {
-                'uid': 'fiber (ILA2 → SITE2)',
+                'uid': 'fiber (ILA2 -> SITE2)',
                 'type': 'Fiber',
                 'type_variety': 'SSMF',
                 'params': {
@@ -941,22 +941,22 @@ def network_wo_booster(site_type, bands):
             },
             {
                 'from_node': 'roadm SITE1',
-                'to_node': 'fiber (SITE1 → ILA1)'
+                'to_node': 'fiber (SITE1 -> ILA1)'
             },
             {
-                'from_node': 'fiber (SITE1 → ILA1)',
+                'from_node': 'fiber (SITE1 -> ILA1)',
                 'to_node': 'east edfa or fused in ILA1'
             },
             {
                 'from_node': 'east edfa or fused in ILA1',
-                'to_node': 'fiber (ILA1 → ILA2)'
+                'to_node': 'fiber (ILA1 -> ILA2)'
             },
             {
-                'from_node': 'fiber (ILA1 → ILA2)',
-                'to_node': 'fiber (ILA2 → SITE2)'
+                'from_node': 'fiber (ILA1 -> ILA2)',
+                'to_node': 'fiber (ILA2 -> SITE2)'
             },
             {
-                'from_node': 'fiber (ILA2 → SITE2)',
+                'from_node': 'fiber (ILA2 -> SITE2)',
                 'to_node': 'roadm SITE2'
             },
             {
@@ -1007,4 +1007,4 @@ def test_insert_amp(site_type, expected_type, bands, expected_bands):
         roadm1 = next(n for n in network.nodes() if n.uid == 'roadm SITE1')
         amp1 = get_next_node(roadm1, network)
         assert isinstance(amp1, expected_type)
-        assert roadm1.per_degree_design_bands['Edfa_booster_roadm SITE1_to_fiber (SITE1 → ILA1)'] == expected_bands
+        assert roadm1.per_degree_design_bands['Edfa_booster_roadm SITE1_to_fiber (SITE1 -> ILA1)'] == expected_bands

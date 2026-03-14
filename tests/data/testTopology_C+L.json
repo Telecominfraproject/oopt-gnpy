@@ -1171,10 +1171,25 @@
       "operational": {
         "gain_target": 19.0,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
+    },
+    {
+      "uid": "east fused in Lannion_CAS to Stbrieuc",
+      "type": "Fused"
+    },
+    {
+      "uid": "west fused in Lannion_CAS to Stbrieuc",
+      "type": "Fused"
+    },
+    {
+      "uid": "east fused in Rennes_STA to Stbrieuc",
+      "type": "Fused"
+    },
+    {
+      "uid": "west fused in Rennes_STA to Stbrieuc",
+      "type": "Fused"
     },
     {
       "uid": "east edfa in Lannion_CAS to Stbrieuc",
@@ -1186,15 +1201,28 @@
           "longitude": 0.0
         }
       },
-      "type": "Edfa",
-      "type_variety": "std_low_gain",
-      "operational": {
-        "gain_target": null,
-        "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
-        "out_voa": null
-      }
+      "type": "Multiband_amplifier",
+      "type_variety": "std_medium_gain_multiband",
+      "amplifiers": [
+        {
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 20.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        },
+        {
+          "type_variety": "std_medium_gain_L",
+          "operational": {
+            "gain_target": 20.0,
+            "delta_p": 1,
+            "tilt_target": 0,
+            "out_voa": 1
+          }
+        }
+      ]
     },
     {
       "uid": "east edfa in Lannion_CAS to Morlaix",
@@ -1207,14 +1235,7 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_low_gain",
-      "operational": {
-        "gain_target": 18.0,
-        "delta_p": null,
-        "tilt_target": -1,
-        "in_voa": 0.5,
-        "out_voa": 0.5
-      }
+      "type_variety": "std_low_gain"
     },
     {
       "uid": "east edfa in Lorient_KMA to Vannes_KBE",
@@ -1230,8 +1251,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1249,8 +1269,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1268,8 +1287,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1287,8 +1305,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1306,8 +1323,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1322,14 +1338,28 @@
         }
       },
       "type": "Edfa",
-      "type_variety": "std_medium_gain",
-      "operational": {
-        "gain_target": 18.5,
-        "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
-        "out_voa": null
-      }
+      "type_variety": "std_low_gain_multiband",
+      "type": "Multiband_amplifier",
+      "amplifiers": [
+        {
+          "type_variety": "std_low_gain",
+          "operational": {
+            "gain_target": 12.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        },
+        {
+          "type_variety": "std_low_gain_L",
+          "operational": {
+            "gain_target": 12.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        }
+      ]
     },
     {
       "uid": "east edfa in Rennes_STA to Stbrieuc",
@@ -1341,14 +1371,28 @@
           "longitude": 0.0
         }
       },
-      "type": "Edfa",
-      "operational": {
-        "gain_target": null,
-        "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
-        "out_voa": null
-      }
+      "type": "Multiband_amplifier",
+      "type_variety": "std_low_gain_multiband",
+      "amplifiers": [
+        {
+          "type_variety": "std_low_gain",
+          "operational": {
+            "gain_target": 13.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        },
+        {
+          "type_variety": "std_low_gain_L",
+          "operational": {
+            "gain_target": 13.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        }
+      ]
     },
     {
       "uid": "east edfa in Rennes_STA to Ploermel",
@@ -1364,8 +1408,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1383,8 +1426,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1403,8 +1445,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1422,8 +1463,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1442,8 +1482,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1461,8 +1500,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1480,8 +1518,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1499,8 +1536,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1518,8 +1554,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1537,8 +1572,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1571,8 +1605,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1590,8 +1623,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1609,8 +1641,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1628,8 +1659,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1647,8 +1677,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1666,8 +1695,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1685,8 +1713,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1704,8 +1731,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1723,8 +1749,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1742,8 +1767,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1761,8 +1785,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1780,8 +1803,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1800,8 +1822,7 @@
       "operational": {
         "gain_target": 18.0,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1815,14 +1836,28 @@
           "longitude": 0.0
         }
       },
-      "type": "Edfa",
-      "operational": {
-        "gain_target": null,
-        "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
-        "out_voa": null
-      }
+      "type": "Multiband_amplifier",
+      "type_variety": "std_medium_gain_multiband",
+      "amplifiers": [
+        {
+          "type_variety": "std_medium_gain",
+          "operational": {
+            "gain_target": 20.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        },
+        {
+          "type_variety": "std_medium_gain_L",
+          "operational": {
+            "gain_target": 20.0,
+            "delta_p": 1,
+            "tilt_target": 0,
+            "out_voa": 1
+          }
+        }
+      ]
     },
     {
       "uid": "west edfa in Lannion_CAS to Morlaix",
@@ -1839,8 +1874,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1858,8 +1892,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1877,8 +1910,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1896,8 +1928,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1915,8 +1946,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1934,8 +1964,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -1949,14 +1978,28 @@
           "longitude": 0.0
         }
       },
-      "type": "Edfa",
-      "operational": {
-        "gain_target": null,
-        "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
-        "out_voa": null
-      }
+      "type": "Multiband_amplifier",
+      "type_variety": "std_low_gain_multiband",
+      "amplifiers": [
+        {
+          "type_variety": "std_low_gain",
+          "operational": {
+            "gain_target": 12.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        },
+        {
+          "type_variety": "std_low_gain_L",
+          "operational": {
+            "gain_target": 12.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        }
+      ]
     },
     {
       "uid": "west edfa in Rennes_STA to Stbrieuc",
@@ -1968,14 +2011,28 @@
           "longitude": 0.0
         }
       },
-      "type": "Edfa",
-      "operational": {
-        "gain_target": null,
-        "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
-        "out_voa": null
-      }
+      "type": "Multiband_amplifier",
+      "type_variety": "std_low_gain_multiband",
+      "amplifiers": [
+        {
+          "type_variety": "std_low_gain",
+          "operational": {
+            "gain_target": 13.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        },
+        {
+          "type_variety": "std_low_gain_L",
+          "operational": {
+            "gain_target": 13.0,
+            "delta_p": 0,
+            "tilt_target": 0,
+            "out_voa": 0
+          }
+        }
+      ]
     },
     {
       "uid": "west edfa in Rennes_STA to Ploermel",
@@ -1991,8 +2048,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2010,8 +2066,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2029,8 +2084,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2048,8 +2102,7 @@
       "operational": {
         "gain_target": 19.0,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2067,8 +2120,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2086,8 +2138,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2105,8 +2156,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2124,8 +2174,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2143,8 +2192,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2162,8 +2210,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2181,8 +2228,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2200,8 +2246,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2219,8 +2264,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2238,8 +2282,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2257,8 +2300,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2276,8 +2318,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2295,8 +2336,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2314,8 +2354,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2333,8 +2372,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2352,8 +2390,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2371,8 +2408,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2390,8 +2426,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     },
@@ -2409,8 +2444,7 @@
       "operational": {
         "gain_target": null,
         "delta_p": null,
-        "tilt_target": null,
-        "in_voa": 0,
+        "tilt_target": 0,
         "out_voa": null
       }
     }
@@ -2434,6 +2468,10 @@
     },
     {
       "from_node": "roadm Lannion_CAS",
+      "to_node": "east fused in Lannion_CAS to Stbrieuc"
+    },
+    {
+      "from_node": "east fused in Lannion_CAS to Stbrieuc",
       "to_node": "east edfa in Lannion_CAS to Stbrieuc"
     },
     {
@@ -2446,6 +2484,10 @@
     },
     {
       "from_node": "west edfa in Lannion_CAS to Stbrieuc",
+      "to_node": "west fused in Lannion_CAS to Stbrieuc"
+    },
+    {
+      "from_node": "west fused in Lannion_CAS to Stbrieuc",
       "to_node": "roadm Lannion_CAS"
     },
     {
@@ -2594,6 +2636,10 @@
     },
     {
       "from_node": "roadm Rennes_STA",
+      "to_node": "east fused in Rennes_STA to Stbrieuc"
+    },
+    {
+      "from_node": "east fused in Rennes_STA to Stbrieuc",
       "to_node": "east edfa in Rennes_STA to Stbrieuc"
     },
     {
@@ -2606,6 +2652,10 @@
     },
     {
       "from_node": "west edfa in Rennes_STA to Stbrieuc",
+      "to_node": "west fused in Rennes_STA to Stbrieuc"
+    },
+    {
+      "from_node": "west fused in Rennes_STA to Stbrieuc",
       "to_node": "roadm Rennes_STA"
     },
     {

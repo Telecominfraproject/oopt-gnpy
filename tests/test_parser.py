@@ -315,8 +315,8 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
     network = load_network(network_json_input, equipment)
     # increase length of one span to trigger automatic fiber splitting included by autodesign
     # so that the test also covers this case
-    next(node for node in network.nodes() if node.uid == 'fiber (Brest_KLA → Quimper)-').length = 200000
-    next(node for node in network.nodes() if node.uid == 'fiber (Quimper → Brest_KLA)-').length = 200000
+    next(node for node in network.nodes() if node.uid == 'fiber (Brest_KLA -> Quimper)-').length = 200000
+    next(node for node in network.nodes() if node.uid == 'fiber (Quimper -> Brest_KLA)-').length = 200000
     default_si = equipment['SI']['default']
     p_db = default_si.power_dbm
     nb_channels = automatic_nch(default_si.f_min, default_si.f_max, default_si.spacing)
@@ -359,9 +359,9 @@ def test_excel_ila_constraints(source, destination, route_list, hoptype, expecte
      ['roadm node1', 'east edfa in siteC', 'roadm node2']),
     ('node1 | siteD | node2', 'no',
      ['roadm node1', 'west edfa in siteD to node1', 'roadm node2']),
-    ('roadm node1 | Edfa_booster_roadm node1_to_fiber (node1 → siteE)-CABLES#19 | west edfa in siteE | node2',
+    ('roadm node1 | Edfa_booster_roadm node1_to_fiber (node1 -> siteE)-CABLES#19 | west edfa in siteE | node2',
      'no',
-     ['roadm node1', 'Edfa_booster_roadm node1_to_fiber (node1 → siteE)-CABLES#19',
+     ['roadm node1', 'Edfa_booster_roadm node1_to_fiber (node1 -> siteE)-CABLES#19',
       'west edfa in siteE', 'roadm node2'])])
 def test_excel_ila_constraints2(route_list, hoptype, expected_amp_route):
     """Check different cases for ILA constraints definition

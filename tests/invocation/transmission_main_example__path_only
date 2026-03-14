@@ -46,7 +46,7 @@ Edfa east edfa in Lorient_KMA to Vannes_KBE
   target pch (dBm):       0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
-Fiber          fiber (Lorient_KMA → Vannes_KBE)-F055
+Fiber          fiber (Lorient_KMA -> Vannes_KBE)-F055
   type_variety:                SSMF
   length (km):                 10.00
   pad att_in (dB):             8.00
@@ -89,7 +89,7 @@ Edfa east edfa in Vannes_KBE to Ploermel
   target pch (dBm):       0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
-Fiber          fiber (Vannes_KBE → Ploermel)-
+Fiber          fiber (Vannes_KBE -> Ploermel)-
   type_variety:                SSMF
   length (km):                 50.00
   pad att_in (dB):             0.00
@@ -112,7 +112,7 @@ Edfa west edfa in Ploermel to Vannes_KBE
   target pch (dBm):       0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
-Fiber          fiber (Ploermel → Rennes_STA)-
+Fiber          fiber (Ploermel -> Rennes_STA)-
   type_variety:                SSMF
   length (km):                 55.00
   pad att_in (dB):             0.00
@@ -155,7 +155,7 @@ Edfa east edfa in Rennes_STA to Stbrieuc
   target pch (dBm):       0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
-Fiber          fiber (Rennes_STA → Stbrieuc)-F057
+Fiber          fiber (Rennes_STA -> Stbrieuc)-F057
   type_variety:                SSMF
   length (km):                 65.00
   pad att_in (dB):             0.00
@@ -178,7 +178,7 @@ Edfa west edfa in Stbrieuc to Rennes_STA
   target pch (dBm):       0.00
   actual pch out (dBm):   0.01
   output VOA (dB):        0.00
-Fiber          fiber (Stbrieuc → Lannion_CAS)-F056
+Fiber          fiber (Stbrieuc -> Lannion_CAS)-F056
   type_variety:                SSMF
   length (km):                 60.00
   pad att_in (dB):             0.00
@@ -222,7 +222,7 @@ Edfa east edfa in Lannion_CAS to Morlaix
   actual pch out (dBm):   -0.00
   input VOA (dB):         0.50
   output VOA (dB):        0.50
-Fiber          fiber (Lannion_CAS → Morlaix)-F059
+Fiber          fiber (Lannion_CAS -> Morlaix)-F059
   type_variety:                SSMF
   length (km):                 40.00
   pad att_in (dB):             0.00
@@ -233,7 +233,7 @@ Fiber          fiber (Lannion_CAS → Morlaix)-F059
   actual pch out (dBm):        -8.00
 Fused west fused spans in Morlaix
   loss (dB): 1.00
-Fiber          fiber (Morlaix → Brest_KLA)-F060
+Fiber          fiber (Morlaix -> Brest_KLA)-F060
   type_variety:                SSMF
   length (km):                 35.00
   pad att_in (dB):             0.00

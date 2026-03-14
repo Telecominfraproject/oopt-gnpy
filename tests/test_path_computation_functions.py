@@ -98,21 +98,21 @@ def some_request(explicit_route):
     (['trx Brest_KLA', 'trx Vannes_KBE'], None),
     # path contains one element per oms
     (['trx Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'trx Lannion_CAS'],
-     ['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA → Morlaix)-F060',
-      'east fused spans in Morlaix', 'fiber (Morlaix → Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
+     ['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA -> Morlaix)-F060',
+      'east fused spans in Morlaix', 'fiber (Morlaix -> Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
       'roadm Lannion_CAS', 'trx Lannion_CAS']),
     # path contains several elements per oms
     (['trx Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'west edfa in Lannion_CAS to Morlaix',
       'roadm Lannion_CAS', 'trx Lannion_CAS'],
-     ['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA → Morlaix)-F060',
-      'east fused spans in Morlaix', 'fiber (Morlaix → Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
+     ['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA -> Morlaix)-F060',
+      'east fused spans in Morlaix', 'fiber (Morlaix -> Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
       'roadm Lannion_CAS', 'trx Lannion_CAS']),
     # path contains all elements
-    (['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA → Morlaix)-F060',
-      'east fused spans in Morlaix', 'fiber (Morlaix → Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
+    (['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA -> Morlaix)-F060',
+      'east fused spans in Morlaix', 'fiber (Morlaix -> Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
       'roadm Lannion_CAS', 'trx Lannion_CAS'],
-     ['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA → Morlaix)-F060',
-      'east fused spans in Morlaix', 'fiber (Morlaix → Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
+     ['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA -> Morlaix)-F060',
+      'east fused spans in Morlaix', 'fiber (Morlaix -> Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
       'roadm Lannion_CAS', 'trx Lannion_CAS']),
     # path conteains element for only 1 oms (2 oms path)
     (['trx Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'trx Rennes_STA'], None),
@@ -121,12 +121,12 @@ def some_request(explicit_route):
     # path contains one element for all 3 OMS
     (['trx Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'east edfa in Lannion_CAS to Corlay',
       'east edfa in Lorient_KMA to Vannes_KBE', 'trx Vannes_KBE'],
-     ['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA → Morlaix)-F060',
-      'east fused spans in Morlaix', 'fiber (Morlaix → Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
-      'roadm Lannion_CAS', 'east edfa in Lannion_CAS to Corlay', 'fiber (Lannion_CAS → Corlay)-F061',
-      'west fused spans in Corlay', 'fiber (Corlay → Loudeac)-F010', 'west fused spans in Loudeac',
-      'fiber (Loudeac → Lorient_KMA)-F054', 'west edfa in Lorient_KMA to Loudeac', 'roadm Lorient_KMA',
-      'east edfa in Lorient_KMA to Vannes_KBE', 'fiber (Lorient_KMA → Vannes_KBE)-F055',
+     ['trx Brest_KLA', 'roadm Brest_KLA', 'east edfa in Brest_KLA to Morlaix', 'fiber (Brest_KLA -> Morlaix)-F060',
+      'east fused spans in Morlaix', 'fiber (Morlaix -> Lannion_CAS)-F059', 'west edfa in Lannion_CAS to Morlaix',
+      'roadm Lannion_CAS', 'east edfa in Lannion_CAS to Corlay', 'fiber (Lannion_CAS -> Corlay)-F061',
+      'west fused spans in Corlay', 'fiber (Corlay -> Loudeac)-F010', 'west fused spans in Loudeac',
+      'fiber (Loudeac -> Lorient_KMA)-F054', 'west edfa in Lorient_KMA to Loudeac', 'roadm Lorient_KMA',
+      'east edfa in Lorient_KMA to Vannes_KBE', 'fiber (Lorient_KMA -> Vannes_KBE)-F055',
       'west edfa in Vannes_KBE to Lorient_KMA', 'roadm Vannes_KBE', 'trx Vannes_KBE'])])
 def test_explicit_path(setup, setup_without_oms, explicit_route, expected_path):
     """tests that explicit path correctly returns the full path if it is possible else that it returns None

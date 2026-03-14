@@ -950,9 +950,9 @@ def test_tx_power(tx_power_dbm):
     path = ['trx Lannion_CAS',
             'roadm Lannion_CAS',
             'east edfa in Lannion_CAS to Stbrieuc',
-            'fiber (Lannion_CAS → Stbrieuc)-F056',
+            'fiber (Lannion_CAS -> Stbrieuc)-F056',
             'east edfa in Stbrieuc to Rennes_STA',
-            'fiber (Stbrieuc → Rennes_STA)-F057',
+            'fiber (Stbrieuc -> Rennes_STA)-F057',
             'west edfa in Rennes_STA to Stbrieuc',
             'roadm Rennes_STA',
             'trx Rennes_STA']
