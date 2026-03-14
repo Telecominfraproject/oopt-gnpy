@@ -43,7 +43,7 @@ Edfa east edfa in Lannion_CAS to Corlay
   target pch (dBm):       1.18
   actual pch out (dBm):   1.18
   output VOA (dB):        0.00
-Fiber          fiber (Lannion_CAS → Corlay)-F061
+Fiber          fiber (Lannion_CAS -> Corlay)-F061
   type_variety:                SSMF
   length (km):                 20.00
   pad att_in (dB):             0.00
@@ -54,7 +54,7 @@ Fiber          fiber (Lannion_CAS → Corlay)-F061
   actual pch out (dBm):        -2.82
 Fused west fused spans in Corlay
   loss (dB): 1.00
-Fiber          fiber (Corlay → Loudeac)-F010
+Fiber          fiber (Corlay -> Loudeac)-F010
   type_variety:                SSMF
   length (km):                 50.00
   pad att_in (dB):             0.00
@@ -65,7 +65,7 @@ Fiber          fiber (Corlay → Loudeac)-F010
   actual pch out (dBm):        -13.82
 Fused west fused spans in Loudeac
   loss (dB): 1.00
-Fiber          fiber (Loudeac → Lorient_KMA)-F054
+Fiber          fiber (Loudeac -> Lorient_KMA)-F054
   type_variety:                SSMF
   length (km):                 60.00
   pad att_in (dB):             0.00

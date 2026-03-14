@@ -567,7 +567,7 @@
       }
     },
     {
-      "uid": "fiber (Lannion_CAS → Corlay)-F061",
+      "uid": "fiber (Lannion_CAS -> Corlay)-F061",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -588,7 +588,7 @@
       }
     },
     {
-      "uid": "fiber (Corlay → Loudeac)-F010",
+      "uid": "fiber (Corlay -> Loudeac)-F010",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -609,7 +609,7 @@
       }
     },
     {
-      "uid": "fiber (Loudeac → Lorient_KMA)-F054",
+      "uid": "fiber (Loudeac -> Lorient_KMA)-F054",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -630,7 +630,7 @@
       }
     },
     {
-      "uid": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+      "uid": "fiber (Lorient_KMA -> Vannes_KBE)-F055",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -651,7 +651,7 @@
       }
     },
     {
-      "uid": "fiber (Lannion_CAS → Stbrieuc)-F056",
+      "uid": "fiber (Lannion_CAS -> Stbrieuc)-F056",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -672,7 +672,7 @@
       }
     },
     {
-      "uid": "fiber (Stbrieuc → Rennes_STA)-F057",
+      "uid": "fiber (Stbrieuc -> Rennes_STA)-F057",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -693,7 +693,7 @@
       }
     },
     {
-      "uid": "fiber (Lannion_CAS → Morlaix)-F059",
+      "uid": "fiber (Lannion_CAS -> Morlaix)-F059",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -714,7 +714,7 @@
       }
     },
     {
-      "uid": "fiber (Morlaix → Brest_KLA)-F060",
+      "uid": "fiber (Morlaix -> Brest_KLA)-F060",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -735,7 +735,7 @@
       }
     },
     {
-      "uid": "fiber (Brest_KLA → Quimper)-",
+      "uid": "fiber (Brest_KLA -> Quimper)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -756,7 +756,7 @@
       }
     },
     {
-      "uid": "fiber (Quimper → Lorient_KMA)-",
+      "uid": "fiber (Quimper -> Lorient_KMA)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -777,7 +777,7 @@
       }
     },
     {
-      "uid": "fiber (Ploermel → Vannes_KBE)-",
+      "uid": "fiber (Ploermel -> Vannes_KBE)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -798,7 +798,7 @@
       }
     },
     {
-      "uid": "fiber (Ploermel → Rennes_STA)-",
+      "uid": "fiber (Ploermel -> Rennes_STA)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -819,7 +819,7 @@
       }
     },
     {
-      "uid": "fiber (a → b)-",
+      "uid": "fiber (a -> b)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -840,7 +840,7 @@
       }
     },
     {
-      "uid": "fiber (a → c)-",
+      "uid": "fiber (a -> c)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -861,7 +861,7 @@
       }
     },
     {
-      "uid": "fiber (c → d)-",
+      "uid": "fiber (c -> d)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -882,7 +882,7 @@
       }
     },
     {
-      "uid": "fiber (c → f)-",
+      "uid": "fiber (c -> f)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -903,7 +903,7 @@
       }
     },
     {
-      "uid": "fiber (b → f)-",
+      "uid": "fiber (b -> f)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -924,7 +924,7 @@
       }
     },
     {
-      "uid": "fiber (e → d)-",
+      "uid": "fiber (e -> d)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -945,7 +945,7 @@
       }
     },
     {
-      "uid": "fiber (e → g)-",
+      "uid": "fiber (e -> g)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -966,7 +966,7 @@
       }
     },
     {
-      "uid": "fiber (f → h)-",
+      "uid": "fiber (f -> h)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -987,7 +987,7 @@
       }
     },
     {
-      "uid": "fiber (h → g)-",
+      "uid": "fiber (h -> g)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1008,7 +1008,7 @@
       }
     },
     {
-      "uid": "fiber (Corlay → Lannion_CAS)-F061",
+      "uid": "fiber (Corlay -> Lannion_CAS)-F061",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1029,7 +1029,7 @@
       }
     },
     {
-      "uid": "fiber (Loudeac → Corlay)-F010",
+      "uid": "fiber (Loudeac -> Corlay)-F010",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1050,7 +1050,7 @@
       }
     },
     {
-      "uid": "fiber (Lorient_KMA → Loudeac)-F054",
+      "uid": "fiber (Lorient_KMA -> Loudeac)-F054",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1071,7 +1071,7 @@
       }
     },
     {
-      "uid": "fiber (Vannes_KBE → Lorient_KMA)-F055",
+      "uid": "fiber (Vannes_KBE -> Lorient_KMA)-F055",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1092,7 +1092,7 @@
       }
     },
     {
-      "uid": "fiber (Stbrieuc → Lannion_CAS)-F056",
+      "uid": "fiber (Stbrieuc -> Lannion_CAS)-F056",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1113,7 +1113,7 @@
       }
     },
     {
-      "uid": "fiber (Rennes_STA → Stbrieuc)-F057",
+      "uid": "fiber (Rennes_STA -> Stbrieuc)-F057",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1134,7 +1134,7 @@
       }
     },
     {
-      "uid": "fiber (Morlaix → Lannion_CAS)-F059",
+      "uid": "fiber (Morlaix -> Lannion_CAS)-F059",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1155,7 +1155,7 @@
       }
     },
     {
-      "uid": "fiber (Brest_KLA → Morlaix)-F060",
+      "uid": "fiber (Brest_KLA -> Morlaix)-F060",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1176,7 +1176,7 @@
       }
     },
     {
-      "uid": "fiber (Quimper → Brest_KLA)-",
+      "uid": "fiber (Quimper -> Brest_KLA)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1197,7 +1197,7 @@
       }
     },
     {
-      "uid": "fiber (Lorient_KMA → Quimper)-",
+      "uid": "fiber (Lorient_KMA -> Quimper)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1218,7 +1218,7 @@
       }
     },
     {
-      "uid": "fiber (Vannes_KBE → Ploermel)-",
+      "uid": "fiber (Vannes_KBE -> Ploermel)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1239,7 +1239,7 @@
       }
     },
     {
-      "uid": "fiber (Rennes_STA → Ploermel)-",
+      "uid": "fiber (Rennes_STA -> Ploermel)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1260,7 +1260,7 @@
       }
     },
     {
-      "uid": "fiber (b → a)-",
+      "uid": "fiber (b -> a)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1281,7 +1281,7 @@
       }
     },
     {
-      "uid": "fiber (c → a)-",
+      "uid": "fiber (c -> a)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1302,7 +1302,7 @@
       }
     },
     {
-      "uid": "fiber (d → c)-",
+      "uid": "fiber (d -> c)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1323,7 +1323,7 @@
       }
     },
     {
-      "uid": "fiber (f → c)-",
+      "uid": "fiber (f -> c)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1344,7 +1344,7 @@
       }
     },
     {
-      "uid": "fiber (f → b)-",
+      "uid": "fiber (f -> b)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1365,7 +1365,7 @@
       }
     },
     {
-      "uid": "fiber (d → e)-",
+      "uid": "fiber (d -> e)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1386,7 +1386,7 @@
       }
     },
     {
-      "uid": "fiber (g → e)-",
+      "uid": "fiber (g -> e)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1407,7 +1407,7 @@
       }
     },
     {
-      "uid": "fiber (h → f)-",
+      "uid": "fiber (h -> f)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1428,7 +1428,7 @@
       }
     },
     {
-      "uid": "fiber (g → h)-",
+      "uid": "fiber (g -> h)-",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2991,327 +2991,327 @@
     },
     {
       "from_node": "west fused spans in Corlay",
-      "to_node": "fiber (Corlay → Loudeac)-F010"
+      "to_node": "fiber (Corlay -> Loudeac)-F010"
     },
     {
       "from_node": "west fused spans in Loudeac",
-      "to_node": "fiber (Loudeac → Lorient_KMA)-F054"
+      "to_node": "fiber (Loudeac -> Lorient_KMA)-F054"
     },
     {
       "from_node": "west fused spans in Morlaix",
-      "to_node": "fiber (Morlaix → Brest_KLA)-F060"
+      "to_node": "fiber (Morlaix -> Brest_KLA)-F060"
     },
     {
       "from_node": "east fused spans in Corlay",
-      "to_node": "fiber (Corlay → Lannion_CAS)-F061"
+      "to_node": "fiber (Corlay -> Lannion_CAS)-F061"
     },
     {
       "from_node": "east fused spans in Loudeac",
-      "to_node": "fiber (Loudeac → Corlay)-F010"
+      "to_node": "fiber (Loudeac -> Corlay)-F010"
     },
     {
       "from_node": "east fused spans in Morlaix",
-      "to_node": "fiber (Morlaix → Lannion_CAS)-F059"
+      "to_node": "fiber (Morlaix -> Lannion_CAS)-F059"
     },
     {
-      "from_node": "fiber (Lannion_CAS → Corlay)-F061",
+      "from_node": "fiber (Lannion_CAS -> Corlay)-F061",
       "to_node": "west fused spans in Corlay"
     },
     {
-      "from_node": "fiber (Corlay → Loudeac)-F010",
+      "from_node": "fiber (Corlay -> Loudeac)-F010",
       "to_node": "west fused spans in Loudeac"
     },
     {
-      "from_node": "fiber (Loudeac → Lorient_KMA)-F054",
+      "from_node": "fiber (Loudeac -> Lorient_KMA)-F054",
       "to_node": "west edfa in Lorient_KMA to Loudeac"
     },
     {
-      "from_node": "fiber (Lorient_KMA → Vannes_KBE)-F055",
+      "from_node": "fiber (Lorient_KMA -> Vannes_KBE)-F055",
       "to_node": "west edfa in Vannes_KBE to Lorient_KMA"
     },
     {
-      "from_node": "fiber (Lannion_CAS → Stbrieuc)-F056",
+      "from_node": "fiber (Lannion_CAS -> Stbrieuc)-F056",
       "to_node": "east edfa in Stbrieuc to Rennes_STA"
     },
     {
-      "from_node": "fiber (Stbrieuc → Rennes_STA)-F057",
+      "from_node": "fiber (Stbrieuc -> Rennes_STA)-F057",
       "to_node": "west edfa in Rennes_STA to Stbrieuc"
     },
     {
-      "from_node": "fiber (Lannion_CAS → Morlaix)-F059",
+      "from_node": "fiber (Lannion_CAS -> Morlaix)-F059",
       "to_node": "west fused spans in Morlaix"
     },
     {
-      "from_node": "fiber (Morlaix → Brest_KLA)-F060",
+      "from_node": "fiber (Morlaix -> Brest_KLA)-F060",
       "to_node": "west edfa in Brest_KLA to Morlaix"
     },
     {
-      "from_node": "fiber (Brest_KLA → Quimper)-",
+      "from_node": "fiber (Brest_KLA -> Quimper)-",
       "to_node": "east edfa in Quimper to Lorient_KMA"
     },
     {
-      "from_node": "fiber (Quimper → Lorient_KMA)-",
+      "from_node": "fiber (Quimper -> Lorient_KMA)-",
       "to_node": "west edfa in Lorient_KMA to Quimper"
     },
     {
-      "from_node": "fiber (Ploermel → Vannes_KBE)-",
+      "from_node": "fiber (Ploermel -> Vannes_KBE)-",
       "to_node": "west edfa in Vannes_KBE to Ploermel"
     },
     {
-      "from_node": "fiber (Ploermel → Rennes_STA)-",
+      "from_node": "fiber (Ploermel -> Rennes_STA)-",
       "to_node": "west edfa in Rennes_STA to Ploermel"
     },
     {
-      "from_node": "fiber (a → b)-",
+      "from_node": "fiber (a -> b)-",
       "to_node": "west edfa in b to a"
     },
     {
-      "from_node": "fiber (a → c)-",
+      "from_node": "fiber (a -> c)-",
       "to_node": "west edfa in c to a"
     },
     {
-      "from_node": "fiber (c → d)-",
+      "from_node": "fiber (c -> d)-",
       "to_node": "west edfa in d to c"
     },
     {
-      "from_node": "fiber (c → f)-",
+      "from_node": "fiber (c -> f)-",
       "to_node": "west edfa in f to c"
     },
     {
-      "from_node": "fiber (b → f)-",
+      "from_node": "fiber (b -> f)-",
       "to_node": "west edfa in f to b"
     },
     {
-      "from_node": "fiber (e → d)-",
+      "from_node": "fiber (e -> d)-",
       "to_node": "west edfa in d to e"
     },
     {
-      "from_node": "fiber (e → g)-",
+      "from_node": "fiber (e -> g)-",
       "to_node": "west edfa in g to e"
     },
     {
-      "from_node": "fiber (f → h)-",
+      "from_node": "fiber (f -> h)-",
       "to_node": "west edfa in h to f"
     },
     {
-      "from_node": "fiber (h → g)-",
+      "from_node": "fiber (h -> g)-",
       "to_node": "west edfa in g to h"
     },
     {
-      "from_node": "fiber (Corlay → Lannion_CAS)-F061",
+      "from_node": "fiber (Corlay -> Lannion_CAS)-F061",
       "to_node": "west edfa in Lannion_CAS to Corlay"
     },
     {
-      "from_node": "fiber (Loudeac → Corlay)-F010",
+      "from_node": "fiber (Loudeac -> Corlay)-F010",
       "to_node": "east fused spans in Corlay"
     },
     {
-      "from_node": "fiber (Lorient_KMA → Loudeac)-F054",
+      "from_node": "fiber (Lorient_KMA -> Loudeac)-F054",
       "to_node": "east fused spans in Loudeac"
     },
     {
-      "from_node": "fiber (Vannes_KBE → Lorient_KMA)-F055",
+      "from_node": "fiber (Vannes_KBE -> Lorient_KMA)-F055",
       "to_node": "west edfa in Lorient_KMA to Vannes_KBE"
     },
     {
-      "from_node": "fiber (Stbrieuc → Lannion_CAS)-F056",
+      "from_node": "fiber (Stbrieuc -> Lannion_CAS)-F056",
       "to_node": "west edfa in Lannion_CAS to Stbrieuc"
     },
     {
-      "from_node": "fiber (Rennes_STA → Stbrieuc)-F057",
+      "from_node": "fiber (Rennes_STA -> Stbrieuc)-F057",
       "to_node": "west edfa in Stbrieuc to Rennes_STA"
     },
     {
-      "from_node": "fiber (Morlaix → Lannion_CAS)-F059",
+      "from_node": "fiber (Morlaix -> Lannion_CAS)-F059",
       "to_node": "west edfa in Lannion_CAS to Morlaix"
     },
     {
-      "from_node": "fiber (Brest_KLA → Morlaix)-F060",
+      "from_node": "fiber (Brest_KLA -> Morlaix)-F060",
       "to_node": "east fused spans in Morlaix"
     },
     {
-      "from_node": "fiber (Quimper → Brest_KLA)-",
+      "from_node": "fiber (Quimper -> Brest_KLA)-",
       "to_node": "west edfa in Brest_KLA to Quimper"
     },
     {
-      "from_node": "fiber (Lorient_KMA → Quimper)-",
+      "from_node": "fiber (Lorient_KMA -> Quimper)-",
       "to_node": "west edfa in Quimper to Lorient_KMA"
     },
     {
-      "from_node": "fiber (Vannes_KBE → Ploermel)-",
+      "from_node": "fiber (Vannes_KBE -> Ploermel)-",
       "to_node": "west edfa in Ploermel to Vannes_KBE"
     },
     {
-      "from_node": "fiber (Rennes_STA → Ploermel)-",
+      "from_node": "fiber (Rennes_STA -> Ploermel)-",
       "to_node": "east edfa in Ploermel to Vannes_KBE"
     },
     {
-      "from_node": "fiber (b → a)-",
+      "from_node": "fiber (b -> a)-",
       "to_node": "west edfa in a to b"
     },
     {
-      "from_node": "fiber (c → a)-",
+      "from_node": "fiber (c -> a)-",
       "to_node": "west edfa in a to c"
     },
     {
-      "from_node": "fiber (d → c)-",
+      "from_node": "fiber (d -> c)-",
       "to_node": "west edfa in c to d"
     },
     {
-      "from_node": "fiber (f → c)-",
+      "from_node": "fiber (f -> c)-",
       "to_node": "west edfa in c to f"
     },
     {
-      "from_node": "fiber (f → b)-",
+      "from_node": "fiber (f -> b)-",
       "to_node": "west edfa in b to f"
     },
     {
-      "from_node": "fiber (d → e)-",
+      "from_node": "fiber (d -> e)-",
       "to_node": "west edfa in e to d"
     },
     {
-      "from_node": "fiber (g → e)-",
+      "from_node": "fiber (g -> e)-",
       "to_node": "west edfa in e to g"
     },
     {
-      "from_node": "fiber (h → f)-",
+      "from_node": "fiber (h -> f)-",
       "to_node": "west edfa in f to h"
     },
     {
-      "from_node": "fiber (g → h)-",
+      "from_node": "fiber (g -> h)-",
       "to_node": "west edfa in h to g"
     },
     {
       "from_node": "east edfa in Lannion_CAS to Corlay",
-      "to_node": "fiber (Lannion_CAS → Corlay)-F061"
+      "to_node": "fiber (Lannion_CAS -> Corlay)-F061"
     },
     {
       "from_node": "east edfa in Lannion_CAS to Stbrieuc",
-      "to_node": "fiber (Lannion_CAS → Stbrieuc)-F056"
+      "to_node": "fiber (Lannion_CAS -> Stbrieuc)-F056"
     },
     {
       "from_node": "east edfa in Lannion_CAS to Morlaix",
-      "to_node": "fiber (Lannion_CAS → Morlaix)-F059"
+      "to_node": "fiber (Lannion_CAS -> Morlaix)-F059"
     },
     {
       "from_node": "east edfa in Lorient_KMA to Vannes_KBE",
-      "to_node": "fiber (Lorient_KMA → Vannes_KBE)-F055"
+      "to_node": "fiber (Lorient_KMA -> Vannes_KBE)-F055"
     },
     {
       "from_node": "east edfa in Lorient_KMA to Loudeac",
-      "to_node": "fiber (Lorient_KMA → Loudeac)-F054"
+      "to_node": "fiber (Lorient_KMA -> Loudeac)-F054"
     },
     {
       "from_node": "east edfa in Lorient_KMA to Quimper",
-      "to_node": "fiber (Lorient_KMA → Quimper)-"
+      "to_node": "fiber (Lorient_KMA -> Quimper)-"
     },
     {
       "from_node": "east edfa in Vannes_KBE to Lorient_KMA",
-      "to_node": "fiber (Vannes_KBE → Lorient_KMA)-F055"
+      "to_node": "fiber (Vannes_KBE -> Lorient_KMA)-F055"
     },
     {
       "from_node": "east edfa in Vannes_KBE to Ploermel",
-      "to_node": "fiber (Vannes_KBE → Ploermel)-"
+      "to_node": "fiber (Vannes_KBE -> Ploermel)-"
     },
     {
       "from_node": "east edfa in Stbrieuc to Rennes_STA",
-      "to_node": "fiber (Stbrieuc → Rennes_STA)-F057"
+      "to_node": "fiber (Stbrieuc -> Rennes_STA)-F057"
     },
     {
       "from_node": "east edfa in Rennes_STA to Stbrieuc",
-      "to_node": "fiber (Rennes_STA → Stbrieuc)-F057"
+      "to_node": "fiber (Rennes_STA -> Stbrieuc)-F057"
     },
     {
       "from_node": "east edfa in Rennes_STA to Ploermel",
-      "to_node": "fiber (Rennes_STA → Ploermel)-"
+      "to_node": "fiber (Rennes_STA -> Ploermel)-"
     },
     {
       "from_node": "east edfa in Brest_KLA to Morlaix",
-      "to_node": "fiber (Brest_KLA → Morlaix)-F060"
+      "to_node": "fiber (Brest_KLA -> Morlaix)-F060"
     },
     {
       "from_node": "east edfa in Brest_KLA to Quimper",
-      "to_node": "fiber (Brest_KLA → Quimper)-"
+      "to_node": "fiber (Brest_KLA -> Quimper)-"
     },
     {
       "from_node": "east edfa in Quimper to Lorient_KMA",
-      "to_node": "fiber (Quimper → Lorient_KMA)-"
+      "to_node": "fiber (Quimper -> Lorient_KMA)-"
     },
     {
       "from_node": "east edfa in Ploermel to Vannes_KBE",
-      "to_node": "fiber (Ploermel → Vannes_KBE)-"
+      "to_node": "fiber (Ploermel -> Vannes_KBE)-"
     },
     {
       "from_node": "east edfa in a to b",
-      "to_node": "fiber (a → b)-"
+      "to_node": "fiber (a -> b)-"
     },
     {
       "from_node": "east edfa in a to c",
-      "to_node": "fiber (a → c)-"
+      "to_node": "fiber (a -> c)-"
     },
     {
       "from_node": "east edfa in b to a",
-      "to_node": "fiber (b → a)-"
+      "to_node": "fiber (b -> a)-"
     },
     {
       "from_node": "east edfa in b to f",
-      "to_node": "fiber (b → f)-"
+      "to_node": "fiber (b -> f)-"
     },
     {
       "from_node": "east edfa in c to a",
-      "to_node": "fiber (c → a)-"
+      "to_node": "fiber (c -> a)-"
     },
     {
       "from_node": "east edfa in c to d",
-      "to_node": "fiber (c → d)-"
+      "to_node": "fiber (c -> d)-"
     },
     {
       "from_node": "east edfa in c to f",
-      "to_node": "fiber (c → f)-"
+      "to_node": "fiber (c -> f)-"
     },
     {
       "from_node": "east edfa in d to c",
-      "to_node": "fiber (d → c)-"
+      "to_node": "fiber (d -> c)-"
     },
     {
       "from_node": "east edfa in d to e",
-      "to_node": "fiber (d → e)-"
+      "to_node": "fiber (d -> e)-"
     },
     {
       "from_node": "east edfa in f to c",
-      "to_node": "fiber (f → c)-"
+      "to_node": "fiber (f -> c)-"
     },
     {
       "from_node": "east edfa in f to b",
-      "to_node": "fiber (f → b)-"
+      "to_node": "fiber (f -> b)-"
     },
     {
       "from_node": "east edfa in f to h",
-      "to_node": "fiber (f → h)-"
+      "to_node": "fiber (f -> h)-"
     },
     {
       "from_node": "east edfa in e to d",
-      "to_node": "fiber (e → d)-"
+      "to_node": "fiber (e -> d)-"
     },
     {
       "from_node": "east edfa in e to g",
-      "to_node": "fiber (e → g)-"
+      "to_node": "fiber (e -> g)-"
     },
     {
       "from_node": "east edfa in g to e",
-      "to_node": "fiber (g → e)-"
+      "to_node": "fiber (g -> e)-"
     },
     {
       "from_node": "east edfa in g to h",
-      "to_node": "fiber (g → h)-"
+      "to_node": "fiber (g -> h)-"
     },
     {
       "from_node": "east edfa in h to f",
-      "to_node": "fiber (h → f)-"
+      "to_node": "fiber (h -> f)-"
     },
     {
       "from_node": "east edfa in h to g",
-      "to_node": "fiber (h → g)-"
+      "to_node": "fiber (h -> g)-"
     },
     {
       "from_node": "west edfa in Lannion_CAS to Corlay",
@@ -3347,7 +3347,7 @@
     },
     {
       "from_node": "west edfa in Stbrieuc to Rennes_STA",
-      "to_node": "fiber (Stbrieuc → Lannion_CAS)-F056"
+      "to_node": "fiber (Stbrieuc -> Lannion_CAS)-F056"
     },
     {
       "from_node": "west edfa in Rennes_STA to Stbrieuc",
@@ -3367,11 +3367,11 @@
     },
     {
       "from_node": "west edfa in Quimper to Lorient_KMA",
-      "to_node": "fiber (Quimper → Brest_KLA)-"
+      "to_node": "fiber (Quimper -> Brest_KLA)-"
     },
     {
       "from_node": "west edfa in Ploermel to Vannes_KBE",
-      "to_node": "fiber (Ploermel → Rennes_STA)-"
+      "to_node": "fiber (Ploermel -> Rennes_STA)-"
     },
     {
       "from_node": "west edfa in a to b",

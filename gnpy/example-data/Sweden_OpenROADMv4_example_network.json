@@ -194,9 +194,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Västerås)": -20,
-          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Uppsala)": -20,
-          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)": -20
+          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Västerås)": -20,
+          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Uppsala)": -20,
+          "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Norrköping)_(1/2)": -20
         }
       },
       "metadata": {
@@ -222,8 +222,8 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Borås)": -20,
-          "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Helsingborg)_(1/3)": -20
+          "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg -> Borås)": -20,
+          "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg -> Helsingborg)_(1/3)": -20
         }
       },
       "metadata": {
@@ -249,9 +249,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Helsingborg)": -20,
-          "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Jönköping)_(1/3)": -20,
-          "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Norrköping)_(1/5)": -20
+          "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Helsingborg)": -20,
+          "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Jönköping)_(1/3)": -20,
+          "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Norrköping)_(1/5)": -20
         }
       },
       "metadata": {
@@ -277,9 +277,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Västerås)": -20,
-          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Gävle)": -20,
-          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Stockholm)": -20
+          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Västerås)": -20,
+          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Gävle)": -20,
+          "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Stockholm)": -20
         }
       },
       "metadata": {
@@ -305,9 +305,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Uppsala)": -20,
-          "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Örebro)": -20,
-          "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Stockholm)": -20
+          "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Uppsala)": -20,
+          "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Örebro)": -20,
+          "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Stockholm)": -20
         }
       },
       "metadata": {
@@ -333,11 +333,11 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Norrköping)": -20,
-          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Västerås)": -20,
-          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Linköping)": -20,
-          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Karlstad)": -20,
-          "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Gävle)_(1/3)": -20
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Norrköping)": -20,
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Västerås)": -20,
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Linköping)": -20,
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Karlstad)": -20,
+          "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Gävle)_(1/3)": -20
         }
       },
       "metadata": {
@@ -363,9 +363,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)": -20,
-          "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Örebro)": -20,
-          "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Norrköping)": -20
+          "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Jönköping)": -20,
+          "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Örebro)": -20,
+          "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Norrköping)": -20
         }
       },
       "metadata": {
@@ -391,8 +391,8 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Malmö)": -20,
-          "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Gothenburg)_(1/3)": -20
+          "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg -> Malmö)": -20,
+          "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg -> Gothenburg)_(1/3)": -20
         }
       },
       "metadata": {
@@ -418,9 +418,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Linköping)": -20,
-          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)": -20,
-          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Malmö)_(1/3)": -20
+          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Linköping)": -20,
+          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Borås)": -20,
+          "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Malmö)_(1/3)": -20
         }
       },
       "metadata": {
@@ -446,8 +446,8 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Gävle)_(1/5)": -20,
-          "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Sundsvall)_(1/3)": -20
+          "Edfa_booster_roadm_Umeå_to_fiber (Umeå -> Gävle)_(1/5)": -20,
+          "Edfa_booster_roadm_Umeå_to_fiber (Umeå -> Sundsvall)_(1/3)": -20
         }
       },
       "metadata": {
@@ -473,10 +473,10 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Örebro)": -20,
-          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)": -20,
-          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Stockholm)_(1/2)": -20,
-          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Malmö)_(1/5)": -20
+          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Örebro)": -20,
+          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Linköping)": -20,
+          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Stockholm)_(1/2)": -20,
+          "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Malmö)_(1/5)": -20
         }
       },
       "metadata": {
@@ -502,9 +502,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Örebro)": -20,
-          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Borås)_(1/3)": -20,
-          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Sundsvall)_(1/5)": -20
+          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Örebro)": -20,
+          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Borås)_(1/3)": -20,
+          "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Sundsvall)_(1/5)": -20
         }
       },
       "metadata": {
@@ -530,8 +530,8 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Umeå)_(1/3)": -20,
-          "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Karlstad)_(1/5)": -20
+          "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall -> Umeå)_(1/3)": -20,
+          "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall -> Karlstad)_(1/5)": -20
         }
       },
       "metadata": {
@@ -557,9 +557,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Uppsala)": -20,
-          "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Örebro)_(1/3)": -20,
-          "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Umeå)_(1/5)": -20
+          "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Uppsala)": -20,
+          "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Örebro)_(1/3)": -20,
+          "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Umeå)_(1/5)": -20
         }
       },
       "metadata": {
@@ -585,9 +585,9 @@
           ]
         },
         "per_degree_pch_out_db": {
-          "Edfa_booster_roadm_Borås_to_fiber (Borås → Jönköping)": -20,
-          "Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)": -20,
-          "Edfa_booster_roadm_Borås_to_fiber (Borås → Karlstad)_(1/3)": -20
+          "Edfa_booster_roadm_Borås_to_fiber (Borås -> Jönköping)": -20,
+          "Edfa_booster_roadm_Borås_to_fiber (Borås -> Gothenburg)": -20,
+          "Edfa_booster_roadm_Borås_to_fiber (Borås -> Karlstad)_(1/3)": -20
         }
       },
       "metadata": {
@@ -600,7 +600,7 @@
       }
     },
     {
-      "uid": "fiber (Uppsala → Västerås)",
+      "uid": "fiber (Uppsala -> Västerås)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -621,7 +621,7 @@
       }
     },
     {
-      "uid": "fiber (Västerås → Uppsala)",
+      "uid": "fiber (Västerås -> Uppsala)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -642,7 +642,7 @@
       }
     },
     {
-      "uid": "fiber (Uppsala → Gävle)",
+      "uid": "fiber (Uppsala -> Gävle)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -663,7 +663,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Uppsala)",
+      "uid": "fiber (Gävle -> Uppsala)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -684,7 +684,7 @@
       }
     },
     {
-      "uid": "fiber (Örebro → Norrköping)",
+      "uid": "fiber (Örebro -> Norrköping)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -705,7 +705,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Örebro)",
+      "uid": "fiber (Norrköping -> Örebro)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -726,7 +726,7 @@
       }
     },
     {
-      "uid": "fiber (Linköping → Jönköping)",
+      "uid": "fiber (Linköping -> Jönköping)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -747,7 +747,7 @@
       }
     },
     {
-      "uid": "fiber (Jönköping → Linköping)",
+      "uid": "fiber (Jönköping -> Linköping)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -768,7 +768,7 @@
       }
     },
     {
-      "uid": "fiber (Västerås → Örebro)",
+      "uid": "fiber (Västerås -> Örebro)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -789,7 +789,7 @@
       }
     },
     {
-      "uid": "fiber (Örebro → Västerås)",
+      "uid": "fiber (Örebro -> Västerås)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -810,7 +810,7 @@
       }
     },
     {
-      "uid": "fiber (Örebro → Linköping)",
+      "uid": "fiber (Örebro -> Linköping)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -831,7 +831,7 @@
       }
     },
     {
-      "uid": "fiber (Linköping → Örebro)",
+      "uid": "fiber (Linköping -> Örebro)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -852,7 +852,7 @@
       }
     },
     {
-      "uid": "fiber (Jönköping → Borås)",
+      "uid": "fiber (Jönköping -> Borås)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -873,7 +873,7 @@
       }
     },
     {
-      "uid": "fiber (Borås → Jönköping)",
+      "uid": "fiber (Borås -> Jönköping)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -894,7 +894,7 @@
       }
     },
     {
-      "uid": "fiber (Stockholm → Västerås)",
+      "uid": "fiber (Stockholm -> Västerås)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -915,7 +915,7 @@
       }
     },
     {
-      "uid": "fiber (Västerås → Stockholm)",
+      "uid": "fiber (Västerås -> Stockholm)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -936,7 +936,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Helsingborg)",
+      "uid": "fiber (Malmö -> Helsingborg)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -957,7 +957,7 @@
       }
     },
     {
-      "uid": "fiber (Helsingborg → Malmö)",
+      "uid": "fiber (Helsingborg -> Malmö)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -978,7 +978,7 @@
       }
     },
     {
-      "uid": "fiber (Gothenburg → Borås)",
+      "uid": "fiber (Gothenburg -> Borås)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -999,7 +999,7 @@
       }
     },
     {
-      "uid": "fiber (Borås → Gothenburg)",
+      "uid": "fiber (Borås -> Gothenburg)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1020,7 +1020,7 @@
       }
     },
     {
-      "uid": "fiber (Linköping → Norrköping)",
+      "uid": "fiber (Linköping -> Norrköping)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1041,7 +1041,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Linköping)",
+      "uid": "fiber (Norrköping -> Linköping)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1062,7 +1062,7 @@
       }
     },
     {
-      "uid": "fiber (Örebro → Karlstad)",
+      "uid": "fiber (Örebro -> Karlstad)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1083,7 +1083,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Örebro)",
+      "uid": "fiber (Karlstad -> Örebro)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1104,7 +1104,7 @@
       }
     },
     {
-      "uid": "fiber (Stockholm → Uppsala)",
+      "uid": "fiber (Stockholm -> Uppsala)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1125,7 +1125,7 @@
       }
     },
     {
-      "uid": "fiber (Uppsala → Stockholm)",
+      "uid": "fiber (Uppsala -> Stockholm)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1146,7 +1146,7 @@
       }
     },
     {
-      "uid": "fiber (Örebro → Gävle)_(1/3)",
+      "uid": "fiber (Örebro -> Gävle)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1167,7 +1167,7 @@
       }
     },
     {
-      "uid": "fiber (Örebro → Gävle)_(2/3)",
+      "uid": "fiber (Örebro -> Gävle)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1188,7 +1188,7 @@
       }
     },
     {
-      "uid": "fiber (Örebro → Gävle)_(3/3)",
+      "uid": "fiber (Örebro -> Gävle)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1209,7 +1209,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Örebro)_(1/3)",
+      "uid": "fiber (Gävle -> Örebro)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1230,7 +1230,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Örebro)_(2/3)",
+      "uid": "fiber (Gävle -> Örebro)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1251,7 +1251,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Örebro)_(3/3)",
+      "uid": "fiber (Gävle -> Örebro)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1272,7 +1272,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Borås)_(1/3)",
+      "uid": "fiber (Karlstad -> Borås)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1293,7 +1293,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Borås)_(2/3)",
+      "uid": "fiber (Karlstad -> Borås)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1314,7 +1314,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Borås)_(3/3)",
+      "uid": "fiber (Karlstad -> Borås)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1335,7 +1335,7 @@
       }
     },
     {
-      "uid": "fiber (Borås → Karlstad)_(1/3)",
+      "uid": "fiber (Borås -> Karlstad)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1356,7 +1356,7 @@
       }
     },
     {
-      "uid": "fiber (Borås → Karlstad)_(2/3)",
+      "uid": "fiber (Borås -> Karlstad)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1377,7 +1377,7 @@
       }
     },
     {
-      "uid": "fiber (Borås → Karlstad)_(3/3)",
+      "uid": "fiber (Borås -> Karlstad)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1398,7 +1398,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Jönköping)_(1/3)",
+      "uid": "fiber (Malmö -> Jönköping)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1419,7 +1419,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Jönköping)_(2/3)",
+      "uid": "fiber (Malmö -> Jönköping)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1440,7 +1440,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Jönköping)_(3/3)",
+      "uid": "fiber (Malmö -> Jönköping)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1461,7 +1461,7 @@
       }
     },
     {
-      "uid": "fiber (Jönköping → Malmö)_(1/3)",
+      "uid": "fiber (Jönköping -> Malmö)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1482,7 +1482,7 @@
       }
     },
     {
-      "uid": "fiber (Jönköping → Malmö)_(2/3)",
+      "uid": "fiber (Jönköping -> Malmö)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1503,7 +1503,7 @@
       }
     },
     {
-      "uid": "fiber (Jönköping → Malmö)_(3/3)",
+      "uid": "fiber (Jönköping -> Malmö)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1524,7 +1524,7 @@
       }
     },
     {
-      "uid": "fiber (Umeå → Gävle)_(1/5)",
+      "uid": "fiber (Umeå -> Gävle)_(1/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1545,7 +1545,7 @@
       }
     },
     {
-      "uid": "fiber (Umeå → Gävle)_(2/5)",
+      "uid": "fiber (Umeå -> Gävle)_(2/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1566,7 +1566,7 @@
       }
     },
     {
-      "uid": "fiber (Umeå → Gävle)_(3/5)",
+      "uid": "fiber (Umeå -> Gävle)_(3/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1587,7 +1587,7 @@
       }
     },
     {
-      "uid": "fiber (Umeå → Gävle)_(4/5)",
+      "uid": "fiber (Umeå -> Gävle)_(4/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1608,7 +1608,7 @@
       }
     },
     {
-      "uid": "fiber (Umeå → Gävle)_(5/5)",
+      "uid": "fiber (Umeå -> Gävle)_(5/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1629,7 +1629,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Umeå)_(1/5)",
+      "uid": "fiber (Gävle -> Umeå)_(1/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1650,7 +1650,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Umeå)_(2/5)",
+      "uid": "fiber (Gävle -> Umeå)_(2/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1671,7 +1671,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Umeå)_(3/5)",
+      "uid": "fiber (Gävle -> Umeå)_(3/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1692,7 +1692,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Umeå)_(4/5)",
+      "uid": "fiber (Gävle -> Umeå)_(4/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1713,7 +1713,7 @@
       }
     },
     {
-      "uid": "fiber (Gävle → Umeå)_(5/5)",
+      "uid": "fiber (Gävle -> Umeå)_(5/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1734,7 +1734,7 @@
       }
     },
     {
-      "uid": "fiber (Stockholm → Norrköping)_(1/2)",
+      "uid": "fiber (Stockholm -> Norrköping)_(1/2)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1755,7 +1755,7 @@
       }
     },
     {
-      "uid": "fiber (Stockholm → Norrköping)_(2/2)",
+      "uid": "fiber (Stockholm -> Norrköping)_(2/2)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1776,7 +1776,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Stockholm)_(1/2)",
+      "uid": "fiber (Norrköping -> Stockholm)_(1/2)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1797,7 +1797,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Stockholm)_(2/2)",
+      "uid": "fiber (Norrköping -> Stockholm)_(2/2)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1818,7 +1818,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Norrköping)_(1/5)",
+      "uid": "fiber (Malmö -> Norrköping)_(1/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1839,7 +1839,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Norrköping)_(2/5)",
+      "uid": "fiber (Malmö -> Norrköping)_(2/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1860,7 +1860,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Norrköping)_(3/5)",
+      "uid": "fiber (Malmö -> Norrköping)_(3/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1881,7 +1881,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Norrköping)_(4/5)",
+      "uid": "fiber (Malmö -> Norrköping)_(4/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1902,7 +1902,7 @@
       }
     },
     {
-      "uid": "fiber (Malmö → Norrköping)_(5/5)",
+      "uid": "fiber (Malmö -> Norrköping)_(5/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1923,7 +1923,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Malmö)_(1/5)",
+      "uid": "fiber (Norrköping -> Malmö)_(1/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1944,7 +1944,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Malmö)_(2/5)",
+      "uid": "fiber (Norrköping -> Malmö)_(2/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1965,7 +1965,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Malmö)_(3/5)",
+      "uid": "fiber (Norrköping -> Malmö)_(3/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -1986,7 +1986,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Malmö)_(4/5)",
+      "uid": "fiber (Norrköping -> Malmö)_(4/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2007,7 +2007,7 @@
       }
     },
     {
-      "uid": "fiber (Norrköping → Malmö)_(5/5)",
+      "uid": "fiber (Norrköping -> Malmö)_(5/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2028,7 +2028,7 @@
       }
     },
     {
-      "uid": "fiber (Umeå → Sundsvall)_(1/3)",
+      "uid": "fiber (Umeå -> Sundsvall)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2049,7 +2049,7 @@
       }
     },
     {
-      "uid": "fiber (Umeå → Sundsvall)_(2/3)",
+      "uid": "fiber (Umeå -> Sundsvall)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2070,7 +2070,7 @@
       }
     },
     {
-      "uid": "fiber (Umeå → Sundsvall)_(3/3)",
+      "uid": "fiber (Umeå -> Sundsvall)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2091,7 +2091,7 @@
       }
     },
     {
-      "uid": "fiber (Sundsvall → Umeå)_(1/3)",
+      "uid": "fiber (Sundsvall -> Umeå)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2112,7 +2112,7 @@
       }
     },
     {
-      "uid": "fiber (Sundsvall → Umeå)_(2/3)",
+      "uid": "fiber (Sundsvall -> Umeå)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2133,7 +2133,7 @@
       }
     },
     {
-      "uid": "fiber (Sundsvall → Umeå)_(3/3)",
+      "uid": "fiber (Sundsvall -> Umeå)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2154,7 +2154,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Sundsvall)_(1/5)",
+      "uid": "fiber (Karlstad -> Sundsvall)_(1/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2175,7 +2175,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Sundsvall)_(2/5)",
+      "uid": "fiber (Karlstad -> Sundsvall)_(2/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2196,7 +2196,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Sundsvall)_(3/5)",
+      "uid": "fiber (Karlstad -> Sundsvall)_(3/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2217,7 +2217,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Sundsvall)_(4/5)",
+      "uid": "fiber (Karlstad -> Sundsvall)_(4/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2238,7 +2238,7 @@
       }
     },
     {
-      "uid": "fiber (Karlstad → Sundsvall)_(5/5)",
+      "uid": "fiber (Karlstad -> Sundsvall)_(5/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2259,7 +2259,7 @@
       }
     },
     {
-      "uid": "fiber (Sundsvall → Karlstad)_(1/5)",
+      "uid": "fiber (Sundsvall -> Karlstad)_(1/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2280,7 +2280,7 @@
       }
     },
     {
-      "uid": "fiber (Sundsvall → Karlstad)_(2/5)",
+      "uid": "fiber (Sundsvall -> Karlstad)_(2/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2301,7 +2301,7 @@
       }
     },
     {
-      "uid": "fiber (Sundsvall → Karlstad)_(3/5)",
+      "uid": "fiber (Sundsvall -> Karlstad)_(3/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2322,7 +2322,7 @@
       }
     },
     {
-      "uid": "fiber (Sundsvall → Karlstad)_(4/5)",
+      "uid": "fiber (Sundsvall -> Karlstad)_(4/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2343,7 +2343,7 @@
       }
     },
     {
-      "uid": "fiber (Sundsvall → Karlstad)_(5/5)",
+      "uid": "fiber (Sundsvall -> Karlstad)_(5/5)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2364,7 +2364,7 @@
       }
     },
     {
-      "uid": "fiber (Gothenburg → Helsingborg)_(1/3)",
+      "uid": "fiber (Gothenburg -> Helsingborg)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2385,7 +2385,7 @@
       }
     },
     {
-      "uid": "fiber (Gothenburg → Helsingborg)_(2/3)",
+      "uid": "fiber (Gothenburg -> Helsingborg)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2406,7 +2406,7 @@
       }
     },
     {
-      "uid": "fiber (Gothenburg → Helsingborg)_(3/3)",
+      "uid": "fiber (Gothenburg -> Helsingborg)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2427,7 +2427,7 @@
       }
     },
     {
-      "uid": "fiber (Helsingborg → Gothenburg)_(1/3)",
+      "uid": "fiber (Helsingborg -> Gothenburg)_(1/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2448,7 +2448,7 @@
       }
     },
     {
-      "uid": "fiber (Helsingborg → Gothenburg)_(2/3)",
+      "uid": "fiber (Helsingborg -> Gothenburg)_(2/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2469,7 +2469,7 @@
       }
     },
     {
-      "uid": "fiber (Helsingborg → Gothenburg)_(3/3)",
+      "uid": "fiber (Helsingborg -> Gothenburg)_(3/3)",
       "type": "Fiber",
       "type_variety": "SSMF",
       "params": {
@@ -2490,7 +2490,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås → Stockholm)",
+      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås -> Stockholm)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2509,7 +2509,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala → Stockholm)",
+      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala -> Stockholm)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2528,7 +2528,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping → Stockholm)_(2/2)",
+      "uid": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping -> Stockholm)_(2/2)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2547,7 +2547,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Västerås)",
+      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Västerås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2566,7 +2566,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Uppsala)",
+      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Uppsala)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2585,7 +2585,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)",
+      "uid": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Norrköping)_(1/2)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2604,7 +2604,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)",
+      "uid": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås -> Gothenburg)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2623,7 +2623,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg → Gothenburg)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg -> Gothenburg)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2642,7 +2642,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Borås)",
+      "uid": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg -> Borås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2661,7 +2661,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Helsingborg)_(1/3)",
+      "uid": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg -> Helsingborg)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2680,7 +2680,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg → Malmö)",
+      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg -> Malmö)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2699,7 +2699,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping → Malmö)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping -> Malmö)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2718,7 +2718,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping → Malmö)_(5/5)",
+      "uid": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping -> Malmö)_(5/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2737,7 +2737,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Helsingborg)",
+      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Helsingborg)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2756,7 +2756,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Jönköping)_(1/3)",
+      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Jönköping)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2775,7 +2775,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Norrköping)_(1/5)",
+      "uid": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Norrköping)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2794,7 +2794,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås → Uppsala)",
+      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås -> Uppsala)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2813,7 +2813,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle → Uppsala)",
+      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle -> Uppsala)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2832,7 +2832,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm → Uppsala)",
+      "uid": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm -> Uppsala)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2851,7 +2851,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Västerås)",
+      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Västerås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2870,7 +2870,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Gävle)",
+      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Gävle)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2889,7 +2889,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Stockholm)",
+      "uid": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Stockholm)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2908,7 +2908,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala → Västerås)",
+      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala -> Västerås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2927,7 +2927,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro → Västerås)",
+      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro -> Västerås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2946,7 +2946,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm → Västerås)",
+      "uid": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm -> Västerås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -2965,7 +2965,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Uppsala)",
+      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Uppsala)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -2984,7 +2984,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Örebro)",
+      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Örebro)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3003,7 +3003,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Stockholm)",
+      "uid": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Stockholm)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3022,7 +3022,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping → Örebro)",
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping -> Örebro)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3041,7 +3041,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås → Örebro)",
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås -> Örebro)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3060,7 +3060,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping → Örebro)",
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping -> Örebro)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3079,7 +3079,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad → Örebro)",
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad -> Örebro)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3098,7 +3098,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle → Örebro)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle -> Örebro)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3117,7 +3117,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Norrköping)",
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Norrköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3136,7 +3136,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Västerås)",
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Västerås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3155,7 +3155,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Linköping)",
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Linköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3174,7 +3174,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Karlstad)",
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Karlstad)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3193,7 +3193,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Gävle)_(1/3)",
+      "uid": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Gävle)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3212,7 +3212,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping → Linköping)",
+      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping -> Linköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3231,7 +3231,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro → Linköping)",
+      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro -> Linköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3250,7 +3250,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)",
+      "uid": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping -> Linköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3269,7 +3269,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)",
+      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Jönköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3288,7 +3288,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Örebro)",
+      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Örebro)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3307,7 +3307,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Norrköping)",
+      "uid": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Norrköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3326,7 +3326,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö → Helsingborg)",
+      "uid": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö -> Helsingborg)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3345,7 +3345,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg → Helsingborg)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg -> Helsingborg)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3364,7 +3364,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Malmö)",
+      "uid": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg -> Malmö)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3383,7 +3383,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Gothenburg)_(1/3)",
+      "uid": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg -> Gothenburg)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3402,7 +3402,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)",
+      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping -> Jönköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3421,7 +3421,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås → Jönköping)",
+      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås -> Jönköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3440,7 +3440,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö → Jönköping)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö -> Jönköping)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3459,7 +3459,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Linköping)",
+      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Linköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3478,7 +3478,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)",
+      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Borås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3497,7 +3497,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Malmö)_(1/3)",
+      "uid": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Malmö)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3516,7 +3516,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle → Umeå)_(5/5)",
+      "uid": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle -> Umeå)_(5/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3535,7 +3535,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall → Umeå)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall -> Umeå)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3554,7 +3554,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Gävle)_(1/5)",
+      "uid": "Edfa_booster_roadm_Umeå_to_fiber (Umeå -> Gävle)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3573,7 +3573,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Sundsvall)_(1/3)",
+      "uid": "Edfa_booster_roadm_Umeå_to_fiber (Umeå -> Sundsvall)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3592,7 +3592,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro → Norrköping)",
+      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro -> Norrköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3611,7 +3611,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping → Norrköping)",
+      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping -> Norrköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3630,7 +3630,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)",
+      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm -> Norrköping)_(2/2)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3649,7 +3649,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö → Norrköping)_(5/5)",
+      "uid": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö -> Norrköping)_(5/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3668,7 +3668,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Örebro)",
+      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Örebro)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3687,7 +3687,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)",
+      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Linköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3706,7 +3706,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Stockholm)_(1/2)",
+      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Stockholm)_(1/2)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3725,7 +3725,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Malmö)_(1/5)",
+      "uid": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Malmö)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3744,7 +3744,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro → Karlstad)",
+      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro -> Karlstad)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3763,7 +3763,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås → Karlstad)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås -> Karlstad)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3782,7 +3782,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall → Karlstad)_(5/5)",
+      "uid": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall -> Karlstad)_(5/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3801,7 +3801,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Örebro)",
+      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Örebro)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3820,7 +3820,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Borås)_(1/3)",
+      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Borås)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3839,7 +3839,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Sundsvall)_(1/5)",
+      "uid": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Sundsvall)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3858,7 +3858,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå → Sundsvall)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå -> Sundsvall)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3877,7 +3877,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad → Sundsvall)_(5/5)",
+      "uid": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad -> Sundsvall)_(5/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3896,7 +3896,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Umeå)_(1/3)",
+      "uid": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall -> Umeå)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3915,7 +3915,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Karlstad)_(1/5)",
+      "uid": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall -> Karlstad)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -3934,7 +3934,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala → Gävle)",
+      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala -> Gävle)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3953,7 +3953,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro → Gävle)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro -> Gävle)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3972,7 +3972,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå → Gävle)_(5/5)",
+      "uid": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå -> Gävle)_(5/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -3991,7 +3991,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Uppsala)",
+      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Uppsala)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -4010,7 +4010,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Örebro)_(1/3)",
+      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Örebro)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -4029,7 +4029,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Umeå)_(1/5)",
+      "uid": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Umeå)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -4048,7 +4048,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)",
+      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping -> Borås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -4067,7 +4067,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg → Borås)",
+      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg -> Borås)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -4086,7 +4086,7 @@
       }
     },
     {
-      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad → Borås)_(3/3)",
+      "uid": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad -> Borås)_(3/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_preamp",
       "operational": {
@@ -4105,7 +4105,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås → Jönköping)",
+      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Jönköping)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -4124,7 +4124,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)",
+      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Gothenburg)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -4143,7 +4143,7 @@
       }
     },
     {
-      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås → Karlstad)_(1/3)",
+      "uid": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Karlstad)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_mw_mw_booster",
       "operational": {
@@ -4162,7 +4162,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Örebro → Gävle)_(1/3)",
+      "uid": "Edfa_fiber (Örebro -> Gävle)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4181,7 +4181,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Örebro → Gävle)_(2/3)",
+      "uid": "Edfa_fiber (Örebro -> Gävle)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4200,7 +4200,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Gävle → Örebro)_(1/3)",
+      "uid": "Edfa_fiber (Gävle -> Örebro)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4219,7 +4219,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Gävle → Örebro)_(2/3)",
+      "uid": "Edfa_fiber (Gävle -> Örebro)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4238,7 +4238,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Karlstad → Borås)_(1/3)",
+      "uid": "Edfa_fiber (Karlstad -> Borås)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4257,7 +4257,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Karlstad → Borås)_(2/3)",
+      "uid": "Edfa_fiber (Karlstad -> Borås)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4276,7 +4276,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Borås → Karlstad)_(1/3)",
+      "uid": "Edfa_fiber (Borås -> Karlstad)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4295,7 +4295,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Borås → Karlstad)_(2/3)",
+      "uid": "Edfa_fiber (Borås -> Karlstad)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4314,7 +4314,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Malmö → Jönköping)_(1/3)",
+      "uid": "Edfa_fiber (Malmö -> Jönköping)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4333,7 +4333,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Malmö → Jönköping)_(2/3)",
+      "uid": "Edfa_fiber (Malmö -> Jönköping)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4352,7 +4352,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Jönköping → Malmö)_(1/3)",
+      "uid": "Edfa_fiber (Jönköping -> Malmö)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4371,7 +4371,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Jönköping → Malmö)_(2/3)",
+      "uid": "Edfa_fiber (Jönköping -> Malmö)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4390,7 +4390,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Umeå → Gävle)_(1/5)",
+      "uid": "Edfa_fiber (Umeå -> Gävle)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4409,7 +4409,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Umeå → Gävle)_(2/5)",
+      "uid": "Edfa_fiber (Umeå -> Gävle)_(2/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4428,7 +4428,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Umeå → Gävle)_(3/5)",
+      "uid": "Edfa_fiber (Umeå -> Gävle)_(3/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4447,7 +4447,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Umeå → Gävle)_(4/5)",
+      "uid": "Edfa_fiber (Umeå -> Gävle)_(4/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4466,7 +4466,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Gävle → Umeå)_(1/5)",
+      "uid": "Edfa_fiber (Gävle -> Umeå)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4485,7 +4485,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Gävle → Umeå)_(2/5)",
+      "uid": "Edfa_fiber (Gävle -> Umeå)_(2/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4504,7 +4504,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Gävle → Umeå)_(3/5)",
+      "uid": "Edfa_fiber (Gävle -> Umeå)_(3/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4523,7 +4523,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Gävle → Umeå)_(4/5)",
+      "uid": "Edfa_fiber (Gävle -> Umeå)_(4/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4542,7 +4542,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Stockholm → Norrköping)_(1/2)",
+      "uid": "Edfa_fiber (Stockholm -> Norrköping)_(1/2)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4561,7 +4561,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Norrköping → Stockholm)_(1/2)",
+      "uid": "Edfa_fiber (Norrköping -> Stockholm)_(1/2)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4580,7 +4580,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Malmö → Norrköping)_(1/5)",
+      "uid": "Edfa_fiber (Malmö -> Norrköping)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4599,7 +4599,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Malmö → Norrköping)_(2/5)",
+      "uid": "Edfa_fiber (Malmö -> Norrköping)_(2/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4618,7 +4618,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Malmö → Norrköping)_(3/5)",
+      "uid": "Edfa_fiber (Malmö -> Norrköping)_(3/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4637,7 +4637,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Malmö → Norrköping)_(4/5)",
+      "uid": "Edfa_fiber (Malmö -> Norrköping)_(4/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4656,7 +4656,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Norrköping → Malmö)_(1/5)",
+      "uid": "Edfa_fiber (Norrköping -> Malmö)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4675,7 +4675,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Norrköping → Malmö)_(2/5)",
+      "uid": "Edfa_fiber (Norrköping -> Malmö)_(2/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4694,7 +4694,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Norrköping → Malmö)_(3/5)",
+      "uid": "Edfa_fiber (Norrköping -> Malmö)_(3/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4713,7 +4713,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Norrköping → Malmö)_(4/5)",
+      "uid": "Edfa_fiber (Norrköping -> Malmö)_(4/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4732,7 +4732,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Umeå → Sundsvall)_(1/3)",
+      "uid": "Edfa_fiber (Umeå -> Sundsvall)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4751,7 +4751,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Umeå → Sundsvall)_(2/3)",
+      "uid": "Edfa_fiber (Umeå -> Sundsvall)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4770,7 +4770,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Sundsvall → Umeå)_(1/3)",
+      "uid": "Edfa_fiber (Sundsvall -> Umeå)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4789,7 +4789,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Sundsvall → Umeå)_(2/3)",
+      "uid": "Edfa_fiber (Sundsvall -> Umeå)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4808,7 +4808,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Karlstad → Sundsvall)_(1/5)",
+      "uid": "Edfa_fiber (Karlstad -> Sundsvall)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4827,7 +4827,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Karlstad → Sundsvall)_(2/5)",
+      "uid": "Edfa_fiber (Karlstad -> Sundsvall)_(2/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4846,7 +4846,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Karlstad → Sundsvall)_(3/5)",
+      "uid": "Edfa_fiber (Karlstad -> Sundsvall)_(3/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4865,7 +4865,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Karlstad → Sundsvall)_(4/5)",
+      "uid": "Edfa_fiber (Karlstad -> Sundsvall)_(4/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4884,7 +4884,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Sundsvall → Karlstad)_(1/5)",
+      "uid": "Edfa_fiber (Sundsvall -> Karlstad)_(1/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4903,7 +4903,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Sundsvall → Karlstad)_(2/5)",
+      "uid": "Edfa_fiber (Sundsvall -> Karlstad)_(2/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4922,7 +4922,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Sundsvall → Karlstad)_(3/5)",
+      "uid": "Edfa_fiber (Sundsvall -> Karlstad)_(3/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4941,7 +4941,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Sundsvall → Karlstad)_(4/5)",
+      "uid": "Edfa_fiber (Sundsvall -> Karlstad)_(4/5)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4960,7 +4960,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Gothenburg → Helsingborg)_(1/3)",
+      "uid": "Edfa_fiber (Gothenburg -> Helsingborg)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4979,7 +4979,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Gothenburg → Helsingborg)_(2/3)",
+      "uid": "Edfa_fiber (Gothenburg -> Helsingborg)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -4998,7 +4998,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Helsingborg → Gothenburg)_(1/3)",
+      "uid": "Edfa_fiber (Helsingborg -> Gothenburg)_(1/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -5017,7 +5017,7 @@
       }
     },
     {
-      "uid": "Edfa_fiber (Helsingborg → Gothenburg)_(2/3)",
+      "uid": "Edfa_fiber (Helsingborg -> Gothenburg)_(2/3)",
       "type": "Edfa",
       "type_variety": "openroadm_ila_low_noise",
       "operational": {
@@ -5103,15 +5103,15 @@
     },
     {
       "from_node": "roadm_Stockholm",
-      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Västerås)"
+      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Västerås)"
     },
     {
       "from_node": "roadm_Stockholm",
-      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Uppsala)"
+      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Uppsala)"
     },
     {
       "from_node": "roadm_Stockholm",
-      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)"
+      "to_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Norrköping)_(1/2)"
     },
     {
       "from_node": "roadm_Gothenburg",
@@ -5119,11 +5119,11 @@
     },
     {
       "from_node": "roadm_Gothenburg",
-      "to_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Borås)"
+      "to_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg -> Borås)"
     },
     {
       "from_node": "roadm_Gothenburg",
-      "to_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Helsingborg)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg -> Helsingborg)_(1/3)"
     },
     {
       "from_node": "roadm_Malmö",
@@ -5131,15 +5131,15 @@
     },
     {
       "from_node": "roadm_Malmö",
-      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Helsingborg)"
+      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Helsingborg)"
     },
     {
       "from_node": "roadm_Malmö",
-      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Jönköping)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Jönköping)_(1/3)"
     },
     {
       "from_node": "roadm_Malmö",
-      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Norrköping)_(1/5)"
+      "to_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Norrköping)_(1/5)"
     },
     {
       "from_node": "roadm_Uppsala",
@@ -5147,15 +5147,15 @@
     },
     {
       "from_node": "roadm_Uppsala",
-      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Västerås)"
+      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Västerås)"
     },
     {
       "from_node": "roadm_Uppsala",
-      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Gävle)"
+      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Gävle)"
     },
     {
       "from_node": "roadm_Uppsala",
-      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Stockholm)"
+      "to_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Stockholm)"
     },
     {
       "from_node": "roadm_Västerås",
@@ -5163,15 +5163,15 @@
     },
     {
       "from_node": "roadm_Västerås",
-      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Uppsala)"
+      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Uppsala)"
     },
     {
       "from_node": "roadm_Västerås",
-      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Örebro)"
+      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Örebro)"
     },
     {
       "from_node": "roadm_Västerås",
-      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Stockholm)"
+      "to_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Stockholm)"
     },
     {
       "from_node": "roadm_Örebro",
@@ -5179,23 +5179,23 @@
     },
     {
       "from_node": "roadm_Örebro",
-      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Norrköping)"
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Norrköping)"
     },
     {
       "from_node": "roadm_Örebro",
-      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Västerås)"
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Västerås)"
     },
     {
       "from_node": "roadm_Örebro",
-      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Linköping)"
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Linköping)"
     },
     {
       "from_node": "roadm_Örebro",
-      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Karlstad)"
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Karlstad)"
     },
     {
       "from_node": "roadm_Örebro",
-      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Gävle)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Gävle)_(1/3)"
     },
     {
       "from_node": "roadm_Linköping",
@@ -5203,15 +5203,15 @@
     },
     {
       "from_node": "roadm_Linköping",
-      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)"
+      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Jönköping)"
     },
     {
       "from_node": "roadm_Linköping",
-      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Örebro)"
+      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Örebro)"
     },
     {
       "from_node": "roadm_Linköping",
-      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Norrköping)"
+      "to_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Norrköping)"
     },
     {
       "from_node": "roadm_Helsingborg",
@@ -5219,11 +5219,11 @@
     },
     {
       "from_node": "roadm_Helsingborg",
-      "to_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Malmö)"
+      "to_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg -> Malmö)"
     },
     {
       "from_node": "roadm_Helsingborg",
-      "to_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Gothenburg)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg -> Gothenburg)_(1/3)"
     },
     {
       "from_node": "roadm_Jönköping",
@@ -5231,15 +5231,15 @@
     },
     {
       "from_node": "roadm_Jönköping",
-      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Linköping)"
+      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Linköping)"
     },
     {
       "from_node": "roadm_Jönköping",
-      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)"
+      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Borås)"
     },
     {
       "from_node": "roadm_Jönköping",
-      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Malmö)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Malmö)_(1/3)"
     },
     {
       "from_node": "roadm_Umeå",
@@ -5247,11 +5247,11 @@
     },
     {
       "from_node": "roadm_Umeå",
-      "to_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Gävle)_(1/5)"
+      "to_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå -> Gävle)_(1/5)"
     },
     {
       "from_node": "roadm_Umeå",
-      "to_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Sundsvall)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå -> Sundsvall)_(1/3)"
     },
     {
       "from_node": "roadm_Norrköping",
@@ -5259,19 +5259,19 @@
     },
     {
       "from_node": "roadm_Norrköping",
-      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Örebro)"
+      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Örebro)"
     },
     {
       "from_node": "roadm_Norrköping",
-      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)"
+      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Linköping)"
     },
     {
       "from_node": "roadm_Norrköping",
-      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Stockholm)_(1/2)"
+      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Stockholm)_(1/2)"
     },
     {
       "from_node": "roadm_Norrköping",
-      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Malmö)_(1/5)"
+      "to_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Malmö)_(1/5)"
     },
     {
       "from_node": "roadm_Karlstad",
@@ -5279,15 +5279,15 @@
     },
     {
       "from_node": "roadm_Karlstad",
-      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Örebro)"
+      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Örebro)"
     },
     {
       "from_node": "roadm_Karlstad",
-      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Borås)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Borås)_(1/3)"
     },
     {
       "from_node": "roadm_Karlstad",
-      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Sundsvall)_(1/5)"
+      "to_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Sundsvall)_(1/5)"
     },
     {
       "from_node": "roadm_Sundsvall",
@@ -5295,11 +5295,11 @@
     },
     {
       "from_node": "roadm_Sundsvall",
-      "to_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Umeå)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall -> Umeå)_(1/3)"
     },
     {
       "from_node": "roadm_Sundsvall",
-      "to_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Karlstad)_(1/5)"
+      "to_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall -> Karlstad)_(1/5)"
     },
     {
       "from_node": "roadm_Gävle",
@@ -5307,15 +5307,15 @@
     },
     {
       "from_node": "roadm_Gävle",
-      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Uppsala)"
+      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Uppsala)"
     },
     {
       "from_node": "roadm_Gävle",
-      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Örebro)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Örebro)_(1/3)"
     },
     {
       "from_node": "roadm_Gävle",
-      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Umeå)_(1/5)"
+      "to_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Umeå)_(1/5)"
     },
     {
       "from_node": "roadm_Borås",
@@ -5323,911 +5323,911 @@
     },
     {
       "from_node": "roadm_Borås",
-      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Jönköping)"
+      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Jönköping)"
     },
     {
       "from_node": "roadm_Borås",
-      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)"
+      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Gothenburg)"
     },
     {
       "from_node": "roadm_Borås",
-      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Karlstad)_(1/3)"
+      "to_node": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Karlstad)_(1/3)"
     },
     {
-      "from_node": "fiber (Uppsala → Västerås)",
-      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala → Västerås)"
+      "from_node": "fiber (Uppsala -> Västerås)",
+      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala -> Västerås)"
     },
     {
-      "from_node": "fiber (Västerås → Uppsala)",
-      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås → Uppsala)"
+      "from_node": "fiber (Västerås -> Uppsala)",
+      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås -> Uppsala)"
     },
     {
-      "from_node": "fiber (Uppsala → Gävle)",
-      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala → Gävle)"
+      "from_node": "fiber (Uppsala -> Gävle)",
+      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala -> Gävle)"
     },
     {
-      "from_node": "fiber (Gävle → Uppsala)",
-      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle → Uppsala)"
+      "from_node": "fiber (Gävle -> Uppsala)",
+      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle -> Uppsala)"
     },
     {
-      "from_node": "fiber (Örebro → Norrköping)",
-      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro → Norrköping)"
+      "from_node": "fiber (Örebro -> Norrköping)",
+      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro -> Norrköping)"
     },
     {
-      "from_node": "fiber (Norrköping → Örebro)",
-      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping → Örebro)"
+      "from_node": "fiber (Norrköping -> Örebro)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping -> Örebro)"
     },
     {
-      "from_node": "fiber (Linköping → Jönköping)",
-      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)"
+      "from_node": "fiber (Linköping -> Jönköping)",
+      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping -> Jönköping)"
     },
     {
-      "from_node": "fiber (Jönköping → Linköping)",
-      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping → Linköping)"
+      "from_node": "fiber (Jönköping -> Linköping)",
+      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping -> Linköping)"
     },
     {
-      "from_node": "fiber (Västerås → Örebro)",
-      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås → Örebro)"
+      "from_node": "fiber (Västerås -> Örebro)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås -> Örebro)"
     },
     {
-      "from_node": "fiber (Örebro → Västerås)",
-      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro → Västerås)"
+      "from_node": "fiber (Örebro -> Västerås)",
+      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro -> Västerås)"
     },
     {
-      "from_node": "fiber (Örebro → Linköping)",
-      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro → Linköping)"
+      "from_node": "fiber (Örebro -> Linköping)",
+      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro -> Linköping)"
     },
     {
-      "from_node": "fiber (Linköping → Örebro)",
-      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping → Örebro)"
+      "from_node": "fiber (Linköping -> Örebro)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping -> Örebro)"
     },
     {
-      "from_node": "fiber (Jönköping → Borås)",
-      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)"
+      "from_node": "fiber (Jönköping -> Borås)",
+      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping -> Borås)"
     },
     {
-      "from_node": "fiber (Borås → Jönköping)",
-      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås → Jönköping)"
+      "from_node": "fiber (Borås -> Jönköping)",
+      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås -> Jönköping)"
     },
     {
-      "from_node": "fiber (Stockholm → Västerås)",
-      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm → Västerås)"
+      "from_node": "fiber (Stockholm -> Västerås)",
+      "to_node": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm -> Västerås)"
     },
     {
-      "from_node": "fiber (Västerås → Stockholm)",
-      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås → Stockholm)"
+      "from_node": "fiber (Västerås -> Stockholm)",
+      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås -> Stockholm)"
     },
     {
-      "from_node": "fiber (Malmö → Helsingborg)",
-      "to_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö → Helsingborg)"
+      "from_node": "fiber (Malmö -> Helsingborg)",
+      "to_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö -> Helsingborg)"
     },
     {
-      "from_node": "fiber (Helsingborg → Malmö)",
-      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg → Malmö)"
+      "from_node": "fiber (Helsingborg -> Malmö)",
+      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg -> Malmö)"
     },
     {
-      "from_node": "fiber (Gothenburg → Borås)",
-      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg → Borås)"
+      "from_node": "fiber (Gothenburg -> Borås)",
+      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg -> Borås)"
     },
     {
-      "from_node": "fiber (Borås → Gothenburg)",
-      "to_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)"
+      "from_node": "fiber (Borås -> Gothenburg)",
+      "to_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås -> Gothenburg)"
     },
     {
-      "from_node": "fiber (Linköping → Norrköping)",
-      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping → Norrköping)"
+      "from_node": "fiber (Linköping -> Norrköping)",
+      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping -> Norrköping)"
     },
     {
-      "from_node": "fiber (Norrköping → Linköping)",
-      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)"
+      "from_node": "fiber (Norrköping -> Linköping)",
+      "to_node": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping -> Linköping)"
     },
     {
-      "from_node": "fiber (Örebro → Karlstad)",
-      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro → Karlstad)"
+      "from_node": "fiber (Örebro -> Karlstad)",
+      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro -> Karlstad)"
     },
     {
-      "from_node": "fiber (Karlstad → Örebro)",
-      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad → Örebro)"
+      "from_node": "fiber (Karlstad -> Örebro)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad -> Örebro)"
     },
     {
-      "from_node": "fiber (Stockholm → Uppsala)",
-      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm → Uppsala)"
+      "from_node": "fiber (Stockholm -> Uppsala)",
+      "to_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm -> Uppsala)"
     },
     {
-      "from_node": "fiber (Uppsala → Stockholm)",
-      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala → Stockholm)"
+      "from_node": "fiber (Uppsala -> Stockholm)",
+      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala -> Stockholm)"
     },
     {
-      "from_node": "fiber (Örebro → Gävle)_(1/3)",
-      "to_node": "Edfa_fiber (Örebro → Gävle)_(1/3)"
+      "from_node": "fiber (Örebro -> Gävle)_(1/3)",
+      "to_node": "Edfa_fiber (Örebro -> Gävle)_(1/3)"
     },
     {
-      "from_node": "fiber (Örebro → Gävle)_(2/3)",
-      "to_node": "Edfa_fiber (Örebro → Gävle)_(2/3)"
+      "from_node": "fiber (Örebro -> Gävle)_(2/3)",
+      "to_node": "Edfa_fiber (Örebro -> Gävle)_(2/3)"
     },
     {
-      "from_node": "fiber (Örebro → Gävle)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro → Gävle)_(3/3)"
+      "from_node": "fiber (Örebro -> Gävle)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro -> Gävle)_(3/3)"
     },
     {
-      "from_node": "fiber (Gävle → Örebro)_(1/3)",
-      "to_node": "Edfa_fiber (Gävle → Örebro)_(1/3)"
+      "from_node": "fiber (Gävle -> Örebro)_(1/3)",
+      "to_node": "Edfa_fiber (Gävle -> Örebro)_(1/3)"
     },
     {
-      "from_node": "fiber (Gävle → Örebro)_(2/3)",
-      "to_node": "Edfa_fiber (Gävle → Örebro)_(2/3)"
+      "from_node": "fiber (Gävle -> Örebro)_(2/3)",
+      "to_node": "Edfa_fiber (Gävle -> Örebro)_(2/3)"
     },
     {
-      "from_node": "fiber (Gävle → Örebro)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle → Örebro)_(3/3)"
+      "from_node": "fiber (Gävle -> Örebro)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle -> Örebro)_(3/3)"
     },
     {
-      "from_node": "fiber (Karlstad → Borås)_(1/3)",
-      "to_node": "Edfa_fiber (Karlstad → Borås)_(1/3)"
+      "from_node": "fiber (Karlstad -> Borås)_(1/3)",
+      "to_node": "Edfa_fiber (Karlstad -> Borås)_(1/3)"
     },
     {
-      "from_node": "fiber (Karlstad → Borås)_(2/3)",
-      "to_node": "Edfa_fiber (Karlstad → Borås)_(2/3)"
+      "from_node": "fiber (Karlstad -> Borås)_(2/3)",
+      "to_node": "Edfa_fiber (Karlstad -> Borås)_(2/3)"
     },
     {
-      "from_node": "fiber (Karlstad → Borås)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad → Borås)_(3/3)"
+      "from_node": "fiber (Karlstad -> Borås)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad -> Borås)_(3/3)"
     },
     {
-      "from_node": "fiber (Borås → Karlstad)_(1/3)",
-      "to_node": "Edfa_fiber (Borås → Karlstad)_(1/3)"
+      "from_node": "fiber (Borås -> Karlstad)_(1/3)",
+      "to_node": "Edfa_fiber (Borås -> Karlstad)_(1/3)"
     },
     {
-      "from_node": "fiber (Borås → Karlstad)_(2/3)",
-      "to_node": "Edfa_fiber (Borås → Karlstad)_(2/3)"
+      "from_node": "fiber (Borås -> Karlstad)_(2/3)",
+      "to_node": "Edfa_fiber (Borås -> Karlstad)_(2/3)"
     },
     {
-      "from_node": "fiber (Borås → Karlstad)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås → Karlstad)_(3/3)"
+      "from_node": "fiber (Borås -> Karlstad)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås -> Karlstad)_(3/3)"
     },
     {
-      "from_node": "fiber (Malmö → Jönköping)_(1/3)",
-      "to_node": "Edfa_fiber (Malmö → Jönköping)_(1/3)"
+      "from_node": "fiber (Malmö -> Jönköping)_(1/3)",
+      "to_node": "Edfa_fiber (Malmö -> Jönköping)_(1/3)"
     },
     {
-      "from_node": "fiber (Malmö → Jönköping)_(2/3)",
-      "to_node": "Edfa_fiber (Malmö → Jönköping)_(2/3)"
+      "from_node": "fiber (Malmö -> Jönköping)_(2/3)",
+      "to_node": "Edfa_fiber (Malmö -> Jönköping)_(2/3)"
     },
     {
-      "from_node": "fiber (Malmö → Jönköping)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö → Jönköping)_(3/3)"
+      "from_node": "fiber (Malmö -> Jönköping)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö -> Jönköping)_(3/3)"
     },
     {
-      "from_node": "fiber (Jönköping → Malmö)_(1/3)",
-      "to_node": "Edfa_fiber (Jönköping → Malmö)_(1/3)"
+      "from_node": "fiber (Jönköping -> Malmö)_(1/3)",
+      "to_node": "Edfa_fiber (Jönköping -> Malmö)_(1/3)"
     },
     {
-      "from_node": "fiber (Jönköping → Malmö)_(2/3)",
-      "to_node": "Edfa_fiber (Jönköping → Malmö)_(2/3)"
+      "from_node": "fiber (Jönköping -> Malmö)_(2/3)",
+      "to_node": "Edfa_fiber (Jönköping -> Malmö)_(2/3)"
     },
     {
-      "from_node": "fiber (Jönköping → Malmö)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping → Malmö)_(3/3)"
+      "from_node": "fiber (Jönköping -> Malmö)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping -> Malmö)_(3/3)"
     },
     {
-      "from_node": "fiber (Umeå → Gävle)_(1/5)",
-      "to_node": "Edfa_fiber (Umeå → Gävle)_(1/5)"
+      "from_node": "fiber (Umeå -> Gävle)_(1/5)",
+      "to_node": "Edfa_fiber (Umeå -> Gävle)_(1/5)"
     },
     {
-      "from_node": "fiber (Umeå → Gävle)_(2/5)",
-      "to_node": "Edfa_fiber (Umeå → Gävle)_(2/5)"
+      "from_node": "fiber (Umeå -> Gävle)_(2/5)",
+      "to_node": "Edfa_fiber (Umeå -> Gävle)_(2/5)"
     },
     {
-      "from_node": "fiber (Umeå → Gävle)_(3/5)",
-      "to_node": "Edfa_fiber (Umeå → Gävle)_(3/5)"
+      "from_node": "fiber (Umeå -> Gävle)_(3/5)",
+      "to_node": "Edfa_fiber (Umeå -> Gävle)_(3/5)"
     },
     {
-      "from_node": "fiber (Umeå → Gävle)_(4/5)",
-      "to_node": "Edfa_fiber (Umeå → Gävle)_(4/5)"
+      "from_node": "fiber (Umeå -> Gävle)_(4/5)",
+      "to_node": "Edfa_fiber (Umeå -> Gävle)_(4/5)"
     },
     {
-      "from_node": "fiber (Umeå → Gävle)_(5/5)",
-      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå → Gävle)_(5/5)"
+      "from_node": "fiber (Umeå -> Gävle)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå -> Gävle)_(5/5)"
     },
     {
-      "from_node": "fiber (Gävle → Umeå)_(1/5)",
-      "to_node": "Edfa_fiber (Gävle → Umeå)_(1/5)"
+      "from_node": "fiber (Gävle -> Umeå)_(1/5)",
+      "to_node": "Edfa_fiber (Gävle -> Umeå)_(1/5)"
     },
     {
-      "from_node": "fiber (Gävle → Umeå)_(2/5)",
-      "to_node": "Edfa_fiber (Gävle → Umeå)_(2/5)"
+      "from_node": "fiber (Gävle -> Umeå)_(2/5)",
+      "to_node": "Edfa_fiber (Gävle -> Umeå)_(2/5)"
     },
     {
-      "from_node": "fiber (Gävle → Umeå)_(3/5)",
-      "to_node": "Edfa_fiber (Gävle → Umeå)_(3/5)"
+      "from_node": "fiber (Gävle -> Umeå)_(3/5)",
+      "to_node": "Edfa_fiber (Gävle -> Umeå)_(3/5)"
     },
     {
-      "from_node": "fiber (Gävle → Umeå)_(4/5)",
-      "to_node": "Edfa_fiber (Gävle → Umeå)_(4/5)"
+      "from_node": "fiber (Gävle -> Umeå)_(4/5)",
+      "to_node": "Edfa_fiber (Gävle -> Umeå)_(4/5)"
     },
     {
-      "from_node": "fiber (Gävle → Umeå)_(5/5)",
-      "to_node": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle → Umeå)_(5/5)"
+      "from_node": "fiber (Gävle -> Umeå)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle -> Umeå)_(5/5)"
     },
     {
-      "from_node": "fiber (Stockholm → Norrköping)_(1/2)",
-      "to_node": "Edfa_fiber (Stockholm → Norrköping)_(1/2)"
+      "from_node": "fiber (Stockholm -> Norrköping)_(1/2)",
+      "to_node": "Edfa_fiber (Stockholm -> Norrköping)_(1/2)"
     },
     {
-      "from_node": "fiber (Stockholm → Norrköping)_(2/2)",
-      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)"
+      "from_node": "fiber (Stockholm -> Norrköping)_(2/2)",
+      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm -> Norrköping)_(2/2)"
     },
     {
-      "from_node": "fiber (Norrköping → Stockholm)_(1/2)",
-      "to_node": "Edfa_fiber (Norrköping → Stockholm)_(1/2)"
+      "from_node": "fiber (Norrköping -> Stockholm)_(1/2)",
+      "to_node": "Edfa_fiber (Norrköping -> Stockholm)_(1/2)"
     },
     {
-      "from_node": "fiber (Norrköping → Stockholm)_(2/2)",
-      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping → Stockholm)_(2/2)"
+      "from_node": "fiber (Norrköping -> Stockholm)_(2/2)",
+      "to_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping -> Stockholm)_(2/2)"
     },
     {
-      "from_node": "fiber (Malmö → Norrköping)_(1/5)",
-      "to_node": "Edfa_fiber (Malmö → Norrköping)_(1/5)"
+      "from_node": "fiber (Malmö -> Norrköping)_(1/5)",
+      "to_node": "Edfa_fiber (Malmö -> Norrköping)_(1/5)"
     },
     {
-      "from_node": "fiber (Malmö → Norrköping)_(2/5)",
-      "to_node": "Edfa_fiber (Malmö → Norrköping)_(2/5)"
+      "from_node": "fiber (Malmö -> Norrköping)_(2/5)",
+      "to_node": "Edfa_fiber (Malmö -> Norrköping)_(2/5)"
     },
     {
-      "from_node": "fiber (Malmö → Norrköping)_(3/5)",
-      "to_node": "Edfa_fiber (Malmö → Norrköping)_(3/5)"
+      "from_node": "fiber (Malmö -> Norrköping)_(3/5)",
+      "to_node": "Edfa_fiber (Malmö -> Norrköping)_(3/5)"
     },
     {
-      "from_node": "fiber (Malmö → Norrköping)_(4/5)",
-      "to_node": "Edfa_fiber (Malmö → Norrköping)_(4/5)"
+      "from_node": "fiber (Malmö -> Norrköping)_(4/5)",
+      "to_node": "Edfa_fiber (Malmö -> Norrköping)_(4/5)"
     },
     {
-      "from_node": "fiber (Malmö → Norrköping)_(5/5)",
-      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö → Norrköping)_(5/5)"
+      "from_node": "fiber (Malmö -> Norrköping)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö -> Norrköping)_(5/5)"
     },
     {
-      "from_node": "fiber (Norrköping → Malmö)_(1/5)",
-      "to_node": "Edfa_fiber (Norrköping → Malmö)_(1/5)"
+      "from_node": "fiber (Norrköping -> Malmö)_(1/5)",
+      "to_node": "Edfa_fiber (Norrköping -> Malmö)_(1/5)"
     },
     {
-      "from_node": "fiber (Norrköping → Malmö)_(2/5)",
-      "to_node": "Edfa_fiber (Norrköping → Malmö)_(2/5)"
+      "from_node": "fiber (Norrköping -> Malmö)_(2/5)",
+      "to_node": "Edfa_fiber (Norrköping -> Malmö)_(2/5)"
     },
     {
-      "from_node": "fiber (Norrköping → Malmö)_(3/5)",
-      "to_node": "Edfa_fiber (Norrköping → Malmö)_(3/5)"
+      "from_node": "fiber (Norrköping -> Malmö)_(3/5)",
+      "to_node": "Edfa_fiber (Norrköping -> Malmö)_(3/5)"
     },
     {
-      "from_node": "fiber (Norrköping → Malmö)_(4/5)",
-      "to_node": "Edfa_fiber (Norrköping → Malmö)_(4/5)"
+      "from_node": "fiber (Norrköping -> Malmö)_(4/5)",
+      "to_node": "Edfa_fiber (Norrköping -> Malmö)_(4/5)"
     },
     {
-      "from_node": "fiber (Norrköping → Malmö)_(5/5)",
-      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping → Malmö)_(5/5)"
+      "from_node": "fiber (Norrköping -> Malmö)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping -> Malmö)_(5/5)"
     },
     {
-      "from_node": "fiber (Umeå → Sundsvall)_(1/3)",
-      "to_node": "Edfa_fiber (Umeå → Sundsvall)_(1/3)"
+      "from_node": "fiber (Umeå -> Sundsvall)_(1/3)",
+      "to_node": "Edfa_fiber (Umeå -> Sundsvall)_(1/3)"
     },
     {
-      "from_node": "fiber (Umeå → Sundsvall)_(2/3)",
-      "to_node": "Edfa_fiber (Umeå → Sundsvall)_(2/3)"
+      "from_node": "fiber (Umeå -> Sundsvall)_(2/3)",
+      "to_node": "Edfa_fiber (Umeå -> Sundsvall)_(2/3)"
     },
     {
-      "from_node": "fiber (Umeå → Sundsvall)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå → Sundsvall)_(3/3)"
+      "from_node": "fiber (Umeå -> Sundsvall)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå -> Sundsvall)_(3/3)"
     },
     {
-      "from_node": "fiber (Sundsvall → Umeå)_(1/3)",
-      "to_node": "Edfa_fiber (Sundsvall → Umeå)_(1/3)"
+      "from_node": "fiber (Sundsvall -> Umeå)_(1/3)",
+      "to_node": "Edfa_fiber (Sundsvall -> Umeå)_(1/3)"
     },
     {
-      "from_node": "fiber (Sundsvall → Umeå)_(2/3)",
-      "to_node": "Edfa_fiber (Sundsvall → Umeå)_(2/3)"
+      "from_node": "fiber (Sundsvall -> Umeå)_(2/3)",
+      "to_node": "Edfa_fiber (Sundsvall -> Umeå)_(2/3)"
     },
     {
-      "from_node": "fiber (Sundsvall → Umeå)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall → Umeå)_(3/3)"
+      "from_node": "fiber (Sundsvall -> Umeå)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall -> Umeå)_(3/3)"
     },
     {
-      "from_node": "fiber (Karlstad → Sundsvall)_(1/5)",
-      "to_node": "Edfa_fiber (Karlstad → Sundsvall)_(1/5)"
+      "from_node": "fiber (Karlstad -> Sundsvall)_(1/5)",
+      "to_node": "Edfa_fiber (Karlstad -> Sundsvall)_(1/5)"
     },
     {
-      "from_node": "fiber (Karlstad → Sundsvall)_(2/5)",
-      "to_node": "Edfa_fiber (Karlstad → Sundsvall)_(2/5)"
+      "from_node": "fiber (Karlstad -> Sundsvall)_(2/5)",
+      "to_node": "Edfa_fiber (Karlstad -> Sundsvall)_(2/5)"
     },
     {
-      "from_node": "fiber (Karlstad → Sundsvall)_(3/5)",
-      "to_node": "Edfa_fiber (Karlstad → Sundsvall)_(3/5)"
+      "from_node": "fiber (Karlstad -> Sundsvall)_(3/5)",
+      "to_node": "Edfa_fiber (Karlstad -> Sundsvall)_(3/5)"
     },
     {
-      "from_node": "fiber (Karlstad → Sundsvall)_(4/5)",
-      "to_node": "Edfa_fiber (Karlstad → Sundsvall)_(4/5)"
+      "from_node": "fiber (Karlstad -> Sundsvall)_(4/5)",
+      "to_node": "Edfa_fiber (Karlstad -> Sundsvall)_(4/5)"
     },
     {
-      "from_node": "fiber (Karlstad → Sundsvall)_(5/5)",
-      "to_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad → Sundsvall)_(5/5)"
+      "from_node": "fiber (Karlstad -> Sundsvall)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad -> Sundsvall)_(5/5)"
     },
     {
-      "from_node": "fiber (Sundsvall → Karlstad)_(1/5)",
-      "to_node": "Edfa_fiber (Sundsvall → Karlstad)_(1/5)"
+      "from_node": "fiber (Sundsvall -> Karlstad)_(1/5)",
+      "to_node": "Edfa_fiber (Sundsvall -> Karlstad)_(1/5)"
     },
     {
-      "from_node": "fiber (Sundsvall → Karlstad)_(2/5)",
-      "to_node": "Edfa_fiber (Sundsvall → Karlstad)_(2/5)"
+      "from_node": "fiber (Sundsvall -> Karlstad)_(2/5)",
+      "to_node": "Edfa_fiber (Sundsvall -> Karlstad)_(2/5)"
     },
     {
-      "from_node": "fiber (Sundsvall → Karlstad)_(3/5)",
-      "to_node": "Edfa_fiber (Sundsvall → Karlstad)_(3/5)"
+      "from_node": "fiber (Sundsvall -> Karlstad)_(3/5)",
+      "to_node": "Edfa_fiber (Sundsvall -> Karlstad)_(3/5)"
     },
     {
-      "from_node": "fiber (Sundsvall → Karlstad)_(4/5)",
-      "to_node": "Edfa_fiber (Sundsvall → Karlstad)_(4/5)"
+      "from_node": "fiber (Sundsvall -> Karlstad)_(4/5)",
+      "to_node": "Edfa_fiber (Sundsvall -> Karlstad)_(4/5)"
     },
     {
-      "from_node": "fiber (Sundsvall → Karlstad)_(5/5)",
-      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall → Karlstad)_(5/5)"
+      "from_node": "fiber (Sundsvall -> Karlstad)_(5/5)",
+      "to_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall -> Karlstad)_(5/5)"
     },
     {
-      "from_node": "fiber (Gothenburg → Helsingborg)_(1/3)",
-      "to_node": "Edfa_fiber (Gothenburg → Helsingborg)_(1/3)"
+      "from_node": "fiber (Gothenburg -> Helsingborg)_(1/3)",
+      "to_node": "Edfa_fiber (Gothenburg -> Helsingborg)_(1/3)"
     },
     {
-      "from_node": "fiber (Gothenburg → Helsingborg)_(2/3)",
-      "to_node": "Edfa_fiber (Gothenburg → Helsingborg)_(2/3)"
+      "from_node": "fiber (Gothenburg -> Helsingborg)_(2/3)",
+      "to_node": "Edfa_fiber (Gothenburg -> Helsingborg)_(2/3)"
     },
     {
-      "from_node": "fiber (Gothenburg → Helsingborg)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg → Helsingborg)_(3/3)"
+      "from_node": "fiber (Gothenburg -> Helsingborg)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg -> Helsingborg)_(3/3)"
     },
     {
-      "from_node": "fiber (Helsingborg → Gothenburg)_(1/3)",
-      "to_node": "Edfa_fiber (Helsingborg → Gothenburg)_(1/3)"
+      "from_node": "fiber (Helsingborg -> Gothenburg)_(1/3)",
+      "to_node": "Edfa_fiber (Helsingborg -> Gothenburg)_(1/3)"
     },
     {
-      "from_node": "fiber (Helsingborg → Gothenburg)_(2/3)",
-      "to_node": "Edfa_fiber (Helsingborg → Gothenburg)_(2/3)"
+      "from_node": "fiber (Helsingborg -> Gothenburg)_(2/3)",
+      "to_node": "Edfa_fiber (Helsingborg -> Gothenburg)_(2/3)"
     },
     {
-      "from_node": "fiber (Helsingborg → Gothenburg)_(3/3)",
-      "to_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg → Gothenburg)_(3/3)"
+      "from_node": "fiber (Helsingborg -> Gothenburg)_(3/3)",
+      "to_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg -> Gothenburg)_(3/3)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås → Stockholm)",
+      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Västerås -> Stockholm)",
       "to_node": "roadm_Stockholm"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala → Stockholm)",
+      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Uppsala -> Stockholm)",
       "to_node": "roadm_Stockholm"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping → Stockholm)_(2/2)",
+      "from_node": "Edfa_preamp_roadm_Stockholm_from_fiber (Norrköping -> Stockholm)_(2/2)",
       "to_node": "roadm_Stockholm"
     },
     {
-      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Västerås)",
-      "to_node": "fiber (Stockholm → Västerås)"
+      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Västerås)",
+      "to_node": "fiber (Stockholm -> Västerås)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Uppsala)",
-      "to_node": "fiber (Stockholm → Uppsala)"
+      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Uppsala)",
+      "to_node": "fiber (Stockholm -> Uppsala)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm → Norrköping)_(1/2)",
-      "to_node": "fiber (Stockholm → Norrköping)_(1/2)"
+      "from_node": "Edfa_booster_roadm_Stockholm_to_fiber (Stockholm -> Norrköping)_(1/2)",
+      "to_node": "fiber (Stockholm -> Norrköping)_(1/2)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås → Gothenburg)",
+      "from_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Borås -> Gothenburg)",
       "to_node": "roadm_Gothenburg"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg → Gothenburg)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Gothenburg_from_fiber (Helsingborg -> Gothenburg)_(3/3)",
       "to_node": "roadm_Gothenburg"
     },
     {
-      "from_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Borås)",
-      "to_node": "fiber (Gothenburg → Borås)"
+      "from_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg -> Borås)",
+      "to_node": "fiber (Gothenburg -> Borås)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg → Helsingborg)_(1/3)",
-      "to_node": "fiber (Gothenburg → Helsingborg)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Gothenburg_to_fiber (Gothenburg -> Helsingborg)_(1/3)",
+      "to_node": "fiber (Gothenburg -> Helsingborg)_(1/3)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg → Malmö)",
+      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Helsingborg -> Malmö)",
       "to_node": "roadm_Malmö"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping → Malmö)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Jönköping -> Malmö)_(3/3)",
       "to_node": "roadm_Malmö"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping → Malmö)_(5/5)",
+      "from_node": "Edfa_preamp_roadm_Malmö_from_fiber (Norrköping -> Malmö)_(5/5)",
       "to_node": "roadm_Malmö"
     },
     {
-      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Helsingborg)",
-      "to_node": "fiber (Malmö → Helsingborg)"
+      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Helsingborg)",
+      "to_node": "fiber (Malmö -> Helsingborg)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Jönköping)_(1/3)",
-      "to_node": "fiber (Malmö → Jönköping)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Jönköping)_(1/3)",
+      "to_node": "fiber (Malmö -> Jönköping)_(1/3)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö → Norrköping)_(1/5)",
-      "to_node": "fiber (Malmö → Norrköping)_(1/5)"
+      "from_node": "Edfa_booster_roadm_Malmö_to_fiber (Malmö -> Norrköping)_(1/5)",
+      "to_node": "fiber (Malmö -> Norrköping)_(1/5)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås → Uppsala)",
+      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Västerås -> Uppsala)",
       "to_node": "roadm_Uppsala"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle → Uppsala)",
+      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Gävle -> Uppsala)",
       "to_node": "roadm_Uppsala"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm → Uppsala)",
+      "from_node": "Edfa_preamp_roadm_Uppsala_from_fiber (Stockholm -> Uppsala)",
       "to_node": "roadm_Uppsala"
     },
     {
-      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Västerås)",
-      "to_node": "fiber (Uppsala → Västerås)"
+      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Västerås)",
+      "to_node": "fiber (Uppsala -> Västerås)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Gävle)",
-      "to_node": "fiber (Uppsala → Gävle)"
+      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Gävle)",
+      "to_node": "fiber (Uppsala -> Gävle)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala → Stockholm)",
-      "to_node": "fiber (Uppsala → Stockholm)"
+      "from_node": "Edfa_booster_roadm_Uppsala_to_fiber (Uppsala -> Stockholm)",
+      "to_node": "fiber (Uppsala -> Stockholm)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala → Västerås)",
+      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Uppsala -> Västerås)",
       "to_node": "roadm_Västerås"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro → Västerås)",
+      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Örebro -> Västerås)",
       "to_node": "roadm_Västerås"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm → Västerås)",
+      "from_node": "Edfa_preamp_roadm_Västerås_from_fiber (Stockholm -> Västerås)",
       "to_node": "roadm_Västerås"
     },
     {
-      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Uppsala)",
-      "to_node": "fiber (Västerås → Uppsala)"
+      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Uppsala)",
+      "to_node": "fiber (Västerås -> Uppsala)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Örebro)",
-      "to_node": "fiber (Västerås → Örebro)"
+      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Örebro)",
+      "to_node": "fiber (Västerås -> Örebro)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås → Stockholm)",
-      "to_node": "fiber (Västerås → Stockholm)"
+      "from_node": "Edfa_booster_roadm_Västerås_to_fiber (Västerås -> Stockholm)",
+      "to_node": "fiber (Västerås -> Stockholm)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping → Örebro)",
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Norrköping -> Örebro)",
       "to_node": "roadm_Örebro"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås → Örebro)",
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Västerås -> Örebro)",
       "to_node": "roadm_Örebro"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping → Örebro)",
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Linköping -> Örebro)",
       "to_node": "roadm_Örebro"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad → Örebro)",
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Karlstad -> Örebro)",
       "to_node": "roadm_Örebro"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle → Örebro)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Örebro_from_fiber (Gävle -> Örebro)_(3/3)",
       "to_node": "roadm_Örebro"
     },
     {
-      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Norrköping)",
-      "to_node": "fiber (Örebro → Norrköping)"
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Norrköping)",
+      "to_node": "fiber (Örebro -> Norrköping)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Västerås)",
-      "to_node": "fiber (Örebro → Västerås)"
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Västerås)",
+      "to_node": "fiber (Örebro -> Västerås)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Linköping)",
-      "to_node": "fiber (Örebro → Linköping)"
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Linköping)",
+      "to_node": "fiber (Örebro -> Linköping)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Karlstad)",
-      "to_node": "fiber (Örebro → Karlstad)"
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Karlstad)",
+      "to_node": "fiber (Örebro -> Karlstad)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro → Gävle)_(1/3)",
-      "to_node": "fiber (Örebro → Gävle)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Örebro_to_fiber (Örebro -> Gävle)_(1/3)",
+      "to_node": "fiber (Örebro -> Gävle)_(1/3)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping → Linköping)",
+      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Jönköping -> Linköping)",
       "to_node": "roadm_Linköping"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro → Linköping)",
+      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Örebro -> Linköping)",
       "to_node": "roadm_Linköping"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping → Linköping)",
+      "from_node": "Edfa_preamp_roadm_Linköping_from_fiber (Norrköping -> Linköping)",
       "to_node": "roadm_Linköping"
     },
     {
-      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Jönköping)",
-      "to_node": "fiber (Linköping → Jönköping)"
+      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Jönköping)",
+      "to_node": "fiber (Linköping -> Jönköping)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Örebro)",
-      "to_node": "fiber (Linköping → Örebro)"
+      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Örebro)",
+      "to_node": "fiber (Linköping -> Örebro)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping → Norrköping)",
-      "to_node": "fiber (Linköping → Norrköping)"
+      "from_node": "Edfa_booster_roadm_Linköping_to_fiber (Linköping -> Norrköping)",
+      "to_node": "fiber (Linköping -> Norrköping)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö → Helsingborg)",
+      "from_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Malmö -> Helsingborg)",
       "to_node": "roadm_Helsingborg"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg → Helsingborg)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Helsingborg_from_fiber (Gothenburg -> Helsingborg)_(3/3)",
       "to_node": "roadm_Helsingborg"
     },
     {
-      "from_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Malmö)",
-      "to_node": "fiber (Helsingborg → Malmö)"
+      "from_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg -> Malmö)",
+      "to_node": "fiber (Helsingborg -> Malmö)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg → Gothenburg)_(1/3)",
-      "to_node": "fiber (Helsingborg → Gothenburg)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Helsingborg_to_fiber (Helsingborg -> Gothenburg)_(1/3)",
+      "to_node": "fiber (Helsingborg -> Gothenburg)_(1/3)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping → Jönköping)",
+      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Linköping -> Jönköping)",
       "to_node": "roadm_Jönköping"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås → Jönköping)",
+      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Borås -> Jönköping)",
       "to_node": "roadm_Jönköping"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö → Jönköping)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Jönköping_from_fiber (Malmö -> Jönköping)_(3/3)",
       "to_node": "roadm_Jönköping"
     },
     {
-      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Linköping)",
-      "to_node": "fiber (Jönköping → Linköping)"
+      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Linköping)",
+      "to_node": "fiber (Jönköping -> Linköping)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Borås)",
-      "to_node": "fiber (Jönköping → Borås)"
+      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Borås)",
+      "to_node": "fiber (Jönköping -> Borås)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping → Malmö)_(1/3)",
-      "to_node": "fiber (Jönköping → Malmö)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Jönköping_to_fiber (Jönköping -> Malmö)_(1/3)",
+      "to_node": "fiber (Jönköping -> Malmö)_(1/3)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle → Umeå)_(5/5)",
+      "from_node": "Edfa_preamp_roadm_Umeå_from_fiber (Gävle -> Umeå)_(5/5)",
       "to_node": "roadm_Umeå"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall → Umeå)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Umeå_from_fiber (Sundsvall -> Umeå)_(3/3)",
       "to_node": "roadm_Umeå"
     },
     {
-      "from_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Gävle)_(1/5)",
-      "to_node": "fiber (Umeå → Gävle)_(1/5)"
+      "from_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå -> Gävle)_(1/5)",
+      "to_node": "fiber (Umeå -> Gävle)_(1/5)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå → Sundsvall)_(1/3)",
-      "to_node": "fiber (Umeå → Sundsvall)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Umeå_to_fiber (Umeå -> Sundsvall)_(1/3)",
+      "to_node": "fiber (Umeå -> Sundsvall)_(1/3)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro → Norrköping)",
+      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Örebro -> Norrköping)",
       "to_node": "roadm_Norrköping"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping → Norrköping)",
+      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Linköping -> Norrköping)",
       "to_node": "roadm_Norrköping"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm → Norrköping)_(2/2)",
+      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Stockholm -> Norrköping)_(2/2)",
       "to_node": "roadm_Norrköping"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö → Norrköping)_(5/5)",
+      "from_node": "Edfa_preamp_roadm_Norrköping_from_fiber (Malmö -> Norrköping)_(5/5)",
       "to_node": "roadm_Norrköping"
     },
     {
-      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Örebro)",
-      "to_node": "fiber (Norrköping → Örebro)"
+      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Örebro)",
+      "to_node": "fiber (Norrköping -> Örebro)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Linköping)",
-      "to_node": "fiber (Norrköping → Linköping)"
+      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Linköping)",
+      "to_node": "fiber (Norrköping -> Linköping)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Stockholm)_(1/2)",
-      "to_node": "fiber (Norrköping → Stockholm)_(1/2)"
+      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Stockholm)_(1/2)",
+      "to_node": "fiber (Norrköping -> Stockholm)_(1/2)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping → Malmö)_(1/5)",
-      "to_node": "fiber (Norrköping → Malmö)_(1/5)"
+      "from_node": "Edfa_booster_roadm_Norrköping_to_fiber (Norrköping -> Malmö)_(1/5)",
+      "to_node": "fiber (Norrköping -> Malmö)_(1/5)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro → Karlstad)",
+      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Örebro -> Karlstad)",
       "to_node": "roadm_Karlstad"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås → Karlstad)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Borås -> Karlstad)_(3/3)",
       "to_node": "roadm_Karlstad"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall → Karlstad)_(5/5)",
+      "from_node": "Edfa_preamp_roadm_Karlstad_from_fiber (Sundsvall -> Karlstad)_(5/5)",
       "to_node": "roadm_Karlstad"
     },
     {
-      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Örebro)",
-      "to_node": "fiber (Karlstad → Örebro)"
+      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Örebro)",
+      "to_node": "fiber (Karlstad -> Örebro)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Borås)_(1/3)",
-      "to_node": "fiber (Karlstad → Borås)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Borås)_(1/3)",
+      "to_node": "fiber (Karlstad -> Borås)_(1/3)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad → Sundsvall)_(1/5)",
-      "to_node": "fiber (Karlstad → Sundsvall)_(1/5)"
+      "from_node": "Edfa_booster_roadm_Karlstad_to_fiber (Karlstad -> Sundsvall)_(1/5)",
+      "to_node": "fiber (Karlstad -> Sundsvall)_(1/5)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå → Sundsvall)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Umeå -> Sundsvall)_(3/3)",
       "to_node": "roadm_Sundsvall"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad → Sundsvall)_(5/5)",
+      "from_node": "Edfa_preamp_roadm_Sundsvall_from_fiber (Karlstad -> Sundsvall)_(5/5)",
       "to_node": "roadm_Sundsvall"
     },
     {
-      "from_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Umeå)_(1/3)",
-      "to_node": "fiber (Sundsvall → Umeå)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall -> Umeå)_(1/3)",
+      "to_node": "fiber (Sundsvall -> Umeå)_(1/3)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall → Karlstad)_(1/5)",
-      "to_node": "fiber (Sundsvall → Karlstad)_(1/5)"
+      "from_node": "Edfa_booster_roadm_Sundsvall_to_fiber (Sundsvall -> Karlstad)_(1/5)",
+      "to_node": "fiber (Sundsvall -> Karlstad)_(1/5)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala → Gävle)",
+      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Uppsala -> Gävle)",
       "to_node": "roadm_Gävle"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro → Gävle)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Örebro -> Gävle)_(3/3)",
       "to_node": "roadm_Gävle"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå → Gävle)_(5/5)",
+      "from_node": "Edfa_preamp_roadm_Gävle_from_fiber (Umeå -> Gävle)_(5/5)",
       "to_node": "roadm_Gävle"
     },
     {
-      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Uppsala)",
-      "to_node": "fiber (Gävle → Uppsala)"
+      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Uppsala)",
+      "to_node": "fiber (Gävle -> Uppsala)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Örebro)_(1/3)",
-      "to_node": "fiber (Gävle → Örebro)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Örebro)_(1/3)",
+      "to_node": "fiber (Gävle -> Örebro)_(1/3)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle → Umeå)_(1/5)",
-      "to_node": "fiber (Gävle → Umeå)_(1/5)"
+      "from_node": "Edfa_booster_roadm_Gävle_to_fiber (Gävle -> Umeå)_(1/5)",
+      "to_node": "fiber (Gävle -> Umeå)_(1/5)"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping → Borås)",
+      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Jönköping -> Borås)",
       "to_node": "roadm_Borås"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg → Borås)",
+      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Gothenburg -> Borås)",
       "to_node": "roadm_Borås"
     },
     {
-      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad → Borås)_(3/3)",
+      "from_node": "Edfa_preamp_roadm_Borås_from_fiber (Karlstad -> Borås)_(3/3)",
       "to_node": "roadm_Borås"
     },
     {
-      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Jönköping)",
-      "to_node": "fiber (Borås → Jönköping)"
+      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Jönköping)",
+      "to_node": "fiber (Borås -> Jönköping)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Gothenburg)",
-      "to_node": "fiber (Borås → Gothenburg)"
+      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Gothenburg)",
+      "to_node": "fiber (Borås -> Gothenburg)"
     },
     {
-      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås → Karlstad)_(1/3)",
-      "to_node": "fiber (Borås → Karlstad)_(1/3)"
+      "from_node": "Edfa_booster_roadm_Borås_to_fiber (Borås -> Karlstad)_(1/3)",
+      "to_node": "fiber (Borås -> Karlstad)_(1/3)"
     },
     {
-      "from_node": "Edfa_fiber (Örebro → Gävle)_(1/3)",
-      "to_node": "fiber (Örebro → Gävle)_(2/3)"
+      "from_node": "Edfa_fiber (Örebro -> Gävle)_(1/3)",
+      "to_node": "fiber (Örebro -> Gävle)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Örebro → Gävle)_(2/3)",
-      "to_node": "fiber (Örebro → Gävle)_(3/3)"
+      "from_node": "Edfa_fiber (Örebro -> Gävle)_(2/3)",
+      "to_node": "fiber (Örebro -> Gävle)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Gävle → Örebro)_(1/3)",
-      "to_node": "fiber (Gävle → Örebro)_(2/3)"
+      "from_node": "Edfa_fiber (Gävle -> Örebro)_(1/3)",
+      "to_node": "fiber (Gävle -> Örebro)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Gävle → Örebro)_(2/3)",
-      "to_node": "fiber (Gävle → Örebro)_(3/3)"
+      "from_node": "Edfa_fiber (Gävle -> Örebro)_(2/3)",
+      "to_node": "fiber (Gävle -> Örebro)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Karlstad → Borås)_(1/3)",
-      "to_node": "fiber (Karlstad → Borås)_(2/3)"
+      "from_node": "Edfa_fiber (Karlstad -> Borås)_(1/3)",
+      "to_node": "fiber (Karlstad -> Borås)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Karlstad → Borås)_(2/3)",
-      "to_node": "fiber (Karlstad → Borås)_(3/3)"
+      "from_node": "Edfa_fiber (Karlstad -> Borås)_(2/3)",
+      "to_node": "fiber (Karlstad -> Borås)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Borås → Karlstad)_(1/3)",
-      "to_node": "fiber (Borås → Karlstad)_(2/3)"
+      "from_node": "Edfa_fiber (Borås -> Karlstad)_(1/3)",
+      "to_node": "fiber (Borås -> Karlstad)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Borås → Karlstad)_(2/3)",
-      "to_node": "fiber (Borås → Karlstad)_(3/3)"
+      "from_node": "Edfa_fiber (Borås -> Karlstad)_(2/3)",
+      "to_node": "fiber (Borås -> Karlstad)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Malmö → Jönköping)_(1/3)",
-      "to_node": "fiber (Malmö → Jönköping)_(2/3)"
+      "from_node": "Edfa_fiber (Malmö -> Jönköping)_(1/3)",
+      "to_node": "fiber (Malmö -> Jönköping)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Malmö → Jönköping)_(2/3)",
-      "to_node": "fiber (Malmö → Jönköping)_(3/3)"
+      "from_node": "Edfa_fiber (Malmö -> Jönköping)_(2/3)",
+      "to_node": "fiber (Malmö -> Jönköping)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Jönköping → Malmö)_(1/3)",
-      "to_node": "fiber (Jönköping → Malmö)_(2/3)"
+      "from_node": "Edfa_fiber (Jönköping -> Malmö)_(1/3)",
+      "to_node": "fiber (Jönköping -> Malmö)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Jönköping → Malmö)_(2/3)",
-      "to_node": "fiber (Jönköping → Malmö)_(3/3)"
+      "from_node": "Edfa_fiber (Jönköping -> Malmö)_(2/3)",
+      "to_node": "fiber (Jönköping -> Malmö)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Umeå → Gävle)_(1/5)",
-      "to_node": "fiber (Umeå → Gävle)_(2/5)"
+      "from_node": "Edfa_fiber (Umeå -> Gävle)_(1/5)",
+      "to_node": "fiber (Umeå -> Gävle)_(2/5)"
     },
     {
-      "from_node": "Edfa_fiber (Umeå → Gävle)_(2/5)",
-      "to_node": "fiber (Umeå → Gävle)_(3/5)"
+      "from_node": "Edfa_fiber (Umeå -> Gävle)_(2/5)",
+      "to_node": "fiber (Umeå -> Gävle)_(3/5)"
     },
     {
-      "from_node": "Edfa_fiber (Umeå → Gävle)_(3/5)",
-      "to_node": "fiber (Umeå → Gävle)_(4/5)"
+      "from_node": "Edfa_fiber (Umeå -> Gävle)_(3/5)",
+      "to_node": "fiber (Umeå -> Gävle)_(4/5)"
     },
     {
-      "from_node": "Edfa_fiber (Umeå → Gävle)_(4/5)",
-      "to_node": "fiber (Umeå → Gävle)_(5/5)"
+      "from_node": "Edfa_fiber (Umeå -> Gävle)_(4/5)",
+      "to_node": "fiber (Umeå -> Gävle)_(5/5)"
     },
     {
-      "from_node": "Edfa_fiber (Gävle → Umeå)_(1/5)",
-      "to_node": "fiber (Gävle → Umeå)_(2/5)"
+      "from_node": "Edfa_fiber (Gävle -> Umeå)_(1/5)",
+      "to_node": "fiber (Gävle -> Umeå)_(2/5)"
     },
     {
-      "from_node": "Edfa_fiber (Gävle → Umeå)_(2/5)",
-      "to_node": "fiber (Gävle → Umeå)_(3/5)"
+      "from_node": "Edfa_fiber (Gävle -> Umeå)_(2/5)",
+      "to_node": "fiber (Gävle -> Umeå)_(3/5)"
     },
     {
-      "from_node": "Edfa_fiber (Gävle → Umeå)_(3/5)",
-      "to_node": "fiber (Gävle → Umeå)_(4/5)"
+      "from_node": "Edfa_fiber (Gävle -> Umeå)_(3/5)",
+      "to_node": "fiber (Gävle -> Umeå)_(4/5)"
     },
     {
-      "from_node": "Edfa_fiber (Gävle → Umeå)_(4/5)",
-      "to_node": "fiber (Gävle → Umeå)_(5/5)"
+      "from_node": "Edfa_fiber (Gävle -> Umeå)_(4/5)",
+      "to_node": "fiber (Gävle -> Umeå)_(5/5)"
     },
     {
-      "from_node": "Edfa_fiber (Stockholm → Norrköping)_(1/2)",
-      "to_node": "fiber (Stockholm → Norrköping)_(2/2)"
+      "from_node": "Edfa_fiber (Stockholm -> Norrköping)_(1/2)",
+      "to_node": "fiber (Stockholm -> Norrköping)_(2/2)"
     },
     {
-      "from_node": "Edfa_fiber (Norrköping → Stockholm)_(1/2)",
-      "to_node": "fiber (Norrköping → Stockholm)_(2/2)"
+      "from_node": "Edfa_fiber (Norrköping -> Stockholm)_(1/2)",
+      "to_node": "fiber (Norrköping -> Stockholm)_(2/2)"
     },
     {
-      "from_node": "Edfa_fiber (Malmö → Norrköping)_(1/5)",
-      "to_node": "fiber (Malmö → Norrköping)_(2/5)"
+      "from_node": "Edfa_fiber (Malmö -> Norrköping)_(1/5)",
+      "to_node": "fiber (Malmö -> Norrköping)_(2/5)"
     },
     {
-      "from_node": "Edfa_fiber (Malmö → Norrköping)_(2/5)",
-      "to_node": "fiber (Malmö → Norrköping)_(3/5)"
+      "from_node": "Edfa_fiber (Malmö -> Norrköping)_(2/5)",
+      "to_node": "fiber (Malmö -> Norrköping)_(3/5)"
     },
     {
-      "from_node": "Edfa_fiber (Malmö → Norrköping)_(3/5)",
-      "to_node": "fiber (Malmö → Norrköping)_(4/5)"
+      "from_node": "Edfa_fiber (Malmö -> Norrköping)_(3/5)",
+      "to_node": "fiber (Malmö -> Norrköping)_(4/5)"
     },
     {
-      "from_node": "Edfa_fiber (Malmö → Norrköping)_(4/5)",
-      "to_node": "fiber (Malmö → Norrköping)_(5/5)"
+      "from_node": "Edfa_fiber (Malmö -> Norrköping)_(4/5)",
+      "to_node": "fiber (Malmö -> Norrköping)_(5/5)"
     },
     {
-      "from_node": "Edfa_fiber (Norrköping → Malmö)_(1/5)",
-      "to_node": "fiber (Norrköping → Malmö)_(2/5)"
+      "from_node": "Edfa_fiber (Norrköping -> Malmö)_(1/5)",
+      "to_node": "fiber (Norrköping -> Malmö)_(2/5)"
     },
     {
-      "from_node": "Edfa_fiber (Norrköping → Malmö)_(2/5)",
-      "to_node": "fiber (Norrköping → Malmö)_(3/5)"
+      "from_node": "Edfa_fiber (Norrköping -> Malmö)_(2/5)",
+      "to_node": "fiber (Norrköping -> Malmö)_(3/5)"
     },
     {
-      "from_node": "Edfa_fiber (Norrköping → Malmö)_(3/5)",
-      "to_node": "fiber (Norrköping → Malmö)_(4/5)"
+      "from_node": "Edfa_fiber (Norrköping -> Malmö)_(3/5)",
+      "to_node": "fiber (Norrköping -> Malmö)_(4/5)"
     },
     {
-      "from_node": "Edfa_fiber (Norrköping → Malmö)_(4/5)",
-      "to_node": "fiber (Norrköping → Malmö)_(5/5)"
+      "from_node": "Edfa_fiber (Norrköping -> Malmö)_(4/5)",
+      "to_node": "fiber (Norrköping -> Malmö)_(5/5)"
     },
     {
-      "from_node": "Edfa_fiber (Umeå → Sundsvall)_(1/3)",
-      "to_node": "fiber (Umeå → Sundsvall)_(2/3)"
+      "from_node": "Edfa_fiber (Umeå -> Sundsvall)_(1/3)",
+      "to_node": "fiber (Umeå -> Sundsvall)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Umeå → Sundsvall)_(2/3)",
-      "to_node": "fiber (Umeå → Sundsvall)_(3/3)"
+      "from_node": "Edfa_fiber (Umeå -> Sundsvall)_(2/3)",
+      "to_node": "fiber (Umeå -> Sundsvall)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Sundsvall → Umeå)_(1/3)",
-      "to_node": "fiber (Sundsvall → Umeå)_(2/3)"
+      "from_node": "Edfa_fiber (Sundsvall -> Umeå)_(1/3)",
+      "to_node": "fiber (Sundsvall -> Umeå)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Sundsvall → Umeå)_(2/3)",
-      "to_node": "fiber (Sundsvall → Umeå)_(3/3)"
+      "from_node": "Edfa_fiber (Sundsvall -> Umeå)_(2/3)",
+      "to_node": "fiber (Sundsvall -> Umeå)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Karlstad → Sundsvall)_(1/5)",
-      "to_node": "fiber (Karlstad → Sundsvall)_(2/5)"
+      "from_node": "Edfa_fiber (Karlstad -> Sundsvall)_(1/5)",
+      "to_node": "fiber (Karlstad -> Sundsvall)_(2/5)"
     },
     {
-      "from_node": "Edfa_fiber (Karlstad → Sundsvall)_(2/5)",
-      "to_node": "fiber (Karlstad → Sundsvall)_(3/5)"
+      "from_node": "Edfa_fiber (Karlstad -> Sundsvall)_(2/5)",
+      "to_node": "fiber (Karlstad -> Sundsvall)_(3/5)"
     },
     {
-      "from_node": "Edfa_fiber (Karlstad → Sundsvall)_(3/5)",
-      "to_node": "fiber (Karlstad → Sundsvall)_(4/5)"
+      "from_node": "Edfa_fiber (Karlstad -> Sundsvall)_(3/5)",
+      "to_node": "fiber (Karlstad -> Sundsvall)_(4/5)"
     },
     {
-      "from_node": "Edfa_fiber (Karlstad → Sundsvall)_(4/5)",
-      "to_node": "fiber (Karlstad → Sundsvall)_(5/5)"
+      "from_node": "Edfa_fiber (Karlstad -> Sundsvall)_(4/5)",
+      "to_node": "fiber (Karlstad -> Sundsvall)_(5/5)"
     },
     {
-      "from_node": "Edfa_fiber (Sundsvall → Karlstad)_(1/5)",
-      "to_node": "fiber (Sundsvall → Karlstad)_(2/5)"
+      "from_node": "Edfa_fiber (Sundsvall -> Karlstad)_(1/5)",
+      "to_node": "fiber (Sundsvall -> Karlstad)_(2/5)"
     },
     {
-      "from_node": "Edfa_fiber (Sundsvall → Karlstad)_(2/5)",
-      "to_node": "fiber (Sundsvall → Karlstad)_(3/5)"
+      "from_node": "Edfa_fiber (Sundsvall -> Karlstad)_(2/5)",
+      "to_node": "fiber (Sundsvall -> Karlstad)_(3/5)"
     },
     {
-      "from_node": "Edfa_fiber (Sundsvall → Karlstad)_(3/5)",
-      "to_node": "fiber (Sundsvall → Karlstad)_(4/5)"
+      "from_node": "Edfa_fiber (Sundsvall -> Karlstad)_(3/5)",
+      "to_node": "fiber (Sundsvall -> Karlstad)_(4/5)"
     },
     {
-      "from_node": "Edfa_fiber (Sundsvall → Karlstad)_(4/5)",
-      "to_node": "fiber (Sundsvall → Karlstad)_(5/5)"
+      "from_node": "Edfa_fiber (Sundsvall -> Karlstad)_(4/5)",
+      "to_node": "fiber (Sundsvall -> Karlstad)_(5/5)"
     },
     {
-      "from_node": "Edfa_fiber (Gothenburg → Helsingborg)_(1/3)",
-      "to_node": "fiber (Gothenburg → Helsingborg)_(2/3)"
+      "from_node": "Edfa_fiber (Gothenburg -> Helsingborg)_(1/3)",
+      "to_node": "fiber (Gothenburg -> Helsingborg)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Gothenburg → Helsingborg)_(2/3)",
-      "to_node": "fiber (Gothenburg → Helsingborg)_(3/3)"
+      "from_node": "Edfa_fiber (Gothenburg -> Helsingborg)_(2/3)",
+      "to_node": "fiber (Gothenburg -> Helsingborg)_(3/3)"
     },
     {
-      "from_node": "Edfa_fiber (Helsingborg → Gothenburg)_(1/3)",
-      "to_node": "fiber (Helsingborg → Gothenburg)_(2/3)"
+      "from_node": "Edfa_fiber (Helsingborg -> Gothenburg)_(1/3)",
+      "to_node": "fiber (Helsingborg -> Gothenburg)_(2/3)"
     },
     {
-      "from_node": "Edfa_fiber (Helsingborg → Gothenburg)_(2/3)",
-      "to_node": "fiber (Helsingborg → Gothenburg)_(3/3)"
+      "from_node": "Edfa_fiber (Helsingborg -> Gothenburg)_(2/3)",
+      "to_node": "fiber (Helsingborg -> Gothenburg)_(3/3)"
     }
   ]
 }
