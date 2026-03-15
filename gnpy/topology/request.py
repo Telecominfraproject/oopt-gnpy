@@ -31,7 +31,7 @@ from networkx import (dijkstra_path, NetworkXNoPath,
 from networkx.utils import pairwise
 from numpy import mean, argmin
 
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Multiband_amplifier
+from gnpy.core import elements
 from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm
 from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, \
     demuxed_spectral_information, muxed_spectral_information, SpectralInformation
@@ -218,7 +218,7 @@ class ResultElement:
                 if self.path_request.M is not None or self.path_request.N is not None:
                     raise ServiceError('request {self.path_id} should not have label M and N values at this point.')
 
-            if isinstance(element, Transceiver):
+            if isinstance(element, elements.Transceiver):
                 temp = {
                     'path-route-object': {
                         'index': index,
@@ -337,7 +337,7 @@ def compute_constrained_path(network, req):
                'be destination trx')
         raise ValueError()
 
-    trx = [n for n in network if isinstance(n, Transceiver)]
+    trx = [n for n in network if isinstance(n, elements.Transceiver)]
     source = next(el for el in trx if el.uid == req.source)
     destination = next(el for el in trx if el.uid == req.destination)
 
@@ -410,7 +410,7 @@ def propagate(path, req, equipment):
     si = filter_si(path, equipment, si)
     roadm_osnr = []
     for i, el in enumerate(path):
-        if isinstance(el, Roadm):
+        if isinstance(el, elements.Roadm):
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
             roadm_osnr.append(el.get_impairment('roadm-osnr', si.frequency,
                                                 from_degree=path[i - 1].uid, degree=path[i + 1].uid))
@@ -456,7 +456,7 @@ def propagate_and_optimize_mode(path, req, equipment):
             spc_info = filter_si(path, equipment, spc_info)
             roadm_osnr = []
             for i, el in enumerate(path):
-                if isinstance(el, Roadm):
+                if isinstance(el, elements.Roadm):
                     spc_info = el(spc_info, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
                     roadm_osnr.append(el.get_impairment('roadm-osnr', spc_info.frequency,
                                                         from_degree=path[i - 1].uid, degree=path[i + 1].uid))
@@ -729,7 +729,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
             # build a short list representing each roadm+direction with the first item
             # start enumeration at 1 to avoid Trx in the list
             short_list = [e.uid for i, e in enumerate(pth[1:-1])
-                          if isinstance(e, Roadm) | (isinstance(pth[i], Roadm))]
+                          if isinstance(e, elements.Roadm) | (isinstance(pth[i], elements.Roadm))]
             temp.append(short_list)
             # id(short_list) is unique even if path is the same: two objects with same
             # path have two different ids
@@ -740,7 +740,7 @@ def compute_path_dsjctn(network, equipment, pathreqlist, disjunctions_list):
             # build a short list representing each roadm+direction with the first item
             # start enumeration at 1 to avoid Trx in the list
             temp.append([e.uid for i, e in enumerate(pth[1:-1])
-                         if isinstance(e, Roadm) | (isinstance(pth[i], Roadm))])
+                         if isinstance(e, elements.Roadm) | (isinstance(pth[i], elements.Roadm))])
         simple_rqs_reversed[pathreq.request_id] = temp
     # step 2
     # for each set of requests that need to be disjoint
@@ -934,8 +934,9 @@ def find_reversed_path(pth):
     # the OrderedDict.fromkeys function does this. eg
     # pth = [el1_oms1 el2_oms1 el3_oms1 el1_oms2 el2_oms2 el3_oms2]
     # p_oms should be = [oms1 oms2]
-    p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in pth
-                                                if not isinstance(el, Transceiver) and not isinstance(el, Roadm)])))
+    p_oms = list(OrderedDict.fromkeys(reversed([
+        el.oms.reversed_oms for el in pth
+        if not isinstance(el, elements.Transceiver) and not isinstance(el, elements.Roadm)])))
     reversed_path = [pth[-1]]
     for oms in p_oms:
         if oms is not None:
@@ -1065,7 +1066,7 @@ def correct_json_route_list(network, pathreqlist):
     suppresses the constraint it it is loose or raises an error if it is strict
     """
     all_uid = [n.uid for n in network.nodes()]
-    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
+    transponders = [n.uid for n in network.nodes() if isinstance(n, elements.Transceiver)]
     for pathreq in pathreqlist:
         if pathreq.source not in transponders:
             msg = f'Request: {pathreq.request_id}: could not find transponder' \
@@ -1158,7 +1159,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
             network_module.design_network(pathreq, network.subgraph(network_nodes_for_redesign), equipment,
                                           set_connector_losses=False, verbose=False)
         total_path = deepcopy(pathlist[i])
-        msg = msg + f'\n\tComputed path (roadms):{[e.uid for e in total_path  if isinstance(e, Roadm)]}'
+        msg = msg + f'\n\tComputed path (roadms):{[e.uid for e in total_path  if isinstance(e, elements.Roadm)]}'
         LOGGER.info(msg)
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')
@@ -1212,7 +1213,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 # Both directions requested, and a feasible mode was found
                 rev_p = deepcopy(reversed_path)
                 msg = f'\n\tPropagating Z to A direction {pathreq.destination} to {pathreq.source}\n' \
-                      + f'\tPath (roadms) {[r.uid for r in rev_p if isinstance(r,Roadm)]}\n'
+                      + f'\tPath (roadms) {[r.uid for r in rev_p if isinstance(r,elements.Roadm)]}\n'
                 LOGGER.info(msg)
                 propagate(rev_p, pathreq, equipment)
                 propagated_reversed_path = rev_p
@@ -1289,9 +1290,9 @@ def explicit_path(node_list, source, destination, network):
     path_oms = unique_ordered(path_oms)
     try:
         next_node = next(network.successors(source))
-        source_roadm = next_node if isinstance(next_node, Roadm) else source
+        source_roadm = next_node if isinstance(next_node, elements.Roadm) else source
         previous_node = next(network.predecessors(destination))
-        destination_roadm = previous_node if isinstance(previous_node, Roadm) else destination
+        destination_roadm = previous_node if isinstance(previous_node, elements.Roadm) else destination
         if not (path_oms[0].el_list[0] == source_roadm and path_oms[-1].el_list[-1] == destination_roadm):
             return None
     except StopIteration:
@@ -1312,7 +1313,7 @@ def find_elements_common_range(el_list: list, equipment: dict) -> List[dict]:
     """Find the common frequency range of amps of a given list of elements (for example an OMS or a path)
     If there are no amplifiers in the path, then use the SI
     """
-    amp_bands = [n.params.bands for n in el_list if isinstance(n, (Edfa, Multiband_amplifier))]
+    amp_bands = [n.params.bands for n in el_list if isinstance(n, (elements.Edfa, elements.Multiband_amplifier))]
     return find_common_range(amp_bands, equipment['SI']['default'].f_min, equipment['SI']['default'].f_max,
                              equipment['SI']['default'].spacing)
 
