@@ -467,7 +467,7 @@ Transceiver Site_B
   Actual pch out (dBm):      mode_1: 0.00, mode_2: 0.00
 
 Transmission result for input optical power reference in span = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m18.49 dB[0m
+  Final GSNR (0.1 nm): [1;36;40mmode_1: 18.03, mode_2: 19.15 dB[0m
 
 (No source node specified: picked Site_A)
 
