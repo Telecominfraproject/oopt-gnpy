@@ -162,7 +162,7 @@ class OMS:
         startn, stopn = mvalue_to_slots(nvalue, mvalue)
         if stopn > self.spectrum_bitmap.n_max:
             raise SpectrumError(f'N {nvalue}, M {mvalue} over the N spectrum bitmap bounds')
-        if startn <= self.spectrum_bitmap.n_min:
+        if startn < self.spectrum_bitmap.n_min:
             raise SpectrumError(f'N {nvalue}, M {mvalue} below the N spectrum bitmap bounds')
         self.spectrum_bitmap.bitmap[self.spectrum_bitmap.geti(startn):self.spectrum_bitmap.geti(stopn) + 1] = \
             [BitmapValue.OCCUPIED] * (stopn - startn + 1)
@@ -283,7 +283,7 @@ def create_oms_bitmap(oms: OMS, equipment: dict, f_min: float, f_max: float,
     :param f_min, f_max: central frequency range in Hz
     """
     n_min = frequency_to_n(f_min, grid)
-    n_max = frequency_to_n(f_max, grid) - 1
+    n_max = frequency_to_n(f_max, grid)
     common_range = find_elements_common_range(oms.el_list, equipment)
     band0 = common_range[0]
     band0_n_min = frequency_to_n(band0['f_min'], grid)
