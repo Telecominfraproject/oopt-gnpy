@@ -35,6 +35,7 @@ from gnpy.tools.convert import xls_to_json_data
 from gnpy.tools.service_sheet import read_service_sheet
 from gnpy.tools.convert_legacy_yang import yang_to_legacy, legacy_to_yang
 from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG, DEFAULT_EQPT_CONFIG
+from gnpy.tools.yang_convert_utils import dump_data
 
 
 _logger = getLogger(__name__)
@@ -836,7 +837,9 @@ def save_gnpy_json(obj: dict, filename: Path):
     :type filename: Path
     """
     data = legacy_to_yang(obj)
-    save_json(data, filename)
+    # dump data instead of save_json, to force yang format checking
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(dump_data(data))
 
 
 def load_requests(filename: Path, eqpt: dict, bidir: bool, network: DiGraph, network_filename: str) -> dict:
