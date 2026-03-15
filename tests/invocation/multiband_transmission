@@ -135,7 +135,7 @@ Transceiver trx Site_D
   Actual pch out (dBm):      cband: 0.00, lband: 0.00
 
 Transmission result for input optical power reference in span = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m25.11 dB[0m
+  Final GSNR (0.1 nm): [1;36;40mcband: 24.87, lband: 25.37 dB[0m
 
 The GSNR per channel at the end of the line is:
 Ch. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)        GSNR (signal bw, dB)

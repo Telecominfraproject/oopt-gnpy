@@ -107,7 +107,7 @@ Transceiver trx Lorient_KMA
   Actual pch out (dBm):      mode_1: 0.00, mode_2: 0.00
 
 Transmission result for input optical power reference in span = 0.00 dBm:
-  Final GSNR (0.1 nm): [1;36;40m23.72 dB[0m
+  Final GSNR (0.1 nm): [1;36;40mmode_1: 23.66, mode_2: 23.81 dB[0m
 
 The GSNR per channel at the end of the line is:
 Ch. #   Channel frequency (THz)       Channel power (dBm)    OSNR ASE (signal bw, dB)     SNR NLI (signal bw, dB)        GSNR (signal bw, dB)

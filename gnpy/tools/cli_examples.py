@@ -518,7 +518,7 @@ def transmission_main_example(args: Union[List[str], None] = None):
                 print(f'\nTransmission result for input optical power reference in span = {power_dbm:.2f} dBm:')
             else:
                 print('\nTransmission results:')
-            print(f'  Final GSNR (0.1 nm): {ansi_escapes.cyan}{mean(destination.snr_01nm):.02f} dB{ansi_escapes.reset}')
+            print(f'  Final GSNR (0.1 nm): {ansi_escapes.cyan}{pretty_summary_print(per_label_average(destination.snr_01nm, infos.label))} dB{ansi_escapes.reset}')  # noqa E501
         else:
             print(mypath[-1])
 
