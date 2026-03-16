@@ -16,6 +16,23 @@
       "message": "Thanks !\nFor the record: we agreed on todays coders\u0027 call to evaluate the impact of variable loading before going through this patch.",
       "revId": "97c5655ebf5bdab9d16043eb0ffde57f7b3bf483",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7bb8cd0_f1d34e56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-03-16T07:32:47Z",
+      "side": 1,
+      "message": "hello @gborraccini@nec-labs.com ! Is this MR still relevant ?",
+      "revId": "97c5655ebf5bdab9d16043eb0ffde57f7b3bf483",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
