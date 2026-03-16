@@ -34,6 +34,24 @@
       "parentUuid": "a3051db7_b983c104",
       "revId": "930d86d0dc8be8435bd259bc3aa85737e292b0eb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5b2f480_5f729c8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-03-16T10:11:57Z",
+      "side": 1,
+      "message": "Hi Jonas! The validation is done with load_data function in tool.yang_convert_utils. This function is systematically called for each json data loading or conversion.\n\nAs the yang model includes a fraction-digit constraint for gain_target and loss_coef, it is no more possible to have more than 6 digit for gain or loss_coef, all other issues raised in this MR were also solved.",
+      "parentUuid": "a2998413_a449e37f",
+      "revId": "930d86d0dc8be8435bd259bc3aa85737e292b0eb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
