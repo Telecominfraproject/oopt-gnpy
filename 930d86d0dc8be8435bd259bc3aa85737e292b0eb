@@ -16,6 +16,24 @@
       "message": "@jonas.martensson@smartoptics.com, I think that the move to yang models obsoletes this MR",
       "revId": "930d86d0dc8be8435bd259bc3aa85737e292b0eb",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2998413_a449e37f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017862
+      },
+      "writtenOn": "2026-03-16T09:55:12Z",
+      "side": 1,
+      "message": "@esther.lerouzic@orange.com, I\u0027m curious because I have not really been following this. Where is the code that validates user input based on yang models?",
+      "parentUuid": "a3051db7_b983c104",
+      "revId": "930d86d0dc8be8435bd259bc3aa85737e292b0eb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
