@@ -77,6 +77,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2da7cf07_95e724cf",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-03-16T07:57:00Z",
+      "side": 1,
+      "message": "There is another suggestion that came up suring coders call, that is to move this code in json_io: so that parameter continues to handle loss_coef as usual, and json_io takes care of the transformation of toal loss into loss_coef... I applied the same suggestion to one of my MR you can see it here: before: https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/552800/9",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c27d2c03_3e12ab1d",
         "filename": "gnpy/core/parameters.py",
         "patchSetId": 1
