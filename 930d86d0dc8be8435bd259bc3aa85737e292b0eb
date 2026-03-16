@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3051db7_b983c104",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-03-16T07:43:05Z",
+      "side": 1,
+      "message": "@jonas.martensson@smartoptics.com, I think that the move to yang models obsoletes this MR",
+      "revId": "930d86d0dc8be8435bd259bc3aa85737e292b0eb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
