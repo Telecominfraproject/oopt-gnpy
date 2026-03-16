@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c16572ac_2fb91f2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-03-16T07:40:50Z",
+      "side": 1,
+      "message": "@gborraccini@nec-labs.com, is this MR still relevant ?",
+      "revId": "02dd68771d020810c3cdc2025200930cd49df185",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
