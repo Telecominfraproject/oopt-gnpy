@@ -94,6 +94,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4da3ca6a_e31a2897",
+        "filename": "gnpy/core/parameters.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-03-16T07:57:55Z",
+      "side": 1,
+      "message": "and after https://review.gerrithub.io/c/Telecominfraproject/oopt-gnpy/+/552800/10",
+      "parentUuid": "2da7cf07_95e724cf",
+      "revId": "c93cd88fdc59298526edec73a4d92360446e2cd3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c27d2c03_3e12ab1d",
         "filename": "gnpy/core/parameters.py",
         "patchSetId": 1
