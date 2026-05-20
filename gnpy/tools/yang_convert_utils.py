@@ -273,7 +273,7 @@ def load_data(s: str, yang_library: Path = yang_lib()) -> ly.DataNode:
                               ly.ValidationOptions.Present
                               | ly.ValidationOptions.MultiError)
     except ly.Error as exc:
-        raise ly.Error(exc, [ErrorMessage(err.message, err.path) for err in ctx.errors()]) from None
+        raise ly.Error(exc, [ErrorMessage(err.message, err.data_path) for err in ctx.errors()]) from None
     return data
 
 
