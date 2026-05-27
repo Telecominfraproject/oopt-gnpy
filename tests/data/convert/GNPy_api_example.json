@@ -1093,7 +1093,7 @@
           "gain_flatmax": "25.0",
           "gain_min": "15.0",
           "p_max": "21.0",
-          "advanced_config_from_json": "std_medium_gain_advanced_config.json",
+          "advanced_config_from_json": "extra-config.json",
           "out_voa_auto": false,
           "allowed_for_design": true
         },
@@ -1151,10 +1151,386 @@
       ],
       "Fiber": [
         {
-          "type_variety": "SSMF",
+          "type_variety": "SSMF2",
           "dispersion": "0.0000167",
           "effective_area": "0.000000000083",
           "pmd_coef": "0.000000000000001265"
+        },
+        {
+          "type_variety": "SSMF",
+          "dispersion": "0.0000167",
+          "gamma": "0.00127",
+          "pmd_coef": "0.000000000000001265"
+        }
+      ],
+            "RamanFiber": [
+        {
+          "type_variety": "SSMF",
+          "dispersion": "0.0000167",
+          "gamma": "0.00127",
+          "pmd_coef": "0.000000000000001265",
+          "raman_efficiency": [
+            {
+              "frequency_offset": "0.0",
+              "cr": "0.0"
+            },
+            {
+              "frequency_offset": "500000000000.0",
+              "cr": "0.0000094"
+            },
+            {
+              "frequency_offset": "1000000000000.0",
+              "cr": "0.0000292"
+            },
+            {
+              "frequency_offset": "1500000000000.0",
+              "cr": "0.0000488"
+            },
+            {
+              "frequency_offset": "2000000000000.0",
+              "cr": "0.0000682"
+            },
+            {
+              "frequency_offset": "2500000000000.0",
+              "cr": "0.0000831"
+            },
+            {
+              "frequency_offset": "3000000000000.0",
+              "cr": "0.000094"
+            },
+            {
+              "frequency_offset": "3500000000000.0",
+              "cr": "0.0001014"
+            },
+            {
+              "frequency_offset": "4000000000000.0",
+              "cr": "0.0001069"
+            },
+            {
+              "frequency_offset": "4500000000000.0",
+              "cr": "0.0001119"
+            },
+            {
+              "frequency_offset": "5000000000000.0",
+              "cr": "0.0001217"
+            },
+            {
+              "frequency_offset": "5500000000000.0",
+              "cr": "0.0001268"
+            },
+            {
+              "frequency_offset": "6000000000000.0",
+              "cr": "0.0001365"
+            },
+            {
+              "frequency_offset": "6500000000000.0",
+              "cr": "0.000149"
+            },
+            {
+              "frequency_offset": "7000000000000.0",
+              "cr": "0.000165"
+            },
+            {
+              "frequency_offset": "7500000000000.0",
+              "cr": "0.000181"
+            },
+            {
+              "frequency_offset": "8000000000000.0",
+              "cr": "0.0001977"
+            },
+            {
+              "frequency_offset": "8500000000000.0",
+              "cr": "0.0002192"
+            },
+            {
+              "frequency_offset": "9000000000000.0",
+              "cr": "0.0002469"
+            },
+            {
+              "frequency_offset": "9500000000000.0",
+              "cr": "0.0002749"
+            },
+            {
+              "frequency_offset": "10000000000000.0",
+              "cr": "0.0002999"
+            },
+            {
+              "frequency_offset": "10500000000000.0",
+              "cr": "0.0003206"
+            },
+            {
+              "frequency_offset": "11000000000000.0",
+              "cr": "0.0003405"
+            },
+            {
+              "frequency_offset": "11500000000000.0",
+              "cr": "0.0003592"
+            },
+            {
+              "frequency_offset": "12000000000000.0",
+              "cr": "0.000374"
+            },
+            {
+              "frequency_offset": "12500000000000.0",
+              "cr": "0.0003826"
+            },
+            {
+              "frequency_offset": "12750000000000.0",
+              "cr": "0.0003841"
+            },
+            {
+              "frequency_offset": "13000000000000.0",
+              "cr": "0.0003826"
+            },
+            {
+              "frequency_offset": "13250000000000.0",
+              "cr": "0.0003802"
+            },
+            {
+              "frequency_offset": "13500000000000.0",
+              "cr": "0.0003756"
+            },
+            {
+              "frequency_offset": "14000000000000.0",
+              "cr": "0.0003549"
+            },
+            {
+              "frequency_offset": "14500000000000.0",
+              "cr": "0.0003795"
+            },
+            {
+              "frequency_offset": "14750000000000.0",
+              "cr": "0.000344"
+            },
+            {
+              "frequency_offset": "15000000000000.0",
+              "cr": "0.0002933"
+            },
+            {
+              "frequency_offset": "15500000000000.0",
+              "cr": "0.0002024"
+            },
+            {
+              "frequency_offset": "16000000000000.0",
+              "cr": "0.0001158"
+            },
+            {
+              "frequency_offset": "16500000000000.0",
+              "cr": "0.0000846"
+            },
+            {
+              "frequency_offset": "17000000000000.0",
+              "cr": "0.0000714"
+            },
+            {
+              "frequency_offset": "17500000000000.0",
+              "cr": "0.0000686"
+            },
+            {
+              "frequency_offset": "18000000000000.0",
+              "cr": "0.000085"
+            },
+            {
+              "frequency_offset": "18250000000000.0",
+              "cr": "0.0000893"
+            },
+            {
+              "frequency_offset": "18500000000000.0",
+              "cr": "0.0000901"
+            },
+            {
+              "frequency_offset": "18750000000000.0",
+              "cr": "0.0000815"
+            },
+            {
+              "frequency_offset": "19000000000000.0",
+              "cr": "0.0000667"
+            },
+            {
+              "frequency_offset": "19500000000000.0",
+              "cr": "0.0000437"
+            },
+            {
+              "frequency_offset": "20000000000000.0",
+              "cr": "0.0000328"
+            },
+            {
+              "frequency_offset": "20500000000000.0",
+              "cr": "0.0000296"
+            },
+            {
+              "frequency_offset": "21000000000000.0",
+              "cr": "0.0000265"
+            },
+            {
+              "frequency_offset": "21500000000000.0",
+              "cr": "0.0000257"
+            },
+            {
+              "frequency_offset": "22000000000000.0",
+              "cr": "0.0000281"
+            },
+            {
+              "frequency_offset": "22500000000000.0",
+              "cr": "0.0000308"
+            },
+            {
+              "frequency_offset": "23000000000000.0",
+              "cr": "0.0000367"
+            },
+            {
+              "frequency_offset": "23500000000000.0",
+              "cr": "0.0000585"
+            },
+            {
+              "frequency_offset": "24000000000000.0",
+              "cr": "0.0000663"
+            },
+            {
+              "frequency_offset": "24500000000000.0",
+              "cr": "0.0000636"
+            },
+            {
+              "frequency_offset": "25000000000000.0",
+              "cr": "0.000055"
+            },
+            {
+              "frequency_offset": "25500000000000.0",
+              "cr": "0.0000406"
+            },
+            {
+              "frequency_offset": "26000000000000.0",
+              "cr": "0.0000277"
+            },
+            {
+              "frequency_offset": "26500000000000.0",
+              "cr": "0.0000242"
+            },
+            {
+              "frequency_offset": "27000000000000.0",
+              "cr": "0.0000187"
+            },
+            {
+              "frequency_offset": "27500000000000.0",
+              "cr": "0.000016"
+            },
+            {
+              "frequency_offset": "28000000000000.0",
+              "cr": "0.000014"
+            },
+            {
+              "frequency_offset": "28500000000000.0",
+              "cr": "0.0000113"
+            },
+            {
+              "frequency_offset": "29000000000000.0",
+              "cr": "0.0000105"
+            },
+            {
+              "frequency_offset": "29500000000000.0",
+              "cr": "0.0000098"
+            },
+            {
+              "frequency_offset": "30000000000000.0",
+              "cr": "0.0000098"
+            },
+            {
+              "frequency_offset": "30500000000000.0",
+              "cr": "0.0000113"
+            },
+            {
+              "frequency_offset": "31000000000000.0",
+              "cr": "0.0000164"
+            },
+            {
+              "frequency_offset": "31500000000000.0",
+              "cr": "0.0000195"
+            },
+            {
+              "frequency_offset": "32000000000000.0",
+              "cr": "0.0000238"
+            },
+            {
+              "frequency_offset": "32500000000000.0",
+              "cr": "0.0000226"
+            },
+            {
+              "frequency_offset": "33000000000000.0",
+              "cr": "0.0000203"
+            },
+            {
+              "frequency_offset": "33500000000000.0",
+              "cr": "0.0000148"
+            },
+            {
+              "frequency_offset": "34000000000000.0",
+              "cr": "0.0000109"
+            },
+            {
+              "frequency_offset": "34500000000000.0",
+              "cr": "0.0000098"
+            },
+            {
+              "frequency_offset": "35000000000000.0",
+              "cr": "0.0000105"
+            },
+            {
+              "frequency_offset": "35500000000000.0",
+              "cr": "0.0000117"
+            },
+            {
+              "frequency_offset": "36000000000000.0",
+              "cr": "0.0000125"
+            },
+            {
+              "frequency_offset": "36500000000000.0",
+              "cr": "0.0000121"
+            },
+            {
+              "frequency_offset": "37000000000000.0",
+              "cr": "0.0000109"
+            },
+            {
+              "frequency_offset": "37500000000000.0",
+              "cr": "0.0000098"
+            },
+            {
+              "frequency_offset": "38000000000000.0",
+              "cr": "0.0000082"
+            },
+            {
+              "frequency_offset": "38500000000000.0",
+              "cr": "0.0000066"
+            },
+            {
+              "frequency_offset": "39000000000000.0",
+              "cr": "0.0000047"
+            },
+            {
+              "frequency_offset": "39500000000000.0",
+              "cr": "0.0000027"
+            },
+            {
+              "frequency_offset": "40000000000000.0",
+              "cr": "0.0000019"
+            },
+            {
+              "frequency_offset": "40500000000000.0",
+              "cr": "0.0000012"
+            },
+            {
+              "frequency_offset": "41000000000000.0",
+              "cr": "0.0000004"
+            },
+            {
+              "frequency_offset": "41500000000000.0",
+              "cr": "0.0000002"
+            },
+            {
+              "frequency_offset": "42000000000000.0",
+              "cr": "0.0000001"
+            }
+          ]
         }
       ],
       "Span": [
@@ -1496,7 +1872,7 @@
               "gain_flatmax": "25.0",
               "gain_min": "15.0",
               "p_max": "21.0",
-              "advanced_config_from_json": "default_edfa_config.json",
+              "advanced_config_from_json": "extra-config2.json",
               "out_voa_auto": false,
               "allowed_for_design": false
             }
