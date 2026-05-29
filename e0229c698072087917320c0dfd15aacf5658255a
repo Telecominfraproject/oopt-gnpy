@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b773890d_086d2912",
+        "filename": "tests/data/convert/GNPy_legacy_formatted-GNPy_api_example.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1038014
+      },
+      "writtenOn": "2026-05-29T09:20:20Z",
+      "side": 0,
+      "message": "this looks an error from the old conversion implementation.",
+      "range": {
+        "startLine": 7,
+        "startChar": 8,
+        "endLine": 7,
+        "endChar": 52
+      },
+      "revId": "e0229c698072087917320c0dfd15aacf5658255a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47d7bcf1_2f501fde",
+        "filename": "tests/data/convert/GNPy_legacy_formatted-GNPy_api_example.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1038014
+      },
+      "writtenOn": "2026-05-29T09:20:20Z",
+      "side": 0,
+      "message": "this looks an error from the old conversion implementation.",
+      "range": {
+        "startLine": 445,
+        "startChar": 0,
+        "endLine": 445,
+        "endChar": 2
+      },
+      "revId": "e0229c698072087917320c0dfd15aacf5658255a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}

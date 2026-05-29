@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31a14f1c_a0b27d97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1038014
+      },
+      "writtenOn": "2026-05-29T09:20:20Z",
+      "side": 1,
+      "message": "There are strange device type across the examples (see comment to the specific file). \n\nyou can find the errors by adding this test in the \"test_legacy_yang.py\"\n\ndef test_api_integration():\n    with open(DATA_DIR / \"GNPy_api_example_no_extra_config.json\", \u0027r\u0027, encoding\u003d\u0027utf-8\u0027) as f:\n        api_data \u003d json.load(f)\n    legacy_data \u003d yang_to_legacy(api_data)\n    service \u003d legacy_data[\u0027gnpy-path-computation:services\u0027]\n    topology \u003d legacy_data[\u0027gnpy-network-topology:topology\u0027]\n    equipment \u003d legacy_data[\u0027gnpy-eqpt-config:equipment\u0027]\n    (equipment, network) \u003d load_eqpt_topo_from_json(equipment, topology)\n    network, _, _ \u003d designed_network(equipment, network)\n    _, _, _, _, _, result \u003d planning(network, equipment, service)\n    assert result",
+      "revId": "d2bb71eedf38a026981e5355b0e0d2a1f0162717",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
