@@ -30,6 +30,14 @@ Learn more about this [in the documentation](https://gnpy.readthedocs.io/), or g
 
 [![Path propagation at gnpy.app](docs/images/2022-04-12-gnpy-app.png)](https://gnpy.app/)
 
+
+## Official API
+
+For more advanced integration and programmatic interaction with GNPy, you can refer to the official API available in the [oopt-gnpy-api](https://github.com/Telecominfraproject/oopt-gnpy-api) project. This REST API allows you to control and automate simulations, integrate GNPy into SDN architectures, or develop custom tools for network planning and optimization.
+
+You can explore this API and its features by visiting the [oopt-gnpy-api repository](https://github.com/Telecominfraproject/oopt-gnpy-api). It provides a flexible interface to leverage the full power of GNPy in your projects.
+
+
 ## Project Calendar
 
 See upcoming meetings on the [Project Calendar](https://telecominfraproject.github.io/oopt-gnpy/calendar.html). The calendar is embedded from Google Calendar and updates automatically.
