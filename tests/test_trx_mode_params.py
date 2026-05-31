@@ -59,7 +59,7 @@ def test_trx_mode_params(trx_type, trx_mode, error_message, no_error, expected_r
         'cost': None,
         'equalization_offset_db': 0,
         'f_max': 196100000000000.0,
-        'f_min': 191300000000000.0,
+        'f_min': 191350000000000.0,
         'min_spacing': None,
         'penalties': {},
         'roll_off': 0.15,

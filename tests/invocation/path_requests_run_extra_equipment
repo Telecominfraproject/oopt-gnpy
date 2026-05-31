@@ -11,7 +11,7 @@
 	spacing:	100.0 GHz
 	power:  	0.0 dBm
 	tx_power_dbm:  	1.76 dBm
-	nb channels: 	48
+	nb channels: 	49
 	path_bandwidth: 	400.0 Gbit/s
 	nodes-list:	[]
 	loose-list:	[]

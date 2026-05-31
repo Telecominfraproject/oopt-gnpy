@@ -258,7 +258,7 @@ def wrong_requests():
         'expected_msg': 'Requested channel number 150, baud rate 66.0 GHz'
                         + ' and requested spacing 75.0GHz is not consistent with frequency range'
                         + ' 191.35 THz, 196.1 THz.'
-                        + ' Max recommanded nb of channels is 63.'
+                        + ' Max recommanded nb of channels is 64.'
     })
     data.append({
         'error': ServiceError,

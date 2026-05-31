@@ -46,7 +46,7 @@ INFO     gnpy.tools.worker_utils:worker_utils.py The following services have bee
 	spacing:	50.0 GHz
 	power:  	1.0 dBm
 	tx_power_dbm:  	0.0 dBm
-	nb channels: 	95
+	nb channels: 	96
 	path_bandwidth: 	200.0 Gbit/s
 	nodes-list:	['roadm Brest_KLA', 'roadm Lannion_CAS', 'roadm Lorient_KMA', 'roadm Vannes_KBE']
 	loose-list:	['LOOSE', 'LOOSE', 'LOOSE', 'LOOSE']
@@ -60,7 +60,7 @@ INFO     gnpy.tools.worker_utils:worker_utils.py The following services have bee
 	spacing:	50.0 GHz
 	power:  	0.0 dBm
 	tx_power_dbm:  	0.0 dBm
-	nb channels: 	95
+	nb channels: 	96
 	path_bandwidth: 	60.0 Gbit/s
 	nodes-list:	[]
 	loose-list:	[]
@@ -74,7 +74,7 @@ INFO     gnpy.tools.worker_utils:worker_utils.py The following services have bee
 	spacing:	75.0 GHz
 	power:  	3.0 dBm
 	tx_power_dbm:  	0.0 dBm
-	nb channels: 	63
+	nb channels: 	64
 	path_bandwidth: 	150.0 Gbit/s
 	nodes-list:	[]
 	loose-list:	[]

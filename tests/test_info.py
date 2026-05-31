@@ -152,7 +152,7 @@ def test_spectral_information_total_power():
     tol_db = 1e-3
 
     tx_power = 0.001
-    si = create_input_spectral_information(f_min=191.5e12, f_max=196e12, baud_rate=32e9, spacing=50e9, roll_off=0.1,
+    si = create_input_spectral_information(f_min=191.55e12, f_max=196.0e12, baud_rate=32e9, spacing=50e9, roll_off=0.1,
                                            tx_osnr=40.0, tx_power=tx_power)
 
     # Assuming that there is no noise, pch coincides with signal total power

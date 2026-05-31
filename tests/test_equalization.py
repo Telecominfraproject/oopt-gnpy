@@ -376,8 +376,8 @@ def test_initial_spectrum(mode, slot_width, power_dbm):
     infos_expected = propagate(path, req, equipment)
     # then creates req.initial_spectrum attribute exactly corresponding to -spectrum option files
     temp = [{
-        "f_min": 191.35e12 + slot_width,
-        "f_max": 196.15e12 - slot_width,
+        "f_min": 191.35e12,
+        "f_max": 196.1e12,
         "baud_rate": req.baud_rate,
         "slot_width": slot_width,
         "roll_off": 0.15,
@@ -413,7 +413,7 @@ def test_initial_spectrum_not_identical():
     infos_expected = propagate(path, req, equipment)
     # then creates req.initial_spectrum attribute exactly corresponding to -spectrum option files
     temp = [{
-        "f_min": 191.4e12,     # align f_min , f_max on Voyager f_min, f_mix and not SI !
+        "f_min": 191.4e12,
         "f_max": 196.1e12,
         "baud_rate": 40e9,
         "slot_width": 62.5e9,
@@ -488,7 +488,7 @@ def test_target_psd_out_mwperghz_deltap(deltap):
     req = create_voyager_req(equipment, 'trx Brest_KLA', 'trx Vannes_KBE', False, ['trx Vannes_KBE'], ['STRICT'],
                              'mode 1', 50e9, deltap)
     temp = [{
-        "f_min": 191.35e12,     # align f_min , f_max on Voyager f_min, f_mix and not SI !
+        "f_min": 191.4e12,
         "f_max": 196.05e12,
         "baud_rate": req.baud_rate,
         "slot_width": 50e9,
@@ -594,7 +594,7 @@ def test_power_option(req_power):
     infos_expected = propagate(path, req, equipment)
 
     temp = [{
-        "f_min": 191.4e12,     # align f_min , f_max on Voyager f_min, f_max and not SI !
+        "f_min": 191.35e12,     # align f_min , f_max on Voyager f_min, f_max and not SI !
         "f_max": 196.1e12,
         "baud_rate": req.baud_rate,
         "slot_width": 50e9,

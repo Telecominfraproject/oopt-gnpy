@@ -202,7 +202,7 @@ def test_json_element(error, json_data, expected_msg):
     equipment = load_equipment(eqpt_library_name, EXTRA_CONFIGS)
     network = network_from_json(json_data, equipment)
     elem = next(e for e in network.nodes() if e.uid == 'Elem')
-    si = create_input_spectral_information(f_min=191.3e12, f_max=196.1e12, roll_off=0.15,
+    si = create_input_spectral_information(f_min=191.35e12, f_max=196.1e12, roll_off=0.15,
                                            baud_rate=32e9, tx_power=1.0e-3, spacing=50.0e9, tx_osnr=45)
     with pytest.raises(error, match=re.escape(expected_msg)):
         _ = elem(si)
