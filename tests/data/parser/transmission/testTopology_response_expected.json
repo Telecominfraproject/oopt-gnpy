@@ -7,7 +7,7 @@
           "path-metric": [
             {
               "metric-type": "SNR-bandwidth",
-              "accumulative-value": "26.75"
+              "accumulative-value": "26.76"
             },
             {
               "metric-type": "SNR-0.1nm",
@@ -19,7 +19,7 @@
             },
             {
               "metric-type": "OSNR-0.1nm",
-              "accumulative-value": "30.84"
+              "accumulative-value": "30.85"
             },
             {
               "metric-type": "lowest_SNR-0.1nm",
@@ -31,21 +31,15 @@
             },
             {
               "metric-type": "PDL_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "CD_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "PMD_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "reference_power",
@@ -248,21 +242,15 @@
             },
             {
               "metric-type": "PDL_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "CD_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "PMD_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "reference_power",
@@ -996,21 +984,15 @@
             },
             {
               "metric-type": "PDL_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "CD_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "PMD_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "reference_power",
@@ -1469,7 +1451,7 @@
           "path-metric": [
             {
               "metric-type": "SNR-bandwidth",
-              "accumulative-value": "22.39"
+              "accumulative-value": "22.4"
             },
             {
               "metric-type": "SNR-0.1nm",
@@ -1481,7 +1463,7 @@
             },
             {
               "metric-type": "OSNR-0.1nm",
-              "accumulative-value": "30.0"
+              "accumulative-value": "30.01"
             },
             {
               "metric-type": "lowest_SNR-0.1nm",
@@ -1493,21 +1475,15 @@
             },
             {
               "metric-type": "PDL_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "CD_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "PMD_penalty",
-              "accumulative-value": [
-                null
-              ]
+              "accumulative-value": [null]
             },
             {
               "metric-type": "reference_power",

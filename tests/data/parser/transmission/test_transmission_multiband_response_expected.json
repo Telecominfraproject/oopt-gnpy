@@ -10,7 +10,7 @@
               "per-label-accumulative-value": [
                 {
                   "label": "cband",
-                  "accumulative-value": "20.78"
+                  "accumulative-value": "20.79"
                 },
                 {
                   "label": "lband",
@@ -40,7 +40,7 @@
                 },
                 {
                   "label": "lband",
-                  "accumulative-value": "22.57"
+                  "accumulative-value": "22.53"
                 }
               ]
             },
@@ -53,7 +53,7 @@
                 },
                 {
                   "label": "lband",
-                  "accumulative-value": "26.65"
+                  "accumulative-value": "26.61"
                 }
               ]
             },
@@ -62,11 +62,11 @@
               "per-label-accumulative-value": [
                 {
                   "label": "cband",
-              "accumulative-value": "24.83"
+                  "accumulative-value": "24.84"
                 },
                 {
                   "label": "lband",
-                  "accumulative-value": "25.28"
+                  "accumulative-value": "25.29"
                 }
               ]
             }
@@ -214,16 +214,16 @@
                       },
                       {
                         "type-variety": "std_medium_gain_L",
-                        "effective-gain-db-before-att-in-and-before-output-voa": "22.43",
+                        "effective-gain-db-before-att-in-and-before-output-voa": "22.37",
                         "p-in-dbm": "-1.49",
-                        "p-out-dbm": "20.95",
+                        "p-out-dbm": "20.89",
                         "p-out-per-ch-dbm": [
                           {
                             "label": "lband",
-                            "average": "-0.57"
+                            "average": "-0.63"
                           }
                         ],
-                        "nf_db": "6.17",
+                        "nf_db": "6.18",
                         "out-voa-db": "3.0",
                         "in-voa-db": "0.0",
                         "att-db": "0.0"
@@ -282,12 +282,12 @@
                       {
                         "type-variety": "std_medium_gain_L",
                         "effective-gain-db-before-att-in-and-before-output-voa": "18.0",
-                        "p-in-dbm": "2.95",
-                        "p-out-dbm": "20.95",
+                        "p-in-dbm": "2.89",
+                        "p-out-dbm": "20.89",
                         "p-out-per-ch-dbm": [
                           {
                             "label": "lband",
-                            "average": "-0.56"
+                            "average": "-0.62"
                           }
                         ],
                         "nf_db": "7.38",
@@ -349,12 +349,12 @@
                       {
                         "type-variety": "std_medium_gain_L",
                         "effective-gain-db-before-att-in-and-before-output-voa": "19.8",
-                        "p-in-dbm": "1.15",
-                        "p-out-dbm": "20.95",
+                        "p-in-dbm": "1.09",
+                        "p-out-dbm": "20.89",
                         "p-out-per-ch-dbm": [
                           {
                             "label": "lband",
-                            "average": "-0.56"
+                            "average": "-0.62"
                           }
                         ],
                         "nf_db": "6.63",
@@ -416,12 +416,12 @@
                       {
                         "type-variety": "std_medium_gain_L",
                         "effective-gain-db-before-att-in-and-before-output-voa": "21.7",
-                        "p-in-dbm": "-0.75",
-                        "p-out-dbm": "20.96",
+                        "p-in-dbm": "-0.81",
+                        "p-out-dbm": "20.9",
                         "p-out-per-ch-dbm": [
                           {
                             "label": "lband",
-                            "average": "-0.55"
+                            "average": "-0.61"
                           }
                         ],
                         "nf_db": "6.25",
@@ -449,7 +449,7 @@
                       },
                       {
                         "label": "lband",
-                        "average": "19.45"
+                        "average": "19.39"
                       }
                     ]
                   }
@@ -477,7 +477,7 @@
                     "gnsr-signal-bw-db": [
                       {
                         "label": "cband",
-                        "average": "20.78"
+                        "average": "20.79"
                       },
                       {
                         "label": "lband",
@@ -491,7 +491,7 @@
                       },
                       {
                         "label": "lband",
-                        "average": "26.65"
+                        "average": "26.61"
                       }
                     ],
                     "osnr-ase-signal-bw-db": [
@@ -501,7 +501,7 @@
                       },
                       {
                         "label": "lband",
-                        "average": "22.57"
+                        "average": "22.53"
                       }
                     ],
                     "cd-ps-per-nm": [

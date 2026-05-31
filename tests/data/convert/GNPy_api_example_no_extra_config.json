@@ -1461,11 +1461,11 @@
               },
               {
                 "metric-type": "OSNR-bandwidth",
-                "accumulative-value": "26.76"
+                "accumulative-value": "26.75"
               },
               {
                 "metric-type": "OSNR-0.1nm",
-                "accumulative-value": "30.84"
+                "accumulative-value": "30.85"
               },
               {
                 "metric-type": "lowest_SNR-0.1nm",
@@ -2905,7 +2905,7 @@
             "path-metric": [
               {
                 "metric-type": "SNR-bandwidth",
-                "accumulative-value": "21.67"
+                "accumulative-value": "21.4"
               },
               {
                 "metric-type": "SNR-0.1nm",
@@ -2917,7 +2917,7 @@
               },
               {
                 "metric-type": "OSNR-0.1nm",
-                "accumulative-value": "30.79"
+                "accumulative-value": "30.01"
               },
               {
                 "metric-type": "lowest_SNR-0.1nm",

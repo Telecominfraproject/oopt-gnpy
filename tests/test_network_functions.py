@@ -226,7 +226,7 @@ def test_invoa_gainmode(in_voa, out_voa):
     [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
 
-    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+    si = create_input_spectral_information(f_min=191.35e12, f_max=196.15e12,
                                            roll_off=0.15, baud_rate=32e9,
                                            spacing=50e9, tx_osnr=None, tx_power=1e-3)
     si = span0(si)
@@ -264,7 +264,7 @@ def test_too_small_gain():
     [edfa1, edfa2] = [n for n in network.nodes() if isinstance(n, Edfa)]
     [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
-    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+    si = create_input_spectral_information(f_min=191.35e12, f_max=196.15e12,
                                            roll_off=0.15, baud_rate=32e9,
                                            spacing=50e9, tx_osnr=None, tx_power=1e-3)
     si = span0(si)
@@ -295,7 +295,7 @@ def test_invoa_nf():
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
     # with out_voa, with pmax = 21 dBm, can only apply max gain if total power in is below
     # -4 dBm. this is the case with pch = 0.8 mW and 47 channels at fiber input
-    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+    si = create_input_spectral_information(f_min=191.35e12, f_max=196.15e12,
                                            roll_off=0.15, baud_rate=32e9,
                                            spacing=100e9, tx_osnr=None, tx_power=0.0008)
     si = span0(si)
@@ -315,7 +315,7 @@ def test_invoa_nf():
     [span0, span1, span2] = [n for n in network.nodes() if isinstance(n, Fiber)]
     [tx, rx] = [n for n in network.nodes() if isinstance(n, Transceiver)]
 
-    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12,
+    si = create_input_spectral_information(f_min=191.35e12, f_max=196.15e12,
                                            roll_off=0.15, baud_rate=32e9,
                                            spacing=100e9, tx_osnr=None, tx_power=1e-3)
     si = span0(si)
@@ -623,7 +623,7 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
     elif case == 'monoband_roadm':
         roadm1['params'] = {
             'design_bands': [
-                {'f_min': 192.3e12, 'f_max': 196.0e12, 'spacing': 50e9}
+                {'f_min': 192.35e12, 'f_max': 196.0e12, 'spacing': 50e9}
             ]
         }
     elif case == 'monoband_per_degree':
@@ -660,7 +660,7 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
         roadm1['params'] = {
             'per_degree_design_bands': {
                 'east edfa in SITE1 to ILA1': [
-                    {'f_min': 191.3e12, 'f_max': 196.0e12},
+                    {'f_min': 191.35e12, 'f_max': 196.0e12},
                     {'f_min': 187.0e12, 'f_max': 190.0e12}
                 ]
             }
@@ -674,19 +674,19 @@ def network_base(case, site_type, length=50.0, amplifier_type='Multiband_amplifi
 
 @pytest.mark.parametrize('case, site_type, amplifier_type, expected_design_bands, expected_per_degree_design_bands', [
     ('monoband_no_design_band', 'Edfa', 'Edfa',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}]),
+     [{'f_min': 191.35e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.35e12, 'f_max': 196.1e12, 'spacing': 50e9}]),
     ('monoband_roadm', 'Edfa', 'Edfa',
-     [{'f_min': 192.3e12, 'f_max': 196.0e12, 'spacing': 50e9}], [{'f_min': 192.3e12, 'f_max': 196.0e12, 'spacing': 50e9}]),
+     [{'f_min': 192.35e12, 'f_max': 196.0e12, 'spacing': 50e9}], [{'f_min': 192.35e12, 'f_max': 196.0e12, 'spacing': 50e9}]),
     ('monoband_per_degree', 'Edfa', 'Edfa',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.5e12, 'f_max': 195.0e12, 'spacing': 50e9}]),
+     [{'f_min': 191.35e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.5e12, 'f_max': 195.0e12, 'spacing': 50e9}]),
     ('monoband_design', 'Edfa', 'Edfa',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}]),
+     [{'f_min': 191.35e12, 'f_max': 196.1e12, 'spacing': 50e9}], [{'f_min': 191.35e12, 'f_max': 196.1e12, 'spacing': 50e9}]),
     ('design', 'Fused', 'Multiband_amplifier',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}],
+     [{'f_min': 191.35e12, 'f_max': 196.1e12, 'spacing': 50e9}],
      [{'f_min': 186.55e12, 'f_max': 190.05e12, 'spacing': 50e9}, {'f_min': 191.25e12, 'f_max': 196.15e12, 'spacing': 50e9}]),
     ('no_design', 'Fused', 'Multiband_amplifier',
-     [{'f_min': 191.3e12, 'f_max': 196.1e12, 'spacing': 50e9}],
-     [{'f_min': 187.0e12, 'f_max': 190.0e12, 'spacing': 50e9}, {'f_min': 191.3e12, 'f_max': 196.0e12, 'spacing': 50e9}])])
+     [{'f_min': 191.35e12, 'f_max': 196.1e12, 'spacing': 50e9}],
+     [{'f_min': 187.0e12, 'f_max': 190.0e12, 'spacing': 50e9}, {'f_min': 191.35e12, 'f_max': 196.0e12, 'spacing': 50e9}])])
 def test_design_band(case, site_type, amplifier_type, expected_design_bands, expected_per_degree_design_bands):
     """Check design_band is the one defined:
     - in SI if nothing is defined,
@@ -811,13 +811,13 @@ def test_get_node_restrictions(cls, defaultparams, variety_list, booster_list, b
     ('no_design', 'Multiband_amplifier', 'LBAND', 10.0, 0.0, 'std_low_gain_multiband_bis', False),
     ('type_variety', 'Multiband_amplifier', 'LBAND', 10.0, 0.0, 'std_medium_gain_multiband', False),
     ('design', 'Multiband_amplifier', 'LBAND', 9.344985, 0.0, 'std_medium_gain_multiband', True),
-    ('no_design', 'Multiband_amplifier', 'LBAND', 9.344985, -0.938676, 'std_low_gain_multiband_bis', True),
-    ('no_design', 'Multiband_amplifier', 'CBAND', 10.977065, -1.600193, 'std_low_gain_multiband_bis', True),
+    ('no_design', 'Multiband_amplifier', 'LBAND', 9.344985, -0.964868, 'std_low_gain_multiband_bis', True),
+    ('no_design', 'Multiband_amplifier', 'CBAND', 10.985655, -1.611987, 'std_low_gain_multiband_bis', True),
     ('no_design', 'Fused', 'LBAND', 21.0, 0.0, 'std_medium_gain_multiband', False),
-    ('no_design', 'Fused', 'LBAND', 20.344985, -0.819176, 'std_medium_gain_multiband', True),
-    ('no_design', 'Fused', 'CBAND', 21.770319, -1.40032, 'std_medium_gain_multiband', True),
-    ('design', 'Fused', 'CBAND', 21.21108, 0.0, 'std_medium_gain_multiband', True),
-    ('design', 'Multiband_amplifier', 'CBAND', 11.041037, 0.0, 'std_medium_gain_multiband', True)])
+    ('no_design', 'Fused', 'LBAND', 20.344985, -0.842058, 'std_medium_gain_multiband', True),
+    ('no_design', 'Fused', 'CBAND', 21.777846, -1.410627, 'std_medium_gain_multiband', True),
+    ('design', 'Fused', 'CBAND', 21.235304, 0.0, 'std_medium_gain_multiband', True),
+    ('design', 'Multiband_amplifier', 'CBAND', 11.06309, 0.0, 'std_medium_gain_multiband', True)])
 def test_multiband(case, site_type, band, expected_gain, expected_tilt, expected_variety, sim_params):
     """Check:
     - if amplifiers are defined in multiband they are used for design,

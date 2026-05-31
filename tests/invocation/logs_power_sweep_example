@@ -11,12 +11,12 @@ Reference used for design: (Input optical power reference in span = 3.00dBm
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Lorient_KMA to Loudeac
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Lannion_CAS to Stbrieuc
 	is above user specified amplifier std_low_gain
-	max flat gain: 16dB ; required gain: 21.22dB. Please check amplifier type.
+	max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Stbrieuc to Rennes_STA
@@ -26,22 +26,22 @@ WARNING  gnpy.core.network:network.py
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Rennes_STA to Stbrieuc
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Lannion_CAS to Morlaix
 	is above user specified amplifier std_low_gain
-	max flat gain: 16dB ; required gain: 21.72dB. Please check amplifier type.
+	max flat gain: 16dB ; required gain: 21.68dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Brest_KLA to Morlaix
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Lorient_KMA to Loudeac
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node west edfa in Lannion_CAS to Corlay
@@ -51,272 +51,272 @@ WARNING  gnpy.core.network:network.py
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Lorient_KMA to Vannes_KBE
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Vannes_KBE to Lorient_KMA
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Lorient_KMA to Quimper
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Quimper to Lorient_KMA
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Brest_KLA to Quimper
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Vannes_KBE to Lorient_KMA
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Lorient_KMA to Vannes_KBE
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Vannes_KBE to Ploermel
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Ploermel to Vannes_KBE
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Rennes_STA to Ploermel
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Rennes_STA to Stbrieuc
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Stbrieuc to Rennes_STA
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Lannion_CAS to Stbrieuc
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Rennes_STA to Ploermel
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Vannes_KBE to Ploermel
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Brest_KLA to Morlaix
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: effective gain in Node east edfa in Brest_KLA to Quimper
 	is above user specified amplifier std_low_gain
-	max flat gain: 16dB ; required gain: 21.22dB. Please check amplifier type.
+	max flat gain: 16dB ; required gain: 21.18dB. Please check amplifier type.
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in Quimper to Lorient_KMA
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in Lorient_KMA to Quimper
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in a to b
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in b to a
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in a to c
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in c to a
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in b to a
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in a to b
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in b to f
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in f to b
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in c to a
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in a to c
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in d to c
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in c to f
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in f to c
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in d to c
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in c to d
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in d to e
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in e to d
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in e to d
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in d to e
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in e to g
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in g to e
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in f to c
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in c to f
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in f to b
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in b to f
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in f to h
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in h to f
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in g to e
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in e to g
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in g to h
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in h to g
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in h to f
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in f to h
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node east edfa in h to g
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 WARNING  gnpy.core.network:network.py 
 	WARNING: target gain and power in node west edfa in g to h
 	is beyond all available amplifiers capabilities and/or extended_gain_range:
-	a power reduction of -1.78 is applied
+	a power reduction of -1.82 is applied
 
 INFO     gnpy.tools.worker_utils:worker_utils.py Power mode is set to True=> it can be modified in eqpt_config.json - Span
 INFO     gnpy.tools.worker_utils:worker_utils.py Now propagating between trx Brest_KLA and trx Rennes_STA
@@ -324,64 +324,64 @@ INFO     gnpy.tools.worker_utils:worker_utils.py
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)
 INFO     gnpy.tools.worker_utils:worker_utils.py 
 Channels propagating: (Input optical power deviation in span = 0.00dB,
                        spacing = 50.00GHz,
                        transceiver output power = 3.00dBm,
-                       nb_channels = 95)
+                       nb_channels = 96)

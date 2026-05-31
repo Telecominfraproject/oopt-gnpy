@@ -90,7 +90,7 @@ def setup_trx():
 def si(nch_and_spacing, bw):
     """parametrize a channel comb with nb_channel, spacing and signal bw"""
     nb_channel, spacing = nch_and_spacing
-    f_min = 191.3e12
+    f_min = 191.35e12
     f_max = automatic_fmax(f_min, spacing, nb_channel)
     return create_input_spectral_information(f_min=f_min, f_max=f_max, roll_off=0.15, baud_rate=bw,
                                              spacing=spacing, tx_osnr=40.0, tx_power=1e-3)
@@ -244,7 +244,7 @@ def test_amp_behaviour(tilt_target, delta_p):
     fiber.params.con_in = 0
     fiber.params.con_out = 0
     fiber.ref_pch_in_dbm = 0.0
-    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
+    si = create_input_spectral_information(f_min=191.375e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
                                            spacing=75e9, tx_osnr=None, tx_power=1e-3)
     si = fiber(si)
     total_sig_powerin = sum(si.signal)
@@ -391,7 +391,7 @@ def test_multiband():
     amps = [
         {
             "type_variety": "std_medium_gain_C",
-            "f_min": 191.25e12,
+            "f_min": 191.3e12,
             "f_max": 196.15e12,
             "type_def": "variable_gain",
             "gain_flatmax": 26,
@@ -469,8 +469,8 @@ def test_multiband():
     network = network_from_json(json_data, equipment)
     amp = next(n for n in network.nodes() if n.uid == 'Edfa1')
     fused = next(n for n in network.nodes() if n.uid == '[83/WR-2-4-SIG=>930/WRT-1-2-SIG]-Tl/9300')
-    si = create_input_spectral_information(f_min=186e12, f_max=196e12, roll_off=0.15, baud_rate=32e9, tx_power=1e-3,
-                                           spacing=50e9, tx_osnr=40.0)
+    si = create_input_spectral_information(f_min=186.1e12, f_max=196.05e12, roll_off=0.15, baud_rate=32e9,
+                                           tx_power=1e-3, spacing=50e9, tx_osnr=40.0)
     assert si.number_of_channels == 200
     si = fused(si)
     si = amp(si)
@@ -677,7 +677,7 @@ def test_frequency_range(file):
     }
     network = network_from_json(json_data, equipment)
     amp = [n for n in network.nodes()][0]
-    si = create_input_spectral_information(f_min=191.3e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
+    si = create_input_spectral_information(f_min=191.375e12, f_max=196.05e12, roll_off=0.15, baud_rate=64e9,
                                            spacing=75e9, tx_osnr=None, tx_power=1e-5)
     si = amp(si)
     assert_allclose(amp.params.f_min, 192.0e12, rtol=1e-13)
