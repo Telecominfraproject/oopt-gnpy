@@ -16,6 +16,24 @@
       "message": "Hi there, just saw this mail (mostly by accident). Do you need some help with the oopt-gnpy-libyang update?",
       "revId": "9e91a7da7708a958e9a5816bb41a2e8a65a4b820",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28256bad_089a1c32",
+        "filename": "setup.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-06-01T09:38:48Z",
+      "side": 1,
+      "message": "Yes: wonderful! Renato prepared a pull request on oopt-gnpy-libyang, would you have time to review that ? https://github.com/Telecominfraproject/oopt-gnpy-libyang/pull/5.",
+      "parentUuid": "f834221a_5272fe25",
+      "revId": "9e91a7da7708a958e9a5816bb41a2e8a65a4b820",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
