@@ -34,6 +34,24 @@
       "parentUuid": "f834221a_5272fe25",
       "revId": "9e91a7da7708a958e9a5816bb41a2e8a65a4b820",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faef8827_968b0e74",
+        "filename": "setup.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1009907
+      },
+      "writtenOn": "2026-06-01T09:42:23Z",
+      "side": 1,
+      "message": "It looks like my notification settings in that GitHub repo were only set to mail me on explicit notifications. I now see that there\u0027s a bunch of issues and PRs, sorry for that. I\u0027ll check them.",
+      "parentUuid": "28256bad_089a1c32",
+      "revId": "9e91a7da7708a958e9a5816bb41a2e8a65a4b820",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
