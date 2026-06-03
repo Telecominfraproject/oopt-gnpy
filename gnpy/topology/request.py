@@ -46,6 +46,7 @@ LOGGER = getLogger(__name__)
 PDL_PENALTY_STRING = 'PDL_penalty'
 PMD_PENALTY_STRING = 'PMD_penalty'
 CD_PENALTY_STRING = 'CD_penalty'
+RX_PENALTY_STRING = 'rx_power_penalty'
 LOWER_SNR_STRING = 'lowest_SNR-0.1nm'
 UPPER_SNR_STRING = 'biggest_SNR-0.1nm'
 SNR_BW_STRING = 'SNR-bandwidth'
@@ -89,6 +90,7 @@ class PathRequest:
         self.format = params.format
         self.OSNR = params.OSNR
         self.penalties = params.penalties
+        self.detailed_rx = params.detailed_rx
         self.bit_rate = params.bit_rate
         self.roll_off = params.roll_off
         self.tx_osnr = params.tx_osnr
@@ -423,7 +425,9 @@ def propagate(path, req, equipment):
     path[0].calc_penalties(req.penalties)
     roadm_osnr.append(si.tx_osnr)
     path[-1].update_snr(*roadm_osnr)
-    path[-1].calc_penalties(req.penalties)
+    path[-1].calc_penalties(req.penalties, req.rx_channel_power_min_dbm, req.rx_channel_power_max_dbm)
+    # adding the noise contribution of the receiver
+    path[-1].update_rx_snr(req.detailed_rx)
     return si
 
 def propagate_and_optimize_mode(path, req, equipment):
@@ -473,7 +477,10 @@ def propagate_and_optimize_mode(path, req, equipment):
                     path[-1].update_snr(*roadm_osnr)
                     # remove the tx_osnr from roadm_osnr list for the next iteration
                     del roadm_osnr[-1]
-                    path[-1].calc_penalties(this_mode['penalties'])
+                    path[-1].calc_penalties(this_mode['penalties'], this_mode.get('rx_channel_power_min_dbm', None),
+                                            this_mode.get('rx_channel_power_max_dbm', None))
+                    # adding the noise contribution of the receiver
+                    path[-1].update_rx_snr(this_mode['detailed_rx'])
                     if round(min(path[-1].snr_01nm - path[-1].total_penalty), 2) \
                             > this_mode['OSNR'] + equipment['SI']['default'].sys_margins:
                         return path, this_mode
@@ -1197,6 +1204,11 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                         pathreq.tx_osnr = mode['tx_osnr']
                         pathreq.bit_rate = mode['bit_rate']
                         pathreq.penalties = mode['penalties']
+                        pathreq.detailed_rx = mode.get('detailed_rx', {})
+                        pathreq.tx_channel_power_min_dbm = mode.get('tx_channel_power_min_dbm', None)
+                        pathreq.tx_channel_power_max_dbm = mode.get('tx_channel_power_max_dbm', None)
+                        pathreq.rx_channel_power_min_dbm = mode.get('rx_channel_power_min_dbm', None)
+                        pathreq.rx_channel_power_max_dbm = mode.get('rx_channel_power_max_dbm', None)
                         pathreq.offset_db = mode['equalization_offset_db']
                     # other blocking reason should not appear at this point
                 except AttributeError:
@@ -1207,6 +1219,12 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
                     pathreq.penalties = mode['penalties']
+                    pathreq.penalties = mode['penalties']
+                    pathreq.detailed_rx = mode.get('detailed_rx', {})
+                    pathreq.tx_channel_power_min_dbm = mode.get('tx_channel_power_min_dbm', None)
+                    pathreq.tx_channel_power_max_dbm = mode.get('tx_channel_power_max_dbm', None)
+                    pathreq.rx_channel_power_min_dbm = mode.get('rx_channel_power_min_dbm', None)
+                    pathreq.rx_channel_power_max_dbm = mode.get('rx_channel_power_max_dbm', None)
                     pathreq.offset_db = mode['equalization_offset_db']
 
             # reversed path is needed for correct spectrum assignment
@@ -1328,7 +1346,8 @@ def penalty_msg(receiver, msg, min_ind, required_osnr, system_margins):
     penalty_dict = {
         'pdl': PDL_PENALTY_STRING,
         'chromatic_dispersion': CD_PENALTY_STRING,
-        'pmd': PMD_PENALTY_STRING
+        'pmd': PMD_PENALTY_STRING,
+        'rx_power_dbm': RX_PENALTY_STRING
     }
     complement = {
         LOWER_SNR_STRING: round(receiver.snr_01nm[min_ind], 2),

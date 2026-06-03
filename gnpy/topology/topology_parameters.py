@@ -125,6 +125,7 @@ class RequestParams(BaseParams):
         'roll_off': None,
         'OSNR': None,
         'penalties': None,
+        'detailed_rx': None,
         'path_bandwidth': None,
         'effective_freq_slot': None,
         'f_min': None,
