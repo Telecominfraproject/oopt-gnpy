@@ -25,6 +25,18 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
     raises an error if error_message is True else returns a default mode based on equipment['SI']['default']
     If trx_mode is None (but type is valid), it returns an undetermined mode whatever the error message:
     this is a special case for automatic mode selection.
+    detailed_rx: Dictionary containing RX power constraints and optional analytical model parameters.
+    Expected keys:
+    - Optional range keys:
+    - ``rx_channel_power_min_dbm`` (float): minimum allowed RX power in dBm
+    - ``rx_channel_power_max_dbm`` (float): maximum allowed RX power in dBm
+    - Optional analytical keys (all required together):
+    - ``k1`` (float): BER model constant
+    - ``k2`` (float): BER model constant
+    - ``BER_threshold`` (float): FEC/BER threshold in linear scale
+    - ``snr_trx_db_0.1nm`` (float): transceiver SNR in dB
+    - ``snr_prx_db_0.1nm`` (float): received power SNR degradation
+    - ``rx-ref-channel-power-dbm`` (float): reference RX power in dBm
     """
     trx_params = {}
     default_si_data = equipment['SI']['default']
@@ -46,7 +58,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         "tx_channel_power_min_dbm": None,
         "tx_channel_power_max_dbm": None,
         "rx_channel_power_min_dbm": None,
-        "rx_channel_power_max_dbm": None
+        "rx_channel_power_max_dbm": None,
+        "detailed_rx": {}
     }
     # Undetermined transponder characteristics
     # mainly used with path_request_run.py for the automatic mode computation case
@@ -64,7 +77,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         "tx_channel_power_min_dbm": None,
         "tx_channel_power_max_dbm": None,
         "rx_channel_power_min_dbm": None,
-        "rx_channel_power_max_dbm": None
+        "rx_channel_power_max_dbm": None,
+        "detailed_rx": {}
     }
 
     trxs = equipment['Transceiver']
@@ -86,6 +100,8 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         if trx_mode is None:
             # if called from path_requests_run.py, trx_mode is filled with None when not specified by user
             trx_params = {**undetermined_trx_params, **trx_frequencies}
+            if 'detailed_rx' not in trx_params:
+                trx_params['detailed_rx'] = {}
             return trx_params
     if trx_type_variety in trxs and error_message:
         raise EquipmentConfigError(f'Could not find transponder "{trx_type_variety}" with mode "{trx_mode}" '

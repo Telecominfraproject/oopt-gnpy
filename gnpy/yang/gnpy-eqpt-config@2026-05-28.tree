@@ -178,27 +178,33 @@ module: gnpy-eqpt-config
         |  +--rw min?   decimal64
         |  +--rw max?   decimal64
         +--rw mode* [format]
-           +--rw format                    string
-           +--rw other_name*               string
-           +--rw OSNR?                     decimal64
-           +--rw min_spacing?              decimal64
-           +--rw bit_rate?                 decimal64
-           +--rw cost?                     decimal64
-           +--rw baud_rate?                decimal64
-           +--rw tx_osnr?                  decimal64
-           +--rw roll_off?                 union
-           +--rw tx_power_dbm?             decimal64
+           +--rw format                      string
+           +--rw other_name*                 string
+           +--rw OSNR?                       decimal64
+           +--rw min_spacing?                decimal64
+           +--rw bit_rate?                   decimal64
+           +--rw cost?                       decimal64
+           +--rw baud_rate?                  decimal64
+           +--rw tx_osnr?                    decimal64
+           +--rw roll_off?                   union
+           +--rw tx_power_dbm?               decimal64
            +--ro penalties* []
-           |  +--ro chromatic_dispersion?     decimal64
-           |  +--ro pmd?                      decimal64
-           |  +--ro pdl?                      decimal64
-           |  +--ro rx-channel-power-value?   decimal64
-           |  +--ro penalty_value?            decimal64
-           +--rw equalization_offset_db?   decimal64
-           +--rw tx-channel-power-min?     decimal64
-           +--rw tx-channel-power-max?     decimal64
-           +--rw rx-channel-power-min?     decimal64
-           +--rw rx-channel-power-max?     decimal64
+           |  +--ro chromatic_dispersion?   decimal64
+           |  +--ro pmd?                    decimal64
+           |  +--ro pdl?                    decimal64
+           |  +--ro penalty_value?          decimal64
+           +--rw detailed_rx!
+           |  +--rw k1                          decimal64
+           |  +--rw k2                          decimal64
+           |  +--rw rx-ref-channel-power-dbm    decimal64
+           |  +--rw BER-threshold               decimal64
+           |  +--rw snr_trx_db_0.1nm            decimal64
+           |  +--rw snr_prx_db_0.1nm            decimal64
+           +--rw equalization_offset_db?     decimal64
+           +--rw tx-channel-power-min-dbm?   decimal64
+           +--rw tx-channel-power-max-dbm?   decimal64
+           +--rw rx-channel-power-min-dbm?   decimal64
+           +--rw rx-channel-power-max-dbm?   decimal64
 
   augment /gapi:api:
     +--rw equipment
@@ -379,27 +385,33 @@ module: gnpy-eqpt-config
           |  +--rw min?   decimal64
           |  +--rw max?   decimal64
           +--rw mode* [format]
-             +--rw format                    string
-             +--rw other_name*               string
-             +--rw OSNR?                     decimal64
-             +--rw min_spacing?              decimal64
-             +--rw bit_rate?                 decimal64
-             +--rw cost?                     decimal64
-             +--rw baud_rate?                decimal64
-             +--rw tx_osnr?                  decimal64
-             +--rw roll_off?                 union
-             +--rw tx_power_dbm?             decimal64
+             +--rw format                      string
+             +--rw other_name*                 string
+             +--rw OSNR?                       decimal64
+             +--rw min_spacing?                decimal64
+             +--rw bit_rate?                   decimal64
+             +--rw cost?                       decimal64
+             +--rw baud_rate?                  decimal64
+             +--rw tx_osnr?                    decimal64
+             +--rw roll_off?                   union
+             +--rw tx_power_dbm?               decimal64
              +--ro penalties* []
-             |  +--ro chromatic_dispersion?     decimal64
-             |  +--ro pmd?                      decimal64
-             |  +--ro pdl?                      decimal64
-             |  +--ro rx-channel-power-value?   decimal64
-             |  +--ro penalty_value?            decimal64
-             +--rw equalization_offset_db?   decimal64
-             +--rw tx-channel-power-min?     decimal64
-             +--rw tx-channel-power-max?     decimal64
-             +--rw rx-channel-power-min?     decimal64
-             +--rw rx-channel-power-max?     decimal64
+             |  +--ro chromatic_dispersion?   decimal64
+             |  +--ro pmd?                    decimal64
+             |  +--ro pdl?                    decimal64
+             |  +--ro penalty_value?          decimal64
+             +--rw detailed_rx!
+             |  +--rw k1                          decimal64
+             |  +--rw k2                          decimal64
+             |  +--rw rx-ref-channel-power-dbm    decimal64
+             |  +--rw BER-threshold               decimal64
+             |  +--rw snr_trx_db_0.1nm            decimal64
+             |  +--rw snr_prx_db_0.1nm            decimal64
+             +--rw equalization_offset_db?     decimal64
+             +--rw tx-channel-power-min-dbm?   decimal64
+             +--rw tx-channel-power-max-dbm?   decimal64
+             +--rw rx-channel-power-min-dbm?   decimal64
+             +--rw rx-channel-power-max-dbm?   decimal64
   augment /gapi:api/gapi:extra-eqpts:
     +--rw equipment
        +--rw library-information
@@ -579,24 +591,30 @@ module: gnpy-eqpt-config
           |  +--rw min?   decimal64
           |  +--rw max?   decimal64
           +--rw mode* [format]
-             +--rw format                    string
-             +--rw other_name*               string
-             +--rw OSNR?                     decimal64
-             +--rw min_spacing?              decimal64
-             +--rw bit_rate?                 decimal64
-             +--rw cost?                     decimal64
-             +--rw baud_rate?                decimal64
-             +--rw tx_osnr?                  decimal64
-             +--rw roll_off?                 union
-             +--rw tx_power_dbm?             decimal64
+             +--rw format                      string
+             +--rw other_name*                 string
+             +--rw OSNR?                       decimal64
+             +--rw min_spacing?                decimal64
+             +--rw bit_rate?                   decimal64
+             +--rw cost?                       decimal64
+             +--rw baud_rate?                  decimal64
+             +--rw tx_osnr?                    decimal64
+             +--rw roll_off?                   union
+             +--rw tx_power_dbm?               decimal64
              +--ro penalties* []
-             |  +--ro chromatic_dispersion?     decimal64
-             |  +--ro pmd?                      decimal64
-             |  +--ro pdl?                      decimal64
-             |  +--ro rx-channel-power-value?   decimal64
-             |  +--ro penalty_value?            decimal64
-             +--rw equalization_offset_db?   decimal64
-             +--rw tx-channel-power-min?     decimal64
-             +--rw tx-channel-power-max?     decimal64
-             +--rw rx-channel-power-min?     decimal64
-             +--rw rx-channel-power-max?     decimal64
+             |  +--ro chromatic_dispersion?   decimal64
+             |  +--ro pmd?                    decimal64
+             |  +--ro pdl?                    decimal64
+             |  +--ro penalty_value?          decimal64
+             +--rw detailed_rx!
+             |  +--rw k1                          decimal64
+             |  +--rw k2                          decimal64
+             |  +--rw rx-ref-channel-power-dbm    decimal64
+             |  +--rw BER-threshold               decimal64
+             |  +--rw snr_trx_db_0.1nm            decimal64
+             |  +--rw snr_prx_db_0.1nm            decimal64
+             +--rw equalization_offset_db?     decimal64
+             +--rw tx-channel-power-min-dbm?   decimal64
+             +--rw tx-channel-power-max-dbm?   decimal64
+             +--rw rx-channel-power-min-dbm?   decimal64
+             +--rw rx-channel-power-max-dbm?   decimal64

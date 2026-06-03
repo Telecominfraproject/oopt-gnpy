@@ -11,7 +11,7 @@ module gnpy-edfa-config {
 
   import gnpy-eqpt-config {
     prefix "geqpt";
-    revision-date 2025-05-26;
+    revision-date 2026-05-28;
   }
 
   organization
@@ -23,11 +23,11 @@ module gnpy-edfa-config {
   description
     "YANG model for gnpy network input for path computation extra edfa config- 2025";
 
-  revision 2025-04-10 {
+  revision 2026-05-28 {
     description
-      "First yang model for extra edfa config option";
+      "Add detailed-rx and correct ranges names";
     reference
-      "YANG model for network input for path computation with gnpy";
+      "YANG model for edfa config with gnpy";
   }
 
   grouping edfa-config-grouping {
