@@ -11,7 +11,7 @@
       {
         "name": "gnpy-network-topology",
         "namespace": "gnpy:gnpy-network-topology",
-        "revision": "2025-03-01",
+        "revision": "2026-05-28",
         "conformance-type": "implement"
       },
       {
@@ -29,13 +29,13 @@
       {
         "name": "gnpy-eqpt-config",
         "namespace": "gnpy:gnpy-eqpt",
-        "revision": "2025-05-26",
+        "revision": "2026-05-28",
         "conformance-type": "implement"
       },
       {
         "name": "gnpy-edfa-config",
         "namespace": "gnpy:gnpy-edfa-config",
-        "revision": "2025-04-10",
+        "revision": "2026-05-28",
         "conformance-type": "implement"
       },
       {
@@ -47,7 +47,7 @@
       {
         "name": "gnpy-spectrum",
         "namespace": "gnpy:gnpy-spectrum",
-        "revision": "2025-04-10",
+        "revision": "2026-05-28",
         "conformance-type": "implement"
       },
       {

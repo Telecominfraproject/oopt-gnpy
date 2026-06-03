@@ -10,7 +10,7 @@ module gnpy-network-topology {
 
   import gnpy-eqpt-config {
     prefix "geqpt";
-    revision-date 2025-05-26;
+    revision-date 2026-05-28;
   }
 
   organization
@@ -23,47 +23,11 @@ module gnpy-network-topology {
   description
     "YANG model for gnpy network input for path computation - 2020 - candi preversion";
 
-  revision 2025-03-01 {
+  revision 2026-05-28 {
     description
-      "spacing for design band and pmd_coef";
+      "Add detailed-rx and correct ranges names";
     reference
-      "YANG model for network input for path computation with gnpy";
-  }
-
-  revision 2025-01-20 {
-    description
-      "Add RamanFiber, design bands, impairments";
-    reference
-      "YANG model for network input for path computation with gnpy";
-  }
-
-  revision 2024-02-21 {
-    description
-      "fix namespaces for identity-ref,
-      add roadm impairment";
-    reference
-      "YANG model for network input for path computation with gnpy";
-  }
-  revision 2023-02-01 {
-    description
-      "change per-degree roadm targets
-      set 6 digits for fiber length
-      set 6 digits for loss_coef
-      add type empty for con_in and con_out";
-    reference
-      "YANG model for network input for path computation with gnpy";
-  }
-  revision 2022-11-21 {
-    description
-      "draft for detecon - GNPy API";
-    reference
-      "YANG model for network input for path computation with gnpy";
-  }
-  revision 2020-10-22 {
-    description
-      "draft for experimental/2020-candi";
-    reference
-      "YANG model for network input for path computation with gnpy";
+      "YANG model for network topology with gnpy";
   }
 
   identity type-element {

@@ -29,46 +29,16 @@ module gnpy-eqpt-config {
 
   contact
     "WG Web:   <https://github.com/Telecominfraproject/oopt-gnpy>
-     contact:  <mailto:ahmed.triki@orange.com>
      contact:  <mailto:esther.lerouzic@orange.com>
    ";
 
   description "Base YANG model for gnpy equipment library input for path computation - 2020 - candi preversion";
 
-  revision 2025-05-26 {
+  revision 2026-05-28 {
     description
-      "Add leaves for parametrization of autodesign and metadata";
+      "Add detailed-rx and correct ranges names";
     reference
-      "Base YANG model for equipment library input for detecon, libyang validation, GNPy4Ofr API";
-  }
-  revision 2025-03-01 {
-    description
-      "Add use_si_channel_count_for_design";
-    reference
-      "Base YANG model for equipment library input for detecon, libyang validation, GNPy4Ofr API";
-  }
-  revision 2025-01-20 {
-    description
-      "Add RamanFiber, design bands, tx_power";
-    reference
-      "Base YANG model for equipment library input for detecon, libyang validation, GNPy4Ofr API";
-  }
-  revision "2024-02-21" {
-    description "add roadm, fix identity-ref, fix leafref";
-    reference "Base YANG model for equipment library input for detecon, libyang validatio, GNPy4Ofr API";
-  }
-
-  revision "2023-02-04" {
-    description "fix pdl, pmd fraction-digit, add advanced_model type def, remove no-type-def";
-    reference "Base YANG model for equipment library input for detecon - GNPy";
-  }
-  revision "2022-11-21" {
-    description "draft for toaster detecon - GNPy API";
-    reference "Base YANG model for equipment library input for detecon - GNPy";
-  }
-  revision "2020-10-22" {
-    description "draft for experimental/2020-candi";
-    reference "Base YANG model for equipment library input for path computation with gnpy";
+      "Base YANG model for equipment library, libyang validation";
   }
 
   /*
@@ -1145,15 +1115,6 @@ module gnpy-eqpt-config {
             units "dB";
             description "Polarization dependant loss";
           }
-           leaf rx-channel-power-value {
-            type decimal64 {
-              fraction-digits 2;
-              range "-60 .. 10";
-            }
-            units "dBm"; 
-            description "Optional penalty associated with a
-            received. It can not contain power below rx-channel-power-min";
-          }
           leaf penalty_value {
             type decimal64 {
               fraction-digits 2;
@@ -1164,6 +1125,72 @@ module gnpy-eqpt-config {
               "OSNR penalty associated to this impairment.";
           }
         }
+        container detailed_rx {
+          presence "Enable detailed RX parameters.";
+          leaf k1 {
+            mandatory true;
+            type decimal64 {
+              fraction-digits 5;
+              range "0 .. 20";
+            }
+            description "k1 parameter for BER = f(SNR)";
+          }
+          leaf k2 {
+            mandatory true;
+            type decimal64 {
+              fraction-digits 5;
+              range "0 .. 20";
+            }
+            description "k2 parameter for BER = f(SNR)";
+          }
+          leaf rx-ref-channel-power-dbm {
+            mandatory true;
+            type decimal64 {
+              fraction-digits 2;
+              range "-60 .. 10";
+            }
+            must "((not(../../rx-channel-power-min-dbm)) or (. >= ../../rx-channel-power-min-dbm)) and
+                  ((not(../../rx-channel-power-max-dbm)) or (. <= ../../rx-channel-power-max-dbm))" {
+                  error-message
+                    "rx-ref-channel-power-dbm must be within rx-channel-power-min-dbm
+                    and rx-channel-power-max-dbm if they are present.";
+            }
+
+            description "Reference power corresponding to the min required OSNR";
+          }
+          leaf BER-threshold {
+            mandatory true;
+            type decimal64 {
+              fraction-digits 18;
+              range "0 .. 1";
+            }
+            description
+              "FEC/BER threshold in linear scale corresponding
+              to the min required OSNR and rx-ref-channel-power-dbm";
+          }
+          leaf snr_trx_db_0.1nm {
+            mandatory true;
+            type decimal64 {
+              fraction-digits 2;
+              range "0 .. 60";
+            }
+            units "dB@0.1nm";
+            description
+              "Intrinsic transceiver SNR (emitter + receiver) without
+              the shot noise of the photodectector";
+          }
+          leaf snr_prx_db_0.1nm {
+            mandatory true;
+            type decimal64 {
+              fraction-digits 4;
+              range "0 .. 100";
+            }
+            units "dB@0.1nm";
+            description
+              "receiver SNR coefficient (receiver only) related to
+              the shot noise of the photodectector";
+          }
+        }
         leaf equalization_offset_db {
           type decimal64 {
             fraction-digits 4;
@@ -1171,34 +1198,38 @@ module gnpy-eqpt-config {
           }
           description "Power offset for equalizing this mode in ROADM compared to reference channel";          
         }
-        leaf tx-channel-power-min {
+        leaf tx-channel-power-min-dbm {
           type decimal64 {
             fraction-digits 2;
             range "-20 .. 20";
           }
+          units "dBm";
           description "Min power out of transceiver";    
         }
-        leaf tx-channel-power-max {
+        leaf tx-channel-power-max-dbm {
           type decimal64 {
             fraction-digits 2;
             range "-20 .. 20";
           }
-          must ". >= ./../tx-channel-power-min";
+          units "dBm";
+          must ". >= ./../tx-channel-power-min-dbm";
           description "Max power out of transceiver";    
         }
-        leaf rx-channel-power-min {
+        leaf rx-channel-power-min-dbm {
           type decimal64 {
             fraction-digits 2;
             range "-60 .. 10";
           }
+          units "dBm";
           description "Min power supported at receiver input";    
         }
-        leaf rx-channel-power-max {
+        leaf rx-channel-power-max-dbm {
           type decimal64 {
             fraction-digits 2;
-            range "-60 .. 0";
+            range "-60 .. 10";
           }
-          must ". >= ./../rx-channel-power-min";
+          units "dBm";
+          must ". >= ./../rx-channel-power-min-dbm";
           description "Max power supported at receiver input";    
         }
       }
