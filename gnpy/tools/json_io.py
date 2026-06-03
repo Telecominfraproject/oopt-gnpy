@@ -170,11 +170,15 @@ class Transceiver(_JsonThing):
             penalties = mode_params.get('penalties')
             mode_params['penalties'] = {}
             mode_params['equalization_offset_db'] = mode_params.get('equalization_offset_db', 0)
+            mode_params['detailed_rx'] = mode_params.get("detailed_rx", {})
             # internal model with _ instead of -
             for key in ['tx-channel-power-min-dbm', 'tx-channel-power-max-dbm', 'rx-channel-power-min-dbm',
                         'rx-channel-power-max-dbm']:
                 if key in mode_params:
                     mode_params[key.replace('-', '_')] = mode_params.pop(key)
+
+            # penalties for cd/pmd/pdl
+            # rx_penalties are treated by adding the noise contribution of the receiver (rx_snr_update)
             if penalties:
                 for impairment in ('chromatic_dispersion', 'pmd', 'pdl'):
                     imp_penalties = [p for p in penalties if impairment in p]

@@ -30,10 +30,9 @@ from typing import Union, List
 from logging import getLogger
 import warnings
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, \
-    full, squeeze, zeros, outer, ndarray
+    full, squeeze, zeros, outer, ndarray, where
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
-
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
     watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
@@ -41,7 +40,6 @@ from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpPara
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation, muxed_spectral_information, demuxed_spectral_information
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError, EquipmentConfigError
-
 
 _logger = getLogger(__name__)
 
@@ -195,29 +193,81 @@ class Transceiver(_Node):
         self.latency = spectral_info.latency * 1e3
 
     def _calc_rx_power_dbm(self, spectral_info):
-        """Updates the Transceiver property with the rx power received by the received channels. rx_power is in dBm.
+        """Updates the Transceiver property with the rx power received by the received channels. rx_power_dbm is in dBm.
         """
         self.rx_power_dbm = spectral_info.pch_dbm
 
-    def _calc_penalty(self, impairment_value, boundary_list):
-        """Computes the SNR penalty given the impairment value.
+    def _calc_interpolation_penalty(self, impairment_value, boundary_list):
+        """
+        Computes the SNR penalty for CD, PMD or PDL via linear interpolation.
+        Returns inf outside the interval.
 
-        :param impairment_value: The impairment value.
+        :param impairment_value: The impairment value (e.g. chromatic dispersion in ps/nm, PMD in ps)
         :type impairment_value: float
-        :param boundary_list: The boundary list for penalties.
-        :type boundary_list: Dict[str, Any]
-
-        :return float: The computed penalty.
+        :param boundary_list: Must contain 'up_to_boundary' and 'penalty_value' lists
+        :type boundary_list: dict
+        :return: Interpolated penalty in dB, or inf if outside the interval
+        :rtype: float
         """
         return interp(impairment_value, boundary_list['up_to_boundary'], boundary_list['penalty_value'],
                       left=float('inf'), right=float('inf'))
 
-    def calc_penalties(self, penalties):
-        """Updates the Transceiver property with penalties (CD, PMD, etc.) of the received channels in dB.
-           Penalties are linearly interpolated between given points and set to 'inf' outside interval.
+    def _calc_rx_power_penalty(self, rx_power_min, rx_power_max) -> float:
         """
-        self.penalties = {impairment: self._calc_penalty(getattr(self, impairment), boundary_list)
+        Set infinite penalty if Rx-power is out of boundaries.
+        Range-based penalties:
+        - ``+inf`` if RX power is below ``rx_channel_power_min_dbm``
+        - ``+inf`` if RX power is above ``rx_channel_power_max_dbm``
+
+        If ``detailed_rx`` is empty or None, the method returns None
+        (same behavior as for other impairment penalties such as CD/PMD).
+
+        :param detailed_rx: Dictionary containing RX power constraints and optional analytical model parameters.
+                            Expected keys:
+                            - Optional range keys:
+                            - ``rx_channel_power_min_dbm`` (float): minimum allowed RX power in dBm
+                            - ``rx_channel_power_max_dbm`` (float): maximum allowed RX power in dBm
+                            - Optional analytical keys (all required together):
+                            - ``k1`` (float): BER model constant
+                            - ``k2`` (float): BER model constant
+                            - ``BER_threshold`` (float): FEC/BER threshold in linear scale
+                            - ``snr_trx_db_0.1nm`` (float): transceiver SNR in dB
+                            - ``snr_prx_db_0.1nm`` (float): receiver SNR in dB
+                            - ``rx-ref-channel-power-dbm`` (float): reference RX power in dBm
+        :type detailed_rx: dict
+        :return: Array of penalties in dB for each value in ``self.rx_power_dbm``.
+                 Entries are ``+inf`` when out of valid RX power range.
+                 Returns None if ``detailed_rx`` is empty.
+        :rtype: numpy.ndarray | None
+        """
+        if rx_power_min is None and rx_power_max is None:
+            return None
+        penalty = zeros(len(self.rx_power_dbm))
+        if rx_power_min is not None:
+            penalty += where(self.rx_power_dbm <= rx_power_min, float('inf'), 0)
+        if rx_power_max is not None:
+            penalty += where(self.rx_power_dbm >= rx_power_max, float('inf'), 0)
+
+        return penalty
+
+    def update_rx_snr(self, detailed_rx):
+        """Add the noise contribution of the receiver in 0.1nm"""
+        if detailed_rx:
+            # tip: -30 dB is added because we moved from dbm to watt
+            snr_prx_db = self.rx_power_dbm + detailed_rx['snr_prx_db_0.1nm'] - 30
+            self.update_snr_tot(detailed_rx['snr_trx_db_0.1nm'], snr_prx_db)
+
+    def calc_penalties(self, penalties, rx_power_min=None, rx_power_max=None):
+        """
+        Updates the Transceiver property with penalties (CD, PMD, PDL, rx_power_dbm, etc.)
+        Skips any impairment whose value is not available on the Transceiver object.
+        """
+
+        self.penalties = {impairment: self._calc_interpolation_penalty(getattr(self, impairment), boundary_list)
                           for impairment, boundary_list in penalties.items()}
+        temp = self._calc_rx_power_penalty(rx_power_min, rx_power_max)
+        if temp is not None:
+            self.penalties['rx_power_dbm'] = temp
         self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
     def _calc_snr(self, spectral_info):
@@ -254,6 +304,20 @@ class Transceiver(_Node):
         self.snr = snr_sum(self.raw_snr, self.baud_rate, snr_added)
         self.osnr_ase_01nm = snr_sum(self.raw_osnr_ase_01nm, 12.5e9, snr_added)
         self.snr_01nm = snr_sum(self.raw_snr_01nm, 12.5e9, snr_added)
+
+    def update_snr_tot(self, snr_trx_db_01nm, snr_prx_db_01nm):
+        """
+        snr_tot_added in 0.1nm
+        compute total SNR
+        """
+        # use raw_values so that the added SNR penalties are not cumulated
+        snr_added = 0
+        for s in (snr_trx_db_01nm, snr_prx_db_01nm):
+            if s is not None:
+                snr_added += db2lin(-s)
+        snr_added = -lin2db(snr_added)
+        self.raw_snr_tot = snr_sum(self.raw_snr, self.baud_rate, snr_added)
+        self.snr_tot_01nm = snr_sum(self.raw_snr_01nm, 12.5e9, snr_added)
 
     @property
     def to_json(self):
@@ -323,6 +387,9 @@ class Transceiver(_Node):
         pdl_penalty = self.penalties.get('pdl')
         if pdl_penalty is not None:
             result += f'\n  PDL penalty (dB):          {mean(pdl_penalty):.2f}'
+        rx_power_dbm_penalty = self.penalties.get('rx_power_dbm')
+        if rx_power_dbm_penalty is not None:
+            result += f'\n  rx_power_dbm penalty (dB): {mean(rx_power_dbm_penalty):.2f}'
 
         return result
 
