@@ -321,7 +321,7 @@ def _get_rq_from_service(service: Path, route_id: str, network, equipment,
             rqs[0].baud_rate = trx_params['baud_rate']
             rqs[0].roll_off = trx_params['roll_off']
             rqs[0].bit_rate = trx_params['bit_rate']
-            rqs[0].OSNR = trx_params['OSNR']
+            rqs[0].required_osnr_db_01nm = trx_params['OSNR']
             rqs[0].tx_osnr = trx_params['tx_osnr']
             rqs[0].min_spacing = trx_params['min_spacing']
             rqs[0].cost = trx_params['cost']
@@ -667,19 +667,18 @@ def path_requests_run(args=None):
             posnrb = f'{round(mean(this_p[-1].osnr_ase), 2)}'
             posnr = f'{round(mean(this_p[-1].osnr_ase_01nm), 2)}'
 
-        try:
-            id_request = rqs[i].request_id[0:min(30, len(rqs[i].request_id))]
-            if rqs[i].blocking_reason in BLOCKING_NOPATH:
-                line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ',
-                        '-', '-', '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
-                        '-', '{rqs[i].blocking_reason}']
-            else:
-                line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ', psnrb,
-                        psnr, posnrb, posnr, '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
-                        '-', f'{rqs[i].blocking_reason}']
-        except AttributeError:
+        id_request = rqs[i].request_id[0:min(30, len(rqs[i].request_id))]
+        if rqs[i].blocking_reason in BLOCKING_NOPATH:
+            line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ',
+                    '-', '-', '-', '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
+                    '-', f'{rqs[i].blocking_reason}']
+        elif rqs[i].blocking_reason is not None:
             line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ', psnrb,
-                    psnr, posnrb, posnr, f'{rqs[i].OSNR + equipment["SI"]["default"].sys_margins}',
+                    psnr, posnrb, posnr, '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
+                    '-', f'{rqs[i].blocking_reason}']
+        else:
+            line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ', psnrb,
+                    psnr, posnrb, posnr, f'{rqs[i].required_osnr_db_01nm + equipment["SI"]["default"].sys_margins}',
                     f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
                     f'{ceil(rqs[i].path_bandwidth / rqs[i].bit_rate)}', f'({rqs[i].N},{rqs[i].M})']  # noqa E231
         data.append(line)

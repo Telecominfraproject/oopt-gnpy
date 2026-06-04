@@ -359,6 +359,10 @@ def create_per_oms_request(network, eqpt, req_power):
             carrier['slot_width'] = req.spacing
             carrier['delta_pdb'] = 0
             carrier['tx_power'] = 1e-3
+            carrier['required_osnr_db_01nm'] = None
+            carrier['penalties'] = {}
+            carrier['rx_channel_power_min_dbm'] = None
+            carrier['rx_channel_power_max_dbm'] = None
             req.initial_spectrum = {(req.f_min + req.spacing * f): Carrier(**carrier)
                                     for f in range(1, req.nb_channel + 1)}
             req_list.append(req)
@@ -374,6 +378,10 @@ def create_per_oms_request(network, eqpt, req_power):
     carrier['slot_width'] = req.spacing
     carrier['delta_pdb'] = 0
     carrier['tx_power'] = 1e-3
+    carrier['required_osnr_db_01nm'] = None
+    carrier['penalties'] = {}
+    carrier['rx_channel_power_min_dbm'] = None
+    carrier['rx_channel_power_max_dbm'] = None
     req.initial_spectrum = {(req.f_min + req.spacing * f): Carrier(**carrier) for f in range(1, req.nb_channel + 1)}
     req_list.append(req)
     return req_list

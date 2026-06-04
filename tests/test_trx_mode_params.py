@@ -165,13 +165,13 @@ def test_trx_mode_params(trx_type, trx_mode, error_message, no_error, expected_r
         'OSNR': None,
         'bit_rate': None,
         'roll_off': None,
-        'detailed_rx': {},
         'tx_osnr': None,
         'equalization_offset_db': 0,
         'min_spacing': None,
         'f_max': 196100000000000.0,
         'f_min': 191350000000000.0,
-        'penalties': None,
+        'penalties': {},
+        'detailed_rx': {},
         'cost': None,
         'tx_channel_power_min_dbm': None,
         'tx_channel_power_max_dbm': None,
@@ -396,7 +396,9 @@ def test_transceiver_check_boundaries_penalties(key: str, tx_power: float, expec
     edfa.out_voa = 15
     spectral_info = create_input_spectral_information(
         f_min=rq.f_min, f_max=rq.f_max, roll_off=rq.roll_off, baud_rate=rq.baud_rate,
-        spacing=rq.spacing, tx_osnr=rq.tx_osnr, tx_power=rq.tx_power, delta_pdb=rq.offset_db)
+        spacing=rq.spacing, tx_osnr=rq.tx_osnr, tx_power=rq.tx_power, delta_pdb=rq.offset_db,
+        penalties=rq.penalties, rx_channel_power_min_dbm=rq.rx_channel_power_min_dbm,
+        rx_channel_power_max_dbm=rq.rx_channel_power_max_dbm)
 
     # no propagation yet, no received power at this step
     assert trx1.rx_power_dbm is None
@@ -414,7 +416,8 @@ def test_transceiver_check_boundaries_penalties(key: str, tx_power: float, expec
     osnr_ase_01nm_expected = 58 + rx_power - 10
     assert_allclose(trx2.osnr_ase_01nm, osnr_ase_01nm_expected, 1e-1)  # formula 58+pin-NF
 
-    trx2.calc_penalties(rq.penalties, rq.rx_channel_power_min_dbm, rq.rx_channel_power_max_dbm)
+    trx2.calc_penalties(spectral_info.penalties, spectral_info.rx_channel_power_min_dbm,
+                        spectral_info.rx_channel_power_max_dbm)
     assert_allclose(trx2.rx_power_dbm, tx_power, 1e-2)
     assert_allclose(trx2.penalties.get('rx_power_dbm'), expected_penalty, atol=1e-2)
 
@@ -456,7 +459,8 @@ def test_receiver_noise_contribution(key: str, rx_power: float, expected_snr: fl
     edfa.out_voa = 5 - rx_power
     spectral_info = create_input_spectral_information(
         f_min=rq.f_min, f_max=rq.f_max, roll_off=rq.roll_off, baud_rate=rq.baud_rate,
-        spacing=rq.spacing, tx_osnr=rq.tx_osnr, tx_power=rq.tx_power, delta_pdb=rq.offset_db)
+        spacing=rq.spacing, tx_osnr=rq.tx_osnr, tx_power=rq.tx_power, delta_pdb=rq.offset_db,
+        rx_channel_power_min_dbm=rq.rx_channel_power_min_dbm, rx_channel_power_max_dbm=rq.rx_channel_power_max_dbm)
 
     # no propagation yet, no received power at this step
     assert trx1.rx_power_dbm is None
@@ -490,7 +494,7 @@ def test_detailed_rx():
                          network=network, network_filename=DATA_DIR_TRX / 'topology.json')
     oms_list, propagatedpths, reversed_propagatedpths, rqs, _, result = \
         planning(network, equipment, data, redesign=False)
-    assert not hasattr(rqs[0], "blocking_reason")
+    assert rqs[0].blocking_reason is None
     assert rqs[1].blocking_reason is not None
     assert rqs[2].blocking_reason is not None
     assert propagatedpths[1][-1].penalties['rx_power_dbm'][0] == float('inf')
