@@ -559,7 +559,7 @@ def pth_assign_spectrum(pths: List[Union[Roadm, Transceiver, Edfa, Multiband_amp
     if reversed path are provided, means that occupation is bidir
     """
     for pth, rq, rpth in zip(pths, rqs, rpths):
-        if hasattr(rq, 'blocking_reason'):
+        if rq.blocking_reason is not None:
             rq.N = None
             rq.M = None
         else:
