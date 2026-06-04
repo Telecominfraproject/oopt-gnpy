@@ -67,7 +67,7 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
         "format": "undetermined",
         "baud_rate": None,
         "OSNR": None,
-        "penalties": None,
+        "penalties": {},
         "bit_rate": None,
         "roll_off": None,
         "tx_osnr": None,

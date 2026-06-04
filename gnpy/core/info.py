@@ -57,7 +57,8 @@ class SpectralInformation(object):
     def __init__(self, frequency: array, baud_rate: array, slot_width: array, pch: array,
                  signal_ratio: array, ase_ratio: array, nli_ratio: array,
                  roll_off: array, chromatic_dispersion: array, pmd: array, pdl: array, latency: array,
-                 delta_pdb_per_channel: array, tx_osnr: array, tx_power: array, label: array):
+                 delta_pdb_per_channel: array, tx_osnr: array, tx_power: array, required_osnr_db_01nm: array,
+                 penalties: array, rx_channel_power_min_dbm: array, rx_channel_power_max_dbm: array, label: array):
         indices = argsort(frequency)
         self._frequency = frequency[indices]
         self._df = outer(ones(frequency.shape), self._frequency) - outer(self._frequency, ones(frequency.shape))
@@ -87,6 +88,10 @@ class SpectralInformation(object):
         self._delta_pdb_per_channel = delta_pdb_per_channel[indices]
         self._tx_osnr = tx_osnr[indices]
         self._tx_power = tx_power[indices]
+        self._required_osnr_db_01nm = required_osnr_db_01nm[indices]
+        self._penalties = penalties[indices]
+        self._rx_channel_power_min_dbm = rx_channel_power_min_dbm[indices]
+        self._rx_channel_power_max_dbm = rx_channel_power_max_dbm[indices]
         self._label = label[indices]
 
     @property
@@ -261,6 +266,38 @@ class SpectralInformation(object):
         self._tx_osnr = tx_osnr
 
     @property
+    def required_osnr_db_01nm(self):
+        return self._required_osnr_db_01nm
+
+    @required_osnr_db_01nm.setter
+    def required_osnr_db_01nm(self, required_osnr_db_01nm):
+        self._required_osnr_db_01nm = required_osnr_db_01nm
+
+    @property
+    def rx_channel_power_min_dbm(self):
+        return self._rx_channel_power_min_dbm
+
+    @rx_channel_power_min_dbm.setter
+    def rx_channel_power_min_dbm(self, rx_channel_power_min_dbm):
+        self._rx_channel_power_min_dbm = rx_channel_power_min_dbm
+
+    @property
+    def rx_channel_power_max_dbm(self):
+        return self._rx_channel_power_max_dbm
+
+    @rx_channel_power_max_dbm.setter
+    def rx_channel_power_max_dbm(self, rx_channel_power_max_dbm):
+        self._rx_channel_power_max_dbm = rx_channel_power_max_dbm
+
+    @property
+    def penalties(self):
+        return self._penalties
+
+    @penalties.setter
+    def penalties(self, penalties):
+        self._penalties = penalties
+
+    @property
     def tx_power(self):
         return self._tx_power
 
@@ -311,6 +348,13 @@ class SpectralInformation(object):
                                                                     other.delta_pdb_per_channel),
                                        tx_osnr=append(self.tx_osnr, other.tx_osnr),
                                        tx_power=append(self.tx_power, other.tx_power),
+                                       required_osnr_db_01nm=append(self.required_osnr_db_01nm,
+                                                                    other.required_osnr_db_01nm),
+                                       penalties=append(self.penalties, other.penalties),
+                                       rx_channel_power_min_dbm=append(self.rx_channel_power_min_dbm,
+                                                                       other.rx_channel_power_min_dbm),
+                                       rx_channel_power_max_dbm=append(self.rx_channel_power_max_dbm,
+                                                                       other.rx_channel_power_max_dbm),
                                        label=append(self.label, other.label))
         except SpectrumError:
             raise SpectrumError('Spectra cannot be summed: channels overlapping.')
@@ -320,6 +364,10 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
                                           pch: Union[float, ndarray, Iterable],
                                           baud_rate: Union[float, ndarray, Iterable],
                                           tx_osnr: Union[float, ndarray, Iterable],
+                                          required_osnr_db_01nm: Union[float, ndarray, Iterable] = None,
+                                          penalties: Union[List[Penalty], ndarray, Iterable] = None,
+                                          rx_channel_power_min_dbm: Union[float, ndarray, Iterable] = None,
+                                          rx_channel_power_max_dbm: Union[float, ndarray, Iterable] = None,
                                           tx_power: Union[float, ndarray, Iterable] = None,
                                           delta_pdb_per_channel: Union[float, ndarray, Iterable] = 0.,
                                           slot_width: Union[float, ndarray, Iterable] = None,
@@ -347,6 +395,10 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
         nli_ratio = zeros(number_of_channels)
         ase_ratio = zeros(number_of_channels)
         delta_pdb_per_channel = full(number_of_channels, delta_pdb_per_channel)
+        required_osnr_db_01nm = full(number_of_channels, required_osnr_db_01nm)
+        penalties = full(number_of_channels, penalties)
+        rx_channel_power_min_dbm = full(number_of_channels, rx_channel_power_min_dbm)
+        rx_channel_power_max_dbm = full(number_of_channels, rx_channel_power_max_dbm)
         tx_osnr = full(number_of_channels, tx_osnr)
         tx_power = full(number_of_channels, tx_power)
         label = full(number_of_channels, label)
@@ -356,7 +408,10 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
                                    chromatic_dispersion=chromatic_dispersion,
                                    pmd=pmd, pdl=pdl, latency=latency,
                                    delta_pdb_per_channel=delta_pdb_per_channel,
-                                   tx_osnr=tx_osnr, tx_power=tx_power, label=label)
+                                   tx_osnr=tx_osnr, tx_power=tx_power,
+                                   required_osnr_db_01nm=required_osnr_db_01nm,
+                                   penalties=penalties, rx_channel_power_min_dbm=rx_channel_power_min_dbm,
+                                   rx_channel_power_max_dbm=rx_channel_power_max_dbm, label=label)
     except ValueError as e:
         if 'could not broadcast' in str(e):
             raise SpectrumError('Dimension mismatch in input fields.')
@@ -364,7 +419,8 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
 
 
 def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, spacing, tx_osnr, tx_power,
-                                      delta_pdb=0):
+                                      required_osnr_db_01nm=None, penalties=None, rx_channel_power_min_dbm=None,
+                                      rx_channel_power_max_dbm=None, delta_pdb=0):
     """Creates a fixed slot width spectral information with flat power.
     all arguments are scalar values"""
     number_of_channels = automatic_nch(f_min, f_max, spacing)
@@ -373,7 +429,11 @@ def create_input_spectral_information(f_min, f_max, roll_off, baud_rate, spacing
     label = [f'{baud_rate * 1e-9 :.2f}G' for i in range(number_of_channels)]
     return create_arbitrary_spectral_information(frequency, slot_width=spacing, pch=tx_power, baud_rate=baud_rate,
                                                  roll_off=roll_off, delta_pdb_per_channel=delta_pdb_per_channel,
-                                                 tx_osnr=tx_osnr, tx_power=tx_power, label=label)
+                                                 tx_osnr=tx_osnr, tx_power=tx_power,
+                                                 required_osnr_db_01nm=required_osnr_db_01nm, penalties=penalties,
+                                                 rx_channel_power_min_dbm=rx_channel_power_min_dbm,
+                                                 rx_channel_power_max_dbm=rx_channel_power_max_dbm,
+                                                 label=label)
 
 
 def select_channels(spectrum: SpectralInformation, select: array) -> SpectralInformation:
@@ -389,6 +449,10 @@ def select_channels(spectrum: SpectralInformation, select: array) -> SpectralInf
                                pmd=spectrum.pmd[select], pdl=spectrum.pdl[select], latency=spectrum.latency[select],
                                delta_pdb_per_channel=spectrum.delta_pdb_per_channel[select],
                                tx_osnr=spectrum.tx_osnr[select], tx_power=spectrum.tx_power[select],
+                               required_osnr_db_01nm=spectrum.required_osnr_db_01nm[select],
+                               penalties=spectrum.penalties[select],
+                               rx_channel_power_min_dbm=spectrum.rx_channel_power_min_dbm[select],
+                               rx_channel_power_max_dbm=spectrum.rx_channel_power_max_dbm[select],
                                label=spectrum.label[select])
 
 
@@ -436,19 +500,26 @@ def carriers_to_spectral_information(initial_spectrum: dict[float, Carrier],
     delta_pdb_per_channel = [c.delta_pdb for c in initial_spectrum.values()]
     slot_width = [c.slot_width for c in initial_spectrum.values()]
     tx_osnr = [c.tx_osnr for c in initial_spectrum.values()]
+    required_osnr_db_01nm = [c.required_osnr_db_01nm for c in initial_spectrum.values()]
+    penalties = [c.penalties for c in initial_spectrum.values()]
     tx_power = [c.tx_power for c in initial_spectrum.values()]
+    rx_channel_power_min_dbm = [c.rx_channel_power_min_dbm for c in initial_spectrum.values()]
+    rx_channel_power_max_dbm = [c.rx_channel_power_max_dbm for c in initial_spectrum.values()]
     label = [c.label for c in initial_spectrum.values()]
     return create_arbitrary_spectral_information(frequency=frequency, pch=pch, baud_rate=baud_rate,
                                                  slot_width=slot_width, roll_off=roll_off,
                                                  delta_pdb_per_channel=delta_pdb_per_channel, tx_osnr=tx_osnr,
-                                                 tx_power=tx_power, label=label)
+                                                 tx_power=tx_power, required_osnr_db_01nm=required_osnr_db_01nm,
+                                                 penalties=penalties, rx_channel_power_min_dbm=rx_channel_power_min_dbm,
+                                                 rx_channel_power_max_dbm=rx_channel_power_max_dbm, label=label)
 
 
 @dataclass
 class Carrier:
     """One channel in the initial mixed-type spectrum definition, each type being defined by
     its delta_pdb (power offset with respect to reference power), baud rate, slot_width, roll_off
-    tx_power, and tx_osnr. delta_pdb offset is applied to target power out of Roadm.
+    tx_power, tx_osnr, required_osnr_db_01nm and penalties, rx_channel_power_min_dbm and rx_channel_power_max_dbm.
+    delta_pdb offset is applied to target power out of Roadm.
     Label is used to group carriers which belong to the same partition when printing results.
     """
     delta_pdb: float
@@ -457,6 +528,10 @@ class Carrier:
     roll_off: float
     tx_osnr: float
     tx_power: float
+    required_osnr_db_01nm: float
+    penalties: Impairment
+    rx_channel_power_min_dbm: float
+    rx_channel_power_max_dbm: float
     label: str
 
 
@@ -481,3 +556,18 @@ class ReferenceCarrier:
     """
     baud_rate: float
     slot_width: float
+
+
+@dataclass
+class Impairment:
+    """ Impairment type for a carrier"""
+    chromatic_dispersion: Penalty
+    pdl: Penalty
+    pmd: Penalty
+
+
+@dataclass
+class Penalty:
+    """Vectors used to compute the penalty contribution for one impairement """
+    up_to_boundaries: List[float]
+    penalty_value: List[float]

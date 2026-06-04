@@ -179,8 +179,8 @@ def planning(network: DiGraph, equipment: dict, data: dict, redesign: bool = Fal
     pth_assign_spectrum(pths, rqs, oms_list, reversed_pths,
                         policy=user_policy)
     for i, rq in enumerate(rqs):
-        if hasattr(rq, 'OSNR') and rq.OSNR:
-            rq.osnr_with_sys_margin = rq.OSNR + equipment["SI"]["default"].sys_margins
+        if hasattr(rq, 'required_osnr_db_01nm') and rq.required_osnr_db_01nm:
+            rq.osnr_with_sys_margin = rq.required_osnr_db_01nm + equipment["SI"]["default"].sys_margins
 
     # assumes that list of rqs and list of propgatedpths have same order
     result = [ResultElement(rq, pth, rpth) for rq, pth, rpth in zip(rqs, propagatedpths, reversed_propagatedpths)]

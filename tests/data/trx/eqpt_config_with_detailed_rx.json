@@ -333,6 +333,12 @@
           "cost": 1,
           "rx-channel-power-min-dbm": -22.0,
           "rx-channel-power-max-dbm": -10.0,
+          "penalties": [{
+                "chromatic_dispersion": 80000,
+                "penalty_value": 0.5
+            }, {
+                "pmd": 120,
+                "penalty_value": 0.5}],
           "detailed_rx":{
             "BER-threshold": 0.068,
             "rx-ref-channel-power-dbm": -10.0,
