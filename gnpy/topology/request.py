@@ -483,7 +483,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                     # adding the noise contribution of the receiver
                     path[-1].update_rx_snr(this_mode['detailed_rx'])
                     if round(min(path[-1].snr_01nm - path[-1].total_penalty), 2) \
-                            > this_mode['OSNR'] + equipment['SI']['default'].sys_margins:
+                            > this_mode['OSNR'] + path[-1].params.system_margin:
                         return path, this_mode
                     else:
                         last_explored_mode = this_mode
@@ -1180,11 +1180,11 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 propagate(total_path, pathreq, equipment)
                 snr01nm_with_penalty = total_path[-1].snr_01nm - total_path[-1].total_penalty
                 min_ind = argmin(snr01nm_with_penalty)
-                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
+                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + total_path[-1].params.system_margin:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}'
                     msg = penalty_msg(total_path[-1], msg, min_ind, pathreq.OSNR,
-                                      equipment["SI"]["default"].sys_margins)
+                                      total_path[-1].params.system_margin)
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
@@ -1240,10 +1240,10 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 propagated_reversed_path = rev_p
                 snr01nm_with_penalty = rev_p[-1].snr_01nm - rev_p[-1].total_penalty
                 min_ind = argmin(snr01nm_with_penalty)
-                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + equipment['SI']['default'].sys_margins:
+                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + rev_p[-1].params.system_margin:
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}'
-                    msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.OSNR, equipment["SI"]["default"].sys_margins)
+                    msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.OSNR, rev_p[-1].params.system_margin)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
                     if not hasattr(pathreq, 'blocking_reason'):
