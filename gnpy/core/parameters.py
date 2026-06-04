@@ -699,6 +699,7 @@ class TransceiverParams:
     def __init__(self, **params):
         self.design_bands = params.get('design_bands', [])
         self.per_degree_design_bands = params.get('per_degree_design_bands', {})
+        self.system_margin = params.get('system_margin', 0)
 
 
 @dataclass
