@@ -685,7 +685,7 @@ def network_from_json(json_data: dict, equipment: dict) -> DiGraph:
         variety = el_config.pop('type_variety', 'default')
         cls = _cls_for(typ)
         if typ == 'Transceiver':
-            temp = el_config.setdefault('params', {})
+            el_config.setdefault('params', {'system_margin': equipment['SI']['default'].sys_margins})
         if typ == 'Multiband_amplifier':
             if variety in ['default', '']:
                 extra_params = None
