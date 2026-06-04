@@ -28,7 +28,7 @@ from math import ceil, isinf
 from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
-from numpy import mean, argmin
+from numpy import mean, argmin, full, asarray, min as npmin, isclose
 
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Multiband_amplifier
 from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm
@@ -88,7 +88,7 @@ class PathRequest:
         self.f_min = params.f_min
         self.f_max = params.f_max
         self.format = params.format
-        self.OSNR = params.OSNR
+        self.required_osnr_db_01nm = params.OSNR
         self.penalties = params.penalties
         self.detailed_rx = params.detailed_rx
         self.bit_rate = params.bit_rate
@@ -101,6 +101,7 @@ class PathRequest:
         if params.effective_freq_slot is not None:
             self.N = [s['N'] for s in params.effective_freq_slot]
             self.M = [s['M'] for s in params.effective_freq_slot]
+        self.blocking_reason = params.blocking_reason
         self.initial_spectrum = None
         self.offset_db = params.equalization_offset_db
         self.tx_channel_power_min_dbm = params.tx_channel_power_min_dbm
@@ -200,7 +201,7 @@ class ResultElement:
             }
             pro_list.append(temp)
             index += 1
-            if not hasattr(self.path_request, 'blocking_reason'):
+            if self.path_request.blocking_reason is None:
                 # M and N values should not be None at this point
                 if self.path_request.M is None or self.path_request.N is None:
                     raise ServiceError('request {self.path_id} should have positive non null n and m values.')
@@ -303,7 +304,7 @@ class ResultElement:
     @property
     def pathresult(self):
         """create the result dictionnary (response for a request)"""
-        try:
+        if self.path_request.blocking_reason is not None:
             if self.path_request.blocking_reason in BLOCKING_NOPATH:
                 response = {
                     'response-id': self.path_id,
@@ -312,21 +313,20 @@ class ResultElement:
                     }
                 }
                 return response
-            else:
-                response = {
-                    'response-id': self.path_id,
-                    'no-path': {
-                        'no-path': self.path_request.blocking_reason,
-                        'path-properties': self.path_properties
-                    }
-                }
-                return response
-        except AttributeError:
             response = {
                 'response-id': self.path_id,
-                'path-properties': self.path_properties
+                'no-path': {
+                    'no-path': self.path_request.blocking_reason,
+                    'path-properties': self.path_properties
+                }
             }
             return response
+
+        response = {
+            'response-id': self.path_id,
+            'path-properties': self.path_properties
+        }
+        return response
 
     @property
     def json(self):
@@ -410,7 +410,11 @@ def propagate(path, req, equipment):
     else:
         si = create_input_spectral_information(
             f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
-            spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.tx_power, delta_pdb=req.offset_db)
+            spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.tx_power,
+            required_osnr_db_01nm=req.required_osnr_db_01nm, penalties=req.penalties,
+            rx_channel_power_min_dbm=req.rx_channel_power_min_dbm,
+            rx_channel_power_max_dbm=req.rx_channel_power_max_dbm,
+            delta_pdb=req.offset_db)
     # filter out frequencies that should not be created
     si = filter_si(path, equipment, si)
     roadm_osnr = []
@@ -422,10 +426,11 @@ def propagate(path, req, equipment):
         else:
             si = el(si)
     path[0].update_snr(si.tx_osnr)
-    path[0].calc_penalties(req.penalties)
+    # penalties are coming from spectrum information
+    path[0].calc_penalties(si.penalties)
     roadm_osnr.append(si.tx_osnr)
     path[-1].update_snr(*roadm_osnr)
-    path[-1].calc_penalties(req.penalties, req.rx_channel_power_min_dbm, req.rx_channel_power_max_dbm)
+    path[-1].calc_penalties(si.penalties, si.rx_channel_power_min_dbm, si.rx_channel_power_max_dbm)
     # adding the noise contribution of the receiver
     path[-1].update_rx_snr(req.detailed_rx)
     return si
@@ -456,6 +461,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                 # and this function is only called in this case. so coming here should not be considered yet.
                 msg = f'Request: {req.request_id} contains a unexpected initial_spectrum.'
                 raise ServiceError(msg)
+            # penalties are added after propagation because they impact only the transceiver (receiver part)
             spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
                                                          roll_off=equipment['SI']['default'].roll_off,
                                                          baud_rate=this_br, spacing=req.spacing,
@@ -471,18 +477,25 @@ def propagate_and_optimize_mode(path, req, equipment):
                 else:
                     spc_info = el(spc_info)
             for this_mode in modes_to_explore:
+                frequency = asarray(spc_info.frequency)
+                number_of_channels = frequency.size
+                spc_info.required_osnr_db_01nm = full(number_of_channels, this_mode['OSNR'])
+                spc_info.penalties = full(number_of_channels, this_mode['penalties'])
+                spc_info.rx_channel_power_min_dbm = full(number_of_channels, this_mode.get('rx_channel_power_min_dbm'))
+                spc_info.rx_channel_power_max_dbm = full(number_of_channels, this_mode.get('rx_channel_power_max_dbm'))
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
-                    path[0].calc_penalties(this_mode['penalties'])
+                    path[0].calc_penalties(spc_info.penalties)
                     roadm_osnr.append(this_mode['tx_osnr'])
                     path[-1].update_snr(*roadm_osnr)
                     # remove the tx_osnr from roadm_osnr list for the next iteration
                     del roadm_osnr[-1]
-                    path[-1].calc_penalties(this_mode['penalties'], this_mode.get('rx_channel_power_min_dbm', None),
-                                            this_mode.get('rx_channel_power_max_dbm', None))
+                    path[-1].calc_penalties(spc_info.penalties, spc_info.rx_channel_power_min_dbm,
+                                            spc_info.rx_channel_power_max_dbm)
                     # adding the noise contribution of the receiver
                     path[-1].update_rx_snr(this_mode['detailed_rx'])
-                    if round(min(path[-1].snr_01nm - path[-1].total_penalty), 2) \
+                    # npmin is used because we are operating on NumPy arrays (per-channel values), not scalar values.
+                    if round(npmin(path[-1].snr_01nm - path[-1].total_penalty), 2) \
                             > this_mode['OSNR'] + path[-1].params.system_margin:
                         return path, this_mode
                     else:
@@ -1026,7 +1039,7 @@ def compare_reqs(req1, req2, disjlist):
             req1.f_min == req2.f_min and \
             req1.f_max == req2.f_max and \
             req1.format == req2.format and \
-            req1.OSNR == req2.OSNR and \
+            req1.required_osnr_db_01nm == req2.required_osnr_db_01nm and \
             req1.roll_off == req2.roll_off and \
             req1.tx_power == req2.tx_power and \
             same_disj:
@@ -1180,10 +1193,11 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 propagate(total_path, pathreq, equipment)
                 snr01nm_with_penalty = total_path[-1].snr_01nm - total_path[-1].total_penalty
                 min_ind = argmin(snr01nm_with_penalty)
-                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + total_path[-1].params.system_margin:
+                if round(snr01nm_with_penalty[min_ind], 2) < (pathreq.required_osnr_db_01nm
+                                                              + total_path[-1].params.system_margin):
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}'
-                    msg = penalty_msg(total_path[-1], msg, min_ind, pathreq.OSNR,
+                    msg = penalty_msg(total_path[-1], msg, min_ind, pathreq.required_osnr_db_01nm,
                                       total_path[-1].params.system_margin)
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
@@ -1194,14 +1208,14 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 # propagate_and_optimize_mode function returns the mode with the highest bitrate
                 # that passes. if no mode passes, then a attribute blocking_reason is added on
                 # pathreq that contains the reason for blocking: 'NO_PATH', 'NO_FEASIBLE_MODE', ...
-                try:
+                if pathreq.blocking_reason is not None:
                     if pathreq.blocking_reason in BLOCKING_NOPATH:
                         total_path = []
                     elif pathreq.blocking_reason in BLOCKING_NOMODE:
                         pathreq.baud_rate = mode['baud_rate']
                         pathreq.tsp_mode = mode['format']
                         pathreq.format = mode['format']
-                        pathreq.OSNR = mode['OSNR']
+                        pathreq.required_osnr_db_01nm = mode['OSNR']
                         pathreq.tx_osnr = mode['tx_osnr']
                         pathreq.bit_rate = mode['bit_rate']
                         pathreq.penalties = mode['penalties']
@@ -1212,11 +1226,11 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                         pathreq.rx_channel_power_max_dbm = mode.get('rx_channel_power_max_dbm', None)
                         pathreq.offset_db = mode['equalization_offset_db']
                     # other blocking reason should not appear at this point
-                except AttributeError:
+                else:
                     pathreq.baud_rate = mode['baud_rate']
                     pathreq.tsp_mode = mode['format']
                     pathreq.format = mode['format']
-                    pathreq.OSNR = mode['OSNR']
+                    pathreq.required_osnr_db_01nm = mode['OSNR']
                     pathreq.tx_osnr = mode['tx_osnr']
                     pathreq.bit_rate = mode['bit_rate']
                     pathreq.penalties = mode['penalties']
@@ -1240,13 +1254,15 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 propagated_reversed_path = rev_p
                 snr01nm_with_penalty = rev_p[-1].snr_01nm - rev_p[-1].total_penalty
                 min_ind = argmin(snr01nm_with_penalty)
-                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.OSNR + rev_p[-1].params.system_margin:
+                if round(snr01nm_with_penalty[min_ind], 2) < (pathreq.required_osnr_db_01nm
+                                                              + rev_p[-1].params.system_margin):
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}'
-                    msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.OSNR, rev_p[-1].params.system_margin)
+                    msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.required_osnr_db_01nm,
+                                      rev_p[-1].params.system_margin)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
-                    if not hasattr(pathreq, 'blocking_reason'):
+                    if pathreq.blocking_reason is None:
                         pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
                 propagated_reversed_path = []
@@ -1358,8 +1374,15 @@ def penalty_msg(receiver, msg, min_ind, required_osnr, system_margins):
     for penalty, name in penalty_dict.items():
         complement[name] = get_penalty_from_receiver(receiver, penalty)
 
+    # only non-zero rx power penalties are displayed
     for penalty, value in complement.items():
-        msg += f'\n\t{penalty} = {value}'
+        if penalty != RX_PENALTY_STRING:
+            msg += f'\n\t{penalty} = {value}'
+        else:
+            if value == 'Infinity':
+                msg += f'\n\t{penalty} = {value}'
+            elif not isclose(value, 0.0, atol=1e-5):
+                msg += f'\n\t{penalty} = {value}'
     return msg
 
 

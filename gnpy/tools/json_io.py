@@ -345,24 +345,24 @@ def _spectrum_from_json(json_data: dict):
     >>> for k, v in spectrum.items():
     ...     print(f'{k}: {v}')
     ...
-    193200000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
-    193250000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
-    193300000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
-    193350000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
-    193400000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, label='0-32.00G')
-    193462500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
-    193537500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
-    193612500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
-    193687500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
-    193762500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
-    193837500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
-    193912500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
-    193987500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='1-64.00G')
-    194075000000000.0: Carrier(delta_pdb=0, baud_rate=90000000000.0, slot_width=100000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='2-90.00G')
-    194200000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='3-32.00G')
-    194250000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='3-32.00G')
-    194300000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='3-32.00G')
-    194350000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, label='3-32.00G')
+    193200000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='0-32.00G')
+    193250000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='0-32.00G')
+    193300000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='0-32.00G')
+    193350000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='0-32.00G')
+    193400000000000.0: Carrier(delta_pdb=1, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=45, tx_power=0.00019952623149688798, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='0-32.00G')
+    193462500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='1-64.00G')
+    193537500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='1-64.00G')
+    193612500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='1-64.00G')
+    193687500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='1-64.00G')
+    193762500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='1-64.00G')
+    193837500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='1-64.00G')
+    193912500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='1-64.00G')
+    193987500000000.0: Carrier(delta_pdb=0, baud_rate=64000000000.0, slot_width=75000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='1-64.00G')
+    194075000000000.0: Carrier(delta_pdb=0, baud_rate=90000000000.0, slot_width=100000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='2-90.00G')
+    194200000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='3-32.00G')
+    194250000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='3-32.00G')
+    194300000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='3-32.00G')
+    194350000000000.0: Carrier(delta_pdb=0, baud_rate=32000000000.0, slot_width=50000000000.0, roll_off=0.15, tx_osnr=40, tx_power=0.001, required_osnr_db_01nm=None, penalties={}, rx_channel_power_min_dbm=None, rx_channel_power_max_dbm=None, label='3-32.00G')
     """
     spectrum = {}
     json_data = sorted(json_data, key=lambda x: x['f_min'])
@@ -397,6 +397,10 @@ def _spectrum_from_json(json_data: dict):
             spectrum[current_freq] = Carrier(delta_pdb=part['delta_pdb'], baud_rate=part['baud_rate'],
                                              slot_width=part['slot_width'], roll_off=part['roll_off'],
                                              tx_osnr=part['tx_osnr'], tx_power=dbm2watt(part['tx_power_dbm']),
+                                             required_osnr_db_01nm=part.get('OSNR', None),
+                                             penalties=part.get('penalties', {}),
+                                             rx_channel_power_min_dbm=part.get('rx_channel_power_min_dbm', None),
+                                             rx_channel_power_max_dbm=part.get('rx_channel_power_max_dbm', None),
                                              label=part['label'])
         previous_part_max_freq = current_freq + part['slot_width'] / 2
     return spectrum

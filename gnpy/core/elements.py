@@ -25,8 +25,8 @@ instance as a result.
 """
 
 from copy import deepcopy
-from collections import namedtuple
-from typing import Union, List
+from collections import namedtuple, defaultdict
+from typing import Union, List, Optional
 from logging import getLogger
 import warnings
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, \
@@ -240,13 +240,18 @@ class Transceiver(_Node):
                  Returns None if ``detailed_rx`` is empty.
         :rtype: numpy.ndarray | None
         """
-        if rx_power_min is None and rx_power_max is None:
-            return None
+        # if there is no rx_power_min or max defined, an array of zeros is created with a size corresponding
+        #  to the number of elements of self.rx_power_dbm
+        if (rx_power_min is None or all(r is None for r in rx_power_min)) and \
+                (rx_power_max is None or all(r is None for r in rx_power_max)):
+            return zeros(len(self.rx_power_dbm))
         penalty = zeros(len(self.rx_power_dbm))
         if rx_power_min is not None:
-            penalty += where(self.rx_power_dbm <= rx_power_min, float('inf'), 0)
+            penalty += where([(rmin is None) or (r - rmin >= 0)
+                              for rmin, r in zip(rx_power_min, self.rx_power_dbm)], 0, float('inf'))
         if rx_power_max is not None:
-            penalty += where(self.rx_power_dbm >= rx_power_max, float('inf'), 0)
+            penalty += where([(rmax is None) or (r - rmax <= 0)
+                              for rmax, r in zip(rx_power_max, self.rx_power_dbm)], 0, float('inf'))
 
         return penalty
 
@@ -257,17 +262,22 @@ class Transceiver(_Node):
             snr_prx_db = self.rx_power_dbm + detailed_rx['snr_prx_db_0.1nm'] - 30
             self.update_snr_tot(detailed_rx['snr_trx_db_0.1nm'], snr_prx_db)
 
-    def calc_penalties(self, penalties, rx_power_min=None, rx_power_max=None):
+    def calc_penalties(self, per_carrier_penalties: List[dict], rx_power_min: Optional[float] = None,
+                       rx_power_max: Optional[float] = None) -> None:
         """
-        Updates the Transceiver property with penalties (CD, PMD, PDL, rx_power_dbm, etc.)
+        Updates the Transceiver property with penalties (CD, PMD, PDL, rx_power_dbm, etc.) on a per_carrier basis.
+        A interpolation penalty is computed per impairment and per carrier.
         Skips any impairment whose value is not available on the Transceiver object.
         """
-
-        self.penalties = {impairment: self._calc_interpolation_penalty(getattr(self, impairment), boundary_list)
-                          for impairment, boundary_list in penalties.items()}
-        temp = self._calc_rx_power_penalty(rx_power_min, rx_power_max)
-        if temp is not None:
-            self.penalties['rx_power_dbm'] = temp
+        # calculation is done by carrier
+        # for one given impairement, we have now a list of penalties per carrier
+        # previously it was 1 penalty for 1 impairement
+        temp = defaultdict(list)
+        for i, carrier in enumerate(per_carrier_penalties):
+            for impairment, boundary_dict in carrier.items():
+                temp[impairment].append(self._calc_interpolation_penalty(getattr(self, impairment)[i], boundary_dict))
+        self.penalties = temp
+        self.penalties['rx_power_dbm'] = self._calc_rx_power_penalty(rx_power_min, rx_power_max)
         self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
     def _calc_snr(self, spectral_info):
@@ -388,7 +398,7 @@ class Transceiver(_Node):
         if pdl_penalty is not None:
             result += f'\n  PDL penalty (dB):          {mean(pdl_penalty):.2f}'
         rx_power_dbm_penalty = self.penalties.get('rx_power_dbm')
-        if rx_power_dbm_penalty is not None:
+        if rx_power_dbm_penalty is not None and all([p for p in rx_power_dbm_penalty]):
             result += f'\n  rx_power_dbm penalty (dB): {mean(rx_power_dbm_penalty):.2f}'
 
         return result
