@@ -19,6 +19,7 @@ To learn how to contribute, please see CONTRIBUTING.md
 - Gert Grammel (Juniper Networks) <ggrammel@juniper.net>
 - Giacomo Borraccini (NEC Laboratories America) <gborraccini@nec-labs.com>
 - Gilad Goldfarb (Facebook) <giladg@fb.com>
+- Giuseppina Maria Rizzi (Politecnico di Torino) <giuseppina.rizzi@polito.it>
 - James Powell (Telecom Infra Project) <james.powell@telecominfraproject.com>
 - Jan Kundrát (Telecom Infra Project) <jkt@jankundrat.com>
 - Jeanluc Augé (Orange) <jeanluc.auge@orange.com>

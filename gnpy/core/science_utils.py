@@ -19,8 +19,8 @@ from logging import getLogger
 from math import isclose, factorial
 from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, clip, abs, sum, \
     concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, argsort, cumprod, \
-    polyfit, log, reshape, swapaxes, full, nan, cumsum
-from scipy.constants import k, h
+    polyfit, log, reshape, swapaxes, full, nan, cumsum, asarray, maximum
+from scipy.constants import h
 from scipy.interpolate import interp1d
 
 from gnpy.core.utils import db2lin, lin2db
@@ -186,26 +186,52 @@ class RamanSolver:
 
     @staticmethod
     def calculate_spontaneous_raman_scattering(spectral_info: SpectralInformation, srs: StimulatedRamanScattering,
-                                               fiber):
+                                               fiber, use_channel_bandwidth=True, bandwidth_override_hz=None,
+                                               df_min_hz=0.5e12):
         """Evaluates the Raman profile along the z axis for all the frequency propagated in the fiber
         including the Raman pumps co- and counter-propagating.
         """
         logger.debug('Start computing fiber Spontaneous Raman Scattering')
-        z = srs.z
-        baud_rate = spectral_info.baud_rate
-        frequency = spectral_info.frequency
-        channels_loss = srs.loss_profile[:spectral_info.number_of_channels, :]
+        z = asarray(srs.z, dtype=float)
+        f_sig = asarray(spectral_info.frequency, dtype=float)
+        n_ch = spectral_info.number_of_channels
+        G_ra_z = asarray(srs.loss_profile[:n_ch, :], dtype=float)  # loss/gain profile along z
+        G_on_off = G_ra_z[:, -1]   # on-off Raman gain G_on-off(f) = G_RA(L, f)
+        cr_full = fiber.cr(srs.frequency)
+        cr_sig_pump = asarray(cr_full[:n_ch, n_ch:], dtype=float)
 
-        # calculate ase power
-        ase = zeros(spectral_info.number_of_channels)
-        cr = fiber.cr(srs.frequency)[:spectral_info.number_of_channels, spectral_info.number_of_channels:]
+        # Safety floor for gain/loss profile
+        eps = 1e-30
+        G_ra_z_safe = maximum(G_ra_z, eps)
+
+        # start from ASE spectral density [W/Hz]
+        S_ase = zeros(n_ch, dtype=float)
+
         for i, pump in enumerate(fiber.raman_pumps):
-            pump_power = srs.power_profile[spectral_info.number_of_channels + i, :]
-            df = pump.frequency - frequency
-            eta = - 1 / (1 - exp(h * df / (k * fiber.temperature)))
-            integral = trapz(pump_power / channels_loss, z, axis=1)
-            ase += 2 * h * baud_rate * frequency * (1 + eta) * cr[:, i] * (df > 0) * integral  # 2 factor for double pol
-        return ase
+            P_pump_z = asarray(srs.power_profile[n_ch + i, :], dtype=float)
+            df = pump.frequency - f_sig
+            valid = df > df_min_hz
+
+            integrand = (
+                cr_sig_pump[:, i][:, None]
+                * P_pump_z[None, :]
+                * (1.0 / G_ra_z_safe)
+            )
+            integrand[~valid, :] = 0.0
+
+            integral = trapz(integrand, z, axis=1)
+
+            S_ase += h * f_sig * G_on_off * integral
+
+        if use_channel_bandwidth:
+            if bandwidth_override_hz is not None:
+                B = float(bandwidth_override_hz)
+                ase = S_ase * B
+            else:
+                ase = S_ase * asarray(spectral_info.baud_rate, dtype=float)
+            return ase
+
+        return S_ase
 
     @staticmethod
     def calculate_unidirectional_stimulated_raman_scattering(power_in, alpha, cr, z, lumped_losses):
