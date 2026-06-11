@@ -416,8 +416,7 @@ def test_transceiver_check_boundaries_penalties(key: str, tx_power: float, expec
     osnr_ase_01nm_expected = 58 + rx_power - 10
     assert_allclose(trx2.osnr_ase_01nm, osnr_ase_01nm_expected, 1e-1)  # formula 58+pin-NF
 
-    trx2.calc_penalties(spectral_info.penalties, spectral_info.rx_channel_power_min_dbm,
-                        spectral_info.rx_channel_power_max_dbm)
+    trx2.calc_penalties(spectral_info)
     assert_allclose(trx2.rx_power_dbm, tx_power, 1e-2)
     assert_allclose(trx2.penalties.get('rx_power_dbm'), expected_penalty, atol=1e-2)
 
