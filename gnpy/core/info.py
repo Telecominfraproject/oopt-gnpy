@@ -396,7 +396,7 @@ def create_arbitrary_spectral_information(frequency: Union[ndarray, Iterable, fl
         ase_ratio = zeros(number_of_channels)
         delta_pdb_per_channel = full(number_of_channels, delta_pdb_per_channel)
         required_osnr_db_01nm = full(number_of_channels, required_osnr_db_01nm)
-        penalties = full(number_of_channels, penalties)
+        penalties = full(number_of_channels, penalties if penalties is not None else {})
         rx_channel_power_min_dbm = full(number_of_channels, rx_channel_power_min_dbm)
         rx_channel_power_max_dbm = full(number_of_channels, rx_channel_power_max_dbm)
         tx_osnr = full(number_of_channels, tx_osnr)
