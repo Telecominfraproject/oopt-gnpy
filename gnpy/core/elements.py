@@ -26,7 +26,7 @@ instance as a result.
 
 from copy import deepcopy
 from collections import namedtuple, defaultdict
-from typing import Union, List, Optional
+from typing import Union, List
 from logging import getLogger
 import warnings
 from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval, sum, sqrt, log10, exp, asarray, \
@@ -262,8 +262,7 @@ class Transceiver(_Node):
             snr_prx_db = self.rx_power_dbm + detailed_rx['snr_prx_db_0.1nm'] - 30
             self.update_snr_tot(detailed_rx['snr_trx_db_0.1nm'], snr_prx_db)
 
-    def calc_penalties(self, per_carrier_penalties: List[dict], rx_power_min: Optional[float] = None,
-                       rx_power_max: Optional[float] = None) -> None:
+    def calc_penalties(self, spectral_info) -> None:
         """
         Updates the Transceiver property with penalties (CD, PMD, PDL, rx_power_dbm, etc.) on a per_carrier basis.
         A interpolation penalty is computed per impairment and per carrier.
@@ -273,11 +272,12 @@ class Transceiver(_Node):
         # for one given impairement, we have now a list of penalties per carrier
         # previously it was 1 penalty for 1 impairement
         temp = defaultdict(list)
-        for i, carrier in enumerate(per_carrier_penalties):
+        for i, carrier in enumerate(spectral_info.penalties):
             for impairment, boundary_dict in carrier.items():
                 temp[impairment].append(self._calc_interpolation_penalty(getattr(self, impairment)[i], boundary_dict))
         self.penalties = temp
-        self.penalties['rx_power_dbm'] = self._calc_rx_power_penalty(rx_power_min, rx_power_max)
+        self.penalties['rx_power_dbm'] = self._calc_rx_power_penalty(spectral_info.rx_channel_power_min_dbm,
+                                                                     spectral_info.rx_channel_power_max_dbm)
         self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
     def _calc_snr(self, spectral_info):
@@ -419,6 +419,8 @@ class Transceiver(_Node):
         self._calc_pdl(spectral_info)
         self._calc_latency(spectral_info)
         self._calc_rx_power_dbm(spectral_info)
+        self.calc_penalties(spectral_info)
+
         return spectral_info
 
 
