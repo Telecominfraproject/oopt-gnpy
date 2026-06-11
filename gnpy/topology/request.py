@@ -426,11 +426,8 @@ def propagate(path, req, equipment):
         else:
             si = el(si)
     path[0].update_snr(si.tx_osnr)
-    # penalties are coming from spectrum information
-    path[0].calc_penalties(si.penalties)
     roadm_osnr.append(si.tx_osnr)
     path[-1].update_snr(*roadm_osnr)
-    path[-1].calc_penalties(si.penalties, si.rx_channel_power_min_dbm, si.rx_channel_power_max_dbm)
     # adding the noise contribution of the receiver
     path[-1].update_rx_snr(req.detailed_rx)
     return si
@@ -477,6 +474,8 @@ def propagate_and_optimize_mode(path, req, equipment):
                 else:
                     spc_info = el(spc_info)
             for this_mode in modes_to_explore:
+                # now we have propagated in one baudrate, we explore all modes with this baudrate
+                # we can now update spectral information with the mode parameters (penalties, power range,...)
                 frequency = asarray(spc_info.frequency)
                 number_of_channels = frequency.size
                 spc_info.required_osnr_db_01nm = full(number_of_channels, this_mode['OSNR'])
@@ -485,13 +484,12 @@ def propagate_and_optimize_mode(path, req, equipment):
                 spc_info.rx_channel_power_max_dbm = full(number_of_channels, this_mode.get('rx_channel_power_max_dbm'))
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
-                    path[0].calc_penalties(spc_info.penalties)
+                    path[0].calc_penalties(spc_info)
                     roadm_osnr.append(this_mode['tx_osnr'])
                     path[-1].update_snr(*roadm_osnr)
                     # remove the tx_osnr from roadm_osnr list for the next iteration
                     del roadm_osnr[-1]
-                    path[-1].calc_penalties(spc_info.penalties, spc_info.rx_channel_power_min_dbm,
-                                            spc_info.rx_channel_power_max_dbm)
+                    path[-1].calc_penalties(spc_info)
                     # adding the noise contribution of the receiver
                     path[-1].update_rx_snr(this_mode['detailed_rx'])
                     # npmin is used because we are operating on NumPy arrays (per-channel values), not scalar values.
