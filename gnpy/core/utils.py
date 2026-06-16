@@ -865,10 +865,25 @@ def per_label_list(values: List[Union[float, int]], labels: List[str], calculati
 
 
 def array_contains_none(my_array: Union[List, array]):
-    """ """
+    """
+    Checks if any element in the array is None.
+
+    :param my_array: The list or array to check.
+    :type my_array: Union[List, array]
+    :return: True if any element is None, otherwise False.
+    :rtype: bool
+    """
     return any(i is None for i in my_array)
 
 
-def array_contains_negative_value(my_array: Union[List, array]):
-    """"""
+def array_contains_negative_value(my_array: Union[List, array]) -> bool:
+    """
+    Checks if any element in the array is a negative number.
+
+    :param my_array: The list or array to check.
+    :type my_array: Union[List, array]
+    :return: True if any element is negative, otherwise False.
+    :rtype: bool
+    """
+
     return any(value < 0 for value in my_array)
