@@ -36,7 +36,7 @@ from scipy.interpolate import interp1d
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
     watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str, dbm2watt, array_contains_none
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
-    MultiBandParams, RoadmPath, RoadmImpairment, TransceiverParams, find_band_name, FrequencyBand
+    MultiBandParams, RoadmPath, RoadmImpairment, TransceiverParams, find_band_name, FrequencyBand, TransceiverRole
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation, muxed_spectral_information, demuxed_spectral_information
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError, EquipmentConfigError
@@ -171,6 +171,7 @@ class Transceiver(_Node):
         self.design_bands = self.params.design_bands
         self.per_degree_design_bands = self.params.per_degree_design_bands
         self.rx_power_dbm = None
+        self._role = TransceiverRole.EMITTER  # default role will be changed after propagation
 
     def _calc_cd(self, spectral_info):
         """Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -196,6 +197,26 @@ class Transceiver(_Node):
         """Updates the Transceiver property with the rx power received by the received channels. rx_power_dbm is in dBm.
         """
         self.rx_power_dbm = spectral_info.pch_dbm
+
+    @property
+    def role(self):
+        return self._role
+
+    @role.setter
+    def role(self, role):
+        self._role = role
+
+    def update_as_receiver(self):
+        """
+        Update the transceiver's role to RECEIVER.
+        """
+        self.role = TransceiverRole.RECEIVER
+
+    def update_as_emitter(self):
+        """
+        Update the transceiver's role to EMITTER.
+        """
+        self.role = TransceiverRole.EMITTER
 
     def _calc_interpolation_penalty(self, impairment_value, boundary_list):
         """
@@ -282,7 +303,8 @@ class Transceiver(_Node):
     def calc_feasibility(self, spectral_info):
         """ """
         if (array_contains_none(spectral_info.required_osnr_db_01nm) or array_contains_none(self.snr_01nm)
-                or array_contains_none(self.total_penalty) or self.params.system_margin is None):
+                or array_contains_none(self.total_penalty) or self.params.system_margin is None
+                or self.role == TransceiverRole.EMITTER):
             self.remaining_margin = None
         else:
             self.remaining_margin = self.snr_01nm - self.total_penalty - self.params.system_margin \
@@ -426,9 +448,10 @@ class Transceiver(_Node):
         self._calc_pmd(spectral_info)
         self._calc_pdl(spectral_info)
         self._calc_latency(spectral_info)
-        self._calc_rx_power_dbm(spectral_info)
-        self.calc_penalties(spectral_info)
-        self.calc_feasibility(spectral_info)
+        if self.role == TransceiverRole.RECEIVER:
+            self._calc_rx_power_dbm(spectral_info)
+            self.calc_penalties(spectral_info)
+            self.calc_feasibility(spectral_info)
 
         return spectral_info
 

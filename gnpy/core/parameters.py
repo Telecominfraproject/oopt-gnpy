@@ -14,6 +14,7 @@ This module contains all parameters to configure standard network elements.
 from collections import namedtuple
 from copy import deepcopy
 from dataclasses import dataclass
+from enum import Enum
 from scipy.constants import c, pi
 from numpy import asarray, array, exp, sqrt, log, outer, ones, squeeze, append, flip, linspace, full
 
@@ -729,3 +730,17 @@ def find_band_name(band: FrequencyBand) -> str:
         if center_frequency >= frequency_range.f_min and center_frequency <= frequency_range.f_max:
             return band_name
     return 'unknown_band'
+
+
+class TransceiverRole(Enum):
+    """Transceiver role values
+    """
+    EMITTER = 'emitter'
+    RECEIVER = 'receiver'
+
+    def __str__(self):
+        if self.value == self.EMITTER:
+            return 'emitter'
+        if self.value == self.RECEIVER:
+            return 'receiver'
+        return 'emitter'
