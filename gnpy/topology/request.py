@@ -28,10 +28,10 @@ from math import ceil, isinf
 from networkx import (dijkstra_path, NetworkXNoPath,
                       all_simple_paths, shortest_simple_paths)
 from networkx.utils import pairwise
-from numpy import mean, argmin, full, asarray, min as npmin, isclose
+from numpy import mean, argmin, full, asarray, isclose
 
 from gnpy.core.elements import Transceiver, Roadm, Edfa, Multiband_amplifier
-from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm
+from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm, array_contains_negative_value
 from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, \
     demuxed_spectral_information, muxed_spectral_information, SpectralInformation
 from gnpy.core import network as network_module
@@ -465,6 +465,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                                                          tx_power=req.tx_power)
             spc_info = filter_si(path, equipment, spc_info)
             roadm_osnr = []
+            # mode is not yet fully determined, we propagate once for all modes having the same baudrate and offset
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
@@ -481,6 +482,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                 spc_info.penalties = full(number_of_channels, this_mode['penalties'])
                 spc_info.rx_channel_power_min_dbm = full(number_of_channels, this_mode.get('rx_channel_power_min_dbm'))
                 spc_info.rx_channel_power_max_dbm = full(number_of_channels, this_mode.get('rx_channel_power_max_dbm'))
+                # we need to update emitter and receiver with snr and penalties
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
                     path[0].calc_penalties(spc_info)
@@ -488,12 +490,13 @@ def propagate_and_optimize_mode(path, req, equipment):
                     path[-1].update_snr(*roadm_osnr)
                     # remove the tx_osnr from roadm_osnr list for the next iteration
                     del roadm_osnr[-1]
+                    # now the mode is determined we can compute penalties
                     path[-1].calc_penalties(spc_info)
                     # adding the noise contribution of the receiver
                     path[-1].update_rx_snr(this_mode['detailed_rx'])
-                    # npmin is used because we are operating on NumPy arrays (per-channel values), not scalar values.
-                    if round(npmin(path[-1].snr_01nm - path[-1].total_penalty), 2) \
-                            > this_mode['OSNR'] + path[-1].params.system_margin:
+                    # now the mode is determined we can compute feasibility
+                    path[-1].calc_feasibility(spc_info)
+                    if not array_contains_negative_value(path[-1].remaining_margin):
                         return path, this_mode
                     else:
                         last_explored_mode = this_mode
@@ -503,8 +506,7 @@ def propagate_and_optimize_mode(path, req, equipment):
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
-        snr01nm_with_penalty = path[-1].snr_01nm - path[-1].total_penalty
-        min_ind = argmin(snr01nm_with_penalty)
+        min_ind = argmin(path[-1].remaining_margin)
         msg = f'\tWarning! Request {req.request_id} computed path from' \
             + f' {req.source} to {req.destination}: no mode satisfies path SNR requirement.' \
             + f' Best propagated mode {last_explored_mode["format"]}'
@@ -1188,9 +1190,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
                 propagate(total_path, pathreq, equipment)
-                snr01nm_with_penalty = total_path[-1].snr_01nm - total_path[-1].total_penalty
-                min_ind = argmin(snr01nm_with_penalty)
-                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.required_osnr_db_01nm + total_path[-1].params.system_margin:
+                if array_contains_negative_value(total_path[-1].remaining_margin):
+                    min_ind = argmin(total_path[-1].remaining_margin)
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}'
                     msg = penalty_msg(total_path[-1], msg, min_ind, pathreq.required_osnr_db_01nm,
@@ -1248,12 +1249,12 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 LOGGER.info(msg)
                 propagate(rev_p, pathreq, equipment)
                 propagated_reversed_path = rev_p
-                snr01nm_with_penalty = rev_p[-1].snr_01nm - rev_p[-1].total_penalty
-                min_ind = argmin(snr01nm_with_penalty)
-                if round(snr01nm_with_penalty[min_ind], 2) < pathreq.required_osnr_db_01nm + rev_p[-1].params.system_margin:
+                if array_contains_negative_value(rev_p[-1].remaining_margin):
+                    min_ind = argmin(rev_p[-1].remaining_margin)
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}'
-                    msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.required_osnr_db_01nm, rev_p[-1].params.system_margin)
+                    msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.required_osnr_db_01nm,
+                                      rev_p[-1].params.system_margin)
                     LOGGER.warning(msg)
                     # TODO selection of mode should also be on reversed direction !!
                     if pathreq.blocking_reason is None:
