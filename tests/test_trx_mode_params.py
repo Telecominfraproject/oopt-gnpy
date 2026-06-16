@@ -11,7 +11,6 @@ checks all possibilities of this function
 
 from pathlib import Path
 import pytest
-import warnings
 from numpy.testing import assert_allclose
 from numpy import inf, zeros, mean
 from gnpy.core.equipment import trx_mode_params
@@ -391,7 +390,9 @@ def test_transceiver_check_boundaries_penalties(key: str, tx_power: float, expec
     assert rq.tx_channel_power_max_dbm == 5
 
     trx1 = Transceiver(uid='transceiver_1')
+    trx1.update_as_emitter()
     trx2 = Transceiver(uid='transceiver_2')
+    trx2.update_as_receiver()
     edfa = setup_edfa_variable_gain()
     edfa.effective_gain = 15
     edfa.out_voa = 15
@@ -453,7 +454,9 @@ def test_receiver_noise_contribution(key: str, rx_power: float, expected_snr: fl
     [rq] = requests_from_json(request_data, eqpt_trx)
 
     trx1 = Transceiver(uid='transceiver_1')
+    trx1.update_as_emitter()
     trx2 = Transceiver(uid='transceiver_2')
+    trx2.update_as_receiver()
     edfa = setup_edfa_variable_gain()
     edfa.effective_gain = 15
     edfa.out_voa = 5 - rx_power
@@ -492,12 +495,8 @@ def test_detailed_rx():
     network, _, _ = designed_network(equipment, network)
     data = load_requests(DATA_DIR_TRX / 'services_with_detailed_rx.json', equipment, bidir=True,
                          network=network, network_filename=DATA_DIR_TRX / 'topology.json')
-    # Mask only this RuntimeWarning during planning().
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", message="invalid value encountered in subtract", category=RuntimeWarning)
-
-        oms_list, propagatedpths, reversed_propagatedpths, rqs, _, result = \
-            planning(network, equipment, data, redesign=False)
+    oms_list, propagatedpths, reversed_propagatedpths, rqs, _, result = \
+        planning(network, equipment, data, redesign=False)
 
     assert rqs[0].blocking_reason is None
     assert rqs[1].blocking_reason is not None
