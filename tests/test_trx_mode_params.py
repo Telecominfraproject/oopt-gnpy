@@ -11,7 +11,6 @@ checks all possibilities of this function
 
 from pathlib import Path
 import pytest
-import warnings
 from numpy.testing import assert_allclose
 from numpy import inf, zeros, mean
 from gnpy.core.equipment import trx_mode_params
@@ -24,6 +23,7 @@ from gnpy.core.network import build_network
 from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG
 from gnpy.topology.request import PathRequest
 from gnpy.tools.cli_examples import load_common_data, load_requests, designed_network, planning
+from gnpy.core.parameters import TransceiverRole
 
 
 TEST_DIR = Path(__file__).parent
@@ -405,9 +405,9 @@ def test_transceiver_check_boundaries_penalties(key: str, tx_power: float, expec
     assert trx1.rx_power_dbm is None
 
     # simulation of back to back transceiver with added noise (EDFA), received power to tx power
-    spectral_info = trx1(spectral_info)  # emitted signal
+    spectral_info = trx1(spectral_info, role=TransceiverRole.EMITTER)  # emitted signal
     spectral_info = edfa(spectral_info)
-    spectral_info = trx2(spectral_info)  # received signal (back-to-back)
+    spectral_info = trx2(spectral_info, role=TransceiverRole.RECEIVER)  # received signal (back-to-back)
     assert trx2.rx_power_dbm is not None
 
     rx_power = float(mean(trx2.rx_power_dbm))
@@ -466,9 +466,9 @@ def test_receiver_noise_contribution(key: str, rx_power: float, expected_snr: fl
     assert trx1.rx_power_dbm is None
 
     # simulation of back to back transceiver with added noise (EDFA), received power to tx power
-    spectral_info = trx1(spectral_info)  # emitted signal
+    spectral_info = trx1(spectral_info, role=TransceiverRole.EMITTER)  # emitted signal
     spectral_info = edfa(spectral_info)
-    spectral_info = trx2(spectral_info)  # received signal (back-to-back)
+    spectral_info = trx2(spectral_info, role=TransceiverRole.RECEIVER)  # received signal (back-to-back)
     assert trx2.rx_power_dbm is not None
 
     # nf = 10
@@ -492,12 +492,8 @@ def test_detailed_rx():
     network, _, _ = designed_network(equipment, network)
     data = load_requests(DATA_DIR_TRX / 'services_with_detailed_rx.json', equipment, bidir=True,
                          network=network, network_filename=DATA_DIR_TRX / 'topology.json')
-    # Mask only this RuntimeWarning during planning().
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", message="invalid value encountered in subtract", category=RuntimeWarning)
-
-        oms_list, propagatedpths, reversed_propagatedpths, rqs, _, result = \
-            planning(network, equipment, data, redesign=False)
+    oms_list, propagatedpths, reversed_propagatedpths, rqs, _, result = \
+        planning(network, equipment, data, redesign=False)
 
     assert rqs[0].blocking_reason is None
     assert rqs[1].blocking_reason is not None

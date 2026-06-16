@@ -28,6 +28,7 @@ from gnpy.topology.request import PathRequest, compute_constrained_path, propaga
 from gnpy.core.info import create_input_spectral_information, Carrier
 from gnpy.core.utils import db2lin, dbm2watt, merge_amplifier_restrictions
 from gnpy.core.exceptions import ConfigurationError, NetworkTopologyError
+from gnpy.core.parameters import TransceiverRole
 
 
 TEST_DIR = Path(__file__).parent
@@ -283,36 +284,41 @@ def test_roadm_target_power(prev_node_type, effective_pch_out_db, power_dbm, roa
     si = create_input_spectral_information(
         f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
         spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.tx_power)
-    for i, el in enumerate(path):
-        if isinstance(el, Roadm):
+    si = path[0](si, role=TransceiverRole.EMITTER)
+    for previous, element, next_element in zip(path[:-2], path[1:-1], path[2:]):
+        if isinstance(element, Roadm):
             pch_in_roadm = si.pch
-            si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
-            pch_out_roadm = si.pch
-            if el.uid == 'roadm node B':
-                # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
-                # target power (as specified in equipment ie -20 dBm)
-                # if it is a Fused, the input power to the ROADM is smaller than the target power, and the
-                # ROADM cannot apply this target. If the ROADM has 0 dB loss the output power will be the same
-                # as the input power, which for this particular case corresponds to -22dBm + power_dbm.
-                # If ROADM has a minimum losss, then output power will be -22dBm + power_dbm - ROADM loss. !
-                if prev_node_type == 'edfa':
-                    # edfa prev_node sets input power to roadm to a high enough value:
-                    # check that target power is correctly set in the ROADM
-                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
-                    # Check that egress power of roadm is equal to target power
-                    assert_allclose(pch_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
-                if prev_node_type == 'fused':
-                    # fused prev_node does not reamplify power after fiber propagation, so input power
-                    # to roadm is low.
-                    # check that target power correctly reports power_dbm from previous propagation
-                    assert_allclose(el.ref_pch_out_dbm, effective_pch_out_db + power_dbm - roadm_b_maxloss, rtol=1e-3)
-                    # Check that egress power of roadm is not equalized:
-                    # power out is the same as power in minus the ROADM loss.
-                    assert_allclose(pch_out_roadm, pch_in_roadm / db2lin(roadm_b_maxloss), rtol=1e-3)
-                    assert effective_pch_out_db + power_dbm ==\
-                        pytest.approx(lin2db(min(pch_in_roadm) * 1e3), rel=1e-3)
+            if isinstance(element, Roadm):
+                pch_in_roadm = si.pch
+                si = element(si, degree=next_element.uid, from_degree=previous.uid)
+                pch_out_roadm = si.pch
+                if element.uid == 'roadm node B':
+                    # if previous was an EDFA, power level at ROADM input is enough for the ROADM to apply its
+                    # target power (as specified in equipment ie -20 dBm)
+                    # if it is a Fused, the input power to the ROADM is smaller than the target power, and the
+                    # ROADM cannot apply this target. If the ROADM has 0 dB loss the output power will be the same
+                    # as the input power, which for this particular case corresponds to -22dBm + power_dbm.
+                    # If ROADM has a minimum losss, then output power will be -22dBm + power_dbm - ROADM loss. !
+                    if prev_node_type == 'edfa':
+                        # edfa prev_node sets input power to roadm to a high enough value:
+                        # check that target power is correctly set in the ROADM
+                        assert_allclose(element.ref_pch_out_dbm, effective_pch_out_db, rtol=1e-3)
+                        # Check that egress power of roadm is equal to target power
+                        assert_allclose(pch_out_roadm, db2lin(effective_pch_out_db - 30), rtol=1e-3)
+                    if prev_node_type == 'fused':
+                        # fused prev_node does not reamplify power after fiber propagation, so input power
+                        # to roadm is low.
+                        # check that target power correctly reports power_dbm from previous propagation
+                        assert_allclose(element.ref_pch_out_dbm, effective_pch_out_db + power_dbm - roadm_b_maxloss,
+                                        rtol=1e-3)
+                        # Check that egress power of roadm is not equalized:
+                        # power out is the same as power in minus the ROADM loss.
+                        assert_allclose(pch_out_roadm, pch_in_roadm / db2lin(roadm_b_maxloss), rtol=1e-3)
+                        assert effective_pch_out_db + power_dbm ==\
+                            pytest.approx(lin2db(min(pch_in_roadm) * 1e3), rel=1e-3)
         else:
-            si = el(si)
+            si = element(si)
+    si = path[-1](si, role=TransceiverRole.RECEIVER)
 
 
 def create_per_oms_request(network, eqpt, req_power):

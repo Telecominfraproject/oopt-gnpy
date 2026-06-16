@@ -24,6 +24,7 @@ from gnpy.core.info import create_input_spectral_information
 from gnpy.core.network import build_network
 from gnpy.tools.json_io import load_network, load_equipment, network_from_json, load_json
 from gnpy.topology.request import PathRequest
+from gnpy.core.parameters import TransceiverRole
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
@@ -79,8 +80,12 @@ def propagation(input_power, con_in, con_out, dest):
     sink = next(transceivers[uid] for uid in transceivers if uid == dest)
     path = dijkstra_path(network, source, sink)
     for el in path:
-        si = el(si)
-        print(el)  # remove this line when sweeping across several powers
+        if el is source:
+            si = el(si, role=TransceiverRole.EMITTER)
+        elif el is sink:
+            si = el(si, role=TransceiverRole.RECEIVER)
+        else:
+            si = el(si)
     edfa_sample = next(el for el in path if isinstance(el, Edfa))
     nf = mean(edfa_sample.nf)
 

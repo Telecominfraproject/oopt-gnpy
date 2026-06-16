@@ -37,6 +37,7 @@ from gnpy.core.info import create_input_spectral_information, carriers_to_spectr
 from gnpy.core import network as network_module
 from gnpy.core.exceptions import ServiceError, DisjunctionError
 from gnpy.topology.topology_parameters import RequestParams, DisjunctionParams
+from gnpy.core.parameters import TransceiverRole
 
 
 LOGGER = getLogger(__name__)
@@ -418,13 +419,15 @@ def propagate(path, req, equipment):
     # filter out frequencies that should not be created
     si = filter_si(path, equipment, si)
     roadm_osnr = []
-    for i, el in enumerate(path):
-        if isinstance(el, Roadm):
-            si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
-            roadm_osnr.append(el.get_impairment('roadm-osnr', si.frequency,
-                                                from_degree=path[i - 1].uid, degree=path[i + 1].uid))
+    si = path[0](si, role=TransceiverRole.EMITTER)
+    for previous, element, next_element in zip(path[:-2], path[1:-1], path[2:]):
+        if isinstance(element, Roadm):
+            si = element(si, degree=next_element.uid, from_degree=previous.uid)
+            roadm_osnr.append(element.get_impairment('roadm-osnr', si.frequency,
+                                                     from_degree=previous.uid, degree=next_element.uid))
         else:
-            si = el(si)
+            si = element(si)
+    si = path[-1](si, role=TransceiverRole.RECEIVER)
     path[0].update_snr(si.tx_osnr)
     roadm_osnr.append(si.tx_osnr)
     path[-1].update_snr(*roadm_osnr)
@@ -467,13 +470,19 @@ def propagate_and_optimize_mode(path, req, equipment):
             spc_info = filter_si(path, equipment, spc_info)
             roadm_osnr = []
             # mode is not yet fully determined, we propagate once for all modes having the same baudrate and offset
-            for i, el in enumerate(path):
-                if isinstance(el, Roadm):
-                    spc_info = el(spc_info, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
-                    roadm_osnr.append(el.get_impairment('roadm-osnr', spc_info.frequency,
-                                                        from_degree=path[i - 1].uid, degree=path[i + 1].uid))
+
+            spc_info = path[0](spc_info, role=TransceiverRole.EMITTER)
+
+            for previous, element, next_element in zip(path[:-2], path[1:-1], path[2:]):
+                if isinstance(element, Roadm):
+                    spc_info = element(spc_info, degree=next_element.uid, from_degree=previous.uid)
+                    roadm_osnr.append(element.get_impairment('roadm-osnr', spc_info.frequency,
+                                                             from_degree=previous.uid, degree=next_element.uid))
                 else:
-                    spc_info = el(spc_info)
+                    spc_info = element(spc_info)
+
+            spc_info = path[-1](spc_info, role=TransceiverRole.RECEIVER)
+
             for this_mode in modes_to_explore:
                 # now we have propagated in one baudrate, we explore all modes with this baudrate
                 # we can now update spectral information with the mode parameters (penalties, power range,...)
@@ -486,7 +495,6 @@ def propagate_and_optimize_mode(path, req, equipment):
                 # we need to update emitter and receiver with snr and penalties
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
-                    path[0].calc_penalties(spc_info)
                     roadm_osnr.append(this_mode['tx_osnr'])
                     path[-1].update_snr(*roadm_osnr)
                     # remove the tx_osnr from roadm_osnr list for the next iteration
@@ -496,7 +504,7 @@ def propagate_and_optimize_mode(path, req, equipment):
                     # adding the noise contribution of the receiver
                     path[-1].update_rx_snr(this_mode['detailed_rx'])
                     # now the mode is determined we can compute feasibility
-                    path[-1].calc_feasibility(spc_info)
+                    path[-1].calc_feasibility(spc_info, role=TransceiverRole.RECEIVER)
                     if not array_contains_negative_value(path[-1].remaining_margin):
                         return path, this_mode
                     else:

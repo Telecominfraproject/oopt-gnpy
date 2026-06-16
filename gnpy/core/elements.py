@@ -36,7 +36,7 @@ from scipy.interpolate import interp1d
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
     watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str, array_contains_none
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
-    MultiBandParams, RoadmPath, RoadmImpairment, TransceiverParams, find_band_name, FrequencyBand
+    MultiBandParams, RoadmPath, RoadmImpairment, TransceiverParams, find_band_name, FrequencyBand, TransceiverRole
 from gnpy.core.science_utils import NliSolver, RamanSolver
 from gnpy.core.info import SpectralInformation, muxed_spectral_information, demuxed_spectral_information
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError, EquipmentConfigError
@@ -280,10 +280,11 @@ class Transceiver(_Node):
                                                                      spectral_info.rx_channel_power_max_dbm)
         self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
-    def calc_feasibility(self, spectral_info):
+    def calc_feasibility(self, spectral_info, role):
         """ """
         if (array_contains_none(spectral_info.required_osnr_db_01nm) or array_contains_none(self.snr_01nm)
-                or array_contains_none(self.total_penalty) or self.params.system_margin is None):
+                or array_contains_none(self.total_penalty) or self.params.system_margin is None
+                or role == TransceiverRole.EMITTER):
             self.remaining_margin = None
         else:
             self.remaining_margin = self.snr_01nm - self.total_penalty - self.params.system_margin \
@@ -412,7 +413,7 @@ class Transceiver(_Node):
 
         return result
 
-    def __call__(self, spectral_info):
+    def __call__(self, spectral_info, role):
         """Propagates spectral information through the transceiver:
         i) computes the accumulated impairments and convert them into penalties for each cariier,
         ii) computes the resulting OSNR and GSNR per carrier and records the values into the attributes
@@ -427,9 +428,10 @@ class Transceiver(_Node):
         self._calc_pmd(spectral_info)
         self._calc_pdl(spectral_info)
         self._calc_latency(spectral_info)
-        self._calc_rx_power_dbm(spectral_info)
-        self.calc_penalties(spectral_info)
-        self.calc_feasibility(spectral_info)
+        if role == TransceiverRole.RECEIVER:
+            self._calc_rx_power_dbm(spectral_info)
+            self.calc_penalties(spectral_info)
+            self.calc_feasibility(spectral_info, role=role)
 
         return spectral_info
 

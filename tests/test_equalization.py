@@ -27,6 +27,7 @@ from gnpy.tools.json_io import network_from_json, load_equipment, load_network, 
     Transceiver, requests_from_json
 from gnpy.topology.request import PathRequest, compute_constrained_path, propagate, propagate_and_optimize_mode
 from gnpy.topology.spectrum_assignment import build_oms_list
+from gnpy.core.parameters import TransceiverRole
 
 
 TEST_DIR = Path(__file__).parent
@@ -565,9 +566,10 @@ def test_equalization(case, deltap, target, mode, slot_width, equalization):
     si = create_input_spectral_information(
         f_min=req.f_min, f_max=req.f_max, roll_off=req.roll_off, baud_rate=req.baud_rate,
         spacing=req.spacing, tx_osnr=req.tx_osnr, tx_power=req.power)
-    for i, el in enumerate(path):
-        if isinstance(el, Roadm):
-            si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
+    si = path[0](si, role=TransceiverRole.EMITTER)
+    for previous, element, next_element in zip(path[:-2], path[1:-1], path[2:]):
+        if isinstance(element, Roadm):
+            si = element(si, degree=next_element.uid, from_degree=previous.uid)
             if case in ['SI', 'nodes', 'degrees']:
                 if equalization == 'target_psd_out_mWperGHz':
                     assert_allclose(power_dbm_to_psd_mw_ghz(si.pch_dbm, si.baud_rate),
@@ -576,8 +578,9 @@ def test_equalization(case, deltap, target, mode, slot_width, equalization):
                     assert_allclose(power_dbm_to_psd_mw_ghz(si.pch_dbm, si.slot_width),
                                     target_psd, rtol=1e-3)
         else:
-            si = el(si)
-        print(el.uid)
+            si = element(si)
+
+    si = path[-1](si, role=TransceiverRole.RECEIVER)
 
 
 @pytest.mark.parametrize('req_power', [0, 2, -1.5])
@@ -958,10 +961,16 @@ def test_tx_power(tx_power_dbm):
 
     si = carriers_to_spectral_information(initial_spectrum=spectrum,
                                           power=power)
-    for i, uid in enumerate(path):
-        node = next(n for n in network.nodes() if n.uid == uid)
-        if isinstance(node, Roadm):
-            si = node(si, path[i + 1], path[i - 1])
+
+    nodes_by_uid = {node.uid: node for node in network.nodes()}
+    path_nodes = [nodes_by_uid[uid] for uid in path]
+
+    si = path_nodes[0](si, role=TransceiverRole.EMITTER)
+
+    for previous, element, next_element in zip(path_nodes[:-2], path_nodes[1:-1], path_nodes[2:]):
+        if isinstance(element, Roadm):
+            si = element(si, degree=next_element.uid, from_degree=previous.uid)
         else:
-            si = node(si)
+            si = element(si)
+    si = path_nodes[-1](si, role=TransceiverRole.RECEIVER)
     assert_allclose(si.pch_dbm, array([-20, -20, -20]), rtol=1e-5)

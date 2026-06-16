@@ -17,9 +17,10 @@ from gnpy.core.info import create_input_spectral_information, create_arbitrary_s
 from gnpy.core.network import build_network, set_amplifier_voa
 from gnpy.tools.json_io import load_network, load_equipment, load_json, _equipment_from_json, network_from_json
 from gnpy.topology.request import PathRequest
+from gnpy.core.parameters import TransceiverRole
 
 
-TEST_DIR =  Path(__file__).parent
+TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
 test_network = DATA_DIR / 'test_network.json'
 eqpt_library = DATA_DIR / 'eqpt_config.json'
@@ -204,7 +205,7 @@ def test_ase_noise(gain, si, setup_trx, bw):
     assert pytest.approx(osnr_expected, abs=0.01) == osnr
 
     trx = setup_trx
-    si = trx(si)
+    si = trx(si, role=TransceiverRole.RECEIVER)
     osnr = trx.osnr_ase_01nm[0]
     assert pytest.approx(osnr_expected, abs=0.01) == osnr
 
