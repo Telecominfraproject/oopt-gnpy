@@ -390,7 +390,9 @@ def test_transceiver_check_boundaries_penalties(key: str, tx_power: float, expec
     assert rq.tx_channel_power_max_dbm == 5
 
     trx1 = Transceiver(uid='transceiver_1')
+    trx1.update_as_emitter()
     trx2 = Transceiver(uid='transceiver_2')
+    trx2.update_as_receiver()
     edfa = setup_edfa_variable_gain()
     edfa.effective_gain = 15
     edfa.out_voa = 15
@@ -452,7 +454,9 @@ def test_receiver_noise_contribution(key: str, rx_power: float, expected_snr: fl
     [rq] = requests_from_json(request_data, eqpt_trx)
 
     trx1 = Transceiver(uid='transceiver_1')
+    trx1.update_as_emitter()
     trx2 = Transceiver(uid='transceiver_2')
+    trx2.update_as_receiver()
     edfa = setup_edfa_variable_gain()
     edfa.effective_gain = 15
     edfa.out_voa = 5 - rx_power
