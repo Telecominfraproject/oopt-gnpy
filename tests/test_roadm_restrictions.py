@@ -369,6 +369,7 @@ def create_per_oms_request(network, eqpt, req_power):
             carrier['penalties'] = {}
             carrier['rx_channel_power_min_dbm'] = None
             carrier['rx_channel_power_max_dbm'] = None
+            carrier['detailed_rx'] = None
             req.initial_spectrum = {(req.f_min + req.spacing * f): Carrier(**carrier)
                                     for f in range(1, req.nb_channel + 1)}
             req_list.append(req)
@@ -388,6 +389,7 @@ def create_per_oms_request(network, eqpt, req_power):
     carrier['penalties'] = {}
     carrier['rx_channel_power_min_dbm'] = None
     carrier['rx_channel_power_max_dbm'] = None
+    carrier['detailed_rx'] = None
     req.initial_spectrum = {(req.f_min + req.spacing * f): Carrier(**carrier) for f in range(1, req.nb_channel + 1)}
     req_list.append(req)
     return req_list

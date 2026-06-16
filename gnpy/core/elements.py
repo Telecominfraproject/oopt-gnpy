@@ -133,6 +133,8 @@ class Transceiver(_Node):
     :vartype propagated_labels: numpy.ndarray[str]
     :ivar tx_power: Transmit power.
     :vartype tx_power: numpy.ndarray
+    :ivar detailed_rx: parameters for q_margin calculation
+    :vartype detailed_rx: dict(float)
     :ivar design_bands: Design bands parameters.
     :vartype design_bands: list
     :ivar per_degree_design_bands: Per degree design bands parameters.
@@ -165,6 +167,7 @@ class Transceiver(_Node):
         self.pdl = None
         self.latency = None
         self.penalties = {}
+        self.detailed_rx = {}
         self.total_penalty = 0
         self.propagated_labels = [""]
         self.tx_power = None
@@ -282,13 +285,16 @@ class Transceiver(_Node):
 
     def calc_feasibility(self, spectral_info, role):
         """ """
-        if (array_contains_none(spectral_info.required_osnr_db_01nm) or array_contains_none(self.snr_01nm)
-                or array_contains_none(self.total_penalty) or self.params.system_margin is None
-                or role == TransceiverRole.EMITTER):
-            self.remaining_margin = None
+        if not self.detailed_rx:
+            if (array_contains_none(spectral_info.required_osnr_db_01nm) or array_contains_none(self.snr_01nm)
+                    or array_contains_none(self.total_penalty) or self.params.system_margin is None
+                    or role == TransceiverRole.EMITTER):
+                self.remaining_margin = None
+            else:
+                self.remaining_margin = self.snr_01nm - self.total_penalty - self.params.system_margin \
+                    - spectral_info.required_osnr_db_01nm
         else:
-            self.remaining_margin = self.snr_01nm - self.total_penalty - self.params.system_margin \
-                - spectral_info.required_osnr_db_01nm
+            pass
 
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
