@@ -418,6 +418,8 @@ def propagate(path, req, equipment):
     # filter out frequencies that should not be created
     si = filter_si(path, equipment, si)
     roadm_osnr = []
+    path[0].update_as_emitter()
+    path[-1].update_as_receiver()
     for i, el in enumerate(path):
         if isinstance(el, Roadm):
             si = el(si, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
@@ -466,6 +468,8 @@ def propagate_and_optimize_mode(path, req, equipment):
             spc_info = filter_si(path, equipment, spc_info)
             roadm_osnr = []
             # mode is not yet fully determined, we propagate once for all modes having the same baudrate and offset
+            path[0].update_as_emitter()
+            path[-1].update_as_receiver()
             for i, el in enumerate(path):
                 if isinstance(el, Roadm):
                     spc_info = el(spc_info, degree=path[i + 1].uid, from_degree=path[i - 1].uid)
@@ -485,7 +489,6 @@ def propagate_and_optimize_mode(path, req, equipment):
                 # we need to update emitter and receiver with snr and penalties
                 if path[-1].snr is not None:
                     path[0].update_snr(this_mode['tx_osnr'])
-                    path[0].calc_penalties(spc_info)
                     roadm_osnr.append(this_mode['tx_osnr'])
                     path[-1].update_snr(*roadm_osnr)
                     # remove the tx_osnr from roadm_osnr list for the next iteration
