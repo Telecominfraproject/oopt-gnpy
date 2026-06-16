@@ -414,7 +414,7 @@ def propagate(path, req, equipment):
             required_osnr_db_01nm=req.required_osnr_db_01nm, penalties=req.penalties,
             rx_channel_power_min_dbm=req.rx_channel_power_min_dbm,
             rx_channel_power_max_dbm=req.rx_channel_power_max_dbm,
-            delta_pdb=req.offset_db)
+            detailed_rx=req.detailed_rx, delta_pdb=req.offset_db)
     # filter out frequencies that should not be created
     si = filter_si(path, equipment, si)
     roadm_osnr = []
