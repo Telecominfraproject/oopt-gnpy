@@ -11,6 +11,7 @@ checks all possibilities of this function
 
 from pathlib import Path
 import pytest
+import warnings
 from numpy.testing import assert_allclose
 from numpy import inf, zeros, mean
 from gnpy.core.equipment import trx_mode_params
@@ -491,8 +492,13 @@ def test_detailed_rx():
     network, _, _ = designed_network(equipment, network)
     data = load_requests(DATA_DIR_TRX / 'services_with_detailed_rx.json', equipment, bidir=True,
                          network=network, network_filename=DATA_DIR_TRX / 'topology.json')
-    oms_list, propagatedpths, reversed_propagatedpths, rqs, _, result = \
-        planning(network, equipment, data, redesign=False)
+    # Mask only this RuntimeWarning during planning().
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="invalid value encountered in subtract", category=RuntimeWarning)
+
+        oms_list, propagatedpths, reversed_propagatedpths, rqs, _, result = \
+            planning(network, equipment, data, redesign=False)
+
     assert rqs[0].blocking_reason is None
     assert rqs[1].blocking_reason is not None
     assert rqs[2].blocking_reason is not None

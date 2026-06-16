@@ -34,7 +34,7 @@ from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
-    watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str
+    watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str, array_contains_none
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
     MultiBandParams, RoadmPath, RoadmImpairment, TransceiverParams, find_band_name, FrequencyBand
 from gnpy.core.science_utils import NliSolver, RamanSolver
@@ -280,6 +280,15 @@ class Transceiver(_Node):
                                                                      spectral_info.rx_channel_power_max_dbm)
         self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
+    def calc_feasibility(self, spectral_info):
+        """ """
+        if (array_contains_none(spectral_info.required_osnr_db_01nm) or array_contains_none(self.snr_01nm)
+                or array_contains_none(self.total_penalty) or self.params.system_margin is None):
+            self.remaining_margin = None
+        else:
+            self.remaining_margin = self.snr_01nm - self.total_penalty - self.params.system_margin \
+                - spectral_info.required_osnr_db_01nm
+
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
             self.propagated_labels = spectral_info.label
@@ -420,6 +429,7 @@ class Transceiver(_Node):
         self._calc_latency(spectral_info)
         self._calc_rx_power_dbm(spectral_info)
         self.calc_penalties(spectral_info)
+        self.calc_feasibility(spectral_info)
 
         return spectral_info
 
