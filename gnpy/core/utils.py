@@ -862,3 +862,13 @@ def per_label_list(values: List[Union[float, int]], labels: List[str], calculati
             "label": label,
             key: value})
     return summary
+
+
+def array_contains_none(my_array: Union[List, array]):
+    """ """
+    return any(i is None for i in my_array)
+
+
+def array_contains_negative_value(my_array: Union[List, array]):
+    """"""
+    return any(value < 0 for value in my_array)
