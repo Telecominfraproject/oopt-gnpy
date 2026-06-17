@@ -16,7 +16,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from copy import deepcopy
 import json
-from typing import Dict
+from typing import Dict, List
 
 from gnpy.tools.yang_convert_utils import convert_degree, convert_back_degree, \
     convert_delta_power_range, convert_back_delta_power_range, \
@@ -123,6 +123,67 @@ def legacy_to_yang(json_data: Dict) -> Dict:
     return json_data
 
 
+def _convert_api_core_sections(api_payload: Dict) -> Dict:
+    """Convert standard sections under API namespace.
+
+    :param api_payload: The input JSON data to convert.
+    :type api_payload: Dict
+    :return: The converted JSON data in GNPy legacy format.
+    :rtype: Dict
+    """
+    core_keys = [TOPO_NMSP, SERV_NMSP, EQPT_NMSP, SIM_PARAMS_NMSP, EDFA_CONFIG_NMSP, RESP_NMSP]
+    return {
+        key: yang_to_legacy(value)
+        for key, value in api_payload.items()
+        if key in core_keys
+    }
+
+
+def _convert_api_extra_items(items: List[Dict], is_eqpt: bool) -> List[Dict]:
+    """Convert extra-eqpts / extra-configs items while preserving input objects.
+
+    :param items: The input JSON data to convert.
+    :type items: Dict
+    :return: The converted JSON data in GNPy legacy format.
+    :rtype: Dict
+    """
+    result = []
+    for item in items:
+        item_copy = deepcopy(item)
+        name = item_copy.get("name")
+        payload = {k: v for k, v in item_copy.items() if k != "name"}
+
+        converted = {EQPT_NMSP: yang_to_legacy(payload)} if is_eqpt else yang_to_legacy(payload)
+        result.append({"name": name, **converted})
+    return result
+
+
+def _convert_api_section(json_data: Dict) -> Dict:
+    """Convert API namespace section.
+
+    :param json_data: The input JSON data to convert.
+    :type json_data: Dict
+    :return: The converted JSON data in GNPy legacy format.
+    :rtype: Dict
+    """
+    api_payload = deepcopy(json_data[API_NMSP])
+
+    converted = _convert_api_core_sections(api_payload)
+
+    # spectrum handling kept explicit to keep the 'spectrum' container
+    converted[SPECTRUM_NMSP] = yang_to_legacy({
+        SPECTRUM_NMSP: api_payload.get(SPECTRUM_NMSP, [])
+    })
+
+    if "extra-eqpts" in api_payload:
+        converted["extra-eqpts"] = _convert_api_extra_items(api_payload["extra-eqpts"], is_eqpt=True)
+
+    if "extra-configs" in api_payload:
+        converted["extra-configs"] = _convert_api_extra_items(api_payload["extra-configs"], is_eqpt=False)
+
+    return converted
+
+
 def yang_to_legacy(json_data: Dict) -> Dict:
     """Convert GNPy YANG format to legacy format.
 
@@ -150,11 +211,13 @@ def yang_to_legacy(json_data: Dict) -> Dict:
         json_data = convert_back_design_band(json_data)
         json_data = convert_back_loss_coeff_list(json_data)
         json_data = convert_back_raman_coef(json_data)
+        json_data = remove_namespace_context(json_data, "gnpy-network-topology:")
     elif TOPO_NMSP in json_data:
         json_data = convert_back_degree(json_data[TOPO_NMSP])
         json_data = convert_back_design_band(json_data)
         json_data = convert_back_loss_coeff_list(json_data)
         json_data = convert_back_raman_coef(json_data)
+        json_data = remove_namespace_context(json_data, "gnpy-network-topology:")
 
     # case of equipment json
     elif any(k in json_data for k in EQPT_TYPES):
@@ -191,7 +254,8 @@ def yang_to_legacy(json_data: Dict) -> Dict:
         json_data = json_data[RESP_NMSP]
 
     elif API_NMSP in json_data:
-        json_data = json_data[API_NMSP]
+        json_data = _convert_api_section(json_data)
+
     elif any(k in json_data for k in SIM_PARAMS_KEYS + [SPECTRUM_KEY, RESPONSE_KEY, PATH_REQUEST_KEY]):
         # then this is a legacy format json, nothing to convert
         pass

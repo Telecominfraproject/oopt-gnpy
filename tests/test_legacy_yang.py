@@ -17,7 +17,7 @@ import json
 import subprocess    # nosec
 import pytest
 
-from gnpy.tools.json_io import load_gnpy_json
+from gnpy.tools.json_io import load_gnpy_json, load_eqpt_topo_from_json, requests_from_json
 from gnpy.tools.cli_examples import transmission_main_example, path_requests_run
 from gnpy.tools.convert_legacy_yang import legacy_to_yang, yang_to_legacy
 from gnpy.tools.yang_convert_utils import convert_delta_power_range
@@ -486,11 +486,21 @@ def test_api_yang():
     """Test conversion in API context"""
     with open(DATA_DIR / 'GNPy_api_example.json', 'r', encoding='utf-8') as f:
         json_data = json.load(f)
-        converted = yang_to_legacy(json_data)
+        legacy_data = yang_to_legacy(json_data)
 
     with open(DATA_DIR / "GNPy_legacy_formatted-GNPy_api_example.json", 'r', encoding='utf-8') as f:
         expected = json.load(f)
-    assert converted == expected
+    assert legacy_data == expected
+
+    # make sure the data can be loaded
+    service = legacy_data['gnpy-path-computation:services']
+    topology = legacy_data['gnpy-network-topology:topology']
+    eqpt = legacy_data['gnpy-eqpt-config:equipment']
+    extra_configs = {v["name"]: v["gnpy-edfa-config:edfa-config"] for v in legacy_data.get("extra-configs", [])}
+    extra_eqpts = {v["name"]: v["gnpy-eqpt-config:equipment"] for v in legacy_data.get("extra-eqpts", [])}
+    equipment, _ = load_eqpt_topo_from_json(eqpt=eqpt, topology=topology, extra_equipments=extra_eqpts,
+                                            extra_configs=extra_configs)
+    requests_from_json(service, equipment)
 
 
 def test_api_no_extra_config_yang():
