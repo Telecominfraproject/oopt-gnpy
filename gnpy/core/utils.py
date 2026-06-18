@@ -15,7 +15,7 @@ This module contains utility functions that are used with gnpy.
 from copy import deepcopy
 from typing import List, Union, Dict
 from csv import writer
-from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, array
+from numpy import pi, cos, sqrt, log10, linspace, zeros, shape, where, logical_and, mean, array, isinf
 from scipy import constants
 
 from gnpy.core.exceptions import ConfigurationError
@@ -887,3 +887,27 @@ def array_contains_negative_value(my_array: Union[List, array]) -> bool:
     """
 
     return any(value < 0 for value in my_array)
+
+
+def array_contains_empty_dict(my_array: Union[List, array]) -> bool:
+    """
+    Checks if any element in the array is an empty dictionary.
+
+    :param my_array: The list or array to check.
+    :type my_array: Union[List, array]
+    :return: True if any element is an empty dictionary, otherwise False.
+    :rtype: bool
+    """
+    return any(not i for i in my_array)
+
+
+def array_contains_infinite_value(my_array: Union[List, array]) -> bool:
+    """
+    Checks if any element in the array is an infinite value.
+
+    :param my_array: The list or array to check.
+    :type my_array: Union[List, array]
+    :return: True if any element is infinite, otherwise False.
+    :rtype: bool
+    """
+    return any(isinf(i) for i in my_array)
