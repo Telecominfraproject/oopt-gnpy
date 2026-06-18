@@ -431,7 +431,9 @@ def propagate(path, req, equipment):
     roadm_osnr.append(si.tx_osnr)
     path[-1].update_snr(*roadm_osnr)
     # adding the noise contribution of the receiver
-    path[-1].update_rx_snr(req.detailed_rx)
+    path[-1].update_rx_snr(si)
+    # now the mode is determined we can compute feasibility
+    path[-1].calc_feasibility(si)
     return si
 
 
@@ -497,10 +499,10 @@ def propagate_and_optimize_mode(path, req, equipment):
                     # now the mode is determined we can compute penalties
                     path[-1].calc_penalties(spc_info)
                     # adding the noise contribution of the receiver
-                    path[-1].update_rx_snr(this_mode['detailed_rx'])
+                    path[-1].update_rx_snr(spc_info)
                     # now the mode is determined we can compute feasibility
                     path[-1].calc_feasibility(spc_info)
-                    if not array_contains_negative_value(path[-1].remaining_margin):
+                    if not array_contains_negative_value(remaining_margin(path[-1])):
                         return path, this_mode
                     else:
                         last_explored_mode = this_mode
@@ -510,7 +512,7 @@ def propagate_and_optimize_mode(path, req, equipment):
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
-        min_ind = argmin(path[-1].remaining_margin)
+        min_ind = argmin(remaining_margin(path[-1]))
         msg = f'\tWarning! Request {req.request_id} computed path from' \
             + f' {req.source} to {req.destination}: no mode satisfies path SNR requirement.' \
             + f' Best propagated mode {last_explored_mode["format"]}'
@@ -1194,8 +1196,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
                 propagate(total_path, pathreq, equipment)
-                if array_contains_negative_value(total_path[-1].remaining_margin):
-                    min_ind = argmin(total_path[-1].remaining_margin)
+                if array_contains_negative_value(remaining_margin(total_path[-1])):
+                    min_ind = argmin(remaining_margin(total_path[-1]))
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}'
                     msg = penalty_msg(total_path[-1], msg, min_ind, pathreq.required_osnr_db_01nm,
@@ -1253,8 +1255,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 LOGGER.info(msg)
                 propagate(rev_p, pathreq, equipment)
                 propagated_reversed_path = rev_p
-                if array_contains_negative_value(rev_p[-1].remaining_margin):
-                    min_ind = argmin(rev_p[-1].remaining_margin)
+                if array_contains_negative_value(remaining_margin(rev_p[-1])):
+                    min_ind = argmin(remaining_margin(rev_p[-1]))
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}'
                     msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.required_osnr_db_01nm,
@@ -1395,3 +1397,20 @@ def get_penalty_from_receiver(receiver, impairment):
         return penalty_value
     else:
         return 'not evaluated'
+
+
+def remaining_margin(element: Transceiver):
+    """
+    Returns the remaining margin value for a transceiver.
+
+    :param element: An instance of Transceiver.
+    :type element: Transceiver
+    :return: The q_margin if available, otherwise remaining_margin if available, else None.
+    :rtype: Optional[float]
+    """
+    if element.q_margin is not None:
+        return element.q_margin
+    elif element.remaining_margin is not None:
+        return element.remaining_margin
+    else:
+        None
