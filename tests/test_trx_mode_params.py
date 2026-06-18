@@ -257,8 +257,8 @@ def mode(key: str) -> dict:
     rx channel power boundaries depending on the key provided.
     """
     detailed_penalties = {
-        "BER_threshold": 0.068,
-        "prx_ref_dbm": -10.0,
+        "BER-threshold": 0.068,
+        "rx-ref-channel-power-dbm": -10.0,
         "k1": 0.5,
         "k2": 0.5,
         "snr_prx_db_0.1nm": 65 + lin2db(32 / 12.5),  # in 0.1nm
@@ -410,6 +410,9 @@ def test_transceiver_check_boundaries_penalties(key: str, tx_power: float, expec
     spectral_info = trx2(spectral_info, role=TransceiverRole.RECEIVER)  # received signal (back-to-back)
     assert trx2.rx_power_dbm is not None
 
+    trx2.update_rx_snr(spectral_info)
+    # now the mode is determined we can compute feasibility
+    trx2.calc_feasibility(spectral_info)
     rx_power = float(mean(trx2.rx_power_dbm))
     assert rx_power is not None
 
@@ -460,7 +463,8 @@ def test_receiver_noise_contribution(key: str, rx_power: float, expected_snr: fl
     spectral_info = create_input_spectral_information(
         f_min=rq.f_min, f_max=rq.f_max, roll_off=rq.roll_off, baud_rate=rq.baud_rate,
         spacing=rq.spacing, tx_osnr=rq.tx_osnr, tx_power=rq.tx_power, delta_pdb=rq.offset_db,
-        rx_channel_power_min_dbm=rq.rx_channel_power_min_dbm, rx_channel_power_max_dbm=rq.rx_channel_power_max_dbm)
+        rx_channel_power_min_dbm=rq.rx_channel_power_min_dbm, rx_channel_power_max_dbm=rq.rx_channel_power_max_dbm,
+        detailed_rx=rq.detailed_rx)
 
     # no propagation yet, no received power at this step
     assert trx1.rx_power_dbm is None
@@ -469,6 +473,9 @@ def test_receiver_noise_contribution(key: str, rx_power: float, expected_snr: fl
     spectral_info = trx1(spectral_info, role=TransceiverRole.EMITTER)  # emitted signal
     spectral_info = edfa(spectral_info)
     spectral_info = trx2(spectral_info, role=TransceiverRole.RECEIVER)  # received signal (back-to-back)
+    trx2.update_rx_snr(spectral_info)
+    # now the mode is determined we can compute feasibility
+    trx2.calc_feasibility(spectral_info)
     assert trx2.rx_power_dbm is not None
 
     # nf = 10
@@ -478,8 +485,6 @@ def test_receiver_noise_contribution(key: str, rx_power: float, expected_snr: fl
     assert_allclose(trx2.osnr_ase_01nm, osnr_ase_01nm_expected, 1e-1)  # formula 58+pin-NF
 
     assert_allclose(trx2.rx_power_dbm, rx_power, atol=1e-2)
-
-    trx2.update_rx_snr(rq.detailed_rx)
     snr_after = trx2.snr_tot_01nm
     assert_allclose(snr_after, expected_snr, atol=1e-2)
 

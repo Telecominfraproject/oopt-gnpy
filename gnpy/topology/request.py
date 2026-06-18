@@ -30,7 +30,9 @@ from networkx import (dijkstra_path, NetworkXNoPath,
 from networkx.utils import pairwise
 from numpy import mean, argmin, full, asarray, isclose
 
-from gnpy.core.elements import Transceiver, Roadm, Edfa, Multiband_amplifier
+# use elements import because autodoc from sphinx mixes json_io and elements Transceiver
+from gnpy.core import elements
+from gnpy.core.elements import Roadm, Edfa, Multiband_amplifier
 from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm, array_contains_negative_value
 from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, \
     demuxed_spectral_information, muxed_spectral_information, SpectralInformation
@@ -225,7 +227,7 @@ class ResultElement:
                 if self.path_request.M is not None or self.path_request.N is not None:
                     raise ServiceError('request {self.path_id} should not have label M and N values at this point.')
 
-            if isinstance(element, Transceiver):
+            if isinstance(element, elements.Transceiver):
                 temp = {
                     'path-route-object': {
                         'index': index,
@@ -343,7 +345,7 @@ def compute_constrained_path(network, req):
                'be destination trx')
         raise ValueError()
 
-    trx = [n for n in network if isinstance(n, Transceiver)]
+    trx = [n for n in network if isinstance(n, elements.Transceiver)]
     source = next(el for el in trx if el.uid == req.source)
     destination = next(el for el in trx if el.uid == req.destination)
 
@@ -432,7 +434,9 @@ def propagate(path, req, equipment):
     roadm_osnr.append(si.tx_osnr)
     path[-1].update_snr(*roadm_osnr)
     # adding the noise contribution of the receiver
-    path[-1].update_rx_snr(req.detailed_rx)
+    path[-1].update_rx_snr(si)
+    # now the mode is determined we can compute feasibility
+    path[-1].calc_feasibility(si)
     return si
 
 
@@ -502,10 +506,10 @@ def propagate_and_optimize_mode(path, req, equipment):
                     # now the mode is determined we can compute penalties
                     path[-1].calc_penalties(spc_info)
                     # adding the noise contribution of the receiver
-                    path[-1].update_rx_snr(this_mode['detailed_rx'])
+                    path[-1].update_rx_snr(spc_info)
                     # now the mode is determined we can compute feasibility
-                    path[-1].calc_feasibility(spc_info, role=TransceiverRole.RECEIVER)
-                    if not array_contains_negative_value(path[-1].remaining_margin):
+                    path[-1].calc_feasibility(spc_info)
+                    if not array_contains_negative_value(remaining_margin(path[-1])):
                         return path, this_mode
                     else:
                         last_explored_mode = this_mode
@@ -515,7 +519,7 @@ def propagate_and_optimize_mode(path, req, equipment):
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
-        min_ind = argmin(path[-1].remaining_margin)
+        min_ind = argmin(remaining_margin(path[-1]))
         msg = f'\tWarning! Request {req.request_id} computed path from' \
             + f' {req.source} to {req.destination}: no mode satisfies path SNR requirement.' \
             + f' Best propagated mode {last_explored_mode["format"]}'
@@ -967,7 +971,8 @@ def find_reversed_path(pth):
     # pth = [el1_oms1 el2_oms1 el3_oms1 el1_oms2 el2_oms2 el3_oms2]
     # p_oms should be = [oms1 oms2]
     p_oms = list(OrderedDict.fromkeys(reversed([el.oms.reversed_oms for el in pth
-                                                if not isinstance(el, Transceiver) and not isinstance(el, Roadm)])))
+                                                if not isinstance(el, elements.Transceiver)
+                                                and not isinstance(el, Roadm)])))
     reversed_path = [pth[-1]]
     for oms in p_oms:
         if oms is not None:
@@ -1097,7 +1102,7 @@ def correct_json_route_list(network, pathreqlist):
     suppresses the constraint it it is loose or raises an error if it is strict
     """
     all_uid = [n.uid for n in network.nodes()]
-    transponders = [n.uid for n in network.nodes() if isinstance(n, Transceiver)]
+    transponders = [n.uid for n in network.nodes() if isinstance(n, elements.Transceiver)]
     for pathreq in pathreqlist:
         if pathreq.source not in transponders:
             msg = f'Request: {pathreq.request_id}: could not find transponder' \
@@ -1199,8 +1204,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 # means that at this point the mode was entered/forced by user and thus a
                 # baud_rate was defined
                 propagate(total_path, pathreq, equipment)
-                if array_contains_negative_value(total_path[-1].remaining_margin):
-                    min_ind = argmin(total_path[-1].remaining_margin)
+                if array_contains_negative_value(remaining_margin(total_path[-1])):
+                    min_ind = argmin(remaining_margin(total_path[-1]))
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.source} to {pathreq.destination} does not pass with {pathreq.tsp_mode}'
                     msg = penalty_msg(total_path[-1], msg, min_ind, pathreq.required_osnr_db_01nm,
@@ -1258,8 +1263,8 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 LOGGER.info(msg)
                 propagate(rev_p, pathreq, equipment)
                 propagated_reversed_path = rev_p
-                if array_contains_negative_value(rev_p[-1].remaining_margin):
-                    min_ind = argmin(rev_p[-1].remaining_margin)
+                if array_contains_negative_value(remaining_margin(rev_p[-1])):
+                    min_ind = argmin(remaining_margin(rev_p[-1]))
                     msg = f'\tWarning! Request {pathreq.request_id} computed path from' \
                         + f' {pathreq.destination} to {pathreq.source} does not pass with {pathreq.tsp_mode}'
                     msg = penalty_msg(rev_p[-1], msg, min_ind, pathreq.required_osnr_db_01nm,
@@ -1400,3 +1405,20 @@ def get_penalty_from_receiver(receiver, impairment):
         return penalty_value
     else:
         return 'not evaluated'
+
+
+def remaining_margin(element: elements.Transceiver):
+    """
+    Returns the remaining margin value for a transceiver.
+
+    :param element: An instance of elements.Transceiver.
+    :type element: elements.elements.Transceiver
+    :return: The q_margin if available, otherwise remaining_margin if available, else None.
+    :rtype: Optional[float]
+    """
+    if element.q_margin is not None:
+        return element.q_margin
+    elif element.remaining_margin is not None:
+        return element.remaining_margin
+    else:
+        None

@@ -345,7 +345,7 @@
             "k1": 0.5,
             "k2": 0.5,
             "snr_prx_db_0.1nm": 70,
-            "snr_trx_db_0.1nm": 13
+            "snr_trx_db_0.1nm": 10
     }
         },
         {
