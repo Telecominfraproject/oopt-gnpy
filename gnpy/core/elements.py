@@ -34,10 +34,11 @@ from numpy import abs, array, errstate, ones, interp, mean, pi, polyfit, polyval
 from scipy.constants import h, c
 from scipy.interpolate import interp1d
 from gnpy.core.utils import lin2db, db2lin, arrange_frequencies, snr_sum, per_label_average, pretty_summary_print, \
-    watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str, array_contains_none
+    watt2dbm, psd2powerdbm, calculate_absolute_min_or_zero, nice_column_str, array_contains_none, \
+    array_contains_empty_dict, array_contains_infinite_value
 from gnpy.core.parameters import RoadmParams, FusedParams, FiberParams, PumpParams, EdfaParams, EdfaOperational, \
     MultiBandParams, RoadmPath, RoadmImpairment, TransceiverParams, find_band_name, FrequencyBand, TransceiverRole
-from gnpy.core.science_utils import NliSolver, RamanSolver
+from gnpy.core.science_utils import NliSolver, RamanSolver, calc_q_db, ber_lin_ideal_transceiver
 from gnpy.core.info import SpectralInformation, muxed_spectral_information, demuxed_spectral_information
 from gnpy.core.exceptions import NetworkTopologyError, SpectrumError, ParametersError, EquipmentConfigError
 
@@ -174,6 +175,8 @@ class Transceiver(_Node):
         self.design_bands = self.params.design_bands
         self.per_degree_design_bands = self.params.per_degree_design_bands
         self.rx_power_dbm = None
+        self.remaining_margin = None
+        self.q_margin = None
 
     def _calc_cd(self, spectral_info):
         """Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -258,12 +261,14 @@ class Transceiver(_Node):
 
         return penalty
 
-    def update_rx_snr(self, detailed_rx):
+    def update_rx_snr(self, spectral_info):
         """Add the noise contribution of the receiver in 0.1nm"""
-        if detailed_rx:
+        if not array_contains_empty_dict(spectral_info.detailed_rx):
+            snr_prx_db_01nm = array([s['snr_prx_db_0.1nm'] for s in spectral_info.detailed_rx])
+            snr_trx_db_01nm = array([s['snr_trx_db_0.1nm'] for s in spectral_info.detailed_rx])
             # tip: -30 dB is added because we moved from dbm to watt
-            snr_prx_db = self.rx_power_dbm + detailed_rx['snr_prx_db_0.1nm'] - 30
-            self.update_snr_tot(detailed_rx['snr_trx_db_0.1nm'], snr_prx_db)
+            snr_prx_db = self.rx_power_dbm + snr_prx_db_01nm - 30
+            self.update_snr_tot(snr_trx_db_01nm, snr_prx_db)
 
     def calc_penalties(self, spectral_info) -> None:
         """
@@ -283,18 +288,27 @@ class Transceiver(_Node):
                                                                      spectral_info.rx_channel_power_max_dbm)
         self.total_penalty = sum(list(self.penalties.values()), axis=0)
 
-    def calc_feasibility(self, spectral_info, role):
-        """ """
-        if not self.detailed_rx:
-            if (array_contains_none(spectral_info.required_osnr_db_01nm) or array_contains_none(self.snr_01nm)
-                    or array_contains_none(self.total_penalty) or self.params.system_margin is None
-                    or role == TransceiverRole.EMITTER):
-                self.remaining_margin = None
-            else:
+    def calc_feasibility(self, spectral_info: SpectralInformation):
+        """
+        Calculate the feasibility based on spectral information and system parameters.
+
+        :param spectral_info: An instance of SpectralInformation containing detailed receiver data and required OSNR.
+        :type spectral_info: SpectralInformation
+        """
+        if array_contains_empty_dict(spectral_info.detailed_rx):
+            if not (array_contains_none(spectral_info.required_osnr_db_01nm) or array_contains_none(self.snr_01nm)
+                    or array_contains_none(self.total_penalty) or self.params.system_margin is None):
                 self.remaining_margin = self.snr_01nm - self.total_penalty - self.params.system_margin \
                     - spectral_info.required_osnr_db_01nm
         else:
-            pass
+            k1 = asarray([d['k1'] for d in spectral_info.detailed_rx])
+            k2 = asarray([d['k2'] for d in spectral_info.detailed_rx])
+            ber_threshold = asarray([d['BER-threshold'] for d in spectral_info.detailed_rx])
+            # let's put ber close to the value that gives -infinite q_factor
+            ber = 0.49999
+            if not array_contains_infinite_value(self.total_penalty):
+                ber = ber_lin_ideal_transceiver(k1, k2, self.raw_snr_tot - self.total_penalty)
+            self.q_margin = calc_q_db(ber) - calc_q_db(ber_threshold)
 
     def _calc_snr(self, spectral_info):
         with errstate(divide='ignore'):
@@ -437,8 +451,6 @@ class Transceiver(_Node):
         if role == TransceiverRole.RECEIVER:
             self._calc_rx_power_dbm(spectral_info)
             self.calc_penalties(spectral_info)
-            self.calc_feasibility(spectral_info, role=role)
-
         return spectral_info
 
 
