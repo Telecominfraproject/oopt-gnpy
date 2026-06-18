@@ -839,7 +839,7 @@ def convert_back_raman_coef(json_data: Dict) -> Dict:
         if PARAMS_KEY in elem and RAMAN_COEF_KEY in elem[PARAMS_KEY] \
                 and 'g0_per_frequency' in elem[PARAMS_KEY][RAMAN_COEF_KEY]:
             raman_coef = elem[PARAMS_KEY].pop(RAMAN_COEF_KEY)
-            g0_list = [g['g0'] for g in raman_coef.pop('g0_per_frequency', [])]
+            g0_list = [g['g0'] for g in raman_coef.get('g0_per_frequency', [])]
             frequency_offset_list = [f['frequency_offset'] for f in raman_coef.pop('g0_per_frequency', [])]
             if frequency_offset_list:
                 new_raman_coef = {'reference_frequency': raman_coef['reference_frequency'],
@@ -869,6 +869,15 @@ def convert_raman_efficiency(json_data: Dict) -> Dict:
                 new_raman_efficiency = [{'frequency_offset': f, 'cr': v}
                                         for f, v in zip(frequency_offset_list, cr_list)]
                 fiber_eqpt[RAMAN_EFFICIENCY_KEY] = new_raman_efficiency
+        elif RAMAN_EFFICIENCY_KEY in fiber_eqpt \
+                and 'g0' in fiber_eqpt[RAMAN_EFFICIENCY_KEY]:
+            raman_efficiency = fiber_eqpt.pop(RAMAN_EFFICIENCY_KEY)
+            g0_list = raman_efficiency.pop('g0', [])
+            frequency_offset_list = raman_efficiency.pop('frequency_offset', [])
+            if frequency_offset_list:
+                new_raman_efficiency = [{'frequency_offset': f, 'g0': v}
+                                        for f, v in zip(frequency_offset_list, g0_list)]
+                fiber_eqpt[RAMAN_EFFICIENCY_KEY] = new_raman_efficiency
     return json_data
 
 
@@ -885,10 +894,13 @@ def convert_back_raman_efficiency(json_data: Dict) -> Dict:
     for fiber_eqpt in json_data['RamanFiber']:
         if RAMAN_EFFICIENCY_KEY in fiber_eqpt and isinstance(fiber_eqpt[RAMAN_EFFICIENCY_KEY], list):
             raman_efficiency = fiber_eqpt.pop(RAMAN_EFFICIENCY_KEY)
-            cr_list = [c['cr'] for c in raman_efficiency]
+            cr_list = [c['cr'] for c in raman_efficiency if 'cr' in c]
+            g0_list = [c['g0'] for c in raman_efficiency if 'g0' in c]
             frequency_offset_list = [f['frequency_offset'] for f in raman_efficiency]
             if frequency_offset_list:
-                old_raman_efficiency = {'cr': cr_list,
+                if cr_list:
+                    g0_list = cr_list
+                old_raman_efficiency = {'g0': g0_list,
                                         'frequency_offset': frequency_offset_list}
                 fiber_eqpt[RAMAN_COEF_KEY] = old_raman_efficiency
     return json_data
