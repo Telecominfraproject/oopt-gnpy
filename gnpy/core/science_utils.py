@@ -18,9 +18,10 @@ from logging import getLogger
 from math import isclose, factorial
 from numpy import interp, pi, zeros, cos, array, append, ones, exp, arange, sqrt, trapz, arcsinh, clip, abs, sum, \
     concatenate, flip, outer, inner, transpose, max, format_float_scientific, diag, sort, unique, argsort, cumprod, \
-    polyfit, log, reshape, swapaxes, full, nan, cumsum
+    polyfit, log, log10, reshape, swapaxes, full, nan, cumsum
 from scipy.constants import k, h
 from scipy.interpolate import interp1d
+from scipy.special import erfc, erfcinv
 
 from gnpy.core.utils import db2lin, lin2db
 from gnpy.core.exceptions import EquipmentConfigError
@@ -726,9 +727,34 @@ def estimate_nf_model(type_variety, gain_min, gain_max, nf_min, nf_max):
     # Check calculated values for nf1 and nf2
     calc_nf_min = lin2db(db2lin(nf1) + db2lin(nf2) / db2lin(g1a_max))
     if not isclose(nf_min, calc_nf_min, abs_tol=0.01):
-        raise EquipmentConfigError(f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
+        raise EquipmentConfigError(
+            f'nf_min does not match calc_nf_min, {nf_min} vs {calc_nf_min} for amp {type_variety}')
     calc_nf_max = lin2db(db2lin(nf1) + db2lin(nf2) / db2lin(g1a_min))
     if not isclose(nf_max, calc_nf_max, abs_tol=0.01):
-        raise EquipmentConfigError(f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
+        raise EquipmentConfigError(
+            f'nf_max does not match calc_nf_max, {nf_max} vs {calc_nf_max} for amp {type_variety}')
 
     return nf1, nf2, delta_p
+
+
+def ber_lin_ideal_transceiver(k1: float, k2: float, snr_total_bw_lin: float) -> float:
+    """
+    Calculate the BER in linear for a real transceiver considering the linear effective SNR.
+
+    :param float k1: Constant parameter for the BER-SNR function depending on modulation format.
+    :param float k2: Constant parameter for the BER-SNR function depending on modulation format.
+    :param float snr_total_bw_lin: total SNR in linear scale within the bandwidth
+    :return: float
+        The bit error rate (BER) in linear scale.
+    """
+    ber_lin = k1 * erfc(sqrt(k2 * snr_total_bw_lin))
+    return ber_lin
+
+
+def calc_q_db(pre_fec_ber: float):
+    """calculate the Q-factor from the bit-error-rate value
+    :param float pre_fec_ber: pre-fec ber value in linear
+    :return: float Q-factor in dB scale
+    """
+    q_factor_lin = sqrt(2) * erfcinv(2 * pre_fec_ber)
+    return 20 * log10(q_factor_lin)
