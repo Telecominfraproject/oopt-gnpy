@@ -25,8 +25,10 @@ import pandas as pd
 from tabulate import tabulate
 
 from gnpy.core import ansi_escapes
-# use an alias for Transceiver import because autodoc from sphinx mixes json_io and elements Transceiver
-from gnpy.core.elements import Transceiver as elementTransceiver, Fiber, RamanFiber, Roadm
+
+# use elements import because autodoc from sphinx mixes json_io and elements Transceiver
+from gnpy.core import elements
+from gnpy.core.elements import Fiber, RamanFiber, Roadm
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core import exceptions
 from gnpy.core.parameters import SimParams
@@ -86,7 +88,8 @@ def load_common_data(equipment_filename: Path,
         network = load_network(topology_filename, equipment)
         if save_raw_network_filename is not None:
             save_network(network, save_raw_network_filename)
-            print(f'{ansi_escapes.blue}Raw network (no optimizations) saved to {save_raw_network_filename}{ansi_escapes.reset}')
+            print(f'{ansi_escapes.blue}Raw network (no optimizations)'
+                  + f' saved to {save_raw_network_filename}{ansi_escapes.reset}')
         if not simulation_filename:
             sim_params = {}
             if next((node for node in network if isinstance(node, RamanFiber)), None) is not None:
@@ -173,7 +176,7 @@ def _infer_trx(target_roadm_uid: str, all_roadms: Dict, network: DiGraph):
     :return: The Transceiver object associated with the target ROADM.
     :raises exceptions.NetworkTopologyError: If no transceiver can be associated with the target ROADM.
     """
-    target_trx = [n for n in network.successors(all_roadms[target_roadm_uid]) if isinstance(n, elementTransceiver)]
+    target_trx = [n for n in network.successors(all_roadms[target_roadm_uid]) if isinstance(n, elements.Transceiver)]
     if not target_trx:
         msg = f'Could not associate a transceiver with node: {target_roadm_uid}'
         raise exceptions.NetworkTopologyError(msg)
@@ -212,8 +215,8 @@ def _get_nodes_from_path(path_list: List[str], all_roadms: Dict) -> List[str]:
     raise exceptions.NetworkTopologyError(msg)
 
 
-def _get_params_from_path(path_raw: List[str], network, source: elementTransceiver, destination: elementTransceiver,
-                          args_source: str, args_destination: str) -> Tuple[elementTransceiver, elementTransceiver,
+def _get_params_from_path(path_raw: List[str], network, source: elements.Transceiver, destination: elements.Transceiver,
+                          args_source: str, args_destination: str) -> Tuple[elements.Transceiver, elements.Transceiver,
                                                                             List[str], List[str]]:
     """Extract the explicit path from the provided raw path argument.
 
@@ -222,15 +225,15 @@ def _get_params_from_path(path_raw: List[str], network, source: elementTransceiv
     :param network: The network object.
     :type network: Any
     :param source: The source Transceiver object.
-    :type source: elementTransceiver
-    :param destination: The destination elementTransceiver object.
-    :type destination: elementTransceiver
+    :type source: elements.Transceiver
+    :param destination: The destination elements.Transceiver object.
+    :type destination: elements.Transceiver
     :param args_source: The command-line argument for the source node.
     :type args_source: str
     :param args_destination: The command-line argument for the destination node.
     :type args_destination: str
     :return: A tuple containing the source, destination, nodes list, and loose list.
-    :rtype: Tuple[elementTransceiver, elementTransceiver, List[str], List[str]]
+    :rtype: Tuple[elements.Transceiver, elements.Transceiver, List[str], List[str]]
     :raises exceptions.NetworkTopologyError: If some elements in the requested path could not be resolved.
     """
     # List all roadm nodes that can possible be part of the path
@@ -261,7 +264,7 @@ def _get_params_from_path(path_raw: List[str], network, source: elementTransceiv
 
 
 def _get_rq_from_service(service: Path, route_id: str, network, equipment,
-                         args_topology: Path) -> Tuple[elementTransceiver, elementTransceiver, PathRequest]:
+                         args_topology: Path) -> Tuple[elements.Transceiver, elements.Transceiver, PathRequest]:
     """Retrieve the request from the service file.
 
     :param service: The path to the service request file.
@@ -275,7 +278,7 @@ def _get_rq_from_service(service: Path, route_id: str, network, equipment,
     :param args_topology: The path to the topology file.
     :type args_topology: Path
     :return: A tuple containing the source and destination Transceiver objects, and the request.
-    :rtype: Tuple[elementTransceiver, elementTransceiver, PathRequest]
+    :rtype: Tuple[elements.Transceiver, elements.Transceiver, PathRequest]
     :raises exceptions.ServiceError: If the requested route_id could not be found.
     """
     data = load_requests(service, equipment, bidir=False, network=network, network_filename=args_topology)
@@ -291,7 +294,7 @@ def _get_rq_from_service(service: Path, route_id: str, network, equipment,
     # correct as done in path_request_run()
     rqs = correct_json_route_list(network, rqs)
 
-    transceivers = {n.uid: n for n in network.nodes() if isinstance(n, elementTransceiver)}
+    transceivers = {n.uid: n for n in network.nodes() if isinstance(n, elements.Transceiver)}
     # find the proper trx of source and destination
     source = next((transceivers.pop(uid) for uid in transceivers
                    if (rqs[0].source).lower() in uid.lower()), None)
@@ -381,7 +384,7 @@ def transmission_main_example(args: Union[List[str], None] = None):
     if args.plot:
         plot_baseline(network)
 
-    transceivers = {n.uid: n for n in network.nodes() if isinstance(n, elementTransceiver)}
+    transceivers = {n.uid: n for n in network.nodes() if isinstance(n, elements.Transceiver)}
 
     if not transceivers:
         sys.exit('Network has no transceivers!')
