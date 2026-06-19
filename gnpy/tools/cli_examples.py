@@ -419,7 +419,7 @@ def transmission_main_example(args: Union[List[str], None] = None):
 
     if args.path:
         print(f'Requested path: {args.path}')
-        # the path elements can be separated by '|' or ','
+        # the path elements can be separated by char: '|' or ','
         if '|' in args.path:
             path_raw = [k.strip() for k in (args.path).split('|')]
         elif ',' in args.path:
