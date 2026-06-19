@@ -178,7 +178,7 @@ class SpectralInformation(object):
 
     @property
     def opt_snr_lin_db(self):
-        return self.snr_lin_db - lin2db(12.5e9/self.baud_rate)
+        return self.snr_lin_db - lin2db(12.5e9 / self.baud_rate)
 
     @property
     def snr_nli(self):
