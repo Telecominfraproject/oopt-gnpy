@@ -14,6 +14,8 @@ Format conversion utils.
 
 from pathlib import Path
 from copy import deepcopy
+from functools import lru_cache
+from threading import RLock
 from typing import Dict, Union, List, Any, NamedTuple
 import json
 import os
@@ -228,6 +230,24 @@ def yang_lib() -> Path:
     return Path(__file__).parent.parent / 'yang' / 'yang-library-gnpy.json'
 
 
+_CONTEXT_LOCK = RLock()
+
+
+def _context_cache_key(yang_library: Path) -> str:
+    return str(Path(yang_library).expanduser().resolve())
+
+
+@lru_cache(maxsize=8)
+def _cached_context(yang_library: str) -> ly.Context:
+    return _create_context(Path(yang_library))
+
+
+def clear_yang_context_cache():
+    """Clear cached libyang contexts."""
+    with _CONTEXT_LOCK:
+        _cached_context.cache_clear()
+
+
 def _create_context(yang_library) -> ly.Context:
     """Prepare a libyang context for validating data against GNPy YANG models.
 
@@ -266,14 +286,16 @@ def load_data(s: str, yang_library: Path = yang_lib()) -> ly.DataNode:
     :return: DataNode containing the loaded data
     :rtype: ly.DataNode
     """
-    ctx = _create_context(yang_library)
-    try:
-        data = ctx.parse_data(s, ly.DataFormat.JSON,
-                              ly.ParseOptions.Strict | ly.ParseOptions.Ordered,
-                              ly.ValidationOptions.Present
-                              | ly.ValidationOptions.MultiError)
-    except ly.Error as exc:
-        raise ly.Error(exc, [ErrorMessage(err.message, err.path) for err in ctx.errors()]) from None
+    with _CONTEXT_LOCK:
+        ctx = _cached_context(_context_cache_key(yang_library))
+        ctx.clean_all_errors()
+        try:
+            data = ctx.parse_data(s, ly.DataFormat.JSON,
+                                  ly.ParseOptions.Strict | ly.ParseOptions.Ordered,
+                                  ly.ValidationOptions.Present
+                                  | ly.ValidationOptions.MultiError)
+        except ly.Error as exc:
+            raise ly.Error(exc, [ErrorMessage(err.message, err.path) for err in ctx.errors()]) from None
     return data
 
 
