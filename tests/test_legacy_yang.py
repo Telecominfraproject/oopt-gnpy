@@ -19,6 +19,7 @@ import pytest
 from gnpy.tools.json_io import load_gnpy_json, load_eqpt_topo_from_json, requests_from_json
 from gnpy.tools.cli_examples import transmission_main_example, path_requests_run
 from gnpy.tools.convert_legacy_yang import legacy_to_yang, yang_to_legacy
+from gnpy.tools import yang_convert_utils
 from gnpy.tools.yang_convert_utils import convert_delta_power_range
 
 
@@ -274,6 +275,26 @@ def test_gnpy_convert(input, expected_output):
     with open(DATA_DIR / expected_output, 'r', encoding='utf-8') as f:
         expected = json.load(f)
     assert actual == expected
+
+
+def test_load_data_reuses_yang_context(tmp_path, monkeypatch):
+    """Loading data twice with the same YANG library reuses one libyang context."""
+    yang_library = tmp_path / 'yang-library-gnpy.json'
+    yang_library.write_text(yang_convert_utils.yang_lib().read_text(encoding='utf-8'), encoding='utf-8')
+    payload = (DATA_DIR / 'GNPy_yang_formatted-spectrum_expected.json').read_text(encoding='utf-8')
+    create_context = yang_convert_utils._create_context
+    context_calls = []
+
+    def counting_create_context(library):
+        context_calls.append(Path(library))
+        return create_context(library)
+
+    monkeypatch.setattr(yang_convert_utils, '_create_context', counting_create_context)
+
+    yang_convert_utils.load_data(payload, yang_library)
+    yang_convert_utils.load_data(payload, yang_library)
+
+    assert context_calls == [yang_library]
 
 
 @pytest.mark.parametrize("args, fileout", (
