@@ -475,7 +475,8 @@ def transmission_main_example(args: Union[List[str], None] = None):
                                                  nodes_list=nodes_list, loose_list=loose_list,
                                                  args_power=args.power,
                                                  initial_spectrum=initial_spectrum,
-                                                 no_insert_edfas=args.no_insert_edfas)
+                                                 no_insert_edfas=args.no_insert_edfas,
+                                                 service_req=rq)
         path, propagations_for_path, powers_dbm, infos = transmission_simulation(equipment, network, req, ref_req)
     except exceptions.NetworkTopologyError as e:
         print(f'{ansi_escapes.red}Invalid network definition:{ansi_escapes.reset} {e}')
