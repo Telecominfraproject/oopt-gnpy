@@ -25,7 +25,7 @@ import pandas as pd
 from tabulate import tabulate
 
 from gnpy.core import ansi_escapes
-# use an alias fro Transceiver import because autodoc from sphinx mixes json_io and elements Transceiver
+# use an alias for Transceiver import because autodoc from sphinx mixes json_io and elements Transceiver
 from gnpy.core.elements import Transceiver as elementTransceiver, Fiber, RamanFiber, Roadm
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core import exceptions
