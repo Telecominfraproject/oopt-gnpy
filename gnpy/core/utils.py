@@ -749,14 +749,13 @@ def find_common_range(amp_bands: List[List[dict]], default_band_f_min: Union[flo
     return sorted(common_range, key=lambda x: x['f_min'])
 
 
-def transform_data(data: str) -> Union[List[int], None]:
-    """Transforms a float into an list of one integer or a string separated by "|" into a list of integers.
+def transform_data(data: Union[float, str]) -> Union[List[int], None]:
+    """Transforms a float into a list of one integer or a string separated by "|" into a list of integers.
 
-    Args:
-        data (float or str): The data to transform.
-
-    Returns:
-        list of int: The transformed data as a list of integers.
+    :param data: The data to transform.
+    :type data: Union[float, str]
+    :return: The transformed data as a list of integers.
+    :rtype: Union[List[int], None]
 
     Examples:
         >>> transform_data(5.0)
