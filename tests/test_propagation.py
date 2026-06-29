@@ -16,6 +16,8 @@ from pathlib import Path
 from networkx import dijkstra_path
 from numpy import mean, sqrt, ones
 import re
+from scipy.constants import c
+from numpy.testing import assert_allclose
 
 from gnpy.core.exceptions import SpectrumError
 from gnpy.core.elements import Transceiver, Fiber, Edfa, Roadm
@@ -131,6 +133,79 @@ def test_chromatic_dispersion(cd_test, dest):
         expected_cd += el.params.dispersion * el.params.length if isinstance(el, Fiber) else 0
     expected_cd = expected_cd * ones(num_ch) * 1e3
     assert chromatic_dispersion == pytest.approx(expected_cd)
+
+
+def test_chromatic_dispersion_slope():
+    fiber_parameters = load_json(TEST_DIR/'data'/'test_chromatic_dispersion_slope.json')
+    fiber_without_dispersion_slope = Fiber(**fiber_parameters['without_dispersion_slope'])
+    fiber_with_dispersion_slope = Fiber(**fiber_parameters['with_dispersion_slope'])
+
+    ref_freq = fiber_with_dispersion_slope.params.ref_frequency
+    delta_freq = 1e12
+    red_freq = ref_freq - delta_freq
+    blue_freq = ref_freq + delta_freq
+
+    assert fiber_without_dispersion_slope.params._dispersion_slope is None
+    assert (fiber_without_dispersion_slope.params.ref_frequency ==
+            fiber_without_dispersion_slope.params._f_dispersion_ref)
+    assert (fiber_without_dispersion_slope.chromatic_dispersion(ref_freq) ==
+            fiber_without_dispersion_slope.chromatic_dispersion(red_freq) ==
+            fiber_without_dispersion_slope.chromatic_dispersion(blue_freq))
+    assert (fiber_without_dispersion_slope.beta2(ref_freq) ==
+            fiber_without_dispersion_slope.beta2(red_freq) ==
+            fiber_without_dispersion_slope.beta2(blue_freq))
+
+    fiber_length = fiber_with_dispersion_slope.params.length
+    dispersion_slope = fiber_with_dispersion_slope.params._dispersion_slope
+    ref_wl = c / ref_freq
+    short_wl = c / blue_freq
+    long_wl = c / red_freq
+
+    exp_short_wl_delta_dispersion = dispersion_slope * (ref_wl - short_wl)
+    exp_long_wl_delta_dispersion = dispersion_slope * (ref_wl - long_wl)
+    act_ref_wl_dispersion = fiber_with_dispersion_slope.chromatic_dispersion(ref_freq) / fiber_length
+    act_short_wl_dispersion = fiber_with_dispersion_slope.chromatic_dispersion(blue_freq) / fiber_length
+    act_long_wl_dispersion = fiber_with_dispersion_slope.chromatic_dispersion(red_freq) / fiber_length
+    act_ref_wl_beta2 = fiber_with_dispersion_slope.beta2(ref_freq)
+    act_short_wl_beta2 = fiber_with_dispersion_slope.beta2(blue_freq)
+    act_long_wl_beta2 = fiber_with_dispersion_slope.beta2(red_freq)
+
+
+    assert (fiber_with_dispersion_slope.params._dispersion_slope ==
+            fiber_parameters['with_dispersion_slope']['params']['dispersion_slope'])
+    assert (fiber_with_dispersion_slope.params.ref_frequency == fiber_with_dispersion_slope.params._f_dispersion_ref)
+    assert_allclose(exp_short_wl_delta_dispersion, act_ref_wl_dispersion - act_short_wl_dispersion, rtol=1e-5)
+    assert_allclose(exp_long_wl_delta_dispersion, act_ref_wl_dispersion - act_long_wl_dispersion, rtol=1e-5)
+    assert (abs(act_short_wl_beta2) < abs(act_ref_wl_beta2) < abs(act_long_wl_beta2))
+    assert_allclose(fiber_with_dispersion_slope.chromatic_dispersion(ref_freq) * (1 + exp_short_wl_delta_dispersion),
+            fiber_without_dispersion_slope.chromatic_dispersion(blue_freq), rtol=1e-5)
+    assert_allclose(fiber_with_dispersion_slope.chromatic_dispersion(ref_freq) * (1 + exp_long_wl_delta_dispersion),
+                    fiber_without_dispersion_slope.chromatic_dispersion(red_freq), rtol=1e-5)
+
+    dispersion_per_frequency = {
+        'value': [act_short_wl_dispersion, act_ref_wl_dispersion, act_long_wl_dispersion],
+        'frequency': [blue_freq, ref_freq, red_freq]
+    }
+
+    fiber_parameters['with_dispersion_slope']['params']['dispersion_per_frequency'] = dispersion_per_frequency
+    fiber_with_dispersion_slope_new = Fiber(**fiber_parameters['with_dispersion_slope'])
+
+    assert_allclose(fiber_with_dispersion_slope_new.chromatic_dispersion(ref_freq),
+                    fiber_without_dispersion_slope.chromatic_dispersion(ref_freq), rtol=1e-5)
+
+    ref_wl_dispersion = fiber_with_dispersion_slope.chromatic_dispersion(ref_freq) / fiber_length
+    short_wl_dispersion = fiber_with_dispersion_slope.chromatic_dispersion(blue_freq) / fiber_length
+    long_wl_dispersion = fiber_with_dispersion_slope.chromatic_dispersion(red_freq) / fiber_length
+    ref_wl_beta2 = fiber_with_dispersion_slope.beta2(ref_freq)
+    short_wl_beta2 = fiber_with_dispersion_slope.beta2(blue_freq)
+    long_wl_beta2 = fiber_with_dispersion_slope.beta2(red_freq)
+
+    assert_allclose(ref_wl_dispersion, act_ref_wl_dispersion, rtol=1e-7)
+    assert_allclose(short_wl_dispersion, act_short_wl_dispersion, rtol=1e-7)
+    assert_allclose(long_wl_dispersion, act_long_wl_dispersion, rtol=1e-7)
+    assert_allclose(ref_wl_beta2, act_ref_wl_beta2, rtol=1e-7)
+    assert_allclose(short_wl_beta2, act_short_wl_beta2, rtol=1e-7)
+    assert_allclose(long_wl_beta2, act_long_wl_beta2, rtol=1e-7)
 
 
 @pytest.mark.parametrize("dest", ['trx B', 'trx F'])
