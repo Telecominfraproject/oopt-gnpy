@@ -1,0 +1,55 @@
+{
+  "without_dispersion_slope":
+  {
+    "uid": "Without_Dispersion_Slope",
+    "params": {
+      "length": 80,
+      "loss_coef": 0.2,
+      "length_units": "km",
+      "att_in": 0,
+      "con_in": 0.5,
+      "con_out": 0.5,
+      "type_variety": "SSMF",
+      "dispersion": 0.0000167,
+      "effective_area": 83e-12,
+      "pmd_coef": 1.265e-15
+    },
+    "operational": {
+    },
+    "metadata": {
+      "location": {
+      "latitude": 1,
+      "longitude": 0,
+      "city": null,
+      "region": ""
+      }
+    }
+  },
+  "with_dispersion_slope":
+  {
+    "uid": "With_Dispersion_Slope",
+    "params": {
+      "length": 80,
+      "loss_coef": 0.2,
+      "length_units": "km",
+      "att_in": 0,
+      "con_in": 0.5,
+      "con_out": 0.5,
+      "type_variety": "SSMF",
+      "dispersion": 0.0000167,
+      "dispersion_slope": 0.06e3,
+      "effective_area": 83e-12,
+      "pmd_coef": 1.265e-15
+    },
+    "operational": {
+    },
+    "metadata": {
+      "location": {
+      "latitude": 1,
+      "longitude": 0,
+      "city": null,
+      "region": ""
+      }
+    }
+  }
+}

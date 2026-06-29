@@ -1087,19 +1087,24 @@ class Fiber(_Node):
         vibrational_loss = outer(frequency, ones(frequency.shape)) / outer(ones(frequency.shape), frequency)
         return cr * (cr >= 0) + cr * (cr < 0) * vibrational_loss  # [1/(W m)]
 
-    def chromatic_dispersion(self, freq=None):
+    def chromatic_dispersion(self, frequency=None):
         """Returns accumulated chromatic dispersion (CD).
 
-        :param freq: the frequency at which the chromatic dispersion is computed
+        :param frequency: the frequency at which the chromatic dispersion is computed
         :return: chromatic dispersion: the accumulated dispersion [s/m]
         """
-        freq = self.params.ref_frequency if freq is None else freq
-        beta2 = self.beta2(freq)
-        beta3 = self.beta3(freq)
-        ref_f = self.params.ref_frequency
+        frequency = asarray(self.params.ref_frequency if frequency is None else frequency)
         length = self.params.length
-        beta = beta2 + 2 * pi * beta3 * (freq - ref_f)
-        dispersion = -beta * 2 * pi * ref_f**2 / c
+        if self.params.dispersion.size > 1:
+            dispersion = self.interpolate_parameter_over_spectrum(self.params.dispersion, self.params.f_dispersion_ref,
+                                                                  frequency, 'Chromatic Dispersion')
+        else:
+            if self.params.dispersion_slope is None:
+                dispersion = full(frequency.size, self.params.dispersion)
+            else:
+                wavelength = c / frequency
+                dispersion = self.params.dispersion + self.params.dispersion_slope * \
+                             (wavelength - c / self.params.f_dispersion_ref)
         return dispersion * length
 
     @property
