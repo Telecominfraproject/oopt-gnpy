@@ -161,6 +161,9 @@ The fiber library currently describes SSMF and NZDF but additional fiber types c
 |                              |                 | considered when not specified.                 |
 +------------------------------+-----------------+------------------------------------------------+
 
+When no dispersion slope is provided the dispersion is set equal for all channels. It is assumed that dispersion
+variations are negligible or that the user wants to leave out dispersion variations from the
+simulation. For this reason, also beta2 is forced to be equal for all channels.
 .. _Corning whitepaper on MFD/EA: https://www.corning.com/microsites/coc/oem/documents/specialty-fiber/WP7071-Mode-Field-Diam-and-Eff-Area.pdf
 
 RamanFiber
