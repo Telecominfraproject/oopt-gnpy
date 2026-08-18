@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f232ac18_1d13e636",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2026-08-18T17:17:33Z",
+      "side": 1,
+      "message": "Can you use directly spectral_info.pch_dbm",
+      "range": {
+        "startLine": 200,
+        "startChar": 28,
+        "endLine": 200,
+        "endChar": 98
+      },
+      "revId": "22651b57961f784f061d4bd4dc627e6f899c21b2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
