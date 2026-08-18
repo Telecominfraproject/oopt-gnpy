@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c66bc758_e0973ce9",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2026-08-18T18:14:10Z",
+      "side": 1,
+      "message": "We can directly evaluate self.rx_power_dbm + detailed_rx[\u0027snr_prx_db_0.1nm\u0027] instead of going back and forth from db to lin.",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 22
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b32f030_eb9599c0",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2026-08-18T18:14:10Z",
+      "side": 1,
+      "message": "in update_esnr function the input are added to raw_snr which is evaluated on the symbol rate, not 0.1 nm, so these should be coherently evaluated over the symbol rate",
+      "range": {
+        "startLine": 257,
+        "startChar": 12,
+        "endLine": 257,
+        "endChar": 73
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cae342cd_d71ad42e",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2026-08-18T18:14:10Z",
+      "side": 1,
+      "message": "This function will always have two inputs, snr_trx and snr_prx, can we define them explicitly instead of using args.",
+      "range": {
+        "startLine": 307,
+        "startChar": 26,
+        "endLine": 307,
+        "endChar": 33
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deef717a_acbd61a7",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2026-08-18T18:14:10Z",
+      "side": 1,
+      "message": "We agreed on calling this snr_tot.",
+      "range": {
+        "startLine": 307,
+        "startChar": 8,
+        "endLine": 307,
+        "endChar": 19
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbb75f4b_e1570940",
+        "filename": "gnpy/core/equipment.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2026-08-18T18:14:10Z",
+      "side": 1,
+      "message": "Can we change this description in \"received power SNR degradation\" or something like this",
+      "range": {
+        "startLine": 38,
+        "startChar": 36,
+        "endLine": 38,
+        "endChar": 54
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
