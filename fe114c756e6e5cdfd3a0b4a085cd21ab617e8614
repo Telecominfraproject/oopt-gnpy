@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4af18769_4eb4145a",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:21:20Z",
+      "side": 1,
+      "message": "Thanks for the review, -30 dB is added to the formula because we moved from dbm to watt",
+      "parentUuid": "c66bc758_e0973ce9",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 22
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b32f030_eb9599c0",
         "filename": "gnpy/core/elements.py",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-18T18:14:10Z",
       "side": 1,
       "message": "in update_esnr function the input are added to raw_snr which is evaluated on the symbol rate, not 0.1 nm, so these should be coherently evaluated over the symbol rate",
+      "range": {
+        "startLine": 257,
+        "startChar": 12,
+        "endLine": 257,
+        "endChar": 73
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c35aae8_06011b5f",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:21:20Z",
+      "side": 1,
+      "message": "Thanks for your review.\nThe update_esnr function is a variant of the update_snr function. Does this mean that there is also an error in update_snr?",
+      "parentUuid": "7b32f030_eb9599c0",
       "range": {
         "startLine": 257,
         "startChar": 12,
@@ -95,6 +143,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ccba0363_94dd468d",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:21:20Z",
+      "side": 1,
+      "message": "Thanks for your review, modification done",
+      "parentUuid": "cae342cd_d71ad42e",
+      "range": {
+        "startLine": 307,
+        "startChar": 26,
+        "endLine": 307,
+        "endChar": 33
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5d51fce_4fb3c808",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:21:20Z",
+      "side": 1,
+      "message": "Thanks for the review, modification done",
+      "parentUuid": "deef717a_acbd61a7",
+      "range": {
+        "startLine": 307,
+        "startChar": 8,
+        "endLine": 307,
+        "endChar": 19
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cbb75f4b_e1570940",
         "filename": "gnpy/core/equipment.py",
         "patchSetId": 2
@@ -106,6 +202,30 @@
       "writtenOn": "2026-08-18T18:14:10Z",
       "side": 1,
       "message": "Can we change this description in \"received power SNR degradation\" or something like this",
+      "range": {
+        "startLine": 38,
+        "startChar": 36,
+        "endLine": 38,
+        "endChar": 54
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7e3c936_3e500f2b",
+        "filename": "gnpy/core/equipment.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:21:20Z",
+      "side": 1,
+      "message": "Thanks for the review, modification done",
+      "parentUuid": "cbb75f4b_e1570940",
       "range": {
         "startLine": 38,
         "startChar": 36,
