@@ -48,6 +48,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12cf8a67_2143eb2c",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:26:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4af18769_4eb4145a",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 256,
+        "endChar": 22
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b32f030_eb9599c0",
@@ -189,6 +213,54 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80e68820_30bcf479",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:26:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5d51fce_4fb3c808",
+      "range": {
+        "startLine": 307,
+        "startChar": 8,
+        "endLine": 307,
+        "endChar": 19
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9071a28_8cc1b8dc",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:26:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccba0363_94dd468d",
+      "range": {
+        "startLine": 307,
+        "startChar": 26,
+        "endLine": 307,
+        "endChar": 33
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbb75f4b_e1570940",
@@ -226,6 +298,30 @@
       "side": 1,
       "message": "Thanks for the review, modification done",
       "parentUuid": "cbb75f4b_e1570940",
+      "range": {
+        "startLine": 38,
+        "startChar": 36,
+        "endLine": 38,
+        "endChar": 54
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10a5495f_6acc15e7",
+        "filename": "gnpy/core/equipment.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-20T12:26:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7e3c936_3e500f2b",
       "range": {
         "startLine": 38,
         "startChar": 36,
