@@ -119,6 +119,30 @@
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d3fe5a6_19d390ce",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2026-08-21T16:58:24Z",
+      "side": 1,
+      "message": "Sorry, you are right. The the snr_sum function confused me, the added snr is assumed to be 0.1nm as default",
+      "parentUuid": "6c35aae8_06011b5f",
+      "range": {
+        "startLine": 257,
+        "startChar": 12,
+        "endLine": 257,
+        "endChar": 73
+      },
+      "revId": "fe114c756e6e5cdfd3a0b4a085cd21ab617e8614",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cae342cd_d71ad42e",
