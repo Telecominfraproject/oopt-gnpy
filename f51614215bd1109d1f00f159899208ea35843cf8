@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62957511_d0649c5a",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-21T12:13:54Z",
+      "side": 1,
+      "message": "flake8 nok because lines too long, but noqa 501 cannot be set because of doctest. I suggest to ignore flake8 issues for these lines only for this commit",
+      "revId": "f51614215bd1109d1f00f159899208ea35843cf8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
