@@ -22,6 +22,30 @@
       },
       "revId": "0ba898566a4b65a124ea30fc3dec8f848d88a94d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a7b20b0_992515f4",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-25T08:24:51Z",
+      "side": 1,
+      "message": "I have the same warning in both cases. The explanation is that in this commit, we had not yet distinguished between the emitter and receiver role of the transceiver. When we are in the emitter case, both the SNR and penalties are infinity, which causes a warning when the subtraction is performed. This issue was corrected in the next commit, where the distinction between emitter and receiver roles was implemented. If the warning is not enough explicit for the user, we can also add a detailed message",
+      "parentUuid": "c48da04e_72e759da",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 290,
+        "endChar": 53
+      },
+      "revId": "0ba898566a4b65a124ea30fc3dec8f848d88a94d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
