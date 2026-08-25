@@ -33,6 +33,24 @@
       "message": "Let s check if the feature is fix and if the single channel pb is related with this (coders call 25/03/2026)",
       "revId": "278a552c60f0d793845465ada2e01f35e71d5414",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5fc44c7_bc16196a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-08-25T12:21:45Z",
+      "side": 1,
+      "message": "I have tried to produce the error on v3 draft and the issue seems solved. When I run a simulation with one single channel outside the loss coeff range I obtain this message:\nraise SpectrumError(\u0027The spectrum bandwidth exceeds the frequency interval used to define the fiber \u0027\ngnpy.core.exceptions.SpectrumError: The spectrum bandwidth exceeds the frequency interval used to define the fiber Loss Coefficient in \"Fiber Span1\".\nSpectrum f_min-f_max: 191.3-191.3 THz\nLoss Coefficient f_min-f_max: 192.0-201.96 THz",
+      "parentUuid": "83f0baf6_378fba36",
+      "revId": "278a552c60f0d793845465ada2e01f35e71d5414",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
