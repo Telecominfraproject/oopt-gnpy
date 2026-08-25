@@ -34,6 +34,24 @@
       "parentUuid": "62957511_d0649c5a",
       "revId": "f51614215bd1109d1f00f159899208ea35843cf8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4937f32a_7676cef6",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-08-25T09:26:24Z",
+      "side": 1,
+      "message": "fine for me!",
+      "parentUuid": "8f22d41a_319ade55",
+      "revId": "f51614215bd1109d1f00f159899208ea35843cf8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
