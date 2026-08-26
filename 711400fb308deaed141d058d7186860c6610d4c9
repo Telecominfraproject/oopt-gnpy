@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "564a4f4e_b807a295",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1444,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-08-26T15:22:38Z",
+      "side": 1,
+      "message": "decided during the coders call: raise an error if openroadm + heterogeneous spectrum",
+      "revId": "711400fb308deaed141d058d7186860c6610d4c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
