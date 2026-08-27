@@ -46,6 +46,30 @@
       },
       "revId": "0ba898566a4b65a124ea30fc3dec8f848d88a94d",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "083b49d1_8bd7108b",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-08-27T13:27:29Z",
+      "side": 1,
+      "message": "Modifications were done in this commit, in test_detailed_rx in order to mute the warning",
+      "parentUuid": "2a7b20b0_992515f4",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 290,
+        "endChar": 53
+      },
+      "revId": "0ba898566a4b65a124ea30fc3dec8f848d88a94d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
