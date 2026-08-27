@@ -52,6 +52,24 @@
       "parentUuid": "8f22d41a_319ade55",
       "revId": "f51614215bd1109d1f00f159899208ea35843cf8",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5fd4215_b7238759",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-08-27T13:25:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4937f32a_7676cef6",
+      "revId": "f51614215bd1109d1f00f159899208ea35843cf8",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
