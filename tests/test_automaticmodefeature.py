@@ -93,7 +93,7 @@ def test_automaticmodefeature(net, eqpt, serv, expected_mode):
             path_res_list.append(pathreq.format)
             total_path = propagate(total_path, pathreq, equipment)
         else:
-            total_path, mode = propagate_and_optimize_mode(total_path, pathreq, equipment)
+            total_path, mode, _ = propagate_and_optimize_mode(total_path, pathreq, equipment)
             # if no baudrate satisfies spacing, no mode is returned and an empty path is returned
             # a warning is shown in the propagate_and_optimize_mode
             if mode is not None:
@@ -183,7 +183,7 @@ def test_propagate_and_optimize_mode(caplog):
     rqs = requests_from_json(data, equipment)
     rqs = correct_json_route_list(network, rqs)
     [path] = compute_path_dsjctn(network, equipment, [rqs[1]], [])
-    total_path, mode = propagate_and_optimize_mode(path, rqs[1], equipment)
+    total_path, mode, _ = propagate_and_optimize_mode(path, rqs[1], equipment)
     assert round(min(path[-1].snr_01nm), 2) == 22.22
     assert mode['format'] == 'mode 1'
     assert rqs[1].blocking_reason == 'NO_FEASIBLE_MODE'

@@ -252,6 +252,10 @@ The modes are defined as follows:
 +------------------------------+-----------+----------------------------------------------------+
 | ``tx-channel-power-max-dbm`` | (number)  | Optional. Maximum allowed output power per carrier |
 |                              |           | from the transceiver, in dBm.                      |
+|                              |           | When a transceiver mode is  selected for a service |
+|                              |           | request and no explicit ``tx_power``               |
+|                              |           | is provided, this value is used as the             |
+|                              |           | transceiver output power for the request.          |
 +------------------------------+-----------+----------------------------------------------------+
 | ``rx-channel-power-min-dbm`` | (number)  | Optional. Minimum allowed received power per       |
 |                              |           | carrier, in dBm. A carrier received below this     |
@@ -1660,6 +1664,18 @@ Lack of spectrum leads to blocking, but performance estimation is still returned
 +-----------------------------------+------------+----------------------------------------------------------------+
 | ``tx_power``                      | (number)   | Optional. In :math:`W`.  Optical output power emitted by the   |
 |                                   |            | transceiver. Default value is output-power.                    |
+|                                   |            |                                                                |
+|                                   |            | If an explicit ``tx_power`` is provided in the service         |
+|                                   |            | request, this value is used. Otherwise, the following values   |
+|                                   |            | are used in order:                                             |
+|                                   |            |                                                                |
+|                                   |            | 1. ``tx-channel-power-max-dbm`` from the selected transceiver  |
+|                                   |            |    mode, if available;                                         |
+|                                   |            | 2. ``tx_power_dbm`` from the default SI, if available;         |
+|                                   |            | 3. ``output-power`` when a transceiver mode is specified and   |
+|                                   |            |    no other value is available.                                |
+|                                   |            |                                                                |
+|                                   |            | The selected value is converted from dBm to W.                 |
 +-----------------------------------+------------+----------------------------------------------------------------+
 | ``effective-freq-slot``           | (list)     | Optional. List of N, M values defining the requested spectral  |
 |                                   |            | occupation for this service. N, M use ITU-T G694.1 Flexible    |

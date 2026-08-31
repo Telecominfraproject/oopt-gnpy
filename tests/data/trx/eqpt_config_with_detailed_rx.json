@@ -389,6 +389,38 @@
           "cost": 1
         }
       ]
+    }, {
+      "type_variety": "tx_power_mode",
+      "frequency": {
+        "min": 191.35e12,
+        "max": 196.1e12
+      },
+      "mode": [
+        {
+          "format": "mode min",
+          "baud_rate": 32e9,
+          "OSNR": 26,
+          "bit_rate": 100e9,
+          "roll_off": 0.15,
+          "tx_osnr": 45,
+          "min_spacing": 50e9,
+          "cost": 1,
+          "tx-channel-power-min-dbm": -17.0,
+          "tx-channel-power-max-dbm": -15.0
+        },
+        {
+          "format": "mode max",
+          "baud_rate": 32e9,
+          "OSNR": 26,
+          "bit_rate": 100e9,
+          "roll_off": 0.15,
+          "tx_osnr": 45,
+          "min_spacing": 50e9,
+          "cost": 1,
+          "tx-channel-power-min-dbm": -3.0,
+          "tx-channel-power-max-dbm": 3.0
+        }
+      ]
     }
   ]
 }

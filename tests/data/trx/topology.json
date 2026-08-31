@@ -138,8 +138,11 @@
     },
     {
       "uid": "roadm Brest_KLA",
+      "type_variety": "detailed_impairments",
       "params": {
-        "per_degree_pch_out_db": {}
+        "per_degree_pch_out_db": {
+            "east edfa in Brest_KLA to Morlaix": -10
+        }
       },
       "metadata": {
         "location": {
