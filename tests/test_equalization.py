@@ -865,7 +865,7 @@ def test_power_offset_automatic_mode_selection(slot_width, value, equalization,
     path_expected = compute_constrained_path(network, imposed_req)
     _ = propagate(path_expected, imposed_req, equipment)
     path = compute_constrained_path(network, free_req)
-    _, mode = propagate_and_optimize_mode(path, free_req, equipment)
+    _, mode, _ = propagate_and_optimize_mode(path, free_req, equipment)
     assert mode['format'] == expected_mode
     assert_allclose(path_expected[-1].snr_01nm, path[-1].snr_01nm, rtol=1e-5)
 

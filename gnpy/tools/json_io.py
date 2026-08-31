@@ -176,6 +176,9 @@ class Transceiver(_JsonThing):
                         'rx-channel-power-max-dbm']:
                 if key in mode_params:
                     mode_params[key.replace('-', '_')] = mode_params.pop(key)
+                else:
+                    # need a default value for all these parameters
+                    mode_params[key.replace('-', '_')] = None
 
             # penalties for cd/pmd/pdl
             # rx_penalties are treated by adding the noise contribution of the receiver (rx_snr_update)
@@ -926,11 +929,15 @@ def requests_from_json(json_data: dict, equipment: dict) -> List[PathRequest]:
         params['tx_power'] = req['path-constraints']['te-bandwidth'].get('tx_power')
         default_tx_power_dbm = equipment['SI']['default'].tx_power_dbm
         if params['tx_power'] is None:
-            # use request's input power in span instead
-            params['tx_power'] = params['power']
             if default_tx_power_dbm is not None:
                 # use default tx power
                 params['tx_power'] = dbm2watt(default_tx_power_dbm)
+            if params['tx_channel_power_max_dbm'] is not None:
+                # use mode max power instead
+                params['tx_power'] = dbm2watt(params['tx_channel_power_max_dbm'])
+            elif params['trx_mode'] is not None:
+                params['tx_power'] = dbm2watt(default_tx_power_dbm) \
+                    if default_tx_power_dbm is not None else params['power']
         _check_one_request(params, f_max_from_si)
         requests_list.append(PathRequest(**params))
     return requests_list
