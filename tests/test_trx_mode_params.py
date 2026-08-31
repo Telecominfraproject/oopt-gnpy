@@ -11,14 +11,16 @@ checks all possibilities of this function
 
 from pathlib import Path
 import pytest
+from typing import Optional
 from numpy.testing import assert_allclose
 from numpy import inf, zeros, mean
+
 from gnpy.core.equipment import trx_mode_params
 from gnpy.core.exceptions import EquipmentConfigError
 from gnpy.tools.json_io import load_equipment, load_json, _equipment_from_json, requests_from_json, load_network
 from gnpy.core.elements import Transceiver, Edfa
 from gnpy.core.info import create_input_spectral_information
-from gnpy.core.utils import dbm2watt, lin2db
+from gnpy.core.utils import dbm2watt, lin2db, watt2dbm
 from gnpy.core.network import build_network
 from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG
 from gnpy.topology.request import PathRequest
@@ -157,8 +159,11 @@ def test_trx_mode_params(trx_type, trx_mode, error_message, no_error, expected_r
         'f_max': 196100000000000.0,
         'f_min': 191350000000000.0,
         'penalties': {},
-        'cost': 1
-
+        'cost': 1,
+        'tx_channel_power_min_dbm': None,
+        'tx_channel_power_max_dbm': None,
+        'rx_channel_power_min_dbm': None,
+        'rx_channel_power_max_dbm': None
     }
     possible_results["None"] = {
         'format': 'undetermined',
@@ -506,3 +511,170 @@ def test_detailed_rx():
     assert propagatedpths[1][-1].penalties['rx_power_dbm'][0] == float('inf')
     assert propagatedpths[2][-1].penalties['rx_power_dbm'][0] is not float('inf')
     assert reversed_propagatedpths[2][-1].penalties['rx_power_dbm'][0] == float('inf')
+
+
+def tx_mode(tx_power_case: str) -> dict:
+    """Generate a transceiver mode configuration."""
+    tx_cases = {
+        "only tx_power_min": {"tx-channel-power-min-dbm": -5},
+        "only tx_power_max": {"tx-channel-power-max-dbm": 5},
+        "both": {
+            "tx-channel-power-min-dbm": -11,
+            "tx-channel-power-max-dbm": -8
+        },
+        "no tx_power range": {}
+    }
+
+    return {
+        "format": tx_power_case,
+        "baud_rate": 32e9,
+        "OSNR": 11,
+        "bit_rate": 100e9,
+        "roll_off": 0.15,
+        "tx_osnr": 40,
+        "min_spacing": 50e9,
+        **tx_cases[tx_power_case],
+        "cost": 1}
+
+
+def generate_tx_power_lib(has_si_tx_power, tx_power_case):
+    """Generate an equipment library for tx-power tests."""
+    si = [{
+        "type_variety": "default",
+        "f_min": 191.3e12,
+        "f_max": 196.1e12,
+        "baud_rate": 32e9,
+        "spacing": 50e9,
+        "power_dbm": 0,
+        "power_range_db": [0, 0, 0.5],
+        "roll_off": 0.15,
+        "tx_osnr": 100,
+        "sys_margins": 0,
+        "tx_power_dbm": 1,
+        "use_si_channel_count_for_design": False
+    }] if has_si_tx_power else [{
+        "type_variety": "default",
+        "f_min": 191.3e12,
+        "f_max": 196.1e12,
+        "baud_rate": 32e9,
+        "spacing": 50e9,
+        "power_dbm": 0,
+        "power_range_db": [0, 0, 0.5],
+        "roll_off": 0.15,
+        "tx_osnr": 100,
+        "sys_margins": 0,
+        "use_si_channel_count_for_design": False
+    }]
+    return {
+        "SI": si,
+        "Transceiver": [{
+            "type_variety": "Voyager",
+            "frequency": {
+                "min": 191.35e12,
+                "max": 196.1e12
+            },
+            "mode": [tx_mode(tx_power_case)]
+        }]
+    }
+
+
+def generate_request_data2(tx_type: str, tx_power_case: Optional[str] = None):
+    """Generate a path request with or without an explicit transceiver mode."""
+
+    te_bandwidth = {
+        "technology": "flexi-grid",
+        "trx_type": tx_type,
+        "spacing": 200e9,
+        "path_bandwidth": 100e9,
+    }
+
+    if tx_power_case is not None:
+        te_bandwidth["trx_mode"] = tx_power_case
+
+    return {
+        "path-request": [
+            {
+                "request-id": "0",
+                "source": "trx Brest_KLA",
+                "destination": "trx Rennes_STA",
+                "src-tp-id": "trx Brest_KLA",
+                "dst-tp-id": "trx Rennes_STA",
+                "bidirectional": False,
+                "path-constraints": {
+                    "te-bandwidth": te_bandwidth,
+                },
+            }
+        ]
+    }
+
+
+@pytest.mark.parametrize("tx_power_case, si_tx_power, expected_req_tx_power",
+                         [("only tx_power_min", False, 0),
+                          ("only tx_power_max", False, 5),
+                          ("both", False, -8),
+                          ("no tx_power range", False, 0),
+                          ("only tx_power_min", True, 1),
+                          ("only tx_power_max", True, 5),
+                          ("both", True, -8),
+                          ("no tx_power range", True, 1)
+                          ])
+def test_tx_power(si_tx_power: bool, tx_power_case: str, expected_req_tx_power: float):
+    """
+    Verify the requested tx power when a transceiver mode is specified.
+    """
+    request_data = generate_request_data2('Voyager', tx_power_case)
+    trx_lib = generate_tx_power_lib(si_tx_power, tx_power_case)
+    # tx_power is fixed to -10dbm
+    eqpt_trx = _equipment_from_json(trx_lib, DEFAULT_EXTRA_CONFIG)
+
+    [rq] = requests_from_json(request_data, eqpt_trx)
+    assert_allclose(watt2dbm(rq.tx_power), expected_req_tx_power, 1e-9)
+
+
+@pytest.mark.parametrize("tx_power_case, si_tx_power, expected_req_tx_power",
+                         [("only tx_power_min", False, None),
+                          ("only tx_power_max", False, None),
+                          ("both", False, None),
+                          ("no tx_power range", False, None),
+                          ("only tx_power_min", True, 1),
+                          ("only tx_power_max", True, 1),
+                          ("both", True, 1),
+                          ("no tx_power range", True, 1)
+                          ])
+def test_tx_power_no_mode(si_tx_power: bool, tx_power_case: str, expected_req_tx_power: float):
+    """
+    Verify the requested tx power when a transceiver mode is not specified.
+    """
+    request_data = generate_request_data2('Voyager')
+    trx_lib = generate_tx_power_lib(si_tx_power, tx_power_case)
+    # tx_power is fixed to -10dbm
+    eqpt_trx = _equipment_from_json(trx_lib, DEFAULT_EXTRA_CONFIG)
+
+    [rq] = requests_from_json(request_data, eqpt_trx)
+    if expected_req_tx_power is None:
+        assert rq.tx_power is None
+    else:
+        assert_allclose(watt2dbm(rq.tx_power), expected_req_tx_power, atol=1e-9)
+
+
+def test_tx_power_automatic_mode_selection():
+    """verifies that the automatic mode selection correctly uses the tx power range
+    """
+    (equipment, network) = \
+        load_common_data(DATA_DIR_TRX / 'eqpt_config_with_detailed_rx.json',
+                         None, None,
+                         DATA_DIR_TRX / 'topology.json', None, None)
+    network, _, _ = designed_network(equipment, network)
+    data = generate_request_data2("tx_power_mode")
+    _, [pth], _, [rq], _, _ = \
+        planning(network, equipment, data, redesign=False)
+    print({round(mean(pth[-1].snr_01nm), 2)})
+    # check that the Brest Roadm has the correct type variety and target power on degree
+    assert pth[1].uid == "roadm Brest_KLA"
+    assert pth[1].type_variety == "detailed_impairments"
+    # mode min and mode max are almost identical except for tx power range
+    # with mode min power out of the Roadm starts with -15dbm instead of -10dBm for mode max
+    # and final SNR is less than 26dB.
+    # so the first mode in the list (mode min) does not pass.
+    assert rq.tsp_mode == 'mode max'
+    assert_allclose(watt2dbm(rq.tx_power), 3, atol=1e-9)

@@ -96,6 +96,10 @@ def trx_mode_params(equipment, trx_type_variety='', trx_mode='', error_message=F
                                            + f'{trx_params["baud_rate"] * 1e-9:.2f} GHz greater than min_spacing '
                                            + f'{trx_params["min_spacing"] * 1e-9:.2f}.')
             trx_params['equalization_offset_db'] = trx_params.get('equalization_offset_db', 0)
+            trx_params['tx_channel_power_max_dbm'] = trx_params.get('tx_channel_power_max_dbm')
+            trx_params['tx_channel_power_min_dbm'] = trx_params.get('tx_channel_power_min_dbm')
+            trx_params['rx_channel_power_max_dbm'] = trx_params.get('rx_channel_power_max_dbm')
+            trx_params['rx_channel_power_min_dbm'] = trx_params.get('rx_channel_power_min_dbm')
             return trx_params
         if trx_mode is None:
             # if called from path_requests_run.py, trx_mode is filled with None when not specified by user

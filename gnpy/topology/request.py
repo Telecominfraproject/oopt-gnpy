@@ -33,7 +33,8 @@ from numpy import mean, argmin, full, asarray, isclose
 # use elements import because autodoc from sphinx mixes json_io and elements Transceiver
 from gnpy.core import elements
 from gnpy.core.elements import Roadm, Edfa, Multiband_amplifier
-from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm, array_contains_negative_value
+from gnpy.core.utils import lin2db, unique_ordered, find_common_range, watt2dbm, array_contains_negative_value, \
+    dbm2watt
 from gnpy.core.info import create_input_spectral_information, carriers_to_spectral_information, \
     demuxed_spectral_information, muxed_spectral_information, SpectralInformation
 from gnpy.core import network as network_module
@@ -118,6 +119,7 @@ class PathRequest:
                             f'destination:  {self.destination}'])
 
     def __repr__(self):
+        temp3 = round(watt2dbm(self.tx_power), 2) if self.tx_power is not None else None
         if self.baud_rate is not None and self.bit_rate is not None:
             temp = self.baud_rate * 1e-9
             temp2 = self.bit_rate * 1e-9
@@ -134,7 +136,7 @@ class PathRequest:
                             f'bit_rate:\t{temp2} Gb/s',
                             f'spacing:\t{self.spacing * 1e-9} GHz',
                             f'power:  \t{round(lin2db(self.power) + 30, 2)} dBm',
-                            f'tx_power_dbm:  \t{round(lin2db(self.tx_power) + 30, 2)} dBm',
+                            f'tx_power_dbm:  \t{temp3} dBm',
                             f'nb channels: \t{self.nb_channel}',
                             f'path_bandwidth: \t{round(self.path_bandwidth * 1e-9, 2)} Gbit/s',
                             f'nodes-list:\t{self.nodes_list}',
@@ -444,16 +446,19 @@ def propagate_and_optimize_mode(path, req, equipment):
     # if mode is unknown : loops on the modes starting from the highest baudrate fiting in the
     # step 1: create an ordered list of modes based on baudrate and power offset
     # order higher baudrate with higher power offset first
-    baudrate_offset_to_explore = list(set([(this_mode['baud_rate'], this_mode['equalization_offset_db'])
+    baudrate_offset_to_explore = list(set([(this_mode['baud_rate'], this_mode['equalization_offset_db'],
+                                            this_mode.get('tx_channel_power_max_dbm'))
                                            for this_mode in equipment['Transceiver'][req.tsp].mode
                                            if float(this_mode['min_spacing']) <= req.spacing]))
     # TODO be carefull on limits cases if spacing very close to req spacing eg 50.001 50.000
     baudrate_offset_to_explore = sorted(baudrate_offset_to_explore, reverse=True)
     if baudrate_offset_to_explore:
         # at least 1 baudrate can be tested wrt spacing
-        for (this_br, this_offset) in baudrate_offset_to_explore:
+        for (this_br, this_offset, this_tx_power_dbm) in baudrate_offset_to_explore:
             modes_to_explore = [this_mode for this_mode in equipment['Transceiver'][req.tsp].mode
                                 if this_mode['baud_rate'] == this_br
+                                and this_mode['equalization_offset_db'] == this_offset
+                                and this_mode['tx_channel_power_max_dbm'] == this_tx_power_dbm
                                 and float(this_mode['min_spacing']) <= req.spacing]
             modes_to_explore = sorted(modes_to_explore,
                                       key=lambda x: (x['bit_rate'], x['equalization_offset_db']), reverse=True)
@@ -466,11 +471,12 @@ def propagate_and_optimize_mode(path, req, equipment):
                 msg = f'Request: {req.request_id} contains a unexpected initial_spectrum.'
                 raise ServiceError(msg)
             # penalties are added after propagation because they impact only the transceiver (receiver part)
+            tx_power = dbm2watt(this_tx_power_dbm) if this_tx_power_dbm else req.power
             spc_info = create_input_spectral_information(f_min=req.f_min, f_max=req.f_max,
                                                          roll_off=equipment['SI']['default'].roll_off,
                                                          baud_rate=this_br, spacing=req.spacing,
                                                          delta_pdb=this_offset, tx_osnr=req.tx_osnr,
-                                                         tx_power=req.tx_power)
+                                                         tx_power=tx_power)
             spc_info = filter_si(path, equipment, spc_info)
             roadm_osnr = []
             # mode is not yet fully determined, we propagate once for all modes having the same baudrate and offset
@@ -510,12 +516,13 @@ def propagate_and_optimize_mode(path, req, equipment):
                     # now the mode is determined we can compute feasibility
                     path[-1].calc_feasibility(spc_info)
                     if not array_contains_negative_value(remaining_margin(path[-1])):
-                        return path, this_mode
+                        return path, this_mode, tx_power
                     else:
                         last_explored_mode = this_mode
+                        last_explored_tx_power = tx_power
                 else:
                     req.blocking_reason = 'NO_COMPUTED_SNR'
-                    return path, None
+                    return path, None, None
         # only get to this point if no baudrate/mode satisfies OSNR requirement
 
         # returns the last propagated path and mode
@@ -526,13 +533,13 @@ def propagate_and_optimize_mode(path, req, equipment):
         msg = penalty_msg(path[-1], msg, min_ind, last_explored_mode["OSNR"], equipment["SI"]["default"].sys_margins)
         LOGGER.info(msg)
         req.blocking_reason = 'NO_FEASIBLE_MODE'
-        return path, last_explored_mode
+        return path, last_explored_mode, last_explored_tx_power
     else:
         # no baudrate satisfying spacing
         msg = f'\tWarning! Request {req.request_id}: no baudrate satisfies spacing requirement.\n'
         LOGGER.warning(msg)
         req.blocking_reason = 'NO_FEASIBLE_BAUDRATE_WITH_SPACING'
-        return [], None
+        return [], None, None
 
 
 def read_property(path_metric, metric_type):
@@ -1213,7 +1220,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                     LOGGER.warning(msg)
                     pathreq.blocking_reason = 'MODE_NOT_FEASIBLE'
             else:
-                total_path, mode = propagate_and_optimize_mode(total_path, pathreq, equipment)
+                total_path, mode, tx_power = propagate_and_optimize_mode(total_path, pathreq, equipment)
                 # if no baudrate satisfies spacing, no mode is returned and the last explored mode
                 # a warning is shown in the propagate_and_optimize_mode
                 # propagate_and_optimize_mode function returns the mode with the highest bitrate
@@ -1236,6 +1243,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                         pathreq.rx_channel_power_min_dbm = mode.get('rx_channel_power_min_dbm', None)
                         pathreq.rx_channel_power_max_dbm = mode.get('rx_channel_power_max_dbm', None)
                         pathreq.offset_db = mode['equalization_offset_db']
+                        pathreq.tx_power = tx_power
                     # other blocking reason should not appear at this point
                 else:
                     pathreq.baud_rate = mode['baud_rate']
@@ -1252,6 +1260,7 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                     pathreq.rx_channel_power_min_dbm = mode.get('rx_channel_power_min_dbm', None)
                     pathreq.rx_channel_power_max_dbm = mode.get('rx_channel_power_max_dbm', None)
                     pathreq.offset_db = mode['equalization_offset_db']
+                    pathreq.tx_power = tx_power
 
             # reversed path is needed for correct spectrum assignment
             reversed_path = find_reversed_path(pathlist[i])
