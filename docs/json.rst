@@ -218,39 +218,68 @@ used to determine the service list path feasibility when running the
 
 The modes are defined as follows:
 
-+----------------------------+-----------+-----------------------------------------+
-| field                      | type      | description                             |
-+============================+===========+=========================================+
-| ``format``                 | (string)  | a unique name to ID the mode            |
-+----------------------------+-----------+-----------------------------------------+
-| ``baud_rate``              | (number)  | in Hz                                   |
-+----------------------------+-----------+-----------------------------------------+
-| ``OSNR``                   | (number)  | min required OSNR in 0.1nm (dB)         |
-+----------------------------+-----------+-----------------------------------------+
-| ``bit_rate``               | (number)  | in bit/s                                |
-+----------------------------+-----------+-----------------------------------------+
-| ``min_spacing``            | (number)  | in Hz. Min required slot size for this  |
-|                            |           | mode.                                   |
-+----------------------------+-----------+-----------------------------------------+
-| ``roll_off``               | (number)  | Pure number between 0 and 1. TX signal  |
-|                            |           | roll-off shape. Used by Raman-aware     |
-|                            |           | simulation code.                        |
-+----------------------------+-----------+-----------------------------------------+
-| ``tx_osnr``                | (number)  | In dB. OSNR out from transponder.       |
-+----------------------------+-----------+-----------------------------------------+
-| ``equalization_offset_db`` | (number)  | In dB. Deviation from the per channel   |
-|                            |           | equalization target in ROADM for this   |
-|                            |           | type of transceiver.                    |
-+----------------------------+-----------+-----------------------------------------+
-| ``penalties``              | (list)    | list of impairments as described in     |
-|                            |           | impairment table.                       |
-+----------------------------+-----------+-----------------------------------------+
-| ``cost``                   | (number)  | Arbitrary unit                          |
-+----------------------------+-----------+-----------------------------------------+
++------------------------------+-----------+----------------------------------------------------+
+| field                        | type      | description                                        |
++==============================+===========+====================================================+
+| ``format``                   | (string)  | a unique name to ID the mode                       |
++------------------------------+-----------+----------------------------------------------------+
+| ``baud_rate``                | (number)  | in Hz                                              |
++------------------------------+-----------+----------------------------------------------------+
+| ``OSNR``                     | (number)  | min required OSNR in 0.1nm (dB)                    |
++------------------------------+-----------+----------------------------------------------------+
+| ``bit_rate``                 | (number)  | in bit/s                                           |
++------------------------------+-----------+----------------------------------------------------+
+| ``min_spacing``              | (number)  | in Hz. Min required slot size for this             |
+|                              |           | mode.                                              |
++------------------------------+-----------+----------------------------------------------------+
+| ``roll_off``                 | (number)  | Pure number between 0 and 1. TX signal             |
+|                              |           | roll-off shape. Used by Raman-aware                |
+|                              |           | simulation code.                                   |
++------------------------------+-----------+----------------------------------------------------+
+| ``tx_osnr``                  | (number)  | In dB. OSNR out from transponder.                  |
++------------------------------+-----------+----------------------------------------------------+
+| ``equalization_offset_db``   | (number)  | In dB. Deviation from the per channel              |
+|                              |           | equalization target in ROADM for this              |
+|                              |           | type of transceiver.                               |
++------------------------------+-----------+----------------------------------------------------+
+| ``penalties``                | (list)    | list of impairments as described in                |
+|                              |           | impairment table.                                  |
++------------------------------+-----------+----------------------------------------------------+
+| ``cost``                     | (number)  | Arbitrary unit                                     |
++------------------------------+-----------+----------------------------------------------------+
+| ``tx-channel-power-min-dbm`` | (number)  | Optional. Minimum allowed output power per carrier |
+|                              |           | from the transceiver, in dBm.                      |
++------------------------------+-----------+----------------------------------------------------+
+| ``tx-channel-power-max-dbm`` | (number)  | Optional. Maximum allowed output power per carrier |
+|                              |           | from the transceiver, in dBm.                      |
++------------------------------+-----------+----------------------------------------------------+
+| ``rx-channel-power-min-dbm`` | (number)  | Optional. Minimum allowed received power per       |
+|                              |           | carrier, in dBm. A carrier received below this     |
+|                              |           | value is considered infeasible.                    |
++------------------------------+-----------+----------------------------------------------------+
+| ``rx-channel-power-max-dbm`` | (number)  | Optional. Maximum allowed received power per       |
+|                              |           | carrier, in dBm. A carrier received above this     |
+|                              |           | value is considered infeasible.                    |
++------------------------------+-----------+----------------------------------------------------+
+| ``detailed_rx``              | (dict)    | Optional. Detailed receiver parameters used for    |
+|                              |           | BER and Q-margin calculation.                      |
++------------------------------+-----------+----------------------------------------------------+
 
-Penalties are linearly interpolated between given points and set to 'inf' outside interval.
-The accumulated penalties are substracted to the path GSNR before comparing with the min required OSNR.
-The penalties per impairment type are defined as a list of dict (impairment type - penalty values) as follows:
+Penalties are evaluated per carrier. Impairment penalties are linearly
+interpolated between the configured points and set to ``inf`` outside the
+defined interval.
+
+Received-power limits are evaluated separately. A received power outside the
+configured ``rx-channel-power-min-dbm`` and ``rx-channel-power-max-dbm`` range
+results in an infinite penalty and makes the corresponding transceiver mode
+infeasible.
+
+For modes without detailed receiver parameters, the accumulated penalties are
+subtracted from the received SNR before comparing it with the minimum required
+OSNR and the system margin.
+
+For modes with ``detailed_rx`` parameters, feasibility is evaluated using the
+calculated Q-margin.
 
 +-----------------------------+-----------+-----------------------------------------------+
 | field                       | type      | description                                   |
@@ -275,6 +304,81 @@ for example:
             "penalty_value": 0.5
         }
     ]
+
+Detailed receiver parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A transceiver mode may include a ``detailed_rx`` dictionary to enable
+receiver-aware BER and Q-margin calculation.
+
+The following fields are mandatory when ``detailed_rx`` is provided:
+
++-------------------------------+-----------+-----------------------------------------------+
+| field                         | type      | description                                   |
++===============================+===========+===============================================+
+| ``k1``                        | (number)  | Constant of the BER/SNR model.                |
++-------------------------------+-----------+-----------------------------------------------+
+| ``k2``                        | (number)  | Constant of the BER/SNR model.                |
++-------------------------------+-----------+-----------------------------------------------+
+| ``BER-threshold``             | (number)  | Pre-FEC BER threshold in linear scale.        |
++-------------------------------+-----------+-----------------------------------------------+
+| ``rx-ref-channel-power-dbm``  | (number)  | Reference received channel power in dBm.      |
++-------------------------------+-----------+-----------------------------------------------+
+| ``snr_trx_db_0.1nm``          | (number)  | Intrinsic transceiver SNR in dB at 0.1 nm.    |
++-------------------------------+-----------+-----------------------------------------------+
+| ``snr_prx_db_0.1nm``          | (number)  | Receiver SNR contribution in dB at 0.1 nm.    |
++-------------------------------+-----------+-----------------------------------------------+
+
+The ``detailed_rx`` parameters are used to calculate the BER from the
+received SNR and then derive the Q-margin.
+
+The Q-margin is defined as the difference between:
+
+- the Q-factor calculated from the resulting BER;
+- the Q-factor corresponding to ``BER-threshold``.
+
+A positive Q-margin indicates that the mode meets the configured BER
+requirement. A negative Q-margin indicates that the mode is not feasible.
+
+When ``detailed_rx`` is not defined, GNPy uses the conventional OSNR-based
+feasibility calculation.
+
+For example:
+
+.. code-block:: json
+
+    {
+      "format": "mode 1",
+      "baud_rate": 32e9,
+      "OSNR": 11,
+      "bit_rate": 100e9,
+      "roll_off": 0.15,
+      "tx_osnr": 40,
+      "min_spacing": 50e9,
+      "tx-channel-power-min-dbm": 0,
+      "tx-channel-power-max-dbm": 5,
+      "rx-channel-power-min-dbm": -22,
+      "rx-channel-power-max-dbm": -10,
+      "penalties": [
+        {
+          "chromatic_dispersion": 80000,
+          "penalty_value": 0.5
+        },
+        {
+          "pmd": 120,
+          "penalty_value": 0.5
+        }
+      ],
+      "detailed_rx": {
+        "k1": 0.5,
+        "k2": 0.5,
+        "BER-threshold": 0.068,
+        "rx-ref-channel-power-dbm": -10.0,
+        "snr_trx_db_0.1nm": 10.0,
+        "snr_prx_db_0.1nm": 15.0
+      },
+      "cost": 1
+    }
 
 .. _roadm:
 
@@ -907,42 +1011,57 @@ Arbitrary channel definition
 Non-uniform channels are defined via a list of spectrum "partitions" which are defined in an extra JSON file via the ``--spectrum`` option.
 In this approach, each partition is internally homogeneous, but different partitions might use different channel widths, power targets, modulation rates, etc.
 
-+----------------------+-----------+-------------------------------------------+
-| field                |   type    | description                               |
-+======================+===========+===========================================+
-| ``f_min``,           | (number)  | In Hz. Mandatory.                         |
-| ``f_max``            |           | Define partition :math:`f_{min}` is       |
-|                      |           | the first carrier central frequency       |
-|                      |           | :math:`f_{max}` is the last one.          |
-|                      |           | :math:`f_{min}` -:math:`f_{max}`          |
-|                      |           | partitions must not overlap.              |
-|                      |           |                                           |
-|                      |           | Note that the meaning of ``f_min`` and    |
-|                      |           | ``f_max`` is different than the one in    |
-|                      |           | ``SpectralInformation``.                  |
-+----------------------+-----------+-------------------------------------------+
-| ``baud_rate``        | (number)  | In Hz. Mandatory. Simulated baud rate.    |
-+----------------------+-----------+-------------------------------------------+
-| ``slot_width``       | (number)  | In Hz. Carrier spectrum occupation.       |
-|                      |           | Carriers of this partition are spaced at  |
-|                      |           | ``slot_width`` offsets.                   |
-+----------------------+-----------+-------------------------------------------+
-| ``roll_off``         | (number)  | Pure number between 0 and 1. Mandatory    |
-|                      |           | TX signal roll-off shape. Used by         |
-|                      |           | Raman-aware simulation code.              |
-+----------------------+-----------+-------------------------------------------+
-| ``tx_osnr``          | (number)  | In dB. Optional. OSNR out from            |
-|                      |           | transponder. Default value is 40 dB.      |
-+----------------------+-----------+-------------------------------------------+
-| ``tx_power_dbm``     | (number)  | In dBm. Optional. Power out from          |
-|                      |           | transceiver. Default value is 0 dBm       |
-+----------------------+-----------+-------------------------------------------+
-| ``delta_pdb``        | (number)  | In dB. Optional. Power offset compared to |
-|                      |           | the reference power used for design       |
-|                      |           | (SI block in equipment library) to be     |
-|                      |           | applied by ROADM to equalize the carriers |
-|                      |           | in this partition. Default value is 0 dB. |
-+----------------------+-----------+-------------------------------------------+
++------------------------------+-----------+------------------------------------------------+
+| field                        |   type    | description                                    |
++==============================+===========+================================================+
+| ``f_min``,                   | (number)  | In Hz. Mandatory.                              |
+| ``f_max``                    |           | Define partition :math:`f_{min}` is            |
+|                              |           | the first carrier central frequency            |
+|                              |           | :math:`f_{max}` is the last one.               |
+|                              |           | :math:`f_{min}` -:math:`f_{max}`               |
+|                              |           | partitions must not overlap.                   |
+|                              |           |                                                |
+|                              |           | Note that the meaning of ``f_min`` and         |
+|                              |           | ``f_max`` is different than the one in         |
+|                              |           | ``SpectralInformation``.                       |
++------------------------------+-----------+------------------------------------------------+
+| ``baud_rate``                | (number)  | In Hz. Mandatory. Simulated baud rate.         |
++------------------------------+-----------+------------------------------------------------+
+| ``slot_width``               | (number)  | In Hz. Carrier spectrum occupation.            |
+|                              |           | Carriers of this partition are spaced at       |
+|                              |           | ``slot_width`` offsets.                        |
++------------------------------+-----------+------------------------------------------------+
+| ``roll_off``                 | (number)  | Pure number between 0 and 1. Mandatory         |
+|                              |           | TX signal roll-off shape. Used by              |
+|                              |           | Raman-aware simulation code.                   |
++------------------------------+-----------+------------------------------------------------+
+| ``tx_osnr``                  | (number)  | In dB. Optional. OSNR out from                 |
+|                              |           | transponder. Default value is 40 dB.           |
++------------------------------+-----------+------------------------------------------------+
+| ``tx_power_dbm``             | (number)  | In dBm. Optional. Power out from               |
+|                              |           | transceiver. Default value is 0 dBm            |
++------------------------------+-----------+------------------------------------------------+
+| ``delta_pdb``                | (number)  | In dB. Optional. Power offset compared to      |
+|                              |           | the reference power used for design            |
+|                              |           | (SI block in equipment library) to be          |
+|                              |           | applied by ROADM to equalize the carriers      |
+|                              |           | in this partition. Default value is 0 dB.      |
++------------------------------+-----------+------------------------------------------------+
+| ``required_osnr_db_01nm``    | (number)  | Optional. Minimum required OSNR per            |
+|                              |           | carrier in dB at 0.1 nm.                       |
++------------------------------+-----------+------------------------------------------------+
+| ``penalties``                | (list)    | Optional. Per-carrier impairment penalties.    |
++------------------------------+-----------+------------------------------------------------+
+| ``rx_channel_power_min_dbm`` | (number)  | Optional. Minimum received channel power per   |
+|                              |           | carrier, in dBm.                               |
++------------------------------+-----------+------------------------------------------------+
+| ``rx_channel_power_max_dbm`` | (number)  | Optional. Maximum received channel power per   |
+|                              |           | carrier, in dBm.                               |
++------------------------------+-----------+------------------------------------------------+
+| ``detailed_rx``              | (dict)    | Optional. Detailed receiver parameters used    |
+|                              |           | for Q-margin calculation.                      |
++------------------------------+-----------+------------------------------------------------+
+
 
 For example this example:
 
@@ -1438,6 +1557,13 @@ Transceiver
 Transceiver elements represent the logical function that generates a spectrum. This must be specified to start and stop propagation. However, the characteristics of the spectrum are defined elsewhere, so Transceiver elements do not contain any attribute.
 Information on transceivers' type, modes and frequency must be listed in :ref:`service file<service>` or :ref:`spectrum file<mixed-rate>`. Without any definition, default :ref:`SI<spectral_info>` values of the library are propagated.
 
+During path propagation, the first transceiver is treated as the emitter and
+the last transceiver as the receiver.
+
+Receiver-specific calculations, such as received power, receiver penalties,
+receiver noise contribution, and feasibility evaluation, are performed only
+at the receiving transceiver.
+
 .. _service:
 
 Service JSON file
@@ -1497,11 +1623,13 @@ Lack of spectrum leads to blocking, but performance estimation is still returned
 +-----------------------------------+------------+----------------------------------------------------------------+
 | ``trx_mode``                      | (string)   | Optional. Mode selected for this path. It must be listed       |
 |                                   |            | within the library transceiver's modes. If not defined,        |
-|                                   |            | the gnpy-path-request script automatically selects the mode    |
-|                                   |            | that has performance above minimum required threshold          |
-|                                   |            | including margins and penalties for all channels (full load)   |
-|                                   |            | and 1) fit in the spacing, 2) has the largest baudrate,        |
-|                                   |            | 3) has the largest bitrate.                                    |
+|                                   |            | the gnpy-path-request script automatically selects a mode      |
+|                                   |            | that satisfies the required performance for all channels.      |
+|                                   |            | Depending on the mode definition, feasibility is evaluated     |
+|                                   |            | using either the conventional OSNR margin or the Q-margin      |
+|                                   |            | calculated from ``detailed_rx`` parameters. Selection uses     |
+|                                   |            | this order: 1) fit in the spacing, 2) has the largest          |
+|                                   |            | baudrate, 3) has the largest bitrate.                          |
 +-----------------------------------+------------+----------------------------------------------------------------+
 | ``spacing``                       | (number)   | Mandatory. In :math:`Hz`. Spacing is used for full spectral    |
 |                                   |            | load feasibility evaluation.                                   |
@@ -1559,6 +1687,12 @@ Lack of spectrum leads to blocking, but performance estimation is still returned
 | ``route-object-include-exclude``  | (list)     | Optional. Indexed List of routing include/exclude constraints  |
 |                                   |            | to compute the path between source and destination.            |
 +-----------------------------------+------------+----------------------------------------------------------------+
+
+During automatic mode selection, GNPy also checks the per-carrier received
+power limits and impairment penalties defined for the mode.
+
+For a mode with detailed receiver parameters, the mode is considered feasible
+when the calculated Q-margin is non-negative for all propagated carriers.
 
 ``route-object-include-exclude`` attributes:
 
