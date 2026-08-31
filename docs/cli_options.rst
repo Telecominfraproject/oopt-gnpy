@@ -7,6 +7,26 @@
 Common options
 ==============
 
+**Argument**: `topology`
+------------------------
+
+**Description**: Input network topology file.
+
+**Usage**:
+
+.. code-block:: shell-session
+
+  gnpy-transmission-example NETWORK-TOPOLOGY.(json|xls|xlsx)
+
+**Default**:
+
+The default topology depends on the script:
+
+- ``gnpy-transmission-example`` uses the example EDFA network;
+- ``gnpy-path-request`` uses the example mesh topology.
+
+The topology file can be provided in JSON, XLS, or XLSX format.
+
 **Option**: `--no-insert-edfas`
 -------------------------------
 
@@ -161,8 +181,70 @@ the ``gnpy.science_utils.NliSolver`` for the evaluation of the Raman profile and
 The tuning of the parameters is detailed here: :ref:`json input sim-params<sim-params>`.
 
 
+**Option**: `-o`, `--output`
+----------------------------
+
+**Description**: Stores computation results requests into a JSON or CSV file.
+
+**Usage**: 
+
+.. code-block:: shell-session
+
+  gnpy-path-request my_network.json my_service.json -o <FILE.json|FILE.csv>
+
+  gnpy-transmission-example my_network.json -o <FILE.json|FILE.csv>
+
+**Functionality**: This option allows users to save the results of the path requests or the transmission script
+into a specified output file for further analysis. Format of the file are detailed in YANG models.
+
+**Option**: `-v`, `--verbose`
+-----------------------------
+
+**Description**: Increases the verbosity of the command-line output.
+
+**Usage**:
+
+.. code-block:: shell-session
+
+  gnpy-transmission-example my_network.json -v
+
+The option can be specified several times:
+
+.. code-block:: shell-session
+
+  gnpy-transmission-example my_network.json -vv
+
+The default logging level displays warnings. Using ``-v`` enables informational
+messages, while ``-vv`` enables debug messages.
+
 `gnpy-transmission-example` options
 ===================================
+
+**Argument**: `source`
+----------------------
+
+**Description**: Source transceiver node.
+
+**Usage**:
+
+.. code-block:: shell-session
+
+  gnpy-transmission-example my_network.json SOURCE DESTINATION
+
+If the source is not specified, a transceiver is selected automatically.
+
+**Argument**: `destination`
+---------------------------
+
+**Description**: Destination transceiver node.
+
+**Usage**:
+
+.. code-block:: shell-session
+
+  gnpy-transmission-example my_network.json SOURCE DESTINATION
+
+If the destination is not specified, a transceiver is selected automatically.
 
 **Option**: `--show-channels`
 -----------------------------
@@ -235,6 +317,49 @@ It replaces the value specified in the `SI` section of the equipment library (:r
 **Functionality**: This option allows users to define a custom spectrum for the simulation, which can
 include varying channel rates and configurations. More details here: :ref:`mixed-rate<mixed-rate>`.
 
+**Option**: `--path`, `-p`
+--------------------------
+
+**Description**: Specifies a list of nodes separated by "|" or "," for the path.
+
+**Usage**:
+
+.. code-block:: shell-session
+
+  gnpy-transmission-example my_network.json -p '<node-uid1>, <node-uid2> ....'
+
+**Functionality**: This option allows users to define a specific route through the network by specifying
+a sequence of ROADM nodes. The first node is used as the source and the last as the destination if the
+source and/or destination are not explicitly defined.
+
+**Option**: `--service`, `-s`
+-----------------------------
+
+**Description**: Specifies a service request file.
+
+**Usage**:
+
+.. code-block:: shell-session
+
+  gnpy-transmission-example my_network.json -s <SERVICE_FILE.json|xls|xlsx> -r "<request-id>"
+
+**Functionality**: This option allows users to load service requests from a file. It is required when
+using the `--route-id` option.
+
+**Option**: `--route-id`, `-r`
+------------------------------
+
+**Description**: Specifies a request ID defined in a service file.
+
+**Usage**:
+
+.. code-block:: shell-session
+
+  gnpy-transmission-example my_network.json -s <SERVICE_FILE.json> -r "<request-id>"
+
+**Functionality**: This option allows users to use the transceiver and route defined in the associated
+service file for propagation. The mode must be defined in the service file.
+
 
 Options for `path_requests_run`
 ===============================
@@ -250,6 +375,19 @@ The `gnpy-path-request` computes:
   - computes performance of each request defined in the service file independently from each other, considering full load (based on the request settings),
   - assigns spectrum for each request according to the remaining spectrum, on a first arrived first served basis.
     Lack of spectrum leads to blocking, but performance estimation is still returned for information.
+
+**Argument**: ``service_filename``
+----------------------------------
+
+**Description**: Input service request file.
+
+**Usage**:
+
+.. code-block:: shell-session
+
+  gnpy-path-request NETWORK-TOPOLOGY.json SERVICES-REQUESTS.json
+
+The service file can be provided in JSON, XLS, or XLSX format.
 
 
 **Option**: `-bi`, `--bidir`
