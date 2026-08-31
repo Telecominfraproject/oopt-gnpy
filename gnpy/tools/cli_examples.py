@@ -442,8 +442,10 @@ def transmission_main_example(args: Union[List[str], None] = None):
         service = args.service
         try:
             source, destination, rq = _get_rq_from_service(service, args.route_id, network, equipment, args.topology)
-            nodes_list = rq.nodes_list.append(destination.uid)
-            loose_list = rq.loose_list.append('STRICT')
+            rq.nodes_list.append(destination.uid)
+            rq.loose_list.append('STRICT')
+            nodes_list = rq.nodes_list
+            loose_list = rq.loose_list
         except exceptions.ServiceError as e:
             raise exceptions.ServiceError(f'Service error: {e}')
 
@@ -672,7 +674,7 @@ def path_requests_run(args=None):
             if rqs[i].blocking_reason in BLOCKING_NOPATH:
                 line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ',
                         '-', '-', '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
-                        '-', '{rqs[i].blocking_reason}']
+                        '-', f'{rqs[i].blocking_reason}']
             else:
                 line = [f'{id_request}', f' {rqs[i].source} to {rqs[i].destination}: ', psnrb,
                         psnr, posnrb, posnr, '-', f'{rqs[i].tsp_mode}', f'{round(rqs[i].path_bandwidth * 1e-9, 2)}',
