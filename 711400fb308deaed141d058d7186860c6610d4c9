@@ -16,6 +16,42 @@
       "message": "decided during the coders call: raise an error if openroadm + heterogeneous spectrum",
       "revId": "711400fb308deaed141d058d7186860c6610d4c9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a17430ae_46c0de97",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1444,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-08-31T12:00:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "564a4f4e_b807a295",
+      "revId": "711400fb308deaed141d058d7186860c6610d4c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c43cbfd8_1ff3f641",
+        "filename": "gnpy/core/elements.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1444,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-08-31T12:00:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "564a4f4e_b807a295",
+      "revId": "711400fb308deaed141d058d7186860c6610d4c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
