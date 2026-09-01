@@ -986,10 +986,12 @@ def find_reversed_path(pth):
             # concatenation should be [roadma el1 el2 roadmb el3 el4 roadmc]
             reversed_path = list(OrderedDict.fromkeys(reversed_path))
         else:
-            msg = f'Error while handling reversed path {pth[-1].uid} to {pth[0].uid}:' \
+            msg = f'Error while handling reversed path {pth[-1].uid} to {pth[0].uid}: ' \
                 + ' can not handle unidir topology. TO DO.'
             raise ValueError(msg)
-    reversed_path.append(pth[0])
+    if reversed_path[-1] != pth[0]:
+        # do not duplicate transceiver (case of dark fiber attached to transceiver)
+        reversed_path.append(pth[0])
 
     return reversed_path
 

@@ -1,0 +1,552 @@
+{
+  "gnpy-network-topology:topology": {
+    "elements": [
+      {
+        "uid": "trx SITE1",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.0",
+            "city": "trx SITE1",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "trx SITE2",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "3.0",
+            "city": "SITE2",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "trx external",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "4.0",
+            "longitude": "0.0",
+            "city": "external",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "trx external with fused",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "6.0",
+            "longitude": "0.0",
+            "city": "external with fused",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "roadm SITE1",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.0",
+            "city": "ROADM SITE1",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "roadm SITE2",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "3.0",
+            "city": "ROADM SITE2",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "fiber (SITE1 → ILA1)",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "dark fiber SITE1-roadm",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "40.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "dark fiber roadm-SITE1",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "40.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "dark fiber fused-roadm",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "40.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "dark fiber roadm-fused",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "40.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "fused roadm-fused",
+        "type": "Fused",
+        "params": {
+          "loss": "0.1"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "fused fused-roadm",
+        "type": "Fused",
+        "params": {
+          "loss": "0.1"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "fiber (ILA1 → ILA2)",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "fiber (ILA2 → SITE2)",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "2.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "fiber (ILA1 → SITE1)",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "fiber (ILA2 → ILA1)",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "fiber (SITE2 → ILA2)",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "2.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "east edfa in SITE1 to ILA1",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.0",
+            "city": "EDFA SITE1",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in SITE2 to ILA2",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "3.0",
+            "city": "SITE2",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in SITE1 to ILA1",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.0",
+            "city": "EDFA SITE1",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in SITE2 to ILA2",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "3.0",
+            "city": "SITE2",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in ILA1 to ILA2",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.3",
+            "city": "ILA1",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "east edfa in ILA2 to SITE2",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.7",
+            "city": "ILA2",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in ILA2 to ILA1",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.7",
+            "city": "ILA1",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "west edfa in ILA1 to ILA2",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "1.2",
+            "city": "ILA2",
+            "region": "RLD"
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from_node": "trx external",
+        "to_node": "dark fiber SITE1-roadm"
+      },
+      {
+        "from_node": "dark fiber SITE1-roadm",
+        "to_node": "roadm SITE1"
+      },
+      {
+        "from_node": "dark fiber roadm-SITE1",
+        "to_node": "trx external"
+      },
+      {
+        "from_node": "roadm SITE1",
+        "to_node": "dark fiber roadm-SITE1"
+      },
+      {
+        "from_node": "trx external with fused",
+        "to_node": "dark fiber fused-roadm"
+      },
+      {
+        "from_node": "dark fiber fused-roadm",
+        "to_node": "fused fused-roadm"
+      },
+      {
+        "from_node": "fused fused-roadm",
+        "to_node": "roadm SITE1"
+      },
+      {
+        "from_node": "dark fiber roadm-fused",
+        "to_node": "trx external with fused"
+      },
+      {
+        "from_node": "roadm SITE1",
+        "to_node": "fused roadm-fused"
+      },
+      {
+        "from_node": "fused roadm-fused",
+        "to_node": "dark fiber roadm-fused"
+      },
+      {
+        "from_node": "trx SITE1",
+        "to_node": "roadm SITE1"
+      },
+      {
+        "from_node": "trx SITE2",
+        "to_node": "roadm SITE2"
+      },
+      {
+        "from_node": "roadm SITE1",
+        "to_node": "east edfa in SITE1 to ILA1"
+      },
+      {
+        "from_node": "roadm SITE1",
+        "to_node": "trx SITE1"
+      },
+      {
+        "from_node": "roadm SITE2",
+        "to_node": "east edfa in SITE2 to ILA2"
+      },
+      {
+        "from_node": "roadm SITE2",
+        "to_node": "trx SITE2"
+      },
+      {
+        "from_node": "east edfa in ILA1 to ILA2",
+        "to_node": "fiber (ILA1 → ILA2)"
+      },
+      {
+        "from_node": "east edfa in ILA2 to SITE2",
+        "to_node": "fiber (ILA2 → SITE2)"
+      },
+      {
+        "from_node": "west edfa in ILA1 to ILA2",
+        "to_node": "fiber (ILA1 → SITE1)"
+      },
+      {
+        "from_node": "west edfa in ILA2 to ILA1",
+        "to_node": "fiber (ILA2 → ILA1)"
+      },
+      {
+        "from_node": "fiber (SITE1 → ILA1)",
+        "to_node": "east edfa in ILA1 to ILA2"
+      },
+      {
+        "from_node": "fiber (ILA1 → ILA2)",
+        "to_node": "east edfa in ILA2 to SITE2"
+      },
+      {
+        "from_node": "fiber (ILA2 → SITE2)",
+        "to_node": "west edfa in SITE2 to ILA2"
+      },
+      {
+        "from_node": "fiber (ILA1 → SITE1)",
+        "to_node": "west edfa in SITE1 to ILA1"
+      },
+      {
+        "from_node": "fiber (ILA2 → ILA1)",
+        "to_node": "west edfa in ILA1 to ILA2"
+      },
+      {
+        "from_node": "fiber (SITE2 → ILA2)",
+        "to_node": "west edfa in ILA2 to ILA1"
+      },
+      {
+        "from_node": "east edfa in SITE1 to ILA1",
+        "to_node": "fiber (SITE1 → ILA1)"
+      },
+      {
+        "from_node": "east edfa in SITE2 to ILA2",
+        "to_node": "fiber (SITE2 → ILA2)"
+      },
+      {
+        "from_node": "west edfa in SITE1 to ILA1",
+        "to_node": "roadm SITE1"
+      },
+      {
+        "from_node": "west edfa in SITE2 to ILA2",
+        "to_node": "roadm SITE2"
+      }
+    ]
+  }
+}
