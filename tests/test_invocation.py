@@ -65,7 +65,11 @@ SRC_ROOT = Path(__file__).parent.parent
     ('transmission_main_example_fiber_freq_eqpt_model', None, transmission_main_example,
      ['-e', 'tests/data/fiber_slope/eqpt_config_fiber_freq.json', 'tests/data/fiber_slope/test_network_fiber_freq_eqpt_model.json']),
     ('transmission_main_example_fiber_freq_legacy_and_alternate_models', None, transmission_main_example,
-     ['-e', 'tests/data/fiber_slope/eqpt_config_fiber_freq.json', 'tests/data/fiber_slope/test_network_fiber_freq_legacy_and_alternate_models.json'])
+     ['-e', 'tests/data/fiber_slope/eqpt_config_fiber_freq.json', 'tests/data/fiber_slope/test_network_fiber_freq_legacy_and_alternate_models.json']),
+    ('transmission_dark_fiber', None, transmission_main_example,
+     ['tests/data/dark_fiber_links/dark_fiber_topo.json', '-r', 'dark fiber attached Transceiver', '-s', 'tests/data/dark_fiber_links/services.json']),
+    ('path_requests_run_dark_fiber', None, path_requests_run,
+         ['tests/data/dark_fiber_links/dark_fiber_topo.json', 'tests/data/dark_fiber_links/services.json'])
 ))
 def test_example_invocation(capfd, caplog, output, log, handler, args):
     """Make sure that our examples produce useful output"""

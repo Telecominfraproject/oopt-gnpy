@@ -324,7 +324,7 @@ def build_oms_list(network: DiGraph, equipment: dict) -> List[OMS]:
     for node in oms_vertices:
         for edge in network.edges([node]):
             if not isinstance(edge[1], Transceiver):
-                nd_in = edge[0]  # nd_in is a Roadm
+                nd_in = edge[0]  # nd_in is a Roadm or a Transceiver (case of external chassis links)
                 try:
                     nd_in.oms_list.append(oms_id)
                 except AttributeError:
@@ -337,8 +337,9 @@ def build_oms_list(network: DiGraph, equipment: dict) -> List[OMS]:
                 params['el_id_list'] = []
                 params['el_list'] = []
                 oms = OMS(**params)
-                oms.add_element(nd_in)
-                while not isinstance(nd_out, Roadm):
+                if isinstance(nd_in, (Roadm, Transceiver)):
+                    oms.add_element(nd_in)
+                while not isinstance(nd_out, (Roadm, Transceiver)):
                     oms.add_element(nd_out)
                     # add an oms_id in the element
                     nd_out.oms_id = oms_id
@@ -346,14 +347,14 @@ def build_oms_list(network: DiGraph, equipment: dict) -> List[OMS]:
                     n_temp = nd_out
                     nd_out = next(n[1] for n in network.edges([n_temp]) if n[1].uid != nd_in.uid)
                     nd_in = n_temp
-
-                oms.add_element(nd_out)
-                # nd_out is a Roadm
-                try:
-                    nd_out.oms_list.append(oms_id)
-                except AttributeError:
-                    nd_out.oms_list = []
-                    nd_out.oms_list.append(oms_id)
+                if isinstance(nd_out, (Roadm, Transceiver)):
+                    oms.add_element(nd_out)
+                    # nd_out is a Roadm or a transceiver
+                    try:
+                        nd_out.oms_list.append(oms_id)
+                    except AttributeError:
+                        nd_out.oms_list = []
+                        nd_out.oms_list.append(oms_id)
 
                 bitmap = create_oms_bitmap(oms, equipment, f_min=f_min, f_max=f_max, grid=DEFAULT_GRID)
                 oms.update_spectrum(f_min, f_max, guardband=DEFAULT_GUARDBAND, grid=DEFAULT_GRID,

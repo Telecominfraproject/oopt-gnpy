@@ -18,6 +18,8 @@ from gnpy.core.exceptions import NetworkTopologyError, ConfigurationError
 from gnpy.core.network import span_loss, build_network, select_edfa, get_node_restrictions, \
     estimate_srs_power_deviation, add_missing_elements_in_network, get_next_node
 from gnpy.tools.json_io import load_equipment, load_network, network_from_json, load_json
+from gnpy.tools.cli_examples import load_common_data
+from gnpy.tools.worker_utils import designed_network
 from gnpy.core.utils import watt2dbm, automatic_nch, merge_amplifier_restrictions, dbm2watt
 from gnpy.core.info import create_input_spectral_information
 from gnpy.core.elements import Fiber, Edfa, Roadm, Multiband_amplifier, Transceiver
@@ -27,6 +29,7 @@ from gnpy.topology.request import PathRequest
 
 TEST_DIR = Path(__file__).parent
 DATA_DIR = TEST_DIR / 'data'
+EXAMPLE_DATA_DIR = TEST_DIR.parent / 'gnpy' / 'exemple-data'
 EQPT_FILENAME = DATA_DIR / 'eqpt_config.json'
 EQPT_MULTBAND_FILENAME = DATA_DIR / 'eqpt_config_multiband.json'
 NETWORK_FILENAME = DATA_DIR / 'bugfixiteratortopo.json'
@@ -1007,3 +1010,23 @@ def test_insert_amp(site_type, expected_type, bands, expected_bands):
         amp1 = get_next_node(roadm1, network)
         assert isinstance(amp1, expected_type)
         assert roadm1.per_degree_design_bands['Edfa_booster_roadm SITE1_to_fiber (SITE1 -> ILA1)'] == expected_bands
+
+
+def test_dark_fiber():
+    """check that dark fiber ingress or egress are correctly accounted as add/drop
+    """
+    (equipment, network) = load_common_data(None, None, None, DATA_DIR / 'dark_fiber_links' / 'dark_fiber_topo.json',
+                                            None, None)
+    network, _, _ = designed_network(equipment, network, no_insert_edfas=True)
+    roadm = next(n for n in network.nodes() if n.uid == "roadm SITE1")
+    for internal_path in roadm.roadm_paths:
+        assert internal_path.from_degree in ['west edfa in SITE1 to ILA1', 'fused fused-roadm', 'trx SITE1',
+                                             'dark fiber SITE1-roadm']
+        assert internal_path.to_degree in ['east edfa in SITE1 to ILA1', 'fused roadm-fused', 'trx SITE1',
+                                           'dark fiber roadm-SITE1']
+        if internal_path.from_degree in ['fused fused-roadm', 'trx SITE1', 'dark fiber SITE1-roadm']:
+            assert internal_path.path_type == "add"
+        elif internal_path.to_degree in ['fused roadm-fused', 'trx SITE1', 'dark fiber roadm-SITE1']:
+            assert internal_path.path_type == "drop"
+        else:
+            assert internal_path.path_type == "express"

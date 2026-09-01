@@ -36,6 +36,8 @@ logger = getLogger(__name__)
 ELEMENT_TYPES = Union[elements.Fiber, elements.Roadm, elements.Fused, elements.Edfa,
                       elements.Transceiver, elements.Transceiver]
 PASSIVE_ELEMENT_TYPES = Union[elements.Fiber, elements.Roadm, elements.Fused]
+ELEMENT_TYPES_NO_ROADM = Union[elements.Fiber, elements.Fused, elements.Edfa,
+                               elements.Transceiver, elements.Transceiver]
 
 
 def edfa_nf(gain_target: float, amp_params) -> float:
@@ -1159,10 +1161,10 @@ def set_egress_amplifier(network: DiGraph, this_node: Union[elements.Roadm, elem
     Go through each link starting from this_node until next Roadm or Transceiver and
     set the amplifiers (Edfa and multiband) according to configurations set by user.
     Computes the gain for Raman finers and records it as the gain for reference design.
-    
+
     - power_mode = True, set amplifiers delta_p and effective_gain
     - power_mode = False, set amplifiers effective_gain and ignore delta_p config: set it to None.
-    
+
     Records the computed dp in an internal variable for autodesign purpose.
 
     :param network: The network graph containing nodes and links.
@@ -1543,6 +1545,7 @@ def set_fiber_input_power(network: DiGraph, fiber: elements.Fiber, equipment: di
     """
     loss = 0.0
     node = next(network.predecessors(fiber))
+    previous_node = None
     while isinstance(node, elements.Fused):
         loss += node.loss
         previous_node = node
@@ -1553,8 +1556,13 @@ def set_fiber_input_power(network: DiGraph, fiber: elements.Fiber, equipment: di
         set_fiber_input_power(network, node, equipment, pref_ch_db)
         fiber.ref_pch_in_dbm = node.ref_pch_in_dbm - loss - node.loss
     elif isinstance(node, elements.Roadm):
-        fiber.ref_pch_in_dbm = \
-            node.get_per_degree_ref_power(degree=previous_node.uid) - loss
+        if previous_node:
+            fiber.ref_pch_in_dbm = \
+                node.get_per_degree_ref_power(degree=previous_node.uid) - loss
+        else:
+            # then the target on this direction should be recorded with fiber.uid
+            fiber.ref_pch_in_dbm = \
+                node.get_per_degree_ref_power(degree=fiber.uid) - loss
     elif isinstance(node, elements.Edfa):
         fiber.ref_pch_in_dbm = pref_ch_db + node._delta_p - node.out_voa - loss
     elif isinstance(node, elements.Transceiver):
@@ -1562,6 +1570,38 @@ def set_fiber_input_power(network: DiGraph, fiber: elements.Fiber, equipment: di
     elif isinstance(node, elements.Multiband_amplifier):
         # use the worst (min) value among amps
         fiber.ref_pch_in_dbm = min([pref_ch_db + amp._delta_p - amp.out_voa - loss for amp in node.amplifiers.values()])
+
+
+def has_roadm_in_successors(next_node: ELEMENT_TYPES_NO_ROADM, network: DiGraph) -> bool:
+    """Returns True if the OMS including this next_node ends with a ROADM
+
+    :param next_node: first node of the OMS
+    :type next_node: ELEMENT_TYPES_NO_ROADM
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :return: True if the OMS including this next_node ends with a ROADM
+    :rtype: bool
+    """
+    oms_edges = get_oms_edge_list(next_node, network)
+    if oms_edges and isinstance(oms_edges[-1][1], elements.Roadm):
+        return True
+    return False
+
+
+def has_roadm_in_predecessors(last_node: ELEMENT_TYPES_NO_ROADM, network: DiGraph) -> bool:
+    """Returns True if the OMS including this last_node ends with a ROADM
+
+    :param last_node: last node of the OMS
+    :type last_node: ELEMENT_TYPES_NO_ROADM
+    :param network: The network graph containing nodes and links.
+    :type network: DiGraph
+    :return: True if the OMS including this next_node ends with a ROADM
+    :rtype: bool
+    """
+    oms_edges = get_oms_edge_list_from_egress(last_node, network)
+    if oms_edges and isinstance(oms_edges[-1][1], elements.Roadm):
+        return True
+    return False
 
 
 def set_roadm_internal_paths(roadm: elements.Roadm, network: DiGraph):
@@ -1587,10 +1627,10 @@ def set_roadm_internal_paths(roadm: elements.Roadm, network: DiGraph):
     - The function ensures that paths connected to transceivers are marked as 'add' or 'drop', while other
       paths can be 'express', 'add', or 'drop'.
     """
-    next_oms = [n.uid for n in network.successors(roadm) if not isinstance(n, elements.Transceiver)]
-    previous_oms = [n.uid for n in network.predecessors(roadm) if not isinstance(n, elements.Transceiver)]
-    drop_port = [n.uid for n in network.successors(roadm) if isinstance(n, elements.Transceiver)]
-    add_port = [n.uid for n in network.predecessors(roadm) if isinstance(n, elements.Transceiver)]
+    next_oms = [n.uid for n in network.successors(roadm) if has_roadm_in_successors(n, network)]
+    previous_oms = [n.uid for n in network.predecessors(roadm) if has_roadm_in_predecessors(n, network)]
+    drop_port = [n.uid for n in network.successors(roadm) if not has_roadm_in_successors(n, network)]
+    add_port = [n.uid for n in network.predecessors(roadm) if not has_roadm_in_predecessors(n, network)]
 
     default_express = 'express'
     default_add = 'add'
@@ -1662,7 +1702,8 @@ def add_roadm_booster(network: DiGraph, roadm: elements.Roadm):
     """
     next_nodes = [n for n in network.successors(roadm)
                   if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa,
-                                        elements.Multiband_amplifier))]
+                                        elements.Multiband_amplifier))
+                  and has_roadm_in_successors(n, network)]
     # no amplification for fused spans or TRX
     for next_node in next_nodes:
         network.remove_edge(roadm, next_node)
@@ -1728,7 +1769,8 @@ def add_roadm_preamp(network: DiGraph, roadm: elements.Roadm):
     """
     prev_nodes = [n for n in network.predecessors(roadm)
                   if not isinstance(n, (elements.Transceiver, elements.Fused, elements.Edfa,
-                                        elements.Multiband_amplifier))]
+                                        elements.Multiband_amplifier))
+                  and has_roadm_in_predecessors(n, network)]
     # no amplification for fused spans or TRX
     for prev_node in prev_nodes:
         network.remove_edge(prev_node, roadm)
@@ -1944,7 +1986,7 @@ def split_fiber(network, fiber, bounds, target_length):
     network.add_edge(prev_node, next_node, weight=edgeweight)
 
 
-def add_connector_loss(network: DiGraph, fibers: List[elements.Fiber], default_con_in: float, 
+def add_connector_loss(network: DiGraph, fibers: List[elements.Fiber], default_con_in: float,
                        default_con_out: float, EOL: float):
     """Adds default connector loss to fibers in the network if not already defined.
 
@@ -1983,7 +2025,7 @@ def add_connector_loss(network: DiGraph, fibers: List[elements.Fiber], default_c
 def add_fiber_padding(network: DiGraph, fibers: List[elements.Fiber], padding: float, equipment: dict):
     """Adds padding attenuation at the input of the first fiber in a succession of fibers.
 
-    This function checks each fiber in the network and adds a specified padding loss at the input of the 
+    This function checks each fiber in the network and adds a specified padding loss at the input of the
     first fiber in a series of connected fibers if the calculated span loss is less than the specified padding.
 
     :param network: The network graph containing nodes and links.
@@ -2078,8 +2120,9 @@ def add_missing_fiber_attributes(network: DiGraph, equipment: dict):
     default_span_data = equipment['Span']['default']
     fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)]
     add_connector_loss(network, fibers, default_span_data.con_in, default_span_data.con_out, default_span_data.EOL)
-    # don't group split fiber and add amp in the same loop
-    # =>for code clarity (at the expense of speed):
+    # don't add padding on dark fibers to external transceivers
+    fibers = [f for f in network.nodes() if isinstance(f, elements.Fiber)
+              and has_roadm_in_predecessors(f, network) and has_roadm_in_successors(f, network)]
     add_fiber_padding(network, fibers, default_span_data.padding, equipment)
 
 
