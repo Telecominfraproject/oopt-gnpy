@@ -16,6 +16,24 @@
       "message": "The patch works as it is, but I am wondering if there is a better implementation. Namely, can we instead include in the transceiver the two components Emitter and Receiver as attributes instead of defining them as roles. In this way, the behaviour might be more explicit and not depending on the default role definition that can confuse and user if they are not using the CLI. If you think this will be too long we can move this to future updates.",
       "revId": "9c7a59e09dbe9b12a6a091924f413bb30a08746b",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd34fa2c_9be0cab1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-09-01T14:57:31Z",
+      "side": 1,
+      "message": "hidden variables regarding transceiver role were removed. Transceiver role is now more explicit and less confusing I hope",
+      "parentUuid": "16a76843_93f5bb36",
+      "revId": "9c7a59e09dbe9b12a6a091924f413bb30a08746b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
