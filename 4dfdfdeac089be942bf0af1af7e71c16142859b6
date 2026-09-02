@@ -16,6 +16,24 @@
       "message": "return None instead of None",
       "revId": "4dfdfdeac089be942bf0af1af7e71c16142859b6",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ea28976_ef11ba9c",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1424,
+      "author": {
+        "id": 1039121
+      },
+      "writtenOn": "2026-09-02T07:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12ef2187_b0e28c48",
+      "revId": "4dfdfdeac089be942bf0af1af7e71c16142859b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
