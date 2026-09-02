@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12ef2187_b0e28c48",
+        "filename": "gnpy/topology/request.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1424,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-09-02T06:35:10Z",
+      "side": 1,
+      "message": "return None instead of None",
+      "revId": "4dfdfdeac089be942bf0af1af7e71c16142859b6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
