@@ -24,7 +24,7 @@ from enum import Enum
 from networkx import DiGraph
 
 from gnpy.core.elements import Roadm, Transceiver, Edfa, Multiband_amplifier, Fiber, RamanFiber, Fused
-from gnpy.core.exceptions import ServiceError, SpectrumError
+from gnpy.core.exceptions import ServiceError, SpectrumError, NetworkTopologyError
 from gnpy.core.utils import order_slots, restore_order
 from gnpy.topology.request import compute_spectrum_slot_vs_bandwidth, find_elements_common_range, PathRequest
 
@@ -373,18 +373,49 @@ def build_oms_list(network: DiGraph, equipment: dict) -> List[OMS]:
 def reversed_oms(oms_list: List[OMS]):
     """identifies reversed OMS
 
-    only applicable for non parallel OMS
+    Automatically associates omses based on OMS end points if there are no parallel links between these end points.
+    If there are parallel links: requires a user input with degrees associations
     """
-    for oms in oms_list:
-        has_reversed = False
-        for this_o in oms_list:
-            if (oms.el_id_list[0] == this_o.el_id_list[-1] and
-                    oms.el_id_list[-1] == this_o.el_id_list[0]):
-                oms.reversed_oms = this_o
+    # reorder oms_list to start with the omses that already have a defined degree association
+    ordered_oms = sorted(
+        oms_list,
+        key=lambda oms: not bool(oms.el_list[0].degree_association.get(oms.el_id_list[1])))
+    for oms in ordered_oms:
+        if not hasattr(oms, 'reversed_oms'):
+            has_reversed = False
+            candidate_omses = [
+                x for x in oms_list
+                if (oms.el_id_list[0] == x.el_id_list[-1] and oms.el_id_list[-1] == x.el_id_list[0])
+                and not hasattr(x, 'reversed_oms')]
+            candidate_omses_names = [
+                x.el_id_list[1] for x in oms_list
+                if (oms.el_id_list[0] == x.el_id_list[-1] and oms.el_id_list[-1] == x.el_id_list[0])
+                and not hasattr(x, 'reversed_oms')]
+            if len(candidate_omses) == 1:
+                oms.reversed_oms = candidate_omses[0]
+                candidate_omses[0].reversed_oms = oms
                 has_reversed = True
-                break
-        if not has_reversed:
-            oms.reversed_oms = None
+            elif len(candidate_omses) > 1:
+                if oms.el_list[0].degree_association:
+                    reversed_oms_egress_uid = oms.el_list[0].degree_association.get(oms.el_id_list[1])
+                    if reversed_oms_egress_uid:
+                        try:
+                            reversed_oms = next(c for c in candidate_omses if reversed_oms_egress_uid in c.el_id_list)
+                            oms.reversed_oms = reversed_oms
+                            reversed_oms.reversed_oms = oms
+                            has_reversed = True
+                        except StopIteration:
+                            raise NetworkTopologyError(f'Parallel OMSes: degrees association {reversed_oms_egress_uid} '
+                                                       + f'not found in candidate OMSes {candidate_omses_names}')
+                    else:
+                        raise NetworkTopologyError(f'Parallel OMSes: degree {oms.el_id_list[1]} not found in roadm'
+                                                   + f' {oms.el_list[0].uid} degrees association')
+                else:
+                    raise NetworkTopologyError(f'Parallel OMSes: OMS {oms.el_id_list[1]} has more than one candidate'
+                                               + ' for reverse OMS. Correct reversed OMS can not be identified. '
+                                               + 'Please add degree-association in the end points')
+            if not has_reversed:
+                oms.reversed_oms = None
 
 
 def bitmap_sum(band1: List[BitmapValue], band2: List[BitmapValue]) -> List[BitmapValue]:

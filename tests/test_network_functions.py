@@ -25,6 +25,7 @@ from gnpy.core.info import create_input_spectral_information
 from gnpy.core.elements import Fiber, Edfa, Roadm, Multiband_amplifier, Transceiver
 from gnpy.core.parameters import SimParams, EdfaParams, MultiBandParams
 from gnpy.topology.request import PathRequest
+from gnpy.topology.spectrum_assignment import build_oms_list
 
 
 TEST_DIR = Path(__file__).parent
@@ -1030,3 +1031,88 @@ def test_dark_fiber():
             assert internal_path.path_type == "drop"
         else:
             assert internal_path.path_type == "express"
+
+
+def test_parallel_links():
+    """check that design correctly sets degrees associations
+    """
+    (equipment, network) = load_common_data(None, None, None,
+                                            DATA_DIR / 'parallel_omses' / 'topology_parallel_oms_cases.json',
+                                            None, None)
+    network, _, _ = designed_network(equipment, network)
+    roadm = next(n for n in network.nodes() if n.uid == "CASE-1 non-parallel ROADM-A")
+    assert roadm.degree_association == {}
+    roadm = next(n for n in network.nodes() if n.uid == "CASE-2 parallel-2 all-associations ROADM-A")
+    assert roadm.degree_association == {
+        "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa": "CASE-2 parallel-2 all-associations pair-1 B-to-A destination edfa",   # noqa E501
+        "CASE-2 parallel-2 all-associations pair-2 A-to-B source edfa": "CASE-2 parallel-2 all-associations pair-2 B-to-A destination edfa"  # noqa E501
+    }
+    roadm = next(n for n in network.nodes() if n.uid == "CASE-3 parallel-2 one-association ROADM-B")
+    assert roadm.degree_association == {
+        "CASE-3 parallel-2 one-association pair-1 B-to-A source edfa": "CASE-3 parallel-2 one-association pair-1 A-to-B destination edfa",  # noqa E501
+        "CASE-3 parallel-2 one-association pair-2 B-to-A source edfa": "CASE-3 parallel-2 one-association pair-2 A-to-B destination edfa"  # noqa E501
+    }
+    roadm = next(n for n in network.nodes() if n.uid == "CASE-4 parallel-3 all-associations ROADM-A")
+    assert roadm.degree_association == {
+        "CASE-4 parallel-3 all-associations pair-1 A-to-B source edfa": "CASE-4 parallel-3 all-associations pair-1 B-to-A destination edfa",  # noqa E501
+        "CASE-4 parallel-3 all-associations pair-2 A-to-B source edfa": "CASE-4 parallel-3 all-associations pair-2 B-to-A destination edfa",  # noqa E501
+        "CASE-4 parallel-3 all-associations pair-3 A-to-B source edfa": "CASE-4 parallel-3 all-associations pair-3 B-to-A destination edfa"  # noqa E501
+    }
+    roadm = next(n for n in network.nodes() if n.uid == "CASE-5 parallel-3 one-association ROADM-B")
+    assert roadm.degree_association == {
+        "CASE-5 parallel-3 one-association pair-1 B-to-A source edfa": "CASE-5 parallel-3 one-association pair-1 A-to-B destination edfa",  # noqa E501
+        "CASE-5 parallel-3 one-association pair-2 B-to-A source edfa": "CASE-5 parallel-3 one-association pair-2 A-to-B destination edfa"  # noqa E501
+    }
+
+    oms_list = build_oms_list(network, equipment)
+
+    assert oms_list[0].el_id_list[0] == "CASE-1 non-parallel ROADM-A"
+    assert oms_list[0].reversed_oms.oms_id == 1
+    assert oms_list[2].el_id_list[0] == "CASE-2 parallel-2 all-associations ROADM-A"
+    assert oms_list[2].reversed_oms.oms_id == 5
+    assert oms_list[22].el_id_list[0] == "CASE-5 parallel-3 one-association ROADM-B"
+    assert oms_list[22].reversed_oms.oms_id == 18
+
+
+def test_missing_pair_parallel_links():
+    """check that design correctly sets degrees associations
+    """
+    (equipment, network) = load_common_data(None, None, None,
+                                            DATA_DIR / 'parallel_omses' / 'topology_parallel_oms_cases.json',
+                                            None, None)
+    roadm = next(n for n in network.nodes() if n.uid == "CASE-5 parallel-3 one-association ROADM-B")
+    assert roadm.degree_association == {
+        'CASE-5 parallel-3 one-association pair-2 B-to-A source edfa': 'CASE-5 parallel-3 one-association pair-2 A-to-B destination edfa'  # noqa E501
+    }
+    roadm.degree_association = {}
+    network, _, _ = designed_network(equipment, network)
+    with pytest.raises(
+            NetworkTopologyError,
+            match="Parallel OMSes: degree CASE-5 parallel-3 one-association pair-2 A-to-B source edfa not found in roadm CASE-5 parallel-3 one-association ROADM-A degrees association"):  # noqa E501
+        build_oms_list(network, equipment)
+
+
+@pytest.mark.parametrize("roadm_uid, degree, paired, msg", [
+    ("CASE-2 parallel-2 all-associations ROADM-A", "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa",
+     "wrong uid", "has no ingress degree wrong uid"),
+    ("CASE-2 parallel-2 all-associations ROADM-A", "wrong_uid", "toto",
+        "has no egress degree wrong_uid"),
+    ("CASE-2 parallel-2 all-associations ROADM-A", "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa",
+     "CASE-2 parallel-2 all-associations pair-2 B-to-A destination edfa",
+     "are not associated to the same other end degree"),
+    ("CASE-2 parallel-2 all-associations ROADM-A", "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa",
+     "CASE-2 C-to-A destination edfa",
+     "are not associated to the same OMS other ends")
+])
+def test_wrong_pair_parallel_links(roadm_uid, degree, paired, msg):
+    """check that design correctly sets degrees associations
+    """
+    (equipment, network) = load_common_data(None, None, None,
+                                            DATA_DIR / 'parallel_omses' / 'topology_parallel_oms_cases.json',
+                                            None, None)
+    roadm = next(n for n in network.nodes() if n.uid == roadm_uid)
+    roadm.degree_association[degree] = paired
+    with pytest.raises(
+            NetworkTopologyError,
+            match=msg):
+        network, _, _ = designed_network(equipment, network)
