@@ -2126,6 +2126,31 @@ def add_missing_fiber_attributes(network: DiGraph, equipment: dict):
     add_fiber_padding(network, fibers, default_span_data.padding, equipment)
 
 
+def set_degree_association(node: Union[elements.Roadm, elements.Transceiver], network: DiGraph):
+    """Set association when it is missing, checks that the definition is consistent
+
+    :param node: _description_
+    :type node: Union[elements.Roadm, elements.Transceiver]
+    :param network: _description_
+    :type network: DiGraph
+    """
+    node_to_degrees = [n.uid for n in network.successors(node)]
+    node_from_degrees = [n.uid for n in network.predecessors(node)]
+    for degree_uid, paired_degree_uid in node.degree_association.items():
+        if degree_uid not in node_to_degrees:
+            raise NetworkTopologyError(f'{node.uid} has no egress degree {degree_uid}')
+        if paired_degree_uid not in node_from_degrees:
+            raise NetworkTopologyError(f'{node.uid} has no ingress degree {paired_degree_uid}')
+        degree = next(n for n in network.nodes() if n.uid == degree_uid)
+        paired_degree = next(n for n in network.nodes() if n.uid == paired_degree_uid)
+        oms_other_end_degree, oms_other_end = get_oms_edge_list(degree, network)[-1]
+        oms_other_end_paired_degree, oms_other_end_ = get_oms_edge_list_from_egress(paired_degree, network)[-1]
+        if oms_other_end != oms_other_end_:
+            raise NetworkTopologyError(f'{node.uid} OMSes {[degree.uid, paired_degree.uid]} are not associated to the same OMS other end {[oms_other_end, oms_other_end_]}')
+        if oms_other_end_degree.uid not in oms_other_end.degree_association.values():
+            oms_other_end.degree_association[oms_other_end_paired_degree.uid] = oms_other_end_degree.uid
+
+
 def build_network(network: DiGraph, equipment: dict, reference_channel,
                   set_connector_losses: bool = True, verbose: bool = True):
     """Sets the ROADM equalization targets and amplifier gain and power.
@@ -2173,6 +2198,7 @@ def build_network(network: DiGraph, equipment: dict, reference_channel,
     for roadm in roadms:
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
         set_roadm_internal_paths(roadm, network)
+        set_degree_association(roadm, network)
     for fiber in [f for f in network.nodes() if isinstance(f, (elements.Fiber, elements.RamanFiber))]:
         set_fiber_input_power(network, fiber, equipment, pref_ch_db)
 
