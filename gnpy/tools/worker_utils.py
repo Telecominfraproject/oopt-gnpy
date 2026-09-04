@@ -236,7 +236,8 @@ def transmission_simulation(equipment: dict, network: DiGraph, req: PathRequest,
         # Power sweep is made to evaluate different span input powers, so redesign is mandatory for each power,
         #  but no need to redesign if there are no power sweep
         if len(power_range) > 1:
-            design_network(ref_req, network.subgraph(path), equipment, set_connector_losses=False, verbose=False)
+            design_network(ref_req, network.subgraph(path), equipment, set_connector_losses=False,
+                           verbose=False, redesign=True)
 
         infos = propagate(path, req, equipment)
         propagations.append(deepcopy(path))

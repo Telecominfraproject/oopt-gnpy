@@ -1,0 +1,2166 @@
+{
+  "gnpy-network-topology:topology": {
+    "elements": [
+      {
+        "uid": "CASE-1 non-parallel Transceiver-A",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel Transceiver-A",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel Transceiver-B",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel Transceiver-B",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel ROADM-A",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel ROADM-A",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel ROADM-B",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel ROADM-B",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel pair-1 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel pair-1 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel pair-1 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel pair-1 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel pair-1 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel pair-1 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel pair-1 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel pair-1 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel pair-1 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel pair-1 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-1 non-parallel pair-1 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-1 non-parallel pair-1 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations Transceiver-A",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations Transceiver-A",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations Transceiver-B",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations Transceiver-B",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations ROADM-A",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations ROADM-A",
+            "region": "TEST"
+          }
+        },
+        "params": {
+          "degree-association": [
+            {
+              "degree": "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa",
+              "paired-degree": "CASE-2 parallel-2 all-associations pair-1 B-to-A destination edfa"
+            },
+            {
+              "degree": "CASE-2 parallel-2 all-associations pair-2 A-to-B source edfa",
+              "paired-degree": "CASE-2 parallel-2 all-associations pair-2 B-to-A destination edfa"
+            }
+          ]
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations ROADM-B",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations ROADM-B",
+            "region": "TEST"
+          }
+        },
+        "params": {
+          "degree-association": [
+            {
+              "degree": "CASE-2 parallel-2 all-associations pair-1 B-to-A source edfa",
+              "paired-degree": "CASE-2 parallel-2 all-associations pair-1 A-to-B destination edfa"
+            },
+            {
+              "degree": "CASE-2 parallel-2 all-associations pair-2 B-to-A source edfa",
+              "paired-degree": "CASE-2 parallel-2 all-associations pair-2 A-to-B destination edfa"
+            }
+          ]
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-1 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-1 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-1 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-1 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-1 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-1 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-1 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-1 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-1 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-1 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-2 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-2 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-2 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-2 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-2 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-2 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-2 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-2 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-2 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-2 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 parallel-2 all-associations pair-2 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 parallel-2 all-associations pair-2 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association Transceiver-A",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association Transceiver-A",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association Transceiver-B",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association Transceiver-B",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association ROADM-A",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association ROADM-A",
+            "region": "TEST"
+          }
+        },
+        "params": {
+          "degree-association": [
+            {
+              "degree": "CASE-3 parallel-2 one-association pair-1 A-to-B source edfa",
+              "paired-degree": "CASE-3 parallel-2 one-association pair-1 B-to-A destination edfa"
+            },
+            {
+              "degree": "CASE-3 parallel-2 one-association pair-2 A-to-B source edfa",
+              "paired-degree": "CASE-3 parallel-2 one-association pair-2 B-to-A destination edfa"
+            }
+          ]
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association ROADM-B",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association ROADM-B",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-1 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-1 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-1 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-1 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-1 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-1 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-1 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-1 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-1 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-1 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-1 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-1 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-2 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-2 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-2 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-2 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-2 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-2 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-2 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-2 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-2 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-2 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-3 parallel-2 one-association pair-2 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-3 parallel-2 one-association pair-2 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations Transceiver-A",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations Transceiver-A",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations Transceiver-B",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations Transceiver-B",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations ROADM-A",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations ROADM-A",
+            "region": "TEST"
+          }
+        },
+        "params": {
+          "degree-association": [
+            {
+              "degree": "CASE-4 parallel-3 all-associations pair-1 A-to-B source edfa",
+              "paired-degree": "CASE-4 parallel-3 all-associations pair-1 B-to-A destination edfa"
+            },
+            {
+              "degree": "CASE-4 parallel-3 all-associations pair-2 A-to-B source edfa",
+              "paired-degree": "CASE-4 parallel-3 all-associations pair-2 B-to-A destination edfa"
+            },
+            {
+              "degree": "CASE-4 parallel-3 all-associations pair-3 A-to-B source edfa",
+              "paired-degree": "CASE-4 parallel-3 all-associations pair-3 B-to-A destination edfa"
+            }
+          ]
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations ROADM-B",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations ROADM-B",
+            "region": "TEST"
+          }
+        },
+        "params": {
+          "degree-association": [
+            {
+              "degree": "CASE-4 parallel-3 all-associations pair-1 B-to-A source edfa",
+              "paired-degree": "CASE-4 parallel-3 all-associations pair-1 A-to-B destination edfa"
+            },
+            {
+              "degree": "CASE-4 parallel-3 all-associations pair-2 B-to-A source edfa",
+              "paired-degree": "CASE-4 parallel-3 all-associations pair-2 A-to-B destination edfa"
+            },
+            {
+              "degree": "CASE-4 parallel-3 all-associations pair-3 B-to-A source edfa",
+              "paired-degree": "CASE-4 parallel-3 all-associations pair-3 A-to-B destination edfa"
+            }
+          ]
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-1 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-1 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-1 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-1 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-1 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-1 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-1 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-1 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-1 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-1 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-1 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-1 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-2 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-2 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-2 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-2 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-2 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-2 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-2 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-2 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-2 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-2 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-2 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-2 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-3 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-3 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-3 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.3",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-3 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-3 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-3 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-3 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-3 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-3 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-3 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-4 parallel-3 all-associations pair-3 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-4 parallel-3 all-associations pair-3 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association Transceiver-A",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association Transceiver-A",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association Transceiver-B",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association Transceiver-B",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association ROADM-A",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association ROADM-A",
+            "region": "TEST"
+          }
+        },
+        "params": {
+          "degree-association": [
+            {
+              "degree": "CASE-5 parallel-3 one-association pair-1 A-to-B source edfa",
+              "paired-degree": "CASE-5 parallel-3 one-association pair-1 B-to-A destination edfa"
+            }
+          ]
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association ROADM-B",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association ROADM-B",
+            "region": "TEST"
+          }
+        },
+        "params": {
+          "degree-association": [
+            {
+              "degree": "CASE-5 parallel-3 one-association pair-2 B-to-A source edfa",
+              "paired-degree": "CASE-5 parallel-3 one-association pair-2 A-to-B destination edfa"
+            }
+          ]
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-1 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-1 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-1 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-1 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-1 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-1 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-1 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-1 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-1 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-1 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-1 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-1 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-2 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-2 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-2 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-2 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-2 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-2 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-2 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-2 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-2 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-2 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-2 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-2 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-3 A-to-B source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-3 A-to-B source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-3 A-to-B fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.3",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-3 A-to-B fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-3 A-to-B destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-3 A-to-B destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-3 B-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-3 B-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-3 B-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-3 B-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association pair-3 B-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-5 parallel-3 one-association pair-3 B-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      }
+
+
+      ,
+      {
+        "uid": "CASE-2 A-to-C source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 A-to-C source edfa",
+            "region": "TEST"
+          }
+        }
+      }
+
+      ,
+      {
+        "uid": "CASE-2 A-to-C destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 A-to-C destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 C-to-A source edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 C-to-A source edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 C-to-A destination edfa",
+        "type": "Edfa",
+        "type_variety": "std_medium_gain",
+        "operational": {
+          "delta_p": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 C-to-A destination edfa",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 A-to-C fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 A-to-C fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 C-to-A fiber",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "100.0",
+          "loss_coef": "0.2",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 C-to-A fiber",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "CASE-2 ROADM-C",
+        "type": "Roadm",
+        "type_variety": "detailed_impairments",
+        "metadata": {
+          "location": {
+            "latitude": "0.0",
+            "longitude": "0.0",
+            "city": "CASE-2 ROADM-C",
+            "region": "TEST"
+          }
+        }
+      },
+      {
+        "uid": "trx external",
+        "type": "Transceiver",
+        "metadata": {
+          "location": {
+            "latitude": "4.0",
+            "longitude": "0.0",
+            "city": "external",
+            "region": "RLD"
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association dark fiber to transceiver",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "40.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      },
+      {
+        "uid": "CASE-5 parallel-3 one-association dark fiber from transceiver",
+        "type": "Fiber",
+        "type_variety": "SSMF",
+        "params": {
+          "length": "40.0",
+          "loss_coef": "0.25",
+          "length_units": "km",
+          "att_in": "0.0",
+          "con_in": "0.0",
+          "con_out": "0.0"
+        },
+        "metadata": {
+          "location": {
+            "latitude": "2.0",
+            "longitude": "0.5",
+            "city": [null],
+            "region": [null]
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from_node": "CASE-1 non-parallel Transceiver-A",
+        "to_node": "CASE-1 non-parallel ROADM-A"
+      },
+      {
+        "from_node": "CASE-1 non-parallel ROADM-A",
+        "to_node": "CASE-1 non-parallel Transceiver-A"
+      },
+      {
+        "from_node": "CASE-1 non-parallel Transceiver-B",
+        "to_node": "CASE-1 non-parallel ROADM-B"
+      },
+      {
+        "from_node": "CASE-1 non-parallel ROADM-B",
+        "to_node": "CASE-1 non-parallel Transceiver-B"
+      },
+      {
+        "from_node": "CASE-1 non-parallel ROADM-A",
+        "to_node": "CASE-1 non-parallel pair-1 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-1 non-parallel pair-1 A-to-B source edfa",
+        "to_node": "CASE-1 non-parallel pair-1 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-1 non-parallel pair-1 A-to-B fiber",
+        "to_node": "CASE-1 non-parallel pair-1 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-1 non-parallel pair-1 A-to-B destination edfa",
+        "to_node": "CASE-1 non-parallel ROADM-B"
+      },
+      {
+        "from_node": "CASE-1 non-parallel ROADM-B",
+        "to_node": "CASE-1 non-parallel pair-1 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-1 non-parallel pair-1 B-to-A source edfa",
+        "to_node": "CASE-1 non-parallel pair-1 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-1 non-parallel pair-1 B-to-A fiber",
+        "to_node": "CASE-1 non-parallel pair-1 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-1 non-parallel pair-1 B-to-A destination edfa",
+        "to_node": "CASE-1 non-parallel ROADM-A"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations Transceiver-A",
+        "to_node": "CASE-2 parallel-2 all-associations ROADM-A"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations ROADM-A",
+        "to_node": "CASE-2 parallel-2 all-associations Transceiver-A"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations Transceiver-B",
+        "to_node": "CASE-2 parallel-2 all-associations ROADM-B"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations ROADM-B",
+        "to_node": "CASE-2 parallel-2 all-associations Transceiver-B"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations ROADM-A",
+        "to_node": "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-1 A-to-B source edfa",
+        "to_node": "CASE-2 parallel-2 all-associations pair-1 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-1 A-to-B fiber",
+        "to_node": "CASE-2 parallel-2 all-associations pair-1 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-1 A-to-B destination edfa",
+        "to_node": "CASE-2 parallel-2 all-associations ROADM-B"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations ROADM-B",
+        "to_node": "CASE-2 parallel-2 all-associations pair-1 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-1 B-to-A source edfa",
+        "to_node": "CASE-2 parallel-2 all-associations pair-1 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-1 B-to-A fiber",
+        "to_node": "CASE-2 parallel-2 all-associations pair-1 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-1 B-to-A destination edfa",
+        "to_node": "CASE-2 parallel-2 all-associations ROADM-A"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations ROADM-A",
+        "to_node": "CASE-2 A-to-C source edfa"
+      },
+      {
+        "from_node": "CASE-2 A-to-C source edfa",
+        "to_node": "CASE-2 A-to-C fiber"
+      },
+      {
+        "from_node": "CASE-2 A-to-C fiber",
+        "to_node": "CASE-2 A-to-C destination edfa"
+      },
+      {
+        "from_node": "CASE-2 A-to-C destination edfa",
+        "to_node": "CASE-2 ROADM-C"
+      },
+      {
+        "from_node": "CASE-2 ROADM-C",
+        "to_node": "CASE-2 C-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-2 C-to-A source edfa",
+        "to_node": "CASE-2 C-to-A fiber"
+      },
+      {
+        "from_node": "CASE-2 C-to-A fiber",
+        "to_node": "CASE-2 C-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-2 C-to-A destination edfa",
+        "to_node": "CASE-2 parallel-2 all-associations ROADM-A"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations ROADM-A",
+        "to_node": "CASE-2 parallel-2 all-associations pair-2 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-2 A-to-B source edfa",
+        "to_node": "CASE-2 parallel-2 all-associations pair-2 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-2 A-to-B fiber",
+        "to_node": "CASE-2 parallel-2 all-associations pair-2 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-2 A-to-B destination edfa",
+        "to_node": "CASE-2 parallel-2 all-associations ROADM-B"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations ROADM-B",
+        "to_node": "CASE-2 parallel-2 all-associations pair-2 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-2 B-to-A source edfa",
+        "to_node": "CASE-2 parallel-2 all-associations pair-2 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-2 B-to-A fiber",
+        "to_node": "CASE-2 parallel-2 all-associations pair-2 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-2 parallel-2 all-associations pair-2 B-to-A destination edfa",
+        "to_node": "CASE-2 parallel-2 all-associations ROADM-A"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association Transceiver-A",
+        "to_node": "CASE-3 parallel-2 one-association ROADM-A"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association ROADM-A",
+        "to_node": "CASE-3 parallel-2 one-association Transceiver-A"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association Transceiver-B",
+        "to_node": "CASE-3 parallel-2 one-association ROADM-B"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association ROADM-B",
+        "to_node": "CASE-3 parallel-2 one-association Transceiver-B"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association ROADM-A",
+        "to_node": "CASE-3 parallel-2 one-association pair-1 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-1 A-to-B source edfa",
+        "to_node": "CASE-3 parallel-2 one-association pair-1 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-1 A-to-B fiber",
+        "to_node": "CASE-3 parallel-2 one-association pair-1 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-1 A-to-B destination edfa",
+        "to_node": "CASE-3 parallel-2 one-association ROADM-B"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association ROADM-B",
+        "to_node": "CASE-3 parallel-2 one-association pair-1 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-1 B-to-A source edfa",
+        "to_node": "CASE-3 parallel-2 one-association pair-1 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-1 B-to-A fiber",
+        "to_node": "CASE-3 parallel-2 one-association pair-1 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-1 B-to-A destination edfa",
+        "to_node": "CASE-3 parallel-2 one-association ROADM-A"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association ROADM-A",
+        "to_node": "CASE-3 parallel-2 one-association pair-2 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-2 A-to-B source edfa",
+        "to_node": "CASE-3 parallel-2 one-association pair-2 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-2 A-to-B fiber",
+        "to_node": "CASE-3 parallel-2 one-association pair-2 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-2 A-to-B destination edfa",
+        "to_node": "CASE-3 parallel-2 one-association ROADM-B"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association ROADM-B",
+        "to_node": "CASE-3 parallel-2 one-association pair-2 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-2 B-to-A source edfa",
+        "to_node": "CASE-3 parallel-2 one-association pair-2 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-2 B-to-A fiber",
+        "to_node": "CASE-3 parallel-2 one-association pair-2 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-3 parallel-2 one-association pair-2 B-to-A destination edfa",
+        "to_node": "CASE-3 parallel-2 one-association ROADM-A"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations Transceiver-A",
+        "to_node": "CASE-4 parallel-3 all-associations ROADM-A"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations ROADM-A",
+        "to_node": "CASE-4 parallel-3 all-associations Transceiver-A"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations Transceiver-B",
+        "to_node": "CASE-4 parallel-3 all-associations ROADM-B"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations ROADM-B",
+        "to_node": "CASE-4 parallel-3 all-associations Transceiver-B"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations ROADM-A",
+        "to_node": "CASE-4 parallel-3 all-associations pair-1 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-1 A-to-B source edfa",
+        "to_node": "CASE-4 parallel-3 all-associations pair-1 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-1 A-to-B fiber",
+        "to_node": "CASE-4 parallel-3 all-associations pair-1 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-1 A-to-B destination edfa",
+        "to_node": "CASE-4 parallel-3 all-associations ROADM-B"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations ROADM-B",
+        "to_node": "CASE-4 parallel-3 all-associations pair-1 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-1 B-to-A source edfa",
+        "to_node": "CASE-4 parallel-3 all-associations pair-1 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-1 B-to-A fiber",
+        "to_node": "CASE-4 parallel-3 all-associations pair-1 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-1 B-to-A destination edfa",
+        "to_node": "CASE-4 parallel-3 all-associations ROADM-A"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations ROADM-A",
+        "to_node": "CASE-4 parallel-3 all-associations pair-2 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-2 A-to-B source edfa",
+        "to_node": "CASE-4 parallel-3 all-associations pair-2 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-2 A-to-B fiber",
+        "to_node": "CASE-4 parallel-3 all-associations pair-2 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-2 A-to-B destination edfa",
+        "to_node": "CASE-4 parallel-3 all-associations ROADM-B"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations ROADM-B",
+        "to_node": "CASE-4 parallel-3 all-associations pair-2 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-2 B-to-A source edfa",
+        "to_node": "CASE-4 parallel-3 all-associations pair-2 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-2 B-to-A fiber",
+        "to_node": "CASE-4 parallel-3 all-associations pair-2 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-2 B-to-A destination edfa",
+        "to_node": "CASE-4 parallel-3 all-associations ROADM-A"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations ROADM-A",
+        "to_node": "CASE-4 parallel-3 all-associations pair-3 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-3 A-to-B source edfa",
+        "to_node": "CASE-4 parallel-3 all-associations pair-3 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-3 A-to-B fiber",
+        "to_node": "CASE-4 parallel-3 all-associations pair-3 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-3 A-to-B destination edfa",
+        "to_node": "CASE-4 parallel-3 all-associations ROADM-B"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations ROADM-B",
+        "to_node": "CASE-4 parallel-3 all-associations pair-3 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-3 B-to-A source edfa",
+        "to_node": "CASE-4 parallel-3 all-associations pair-3 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-3 B-to-A fiber",
+        "to_node": "CASE-4 parallel-3 all-associations pair-3 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-4 parallel-3 all-associations pair-3 B-to-A destination edfa",
+        "to_node": "CASE-4 parallel-3 all-associations ROADM-A"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association Transceiver-A",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-A"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-A",
+        "to_node": "CASE-5 parallel-3 one-association Transceiver-A"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association Transceiver-B",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-B"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-B",
+        "to_node": "CASE-5 parallel-3 one-association Transceiver-B"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-A",
+        "to_node": "CASE-5 parallel-3 one-association pair-1 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-1 A-to-B source edfa",
+        "to_node": "CASE-5 parallel-3 one-association pair-1 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-1 A-to-B fiber",
+        "to_node": "CASE-5 parallel-3 one-association pair-1 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-1 A-to-B destination edfa",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-B"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-B",
+        "to_node": "CASE-5 parallel-3 one-association pair-1 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-1 B-to-A source edfa",
+        "to_node": "CASE-5 parallel-3 one-association pair-1 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-1 B-to-A fiber",
+        "to_node": "CASE-5 parallel-3 one-association pair-1 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-1 B-to-A destination edfa",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-A"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-A",
+        "to_node": "CASE-5 parallel-3 one-association pair-2 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-2 A-to-B source edfa",
+        "to_node": "CASE-5 parallel-3 one-association pair-2 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-2 A-to-B fiber",
+        "to_node": "CASE-5 parallel-3 one-association pair-2 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-2 A-to-B destination edfa",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-B"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-B",
+        "to_node": "CASE-5 parallel-3 one-association pair-2 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-2 B-to-A source edfa",
+        "to_node": "CASE-5 parallel-3 one-association pair-2 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-2 B-to-A fiber",
+        "to_node": "CASE-5 parallel-3 one-association pair-2 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-2 B-to-A destination edfa",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-A"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-A",
+        "to_node": "CASE-5 parallel-3 one-association pair-3 A-to-B source edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-3 A-to-B source edfa",
+        "to_node": "CASE-5 parallel-3 one-association pair-3 A-to-B fiber"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-3 A-to-B fiber",
+        "to_node": "CASE-5 parallel-3 one-association pair-3 A-to-B destination edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-3 A-to-B destination edfa",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-B"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-B",
+        "to_node": "CASE-5 parallel-3 one-association pair-3 B-to-A source edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-3 B-to-A source edfa",
+        "to_node": "CASE-5 parallel-3 one-association pair-3 B-to-A fiber"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-3 B-to-A fiber",
+        "to_node": "CASE-5 parallel-3 one-association pair-3 B-to-A destination edfa"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association pair-3 B-to-A destination edfa",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-A"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association ROADM-A",
+        "to_node": "CASE-5 parallel-3 one-association dark fiber to transceiver"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association dark fiber to transceiver",
+        "to_node": "trx external"
+      },
+      {
+        "from_node": "trx external",
+        "to_node": "CASE-5 parallel-3 one-association dark fiber from transceiver"
+      },
+      {
+        "from_node": "CASE-5 parallel-3 one-association dark fiber from transceiver",
+        "to_node": "CASE-5 parallel-3 one-association ROADM-A"
+      }
+    ]
+  }
+}

@@ -1295,12 +1295,24 @@ def set_roadm_ref_carrier(roadm, equipment):
                                          slot_width=equipment['SI']['default'].spacing)
 
 
-def set_roadm_per_degree_targets(roadm, network):
+def set_roadm_per_degree_targets(roadm, network, redesign):
     """Set target powers/PSD on all degrees
     This is needed to populate per_degree_pch_out_dbm or per_degree_pch_psd or per_degree_pch_psw dicts when
     they are not initialized by users.
     """
     next_oms = (n for n in network.successors(roadm) if not isinstance(n, elements.Transceiver))
+    if not redesign:
+        # skip this verification when redesign is triggered on a filtered topology,
+        # because all roadm degrees do not appear in the actual degrees
+        next_oms_uid = [n.uid for n in network.successors(roadm) if not isinstance(n, elements.Transceiver)]
+        verify_roadm_degrees = [
+            r for r in
+            list(roadm.per_degree_pch_out_dbm) + list(roadm.per_degree_pch_psd) + list(roadm.per_degree_pch_psw)
+            if r not in next_oms_uid]
+        if verify_roadm_degrees:
+            raise NetworkTopologyError(
+                f'degrees {", ".join(verify_roadm_degrees)} are not valid degrees for {roadm.uid}. '
+                f'Valid degrees are {", ".join(next_oms_uid)}.')
 
     for node in next_oms:
         # go through all the OMS departing from the ROADM
@@ -1743,6 +1755,15 @@ def add_roadm_booster(network: DiGraph, roadm: elements.Roadm):
         network.add_node(amp)
         network.add_edge(roadm, amp, weight=0.01)
         network.add_edge(amp, next_node, weight=0.01)
+        # update degree_association and per degree pch definitions:
+        if next_node.uid in roadm.degree_association:
+            roadm.degree_association[amp.uid] = roadm.degree_association.pop(next_node.uid)
+            if next_node.uid in roadm.per_degree_pch_out_dbm:
+                roadm.per_degree_pch_out_dbm[amp.uid] = roadm.per_degree_pch_out_dbm.pop(next_node.uid)
+            elif next_node.uid in roadm.per_degree_pch_psw:
+                roadm.per_degree_pch_psw_dbm[amp.uid] = roadm.per_degree_pch_psw.pop(next_node.uid)
+            elif next_node.uid in roadm.per_degree_pch_psd:
+                roadm.per_degree_pch_psd_dbm[amp.uid] = roadm.per_degree_pch_psd.pop(next_node.uid)
 
 
 def add_roadm_preamp(network: DiGraph, roadm: elements.Roadm):
@@ -1812,6 +1833,12 @@ def add_roadm_preamp(network: DiGraph, roadm: elements.Roadm):
             edgeweight = 0.01
         network.add_edge(prev_node, amp, weight=edgeweight)
         network.add_edge(amp, roadm, weight=0.01)
+        # update degree_association in ROADM
+        try:
+            degree = next(k for k, v in roadm.degree_association.items() if v == prev_node.uid)
+            roadm.degree_association[degree] = amp.uid
+        except StopIteration:
+            pass
 
 
 def add_inline_amplifier(network: DiGraph, fiber: elements.Fiber):
@@ -2126,8 +2153,43 @@ def add_missing_fiber_attributes(network: DiGraph, equipment: dict):
     add_fiber_padding(network, fibers, default_span_data.padding, equipment)
 
 
+def set_degree_association(node: Union[elements.Roadm, elements.Transceiver], network: DiGraph):
+    """Set association when it is missing, checks that the definition is consistent
+
+    :param node: _description_
+    :type node: Union[elements.Roadm, elements.Transceiver]
+    :param network: _description_
+    :type network: DiGraph
+    """
+    node_to_degrees = [n.uid for n in network.successors(node)]
+    node_from_degrees = [n.uid for n in network.predecessors(node)]
+    for degree_uid, paired_degree_uid in node.degree_association.items():
+        if degree_uid not in node_to_degrees:
+            raise NetworkTopologyError(f'{node.uid} has no egress degree {degree_uid}')
+        if paired_degree_uid not in node_from_degrees:
+            raise NetworkTopologyError(f'{node.uid} has no ingress degree {paired_degree_uid}')
+        degree = next(n for n in network.nodes() if n.uid == degree_uid)
+        paired_degree = next(n for n in network.nodes() if n.uid == paired_degree_uid)
+        oms_other_end_degree, oms_other_end = get_oms_edge_list(degree, network)[-1]
+        oms_other_end_paired_degree, oms_other_end_ = get_oms_edge_list_from_egress(paired_degree, network)[-1]
+        expected_association = None
+        if oms_other_end.degree_association:
+            temp = {v: k for k, v in oms_other_end.degree_association.items()}
+            expected_association = temp.get(oms_other_end_degree.uid)
+        if oms_other_end != oms_other_end_:
+            raise NetworkTopologyError(f'{node.uid} OMSes {[degree.uid, paired_degree.uid]} are not associated to '
+                                       f'the same OMS other ends {oms_other_end.uid, oms_other_end_.uid}')
+        if expected_association and expected_association != oms_other_end_paired_degree.uid:
+            raise NetworkTopologyError(f'{node.uid} OMSes {[degree.uid, paired_degree.uid]} are not associated to '
+                                       + 'the same other end degree '
+                                       + f'{[expected_association, oms_other_end_paired_degree.uid]}')
+        if oms_other_end_degree.uid not in oms_other_end.degree_association.values():
+            oms_other_end.degree_association[oms_other_end_paired_degree.uid] = oms_other_end_degree.uid
+
+
 def build_network(network: DiGraph, equipment: dict, reference_channel,
-                  set_connector_losses: bool = True, verbose: bool = True):
+                  set_connector_losses: bool = True, verbose: bool = True,
+                  redesign: bool = False):
     """Sets the ROADM equalization targets and amplifier gain and power.
 
     This function configures the network by setting the equalization targets for ROADMs,
@@ -2157,12 +2219,17 @@ def build_network(network: DiGraph, equipment: dict, reference_channel,
     roadms = [r for r in network.nodes() if isinstance(r, elements.Roadm)]
     transceivers = [t for t in network.nodes() if isinstance(t, elements.Transceiver)]
 
+    if redesign:
+        for node in roadms:
+            # remove all degrees associations
+            node.degree_association = {}
+
     if set_connector_losses:
         add_missing_fiber_attributes(network, equipment)
     # set roadm equalization targets first
     for roadm in roadms:
         set_roadm_ref_carrier(roadm, equipment)
-        set_roadm_per_degree_targets(roadm, network)
+        set_roadm_per_degree_targets(roadm, network, redesign)
         set_per_degree_design_band(roadm, network, equipment)
     for transceiver in transceivers:
         set_per_degree_design_band(transceiver, network, equipment)
@@ -2173,12 +2240,13 @@ def build_network(network: DiGraph, equipment: dict, reference_channel,
     for roadm in roadms:
         set_roadm_input_powers(network, roadm, equipment, pref_ch_db)
         set_roadm_internal_paths(roadm, network)
+        set_degree_association(roadm, network)
     for fiber in [f for f in network.nodes() if isinstance(f, (elements.Fiber, elements.RamanFiber))]:
         set_fiber_input_power(network, fiber, equipment, pref_ch_db)
 
 
 def design_network(reference_channel, network: DiGraph, equipment: Dict, set_connector_losses: bool = True,
-                   verbose: bool = True):
+                   verbose: bool = True, redesign: bool = False):
     """Designs the network according to the specified reference channel.
 
     This function configures the network based on the properties of the reference channel, including
@@ -2195,6 +2263,8 @@ def design_network(reference_channel, network: DiGraph, equipment: Dict, set_con
     :type set_connector_losses: bool
     :param verbose: Flag indicating whether to print warnings and information (default is True).
     :type verbose: bool
+    :param verbose: Flag indicating whether this is a redesign phase.
+    :type verbose: bool
 
     :return: None
 
@@ -2204,7 +2274,7 @@ def design_network(reference_channel, network: DiGraph, equipment: Dict, set_con
     """
     if verbose:
         logger.info(f'\nReference used for design: (Input optical power reference in span = {watt2dbm(reference_channel.power):.2f}dBm\n'   # noqa E501
-                    + f'                            spacing = {reference_channel.spacing * 1e-9:.3f}GHz\n'
+                    + f'                            spacing = {reference_channel.spacing * 1e-9:.3f}GHz\n'  # noqa E231
                     + f'                            nb_channels = {reference_channel.nb_channel}')
     build_network(network, equipment, reference_channel, set_connector_losses=set_connector_losses,
-                  verbose=verbose)
+                  verbose=verbose, redesign=redesign)

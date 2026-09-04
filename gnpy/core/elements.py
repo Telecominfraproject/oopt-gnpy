@@ -177,6 +177,7 @@ class Transceiver(_Node):
         self.rx_power_dbm = None
         self.remaining_margin = None
         self.q_margin = None
+        self.degree_association = {a['degree']: a['paired-degree'] for a in self.params.degree_association}
 
     def _calc_cd(self, spectral_info):
         """Updates the Transceiver property with the CD of the received channels. CD in ps/nm.
@@ -550,6 +551,7 @@ class Roadm(_Node):
                                        for i in self.params.per_degree_impairments}
         self.design_bands = deepcopy(self.params.design_bands)
         self.per_degree_design_bands = deepcopy(self.params.per_degree_design_bands)
+        self.degree_association = {a['degree']: a['paired-degree'] for a in self.params.degree_association}
 
     @property
     def to_json(self):
@@ -592,6 +594,9 @@ class Roadm(_Node):
                 to_json['params']['design_bands'] = self.params.design_bands
         if self.params.per_degree_design_bands:
             to_json['params']['per_degree_design_bands'] = self.params.per_degree_design_bands
+        if self.degree_association:
+            to_json['params']['degree-association'] = [
+                {'degree': k, 'paired-degree': v} for k, v in self.degree_association.items()]
         return to_json
 
     def __repr__(self):

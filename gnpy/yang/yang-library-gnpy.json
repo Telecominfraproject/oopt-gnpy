@@ -11,7 +11,7 @@
       {
         "name": "gnpy-network-topology",
         "namespace": "gnpy:gnpy-network-topology",
-        "revision": "2026-05-28",
+        "revision": "2026-09-04",
         "conformance-type": "implement"
       },
       {

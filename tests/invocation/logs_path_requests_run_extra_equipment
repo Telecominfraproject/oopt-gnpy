@@ -34,4 +34,4 @@ INFO     gnpy.topology.request:request.py
 	request 0
 	Computing path from trx Brest_KLA to trx Lannion_CAS
 	with path constraint: ['trx Brest_KLA', 'trx Lannion_CAS']
-	Computed path (roadms):['roadm Brest_KLA', 'roadm Lannion_CAS']
+	Computed path (roadms): ['roadm Brest_KLA', 'roadm Lannion_CAS']

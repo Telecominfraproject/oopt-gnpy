@@ -23,9 +23,9 @@ module gnpy-network-topology {
   description
     "YANG model for gnpy network input for path computation - 2020 - candi preversion";
 
-  revision 2026-05-28 {
+  revision 2026-09-04 {
     description
-      "Add detailed-rx and correct ranges names";
+      "Add bidirectional OMSes association";
     reference
       "YANG model for network topology with gnpy";
   }
@@ -666,6 +666,35 @@ module gnpy-network-topology {
         type uint32;
         description
           "Reference to the impairment ID defined in the library.";
+      }
+    }
+    list degree-association {
+      key "degree";
+
+      leaf degree {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+        description
+          "UID of the element adjacent to the ROADM.";
+      }
+
+      leaf paired-degree {
+        type leafref {
+          path "../../../../elements/uid";
+        }
+        mandatory true;
+
+        description
+          "UID of the element adjacent to the ROADM and belonging
+          to the opposite direction of the same bidirectional OMS.";
+      }
+
+      unique "paired-degree";
+
+      must "degree != paired-degree" {
+        error-message
+          "A degree cannot be associated with itself.";
       }
     }
   }

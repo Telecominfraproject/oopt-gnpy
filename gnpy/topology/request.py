@@ -1198,9 +1198,9 @@ def compute_path_with_disjunction(network, equipment, pathreqlist, pathlist, red
                 reversed_path = find_reversed_path(pathlist[i])
             network_nodes_for_redesign = pathlist[i] + reversed_path
             network_module.design_network(pathreq, network.subgraph(network_nodes_for_redesign), equipment,
-                                          set_connector_losses=False, verbose=False)
+                                          set_connector_losses=False, verbose=False, redesign=True)
         total_path = deepcopy(pathlist[i])
-        msg = msg + f'\n\tComputed path (roadms):{[e.uid for e in total_path  if isinstance(e, elements.Roadm)]}'
+        msg = msg + f'\n\tComputed path (roadms): {[e.uid for e in total_path if isinstance(e, elements.Roadm)]}'
         LOGGER.info(msg)
         # for debug
         # print(f'{pathreq.baud_rate}   {pathreq.power}   {pathreq.spacing}   {pathreq.nb_channel}')

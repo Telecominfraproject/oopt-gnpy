@@ -132,6 +132,7 @@ class RoadmParams(Parameters):
         self.per_degree_impairments = kwargs.get('per_degree_impairments', [])
         self.design_bands = kwargs.get('design_bands', [])
         self.per_degree_design_bands = kwargs.get('per_degree_design_bands', {})
+        self.degree_association = kwargs.get('degree-association', [])
 
     def get_roadm_path_impairments(self, path_impairments_list):
         """Get the ROADM list of profiles for impairments definition
@@ -701,6 +702,7 @@ class TransceiverParams:
         self.design_bands = params.get('design_bands', [])
         self.per_degree_design_bands = params.get('per_degree_design_bands', {})
         self.system_margin = params.get('system_margin', 0)
+        self.degree_association = params.get('degree-association', [])
 
 
 @dataclass

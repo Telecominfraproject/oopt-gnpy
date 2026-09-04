@@ -1,0 +1,237 @@
+{
+  "gnpy-path-computation:services": {
+    "path-request": [
+      {
+        "request-id": "case1-path1",
+        "source": "CASE-1 non-parallel Transceiver-A",
+        "destination": "CASE-1 non-parallel Transceiver-B",
+        "src-tp-id": "CASE-1 non-parallel Transceiver-A",
+        "dst-tp-id": "CASE-1 non-parallel Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+
+      {
+        "request-id": "case2-path1",
+        "source": "CASE-2 parallel-2 all-associations Transceiver-A",
+        "destination": "CASE-2 parallel-2 all-associations Transceiver-B",
+        "src-tp-id": "CASE-2 parallel-2 all-associations Transceiver-A",
+        "dst-tp-id": "CASE-2 parallel-2 all-associations Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+      {
+        "request-id": "case2-path2",
+        "source": "CASE-2 parallel-2 all-associations Transceiver-A",
+        "destination": "CASE-2 parallel-2 all-associations Transceiver-B",
+        "src-tp-id": "CASE-2 parallel-2 all-associations Transceiver-A",
+        "dst-tp-id": "CASE-2 parallel-2 all-associations Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+
+      {
+        "request-id": "case3-path1",
+        "source": "CASE-3 parallel-2 one-association Transceiver-A",
+        "destination": "CASE-3 parallel-2 one-association Transceiver-B",
+        "src-tp-id": "CASE-3 parallel-2 one-association Transceiver-A",
+        "dst-tp-id": "CASE-3 parallel-2 one-association Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+      {
+        "request-id": "case3-path2",
+        "source": "CASE-3 parallel-2 one-association Transceiver-A",
+        "destination": "CASE-3 parallel-2 one-association Transceiver-B",
+        "src-tp-id": "CASE-3 parallel-2 one-association Transceiver-A",
+        "dst-tp-id": "CASE-3 parallel-2 one-association Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+
+      {
+        "request-id": "case4-path1",
+        "source": "CASE-4 parallel-3 all-associations Transceiver-A",
+        "destination": "CASE-4 parallel-3 all-associations Transceiver-B",
+        "src-tp-id": "CASE-4 parallel-3 all-associations Transceiver-A",
+        "dst-tp-id": "CASE-4 parallel-3 all-associations Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+      {
+        "request-id": "case4-path2",
+        "source": "CASE-4 parallel-3 all-associations Transceiver-A",
+        "destination": "CASE-4 parallel-3 all-associations Transceiver-B",
+        "src-tp-id": "CASE-4 parallel-3 all-associations Transceiver-A",
+        "dst-tp-id": "CASE-4 parallel-3 all-associations Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+
+      {
+        "request-id": "case5-path1",
+        "source": "CASE-5 parallel-3 one-association Transceiver-A",
+        "destination": "CASE-5 parallel-3 one-association Transceiver-B",
+        "src-tp-id": "CASE-5 parallel-3 one-association Transceiver-A",
+        "dst-tp-id": "CASE-5 parallel-3 one-association Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+      {
+        "request-id": "case5-path2",
+        "source": "CASE-5 parallel-3 one-association Transceiver-A",
+        "destination": "CASE-5 parallel-3 one-association Transceiver-B",
+        "src-tp-id": "CASE-5 parallel-3 one-association Transceiver-A",
+        "dst-tp-id": "CASE-5 parallel-3 one-association Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      },
+      {
+        "request-id": "case5-path3",
+        "source": "CASE-5 parallel-3 one-association Transceiver-A",
+        "destination": "CASE-5 parallel-3 one-association Transceiver-B",
+        "src-tp-id": "CASE-5 parallel-3 one-association Transceiver-A",
+        "dst-tp-id": "CASE-5 parallel-3 one-association Transceiver-B",
+        "bidirectional": true,
+        "path-constraints": {
+          "te-bandwidth": {
+            "technology": "flexi-grid",
+            "trx_type": "Voyager",
+            "trx_mode": "mode 1",
+            "spacing": "50000000000.0",
+            "tx_power": "0.0005",
+            "path_bandwidth": "10000000000.0"
+          }
+        }
+      }
+    ],
+    "synchronization": [
+      {
+        "synchronization-id": "case2-protection",
+        "svec": {
+          "relaxable": false,
+          "disjointness": "node link",
+          "request-id-number": [
+            "case2-path1",
+            "case2-path2"
+          ]
+        }
+      },
+      {
+        "synchronization-id": "case3-protection",
+        "svec": {
+          "relaxable": false,
+          "disjointness": "node link",
+          "request-id-number": [
+            "case3-path1",
+            "case3-path2"
+          ]
+        }
+      },
+      {
+        "synchronization-id": "case4-protection",
+        "svec": {
+          "relaxable": false,
+          "disjointness": "node link",
+          "request-id-number": [
+            "case4-path1",
+            "case4-path2"
+          ]
+        }
+      },
+      {
+        "synchronization-id": "case5-protection",
+        "svec": {
+          "relaxable": false,
+          "disjointness": "node link",
+          "request-id-number": [
+            "case5-path1",
+            "case5-path2",
+            "case5-path3"
+          ]
+        }
+      }
+    ]
+  }
+}
