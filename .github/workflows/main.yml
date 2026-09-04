@@ -53,8 +53,29 @@ jobs:
           pip: wheel -w dist/ --no-deps .
           upload: true
 
+  docker-check:
+    name: Docker image build check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: telecominfraproject/oopt-gnpy:ci
+
   docker:
-    needs: build
+    needs:
+      - build
+      - docker-check
     if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) && github.repository_owner == 'Telecominfraproject' }}
     name: Docker image
     runs-on: ubuntu-latest
