@@ -136,7 +136,27 @@ class Roadm(_JsonThing):
         'roadm-path-impairments': []
     }
 
+    @staticmethod
+    def _convert_pmd_ps_to_seconds(data):
+        """Converts IETF roadm-pmd from ps to seconds
+        """
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if key == 'roadm-pmd':
+                    data[key] = float(value) * 1e-12
+                else:
+                    Roadm._convert_pmd_ps_to_seconds(value)
+
+        elif isinstance(data, list):
+            for item in data:
+                Roadm._convert_pmd_ps_to_seconds(item)
+
+        return data
+
     def __init__(self, **kwargs):
+        # All pmd values must be seconds but input roadm-ps is in ps (inherited from IETF OIT yang model).
+        # this first step to convert all roadm-pmd instances into correct unit
+        self._convert_pmd_ps_to_seconds(kwargs)
         # If equalization is not defined in equipment, then raise an error.
         # Only one type of equalization must be defined.
         allowed_equalisations = ['target_pch_out_db', 'target_psd_out_mWperGHz', 'target_out_mWperSlotWidth']
