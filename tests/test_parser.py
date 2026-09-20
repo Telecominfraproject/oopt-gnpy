@@ -63,7 +63,8 @@ def pathrequest(pch_dbm: float, p_tot_dbm: float = None, nb_channels: int = None
 @pytest.mark.parametrize('xls_input,expected_json_output', {
     DATA_DIR / 'CORONET_Global_Topology.xlsx': DATA_DIR / 'CORONET_Global_Topology_expected.json',
     DATA_DIR / 'testTopology.xls': DATA_DIR / 'testTopology_expected.json',
-    DATA_DIR / 'perdegreemeshTopologyExampleV2.xls': DATA_DIR / 'perdegreemeshTopologyExampleV2_expected.json'
+    DATA_DIR / 'perdegreemeshTopologyExampleV2.xls': DATA_DIR / 'perdegreemeshTopologyExampleV2_expected.json',
+    DATA_DIR / 'parallel_omses/parallel_links.xlsx': DATA_DIR / 'parallel_omses/parallel_links_expected.json'
 
 }.items())
 def test_excel_json_generation(tmpdir, xls_input, expected_json_output):
@@ -118,6 +119,8 @@ def test_auto_design_generation_fromxlsgainmode(tmpdir, xls_input, expected_json
                           DATA_DIR / 'perdegreemeshTopologyExampleV2_auto_design_expected.json':
                           True,
                           DATA_DIR / 'network_per_frequency_loss_expected.json':
+                          True,
+                          DATA_DIR / 'parallel_omses/parallel_links_autodesign.json':
                           True
                           }.items())
 def test_auto_design_generation_fromjson(tmpdir, json_input, power_mode):
