@@ -61,8 +61,17 @@ Links sheet must contain sixteen columns::
 
 
 `Links` sheet MUST contain all links between nodes defined in Nodes sheet.
-Each line represents a 'bidir link' between two nodes. The two directions are represented on a single line with "east cable from a to z" fields and "west from z to a" fields. Values for 'a to z' may be different from values from 'z to a'. 
-Since both direction of a bidir 'a-z' link are described on the same line (east and west), 'z to a' direction MUST NOT be repeated in a different line. If repeated, it will generate another parrallel bidir link between the same end nodes.
+Each line represents a 'bidir link' between two nodes. The two directions are represented on a single line
+with "east cable from a to z" fields and "west from z to a" fields. Values for 'a to z' may be different from
+values from 'z to a'.
+
+Since both directions of a bidirectional ``a-z`` link are described on the
+same line, the reverse direction must not be added as a separate row to
+represent the same physical link.
+
+Several rows with the same pair of endpoints are allowed. Each row represents
+a distinct parallel bidirectional link. The links are distinguished by their
+row and, when provided, by their ``Cable Id`` values.
 
 
 Parameters for "east cable from a to z" and "west from z to a" are detailed in 2x7 columns. If not filled, "west from z to a" is copied from "east cable from a to z".
@@ -172,9 +181,12 @@ This generates a text file meshTopologyExampleV2_eqt_sheet.txt  whose content ca
 
 - **Node A** is mandatory. It is the name of the node (as listed in Nodes sheet).
   If Node A is a 'ROADM' (Type attribute in sheet Node), its number of occurence must be equal to its degree.
-  If Node A is an 'ILA' it should appear only once.
+  For an ILA, each equipment definition must correspond to a different parallel link pair. Defining several equipment entries
+  with the same ILA and the same pair is invalid.
 
-- **Node Z** is mandatory. It is the egress direction from the *Node A* site. Multiple Links between the same Node A and NodeZ is not supported.
+- **Node Z** is mandatory. It is the egress direction from the *Node A* site. Multiple parallel links between the same ``Node A`` and ``Node Z`` are
+  supported. In this case, equipment definitions are matched with the corresponding links according to their row order. When several equipment definitions use 
+  the same endpoints, their order in the ``Eqpt`` sheet must correspond to the order of the parallel links in the ``Links`` sheet.
 
 - **amp type** is not mandatory. 
   If filled it must contain types listed in the equipment librairie like in the example `eqpt_config.json <gnpy/example-data/eqpt_config.json>`_ in "Edfa" list "type_variety".
@@ -213,8 +225,14 @@ This sheet contains six columns:
 - **Node A** is mandatory. Name of the ROADM node (as listed in Nodes sheet).
   Must be a 'ROADM' (Type attribute in Node sheet), its number of occurence may be equal to its degree.
 
-- **Node Z** is mandatory. Egress direction from the *Node A* ROADM site. Multiple Links between the same Node A
-  and NodeZ is not supported. 
+- **Node Z** is mandatory. Egress direction from the *Node A* ROADM site. Multiple parallel links between the same
+  ``Node A`` and ``Node Z`` are supported. ROADM degree definitions are matched with the corresponding links
+  according to their row order. 
+  For parallel links, the generated JSON topology contains a degree association
+  between the corresponding ROADM degrees. This association allows the two
+  directions of the same parallel link pair to be identified during network
+  processing.
+
 
 - **per degree target power (dBm)** (optional). 
   If filled it must contain a value in dBm corresponding to :ref:`per_degree_pch_out_db<roadm_json_instance>` on the **Node Z** degree.
@@ -231,6 +249,37 @@ This sheet contains six columns:
   The impairment ID must be defined in the equipment library and be of "express" type.
 
 (in progress)
+
+Parallel links
+==============
+
+Several bidirectional links may be defined between the same two nodes.
+
+Each row in the ``Links`` sheet represents one bidirectional link, including
+its east and west directions. Therefore, two rows with the same endpoints
+represent two distinct parallel bidirectional links, not the two directions of
+a single link.
+
+For example::
+
+    NodeA ; NodeZ ; ... ; Cable-A ; ...
+    NodeA ; NodeZ ; ... ; Cable-B ; ...
+
+The converter assigns an internal pair identifier to each parallel link. The
+identifier is propagated to the related equipment, ROADM degrees, fibers and
+duplicated ILA or FUSED nodes.
+
+When ``Eqpt`` or ``Roadms`` entries are provided for parallel links, entries
+with identical endpoints are matched to links according to their row order.
+The order of the entries must therefore be consistent between the relevant
+sheets.
+
+The converter rejects inconsistent configurations, such as:
+
+- different numbers of links on the two sides of an ILA or FUSED node;
+- more equipment definitions than corresponding links;
+- duplicate equipment definitions for the same ILA and pair;
+- ROADM definitions referencing unknown nodes or degrees.
 
 .. _excel-service-sheet:
 
@@ -267,3 +316,5 @@ Service sheet must contain 11 columns::
   - is loose?  'no' value means that the list of nodes should be strictly followed, while any other value means that the constraint may be relaxed if the node is not reachable. 
 
 - **path bandwidth** is mandatory. It is the amount of capacity required between source and destination in Gbit/s. Value should be positive (non zero). It is used to compute the amount of required spectrum for the service.  
+
+

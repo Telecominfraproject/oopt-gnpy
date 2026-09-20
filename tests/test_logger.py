@@ -398,35 +398,42 @@ def test_json_network(error, json_data, expected_msg):
         _ = network_from_json(json_data, equipment)
 
 
-@pytest.mark.parametrize('input_filename, expected_msg',
-    [(DATA_DIR / 'wrong_topo_node.xlsx', 'XLS error: The following nodes are not referenced from the Links sheet.'
-                                         + ' If unused, remove them from the Nodes sheet:\n - toto'),
-     (DATA_DIR / 'wrong_topo_link.xlsx', 'XLS error: The Links sheet references nodes that are not defined in the '
-                                         + 'Nodes sheet:\n - ALB -> toto'),
-     (DATA_DIR / 'wrong_topo_link_header.xlsx', 'missing header Node Z'),
-     (DATA_DIR / 'wrong_topo_eqpt.xlsx', 'XLS error: The Eqpt sheet refers to nodes that are not defined in the '
-                                         + 'Nodes sheet:\n - toto'),
-     (DATA_DIR / 'wrong_topo_duplicate_node.xlsx', 'Duplicate city: Counter({\'ALB\': 2, \'CHA_3\': 1})'),
-     (DATA_DIR / 'wrong_topo_duplicate_eqpt.xlsx', 'XLS error: Duplicate lines in Eqpt sheet: - ALB -> CHA_3'),
-     (DATA_DIR / 'wrong_topo_bad_eqpt.xlsx', 'XLS error: The Eqpt sheet references links that are not defined '
-                                             + 'in the Links sheet:\n - toto -> CHA_3'),
-     (DATA_DIR / 'wrong_duplicate_link_reverse.xlsx', 'XLS error: links  - (\'ila\', \'siteb\') are duplicate'),
-     (DATA_DIR / 'wrong_duplicate_eqpt_ila_reverse.xlsx', 'XLS error: Duplicate ILA eqpt definition in Eqpt sheet:'
-                                                          + ' - ila')])
+@pytest.mark.parametrize('input_filename, expected_msg', [
+    (DATA_DIR / 'wrong_topo_node.xlsx',
+     'XLS error: The following nodes are not referenced from the Links sheet.'
+     + ' If unused, remove them from the Nodes sheet:\n - toto'),
+    (DATA_DIR / 'wrong_topo_link.xlsx',
+     'XLS error: The Links sheet references nodes that are not defined in the Nodes sheet:\n - ALB -> toto'),
+    (DATA_DIR / 'wrong_topo_link_header.xlsx',
+     'XLS error: missing header Node Z'),
+    (DATA_DIR / 'wrong_topo_eqpt.xlsx',
+     'XLS error: The Eqpt sheet refers to nodes that are not defined in the Nodes sheet:\n - toto'),
+    (DATA_DIR / 'wrong_topo_duplicate_node.xlsx',
+     'XLS error: Duplicate city: Counter({\'ALB\': 2, \'CHA_3\': 1})'),
+    (DATA_DIR / 'wrong_topo_duplicate_eqpt.xlsx',
+     'XLS error: Duplicate eqpt definition in Eqpt for not duplicated links:\n - ALB -> CHA_3'),
+    (DATA_DIR / 'wrong_topo_bad_eqpt.xlsx',
+     'XLS error: The Eqpt sheet refers to links that are not defined in the Links sheet:\n - toto -> CHA_3'),
+    (DATA_DIR / 'wrong_duplicate_link_reverse.xlsx',
+     'XLS error: The following ILA or Fused have different numbers of links on their two sides:\n - ila'),
+    (DATA_DIR / 'wrong_duplicate_eqpt_ila_reverse.xlsx',
+     'XLS error: Duplicate eqpt definition in Eqpt for the same ILA:\n - ila'),
+    (DATA_DIR / 'wrong_node_type.xlsx', 'ILA Lannion_CAS must have exactly two neighbors:\n - Lannion_CAS -> Corlay'
+                                        + '\n - Lannion_CAS -> Stbrieuc\n - Lannion_CAS -> Morlaix'),
+    (DATA_DIR / 'wrong_roadm_degree.xlsx',
+     'XLS error: The Roadm sheet references nodes that are not Roadms:\n - ila'),
+    (DATA_DIR / 'wrong_roadm.xlsx',
+     'XLS error: The Roadm sheet references nodes that are not defined in the Links sheet:\n'
+     + ' - sitea -> ilaa\n - sitebb -> ila'),
+    (DATA_DIR / 'wrong_parallel_oms.xlsx',
+     'XLS error: The following ILA or Fused have different numbers of links on their two sides:\n - ALB'),
+    (DATA_DIR / 'wrong_parallel_eqpt.xlsx',
+     'XLS error: Duplicate eqpt definition in Eqpt for not duplicated links:\n - toto -> ALB')])
 def test_wrong_xlsx(input_filename, expected_msg):
     """Check that error and logs are correctly working
     """
     with pytest.raises(NetworkTopologyError, match=re.escape(expected_msg)):
         _ = xls_to_json_data(input_filename)
-
-
-@pytest.mark.parametrize('input_filename, expected_msg',
-    [(DATA_DIR / 'wrong_node_type.xlsx', 'invalid node type (ILA) specified in Lannion_CAS, replaced by ROADM\n')])
-def test_log_wrong_xlsx(caplog, input_filename, expected_msg):
-    """Check that logs are correctly working
-    """
-    _ = xls_to_json_data(input_filename)
-    assert expected_msg in caplog.text
 
 
 def wrong_configs():

@@ -31,8 +31,8 @@ from collections import namedtuple, Counter, defaultdict
 from itertools import chain
 from json import dumps
 from pathlib import Path
-from copy import copy
-from typing import Generator, Tuple, List, Dict, DefaultDict
+from copy import copy, deepcopy
+from typing import Generator, Tuple, List, Dict, DefaultDict, Optional
 from networkx import DiGraph
 
 from gnpy.core.utils import silent_remove, transform_data, convert_pmd_lineic
@@ -66,12 +66,17 @@ class Node:
     :vartype booster_restriction: str
     :ivar preamp_restriction: Restrictions on preamplifiers.
     :vartype preamp_restriction: str
+    :ivar degree_association: Associations between parallel ROADM degrees.
+    :vartype degree_association: list
+    :ivar pair_id: Associations between parallel ROADM degrees.
+    :vartype pair_id: str
     """
     def __init__(self, **kwargs):
         """Constructor method
         """
         super().__init__()
         self.update_attr(kwargs)
+        self.degree_association = []
 
     def update_attr(self, kwargs):
         """Updates the attributes of the node based on provided keyword arguments.
@@ -92,7 +97,8 @@ class Node:
         'longitude': 0,
         'node_type': 'ILA',
         'booster_restriction': '',
-        'preamp_restriction': ''
+        'preamp_restriction': '',
+        'pair_id': None
     }
 
 
@@ -119,14 +125,19 @@ class Link:
     :vartype east_cable: str
     :ivar distance_units: The units of distance (default is 'km').
     :vartype distance_units: str
+    :ivar pair_id: Associations between parallel ROADM degrees.
+    :vartype pair_id: str
+    :ivar row_id: Associations between parallel ROADM degrees.
+    :vartype row_id: int
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, row_id: Optional[int], **kwargs):
         """Constructor method
         """
         super().__init__()
         self.update_attr(kwargs)
         self.distance_units = 'km'
+        self.row_id = row_id
 
     def update_attr(self, kwargs):
         """Updates the attributes of the link based on provided keyword arguments.
@@ -162,7 +173,9 @@ class Link:
         'east_con_in': None,
         'east_con_out': None,
         'east_pmd': None,
-        'east_cable': ''
+        'east_cable': '',
+        'row_id': None,
+        'pair_id': None
     }
 
 
@@ -185,12 +198,17 @@ class Eqpt:
     :vartype east_att_out: float
     :ivar east_att_in: Input attenuation in the east direction.
     :vartype east_att_in: float
+    :ivar pair_id: Associations between parallel ROADM degrees.
+    :vartype pair_id: str
+    :ivar row_id: Associations between parallel ROADM degrees.
+    :vartype row_id: int
     """
-    def __init__(self, **kwargs):
+    def __init__(self, row_id: Optional[int], **kwargs):
         """Constructor method
         """
         super().__init__()
         self.update_attr(kwargs)
+        self.row_id = row_id
 
     def update_attr(self, kwargs):
         """Updates the attributes of the equipment based on provided keyword arguments.
@@ -213,7 +231,9 @@ class Eqpt:
         'east_amp_dp': None,
         'east_tilt_vs_wavelength': None,
         'east_att_out': None,
-        'east_att_in': 0
+        'east_att_in': 0,
+        'row_id': None,
+        'pair_id': None
     }
 
 
@@ -232,12 +252,17 @@ class Roadm:
     :vartype from_degrees: str
     :ivar impairment_ids: Impairment identifiers associated with the ROADM.
     :vartype impairment_ids: str
+    :ivar pair_id: Associations between parallel ROADM degrees.
+    :vartype pair_id: str
+    :ivar row_id: Associations between parallel ROADM degrees.
+    :vartype row_id: int
     """
-    def __init__(self, **kwargs):
+    def __init__(self, row_id: Optional[int], **kwargs):
         """Constructor method
         """
         super().__init__()
         self.update_attr(kwargs)
+        self.row_id = row_id
 
     def update_attr(self, kwargs):
         """Updates the attributes of the ROADM based on provided keyword arguments.
@@ -250,13 +275,16 @@ class Roadm:
             v = clean_kwargs.get(k, v)
             setattr(self, k, v)
 
-    default_values = {'from_node': '',
-                      'to_node': '',
-                      'target_pch_out_db': None,
-                      'type_variety': None,
-                      'from_degrees': None,
-                      'impairment_ids': None
-                      }
+    default_values = {
+        'from_node': '',
+        'to_node': '',
+        'target_pch_out_db': None,
+        'type_variety': None,
+        'from_degrees': None,
+        'impairment_ids': None,
+        'row_id': None,
+        'pair_id': None
+    }
 
 
 def read_header(my_sheet: SheetType, is_xlsx: bool, line: int, slice_: Tuple[int, int]) -> List[namedtuple]:
@@ -341,14 +369,14 @@ def parse_headers(my_sheet: SheetType, is_xlsx: bool, input_headers_dict: Dict, 
         if slice_out == (-1, -1):
             msg = f'missing header {h0}'
             if h0 in ('east', 'Node A', 'Node Z', 'City'):
-                raise NetworkTopologyError(msg)
+                raise NetworkTopologyError(f'XLS error: {msg}')
             _logger.warning(msg)
         elif not isinstance(input_headers_dict[h0], dict):
             headers[slice_out[0]] = input_headers_dict[h0]
         else:
             headers = parse_headers(my_sheet, is_xlsx, input_headers_dict[h0], headers, start_line + 1, slice_out)
     if headers == {}:
-        msg = 'CRITICAL ERROR: could not find any header to read _ ABORT'
+        msg = 'XLS error: could not find any header to read _ ABORT'
         raise NetworkTopologyError(msg)
     return headers
 
@@ -396,113 +424,90 @@ def _format_items(items: List[str]):
     :return: A formatted string with each item on a new line.
     :rtype: str
     """
+    items = list(items)
+    if len(items[0]) == 2:
+        return '\n'.join(f' - {item[0]} -> {item[1]}' for item in items)
     return '\n'.join(f' - {item}' for item in items)
 
 
-def sanity_check(nodes: List[Node], links: List[Link],
-                 nodes_by_city: Dict[str, Node], links_by_city: DefaultDict[str, List[Link]],
-                 eqpts_by_city: DefaultDict[str, List[Eqpt]]) -> Tuple[List[Node], List[Link]]:
+def sanity_check(nodes: List[Node], links: List[Link], roadms: List[Roadm],
+                 nodes_by_city: Dict[str, List[Node]]) -> Tuple[List[Node], List[Link]]:
     """Perform sanity checks on nodes and links. Raise correct issues if xls(x) is not correct,
-    Correct type to ROADM if more tha 2-degrees, checks duplicate links, unreferenced nodes in links,
-    in eqpts, unreferenced link in eqpts, duplicate items
+    Checks duplicate links, unreferenced nodes in links, in eqpts, unreferenced link in eqpts, duplicate items
 
     :param nodes: A list of Node objects.
     :type nodes: List[Node]
     :param links: A list of Link objects.
     :type links: List[Link]
     :param nodes_by_city: A dictionary mapping city names to Node objects.
-    :type nodes_by_city: Dict[str, Node]
-    :param links_by_city: A defaultdict mapping city names to lists of Link objects.
-    :type links_by_city: DefaultDict[str, List[Link]]
-    :param eqpts_by_city: A defaultdict mapping city names to lists of Eqpt objects.
-    :type eqpts_by_city: DefaultDict[str, List[Eqpt]]
+    :type nodes_by_city: Dict[str, List[Node]]
     :return: A tuple containing the validated lists of nodes and links.
     :rtype: Tuple[List[Node], List[Link]]
-    :raises NetworkTopologyError: If any issues are found during validation.
     """
-    duplicate_links = []
-    for l1 in links:
-        for l2 in links:
-            if l1 is not l2 and l1 == l2 and l2 not in duplicate_links:
-                _logger.warning(f'\nWARNING\n \
-                    link {l1.from_city}-{l1.to_city} is duplicate \
-                    \nthe 1st duplicate link will be removed but you should check Links sheet input')
-                duplicate_links.append(l1)
-
-    if duplicate_links:
-        msg = 'XLS error: ' \
-              + f'links {_format_items([(d.from_city, d.to_city) for d in duplicate_links])} are duplicate'
-        raise NetworkTopologyError(msg)
-    unreferenced_nodes = [n for n in nodes_by_city if n not in links_by_city]
-    if unreferenced_nodes:
-        msg = 'XLS error: The following nodes are not ' \
-              + 'referenced from the Links sheet. ' \
-              + 'If unused, remove them from the Nodes sheet:\n' \
-              + _format_items(unreferenced_nodes)
-        raise NetworkTopologyError(msg)
+    # unreferenced nodes are detected in assign_implicit_pair_ids()
     # no need to check "Links" for invalid nodes because that's already in parse_excel()
-    wrong_eqpt_from = [n for n in eqpts_by_city if n not in nodes_by_city]
-    wrong_eqpt_to = [n.to_city for destinations in eqpts_by_city.values()
-                     for n in destinations if n.to_city not in nodes_by_city]
-    wrong_eqpt = wrong_eqpt_from + wrong_eqpt_to
-    if wrong_eqpt:
+    # wrong duplicate links are detected in assign_implicit_pair_ids()
+    # wrong eqpt links are detected in assign_implicit_pair_ids()
+    bad_roadm = [(n.from_node, n.to_node) for n in roadms
+                 if n.from_node not in nodes_by_city or n.to_node not in nodes_by_city]
+    if bad_roadm:
         msg = 'XLS error: ' \
-              + 'The Eqpt sheet refers to nodes that ' \
-              + 'are not defined in the Nodes sheet:\n'\
-              + _format_items(wrong_eqpt)
+            + 'The Roadm sheet references nodes that are not defined in the Links sheet:\n' \
+            + _format_items(bad_roadm)
         raise NetworkTopologyError(msg)
-    # Now check links that are not listed in Links sheet, and duplicates
-    bad_eqpt = []
-    possible_links = [f'{e.from_city}|{e.to_city}' for e in links] + [f'{e.to_city}|{e.from_city}' for e in links]
-    possible_eqpt = []
-    duplicate_eqpt = []
-    duplicate_ila = []
-    for city, eqpts in eqpts_by_city.items():
-        for eqpt in eqpts:
-            # Check that each node_A-node_Z exists in links
-            nodea_nodez = f'{eqpt.from_city}|{eqpt.to_city}'
-            nodez_nodea = f'{eqpt.to_city}|{eqpt.from_city}'
-            if nodea_nodez not in possible_links \
-                    or nodez_nodea not in possible_links:
-                bad_eqpt.append([eqpt.from_city, eqpt.to_city])
-            else:
-                # Check that there are no duplicate lines in the Eqpt sheet
-                if nodea_nodez in possible_eqpt:
-                    duplicate_eqpt.append([eqpt.from_city, eqpt.to_city])
-                else:
-                    possible_eqpt.append(nodea_nodez)
-            # check that there are no two lines defining an ILA with different directions
-        if nodes_by_city[city].node_type == 'ILA' and len(eqpts) > 1:
-            duplicate_ila.append(city)
-    if bad_eqpt:
+    bad_roadm_type = [n.from_node for n in roadms
+                      if nodes_by_city[n.from_node][0].node_type.lower() != 'roadm']
+    if bad_roadm_type:
         msg = 'XLS error: ' \
-              + 'The Eqpt sheet references links that ' \
-              + 'are not defined in the Links sheet:\n' \
-              + _format_items(f'{item[0]} -> {item[1]}' for item in bad_eqpt)
+            + 'The Roadm sheet references nodes that are not Roadms:\n' \
+            + _format_items(bad_roadm_type)
         raise NetworkTopologyError(msg)
-    if duplicate_eqpt:
-        msg = 'XLS error: Duplicate lines in Eqpt sheet:' \
-              + _format_items(f'{item[0]} -> {item[1]}' for item in duplicate_eqpt)
+    bad_roadm_degrees = []
+    for node in roadms:
+        possible_degrees = [n.to_city for n in links if n.from_city == node.from_node] \
+            + [n.from_city for n in links if n.to_city == node.from_node]
+        if node.to_node not in possible_degrees:
+            bad_roadm_degrees.append((node.from_node, node.to_node))
+    if bad_roadm_degrees:
+        msg = 'XLS error: ' \
+            + 'The Roadm sheet references degrees that are not defined in the Links sheet:\n' \
+            + _format_items(bad_roadm_degrees)
         raise NetworkTopologyError(msg)
-    if duplicate_ila:
-        msg = 'XLS error: Duplicate ILA eqpt definition in Eqpt sheet:' \
-              + _format_items(duplicate_ila)
-        raise NetworkTopologyError(msg)
-
-    for city, link in links_by_city.items():
-        if nodes_by_city[city].node_type.lower() == 'ila' and len(link) != 2:
-            # wrong input: ILA sites can only be Degree 2
-            # => correct to make it a ROADM and remove entry in links_by_city
-            _logger.warning(f'invalid node type ({nodes_by_city[city].node_type}) '
-                            + f'specified in {city}, replaced by ROADM')
-            nodes_by_city[city].node_type = 'ROADM'
-            for n in nodes:
-                if n.city == city:
-                    n.node_type = 'ROADM'
     return nodes, links
 
 
-def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm]]) -> Dict:
+def find_roadm_degree_uid(node: Node, roadm: Roadm, eqpts_by_city: DefaultDict[str, List[Eqpt]],
+                          links_by_city: DefaultDict[str, List[Link]], ) -> Optional[str]:
+    """Find the UID associated with a ROADM degree."""
+
+    return next(
+        chain(
+            (
+                eqpt.east_uid
+                for eqpt in eqpts_by_city[node.city]
+                if eqpt.pair_id == roadm.pair_id
+                and eqpt.to_city == roadm.to_node
+            ),
+            (
+                link.east_uid
+                for link in links_by_city[node.city]
+                if link.pair_id == roadm.pair_id
+                and link.to_city == roadm.to_node
+            ),
+            (
+                link.west_uid
+                for link in links_by_city[node.city]
+                if link.pair_id == roadm.pair_id
+                and link.from_city == roadm.to_node
+            ),
+        ),
+        None,
+    )
+
+
+def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm]],
+                         links_by_city: DefaultDict[str, List[Link]],
+                         eqpts_by_city: DefaultDict[str, List[Eqpt]]) -> Dict:
     """Create the json element for a roadm node, including the different cases:
 
         - if there are restrictions
@@ -515,10 +520,14 @@ def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm
     :type node: Node
     :param roadms_by_city: A dictionary mapping city names to lists of ROADM objects.
     :type roadms_by_city: DefaultDict[str, List[Roadm]]
+    :param links_by_city: A defaultdict mapping city names to lists of Link objects.
+    :type links_by_city: DefaultDict[str, List[Link]]
+    :param eqpts_by_city: A defaultdict mapping city names to lists of Eqpt objects.
+    :type eqpts_by_city: DefaultDict[str, List[Eqpt]]
     :return: A dictionary representing the ROADM element in JSON format.
     :rtype: Dict
     """
-    roadm = {'uid': f'roadm {node.city}'}
+    roadm = {'uid': node.roadm_uid}
     if node.preamp_restriction != '' or node.booster_restriction != '':
         roadm['params'] = {
             'restrictions': {
@@ -530,7 +539,12 @@ def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm
             roadm['params'] = {}
         roadm['params']['per_degree_pch_out_db'] = {}
         for elem in roadms_by_city[node.city]:
-            to_node = f'east edfa in {node.city} to {elem.to_node}'
+            to_node = find_roadm_degree_uid(node, elem, eqpts_by_city, links_by_city)
+            if to_node is None:
+                raise NetworkTopologyError(
+                    f'XLS error: Wrong definition in Roadms sheet: '
+                    f'degree {elem.to_node} does not exist on Roadm {node.city}'
+                )
             if elem.target_pch_out_db is not None:
                 roadm['params']['per_degree_pch_out_db'][to_node] = elem.target_pch_out_db
             if elem.from_degrees is not None and elem.impairment_ids is not None:
@@ -549,6 +563,27 @@ def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm
                                                                       'impairment_id': impairment_id})
             if elem.type_variety is not None:
                 roadm['type_variety'] = elem.type_variety
+    # add association for parallel links
+    if node.degree_association:
+
+        # do not export degree association for single pairs
+        roadm_degree = []
+        for (degree, paired_degree) in node.degree_association:
+            temp = [e.east_uid for e in links_by_city[node.city] if e.pair_id == '0' and e.from_city == node.city] \
+                + [e.west_uid for e in links_by_city[node.city] if e.pair_id == '0' and e.to_city == node.city] \
+                + [e.east_uid for e in eqpts_by_city[node.city] if e.pair_id == '0']
+            if degree in temp:
+                # do not create a degree export for the first pair
+                continue
+            roadm_degree.append(
+                {"degree": degree,
+                 "paired-degree": paired_degree}
+            )
+        if 'params' not in roadm and roadm_degree:
+            roadm['params'] = {'degree-association': roadm_degree}
+        elif 'params' in roadm and roadm_degree:
+            roadm['params']['degree-association'] = roadm_degree
+
     roadm['metadata'] = {'location': {'city':      node.city,      # noqa: E241
                                       'region':    node.region,    # noqa: E241
                                       'latitude':  node.latitude,  # noqa: E241
@@ -557,99 +592,148 @@ def create_roadm_element(node: Node, roadms_by_city: DefaultDict[str, List[Roadm
     return roadm
 
 
-def create_east_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict:
-    """Create amplifiers json elements for the east direction.
-    this includes the case where the case of a fused element defined instead of an
-    ILA in eqpt sheet.
+def create_east_eqpt_element(eqpt: Eqpt, nodes_by_city: Dict[str, List[Node]]) -> dict:
+    """Create the JSON element for the east-facing equipment.
 
-    :param node: The Node object representing the equipment.
-    :type node: Node
+    :param eqpt: The equipment definition.
+    :type eqpt: Eqpt
     :param nodes_by_city: A dictionary mapping city names to Node objects.
-    :type nodes_by_city: Dict[str, Node]
+    :type nodes_by_city: Dict[str, List[Node]]
     :return: A dictionary representing the east equipment element in JSON format.
     :rtype: dict
     """
-    eqpt = {'uid': f'east edfa in {node.from_city} to {node.to_city}',
-            'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,      # noqa: E241
-                                      'region':    nodes_by_city[node.from_city].region,    # noqa: E241
-                                      'latitude':  nodes_by_city[node.from_city].latitude,  # noqa: E241
-                                      'longitude': nodes_by_city[node.from_city].longitude}}}
-    if node.east_amp_type.lower() != '' and node.east_amp_type.lower() != 'fused':
-        eqpt['type'] = 'Edfa'
-        eqpt['type_variety'] = f'{node.east_amp_type}'
-        eqpt['operational'] = {'gain_target': node.east_amp_gain,
-                               'delta_p':     node.east_amp_dp,   # noqa: E241
-                               'tilt_target': node.east_tilt_vs_wavelength,
-                               'out_voa':     node.east_att_out,  # noqa: E241
-                               'in_voa':      node.east_att_in}   # noqa: E241
-    elif node.east_amp_type.lower() == '':
-        eqpt['type'] = 'Edfa'
-        eqpt['operational'] = {'gain_target': node.east_amp_gain,
-                               'delta_p':     node.east_amp_dp,   # noqa: E241
-                               'tilt_target': node.east_tilt_vs_wavelength,
-                               'out_voa':     node.east_att_out,  # noqa: E241
-                               'in_voa':      node.east_att_in}   # noqa: E241
-    elif node.east_amp_type.lower() == 'fused':
+    eqpt_dict = {
+        'uid': eqpt.east_uid,
+        'metadata': {
+            'location': {
+                'city':      nodes_by_city[eqpt.from_city][0].city,      # noqa: E241
+                'region':    nodes_by_city[eqpt.from_city][0].region,    # noqa: E241
+                'latitude':  nodes_by_city[eqpt.from_city][0].latitude,  # noqa: E241
+                'longitude': nodes_by_city[eqpt.from_city][0].longitude}}}
+    if eqpt.east_amp_type.lower() != '' and eqpt.east_amp_type.lower() != 'fused':
+        eqpt_dict['type'] = 'Edfa'
+        eqpt_dict['type_variety'] = f'{eqpt.east_amp_type}'
+        eqpt_dict['operational'] = {
+            'gain_target': eqpt.east_amp_gain,
+            'delta_p':     eqpt.east_amp_dp,   # noqa: E241
+            'tilt_target': eqpt.east_tilt_vs_wavelength,
+            'out_voa':     eqpt.east_att_out,  # noqa: E241
+            'in_voa':      eqpt.east_att_in}   # noqa: E241
+    elif eqpt.east_amp_type.lower() == '':
+        eqpt_dict['type'] = 'Edfa'
+        eqpt_dict['operational'] = {
+            'gain_target': eqpt.east_amp_gain,
+            'delta_p':     eqpt.east_amp_dp,   # noqa: E241
+            'tilt_target': eqpt.east_tilt_vs_wavelength,
+            'out_voa':     eqpt.east_att_out,  # noqa: E241
+            'in_voa':      eqpt.east_att_in}   # noqa: E241
+    elif eqpt.east_amp_type.lower() == 'fused':
         # fused edfa variety is a hack to indicate that there should not be
         # booster amplifier out the roadm.
         # If user specifies ILA in Nodes sheet and fused in Eqpt sheet, then assumes that
         # this is a fused nodes.
-        eqpt['type'] = 'Fused'
-        eqpt['params'] = {'loss': 0}
-    return eqpt
+        eqpt_dict['type'] = 'Fused'
+        eqpt_dict['params'] = {'loss': 0}
+    return eqpt_dict
 
 
-def create_west_eqpt_element(node: Node, nodes_by_city: Dict[str, Node]) -> dict:
-    """Create amplifiers json elements for the west direction.
-    this includes the case where the case of a fused element defined instead of an
-    ILA in eqpt sheet.
+def create_west_eqpt_element(eqpt: Eqpt, nodes_by_city: Dict[str, List[Node]]) -> dict:
+    """Create the JSON element for the west-facing equipment.
 
-    :param node: The Node object representing the equipment.
-    :type node: Node
+    :param eqpt: The equipment definition.
+    :type eqpt: Eqpt
     :param nodes_by_city: A dictionary mapping city names to Node objects.
-    :type nodes_by_city: Dict[str, Node]
-    :return: A dictionary representing the west equipment element in JSON format.
+    :type nodes_by_city: Dict[str, List[Node]]
+    :return: A dictionary representing the east equipment element in JSON format.
     :rtype: dict
     """
-    eqpt = {'uid': f'west edfa in {node.from_city} to {node.to_city}',
-            'metadata': {'location': {'city':      nodes_by_city[node.from_city].city,      # noqa: E241
-                                      'region':    nodes_by_city[node.from_city].region,    # noqa: E241
-                                      'latitude':  nodes_by_city[node.from_city].latitude,  # noqa: E241
-                                      'longitude': nodes_by_city[node.from_city].longitude}},
-            'type': 'Edfa'}
-    if node.west_amp_type.lower() != '' and node.west_amp_type.lower() != 'fused':
-        eqpt['type_variety'] = f'{node.west_amp_type}'
-        eqpt['operational'] = {'gain_target': node.west_amp_gain,
-                               'delta_p':     node.west_amp_dp,    # noqa: E241
-                               'tilt_target': node.west_tilt_vs_wavelength,
-                               'out_voa':     node.west_att_out,   # noqa: E241
-                               'in_voa':      node.west_att_in}    # noqa: E241
-    elif node.west_amp_type.lower() == '':
-        eqpt['operational'] = {'gain_target': node.west_amp_gain,
-                               'delta_p':     node.west_amp_dp,    # noqa: E241
-                               'tilt_target': node.west_tilt_vs_wavelength,
-                               'out_voa':     node.west_att_out,   # noqa: E241
-                               'in_voa':      node.west_att_in}    # noqa: E241
-    elif node.west_amp_type.lower() == 'fused':
-        eqpt['type'] = 'Fused'
-        eqpt['params'] = {'loss': 0}
-    return eqpt
+    eqpt_dict = {
+        'uid': eqpt.west_uid,
+        'metadata': {
+            'location': {
+                'city':      nodes_by_city[eqpt.from_city][0].city,      # noqa: E241
+                'region':    nodes_by_city[eqpt.from_city][0].region,    # noqa: E241
+                'latitude':  nodes_by_city[eqpt.from_city][0].latitude,  # noqa: E241
+                'longitude': nodes_by_city[eqpt.from_city][0].longitude}},
+        'type': 'Edfa'}
+    if eqpt.west_amp_type.lower() != '' and eqpt.west_amp_type.lower() != 'fused':
+        eqpt_dict['type_variety'] = f'{eqpt.west_amp_type}'
+        eqpt_dict['operational'] = {
+            'gain_target': eqpt.west_amp_gain,
+            'delta_p':     eqpt.west_amp_dp,    # noqa: E241
+            'tilt_target': eqpt.west_tilt_vs_wavelength,
+            'out_voa':     eqpt.west_att_out,   # noqa: E241
+            'in_voa':      eqpt.west_att_in}    # noqa: E241
+    elif eqpt.west_amp_type.lower() == '':
+        eqpt_dict['operational'] = {
+            'gain_target': eqpt.west_amp_gain,
+            'delta_p':     eqpt.west_amp_dp,    # noqa: E241
+            'tilt_target': eqpt.west_tilt_vs_wavelength,
+            'out_voa':     eqpt.west_att_out,   # noqa: E241
+            'in_voa':      eqpt.west_att_in}    # noqa: E241
+    elif eqpt.west_amp_type.lower() == 'fused':
+        eqpt_dict['type'] = 'Fused'
+        eqpt_dict['params'] = {'loss': 0}
+    return eqpt_dict
 
 
-def create_east_fiber_element(fiber: Node, nodes_by_city: Dict[str, Node]) -> Dict:
+def pair_string(element: Node | Link | Eqpt) -> str:
+    return f'-pair-{element.pair_id}' if element.pair_id not in ['0', None] else ''
+
+
+def create_nodes_uid(links: List[Link], eqpts: List[Eqpt], nodes: List[Node],
+                     eqpts_by_city: DefaultDict[str, List[Eqpt]]):
+    """Assign JSON UIDs to links, equipment and network nodes.
+
+    Fiber UIDs are generated from link endpoints, cable identifiers and pair
+    identifiers. Equipment UIDs are generated from their endpoints and pair
+    identifiers. ILA and FUSED node UIDs are generated according to their
+    node type and pair identifier.
+
+    :param links: A list of network links.
+    :type links: List[Link]
+    :param eqpts: A list of equipment definitions.
+    :type eqpts: List[Eqpt]
+    :param nodes: A list of network nodes.
+    :type nodes: List[Node]
+    :param eqpts_by_city: A dictionary mapping city names to equipment
+        definitions.
+    :type eqpts_by_city: Dict[str, List[Eqpt]]
+    """
+    for fiber in links:
+        cable_id = f'-{fiber.east_cable}' if fiber.east_cable else '-'
+        fiber.east_uid = f'fiber ({fiber.from_city} -> {fiber.to_city}){cable_id}{pair_string(fiber)}'
+        cable_id = f'-{fiber.west_cable}' if fiber.west_cable else '-'
+        fiber.west_uid = f'fiber ({fiber.to_city} -> {fiber.from_city}){cable_id}{pair_string(fiber)}'
+    for eqpt in eqpts:
+        eqpt.east_uid = f'east edfa in {eqpt.from_city} to {eqpt.to_city}{pair_string(eqpt)}'
+        eqpt.west_uid = f'west edfa in {eqpt.from_city} to {eqpt.to_city}{pair_string(eqpt)}'
+    for node in nodes:
+        if node.node_type.lower() == 'ila' and node.city not in eqpts_by_city:
+            node.west_uid = f'west edfa in {node.city}{pair_string(node)}'
+            node.east_uid = f'east edfa in {node.city}{pair_string(node)}'
+        if node.node_type.lower() == 'fused':
+            node.west_uid = f'west fused spans in {node.city}{pair_string(node)}'
+            node.east_uid = f'east fused spans in {node.city}{pair_string(node)}'
+        if node.node_type.lower() == 'roadm':
+            node.roadm_uid = f'roadm {node.city}'
+            node.trx_uid = f'trx {node.city}'
+
+
+def create_east_fiber_element(fiber: Link, nodes_by_city: Dict[str, List[Node]]) -> Dict:
     """Create fibers json elements for the east direction.
 
-    :param fiber: The Node object representing the equipment.
-    :type fiber: Node
+    :param fiber: The Link object representing the fiber spant.
+    :type fiber: Link
     :param nodes_by_city: A dictionary mapping city names to Node objects.
-    :type nodes_by_city: Dict[str, Node]
-    :return: A dictionary representing the west equipment element in JSON format.
+    :type nodes_by_city: Dict[str, List[Node]]
+    :return: A dictionary representing the east fiber element in JSON format.
     :rtype: Dict
     """
     fiber_dict = {
-        'uid': f'fiber ({fiber.from_city} -> {fiber.to_city})-{fiber.east_cable}',
-        'metadata': {'location': midpoint(nodes_by_city[fiber.from_city],
-                                          nodes_by_city[fiber.to_city])},
+        'uid': fiber.east_uid,
+        'metadata': {'location': midpoint(nodes_by_city[fiber.from_city][0],
+                                          nodes_by_city[fiber.to_city][0])},
         'type': 'Fiber',
         'type_variety': fiber.east_fiber,
         'params': {
@@ -665,20 +749,20 @@ def create_east_fiber_element(fiber: Node, nodes_by_city: Dict[str, Node]) -> Di
     return fiber_dict
 
 
-def create_west_fiber_element(fiber: Node, nodes_by_city: Dict[str, Node]) -> Dict:
+def create_west_fiber_element(fiber: Link, nodes_by_city: Dict[str, List[Node]]) -> Dict:
     """Create fibers json elements for the west direction.
 
-    :param fiber: The Node object representing the equipment.
-    :type fiber: Node
+    :param fiber: The Link object representing the fiber span.
+    :type fiber: Link
     :param nodes_by_city: A dictionary mapping city names to Node objects.
-    :type nodes_by_city: Dict[str, Node]
-    :return: A dictionary representing the west equipment element in JSON format.
+    :type nodes_by_city: Dict[str, List[Node]]
+    :return: A dictionary representing the west fiber element in JSON format.
     :rtype: Dict
     """
     fiber_dict = {
-        'uid': f'fiber ({fiber.to_city} -> {fiber.from_city})-{fiber.west_cable}',
-        'metadata': {'location': midpoint(nodes_by_city[fiber.from_city],
-                                          nodes_by_city[fiber.to_city])},
+        'uid': fiber.west_uid,
+        'metadata': {'location': midpoint(nodes_by_city[fiber.from_city][0],
+                                          nodes_by_city[fiber.to_city][0])},
         'type': 'Fiber',
         'type_variety': fiber.west_fiber,
         'params': {'length': round(fiber.west_distance, 3),
@@ -690,6 +774,28 @@ def create_west_fiber_element(fiber: Node, nodes_by_city: Dict[str, Node]) -> Di
     if fiber.west_pmd:
         fiber_dict['params']['pmd_coef'] = convert_pmd_lineic(fiber.west_pmd, fiber.west_distance, fiber.distance_units)
     return fiber_dict
+
+
+def create_ila_element(node: Node, direction: str) -> Dict:
+    """Create an EDFA element for an ILA node in the specified direction.
+
+    :param node: The Node object representing the ILA.
+    :type node: Node
+    :param direction: The direction of the ILA element, either ``east`` or
+        ``west``.
+    :type direction: str
+    :return: A dictionary representing the ILA EDFA element in JSON format.
+    :rtype: dict
+    """
+    uid = node.west_uid if direction == 'west' else node.east_uid
+    element = {
+        'uid': uid,
+        'metadata': {'location': {
+            'city': node.city, 'region': node.region, 'latitude': node.latitude, 'longitude': node.longitude}},
+        'type': 'Edfa',
+        'operational': {'gain_target': None, 'tilt_target': None}
+    }
+    return element
 
 
 def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> dict:
@@ -705,6 +811,7 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> d
     if filter_region is None:
         filter_region = []
     nodes, links, eqpts, roadms = parse_excel(input_filename)
+    assign_implicit_pair_ids(nodes, links, eqpts, roadms)
     if filter_region:
         nodes = [n for n in nodes if n.region.lower() in filter_region]
         cities = {n.city for n in nodes}
@@ -712,7 +819,9 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> d
         cities = {lnk.from_city for lnk in links} | {lnk.to_city for lnk in links}
         nodes = [n for n in nodes if n.city in cities]
 
-    nodes_by_city = {n.city: n for n in nodes}
+    nodes_by_city = defaultdict(list)
+    for node in nodes:
+        nodes_by_city[node.city].append(node)
 
     links_by_city = defaultdict(list)
     for link in links:
@@ -727,63 +836,50 @@ def xls_to_json_data(input_filename: Path, filter_region: List[str] = None) -> d
     for roadm in roadms:
         roadms_by_city[roadm.from_node].append(roadm)
 
-    nodes, links = sanity_check(nodes, links, nodes_by_city, links_by_city, eqpts_by_city)
-
+    nodes, links = sanity_check(nodes, links, roadms, nodes_by_city)
+    create_nodes_uid(links, eqpts, nodes, eqpts_by_city)
+    json_connections = \
+        list(chain.from_iterable([eqpt_connection_by_city(node_city, eqpts_by_city, links_by_city, nodes_by_city)
+                                  for node_city in nodes_by_city])) \
+        + list(chain.from_iterable(zip(
+            [{'from_node': x.trx_uid, 'to_node': x.roadm_uid}
+                for x in nodes if x.node_type.lower() == 'roadm'],
+            [{'from_node': x.roadm_uid, 'to_node': x.trx_uid}
+                for x in nodes if x.node_type.lower() == 'roadm'])))
+    json_elements = [
+        {
+            'uid': x.trx_uid,
+            'metadata': {'location': {
+                'city': x.city, 'region': x.region, 'latitude': x.latitude, 'longitude': x.longitude}},
+            'type': 'Transceiver'
+        } for x in nodes if x.node_type.lower() == 'roadm'] \
+        + [create_roadm_element(x, roadms_by_city, links_by_city, eqpts_by_city)
+           for x in nodes if x.node_type.lower() == 'roadm'] \
+        + [
+            {
+                'uid': f'{x.west_uid}',
+                'metadata': {'location': {
+                    'city': x.city, 'region': x.region, 'latitude': x.latitude, 'longitude': x.longitude}},
+                'type': 'Fused'
+            } for x in nodes if x.node_type.lower() == 'fused'] \
+        + [
+            {
+                'uid': f'{x.east_uid}',
+                'metadata': {'location': {
+                    'city': x.city, 'region': x.region, 'latitude': x.latitude, 'longitude': x.longitude}},
+                'type': 'Fused'
+            } for x in nodes if x.node_type.lower() == 'fused'] \
+        + [create_east_fiber_element(x, nodes_by_city) for x in links] \
+        + [create_west_fiber_element(x, nodes_by_city) for x in links] \
+        + [create_ila_element(x, 'west')
+           for x in nodes if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] \
+        + [create_ila_element(x, 'east')
+           for x in nodes if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city] \
+        + [create_east_eqpt_element(e, nodes_by_city) for e in eqpts] \
+        + [create_west_eqpt_element(e, nodes_by_city) for e in eqpts]
     return {
-        'elements':
-            [{'uid': f'trx {x.city}',
-              'metadata': {'location': {'city': x.city,
-                                        'region': x.region,
-                                        'latitude': x.latitude,
-                                        'longitude': x.longitude}},
-              'type': 'Transceiver'}
-             for x in nodes_by_city.values() if x.node_type.lower() == 'roadm']
-            + [create_roadm_element(x, roadms_by_city)
-               for x in nodes_by_city.values() if x.node_type.lower() == 'roadm']
-            + [{'uid': f'west fused spans in {x.city}',
-                'metadata': {'location': {'city': x.city,
-                                          'region': x.region,
-                                          'latitude': x.latitude,
-                                          'longitude': x.longitude}},
-                'type': 'Fused'}
-               for x in nodes_by_city.values() if x.node_type.lower() == 'fused']
-            + [{'uid': f'east fused spans in {x.city}',
-                'metadata': {'location': {'city': x.city,
-                                          'region': x.region,
-                                          'latitude': x.latitude,
-                                          'longitude': x.longitude}},
-                'type': 'Fused'}
-               for x in nodes_by_city.values() if x.node_type.lower() == 'fused']
-            + [create_east_fiber_element(x, nodes_by_city) for x in links]
-            + [create_west_fiber_element(x, nodes_by_city) for x in links]
-            + [{'uid': f'west edfa in {x.city}',
-                'metadata': {'location': {'city': x.city,
-                                          'region': x.region,
-                                          'latitude': x.latitude,
-                                          'longitude': x.longitude}},
-                'type': 'Edfa',
-                'operational': {'gain_target': None,
-                                'tilt_target': None}
-                } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city]
-            + [{'uid': f'east edfa in {x.city}',
-                'metadata': {'location': {'city': x.city,
-                                          'region': x.region,
-                                          'latitude': x.latitude,
-                                          'longitude': x.longitude}},
-                'type': 'Edfa',
-                'operational': {'gain_target': None,
-                                'tilt_target': None}
-                } for x in nodes_by_city.values() if x.node_type.lower() == 'ila' and x.city not in eqpts_by_city]
-            + [create_east_eqpt_element(e, nodes_by_city) for e in eqpts]
-            + [create_west_eqpt_element(e, nodes_by_city) for e in eqpts],
-        'connections':
-            list(chain.from_iterable([eqpt_connection_by_city(n.city, eqpts_by_city, links_by_city, nodes_by_city)
-                                      for n in nodes]))
-            + list(chain.from_iterable(zip(
-                [{'from_node': f'trx {x.city}', 'to_node': f'roadm {x.city}'}
-                 for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'],
-                [{'from_node': f'roadm {x.city}', 'to_node': f'trx {x.city}'}
-                 for x in nodes_by_city.values() if x.node_type.lower() == 'roadm'])))
+        'elements': json_elements,
+        'connections': json_connections
     }
 
 
@@ -883,6 +979,44 @@ def corresp_names(input_filename: Path, network: DiGraph) -> Tuple[dict, dict, d
     return corresp_roadm, corresp_fused, corresp_ila
 
 
+def assign_implicit_pair_ids(nodes: List[Node], links: List[Link], eqpts: List[Eqpt], roadms: List[Roadm]) -> None:
+    """Assign pair identifiers to links, equipment and ROADM degrees.
+
+    Pair identifiers are assigned in several steps:
+
+    - parallel links not connected to an ILA or FUSED node;
+    - links passing through ILA or FUSED nodes;
+    - equipment defined in the Eqpt sheet;
+    - ROADM degrees associated with links;
+    - duplicated ILA or FUSED nodes created for different pair identifiers.
+
+    :param nodes: A list of network nodes.
+    :type nodes: List[Node]
+    :param links: A list of network links.
+    :type links: List[Link]
+    :param eqpts: A list of equipment definitions.
+    :type eqpts: List[Eqpt]
+    :param roadms: A list of ROADM degree definitions.
+    :type roadms: List[Roadm]
+    :raises NetworkTopologyError: If the topology contains invalid or
+        inconsistent pair definitions.
+    """
+    # 1. Links not connected to ILAs
+    assign_parallel_ids(nodes, links)
+
+    # 2. Links crossing ILA or Fused
+    assign_ila_fused_pair_ids(nodes, links)
+
+    # 2. Equipment defined by user
+    assign_equipment_pair_ids(eqpts, links, nodes)
+
+    # 3. Roadms associated to links
+    assign_roadm_degree_pair_ids(roadms, links)
+
+    # 4. Duplicate ILA or Fused nodes with different pair_ids
+    duplicate_ila_fused(nodes, links)
+
+
 def parse_excel(input_filename: Path) -> Tuple[List[Node], List[Link], List[Eqpt], List[Roadm]]:
     """Reads XLS(X) sheets among Nodes, Eqpts, Links, Roadms and parses the data.
 
@@ -975,21 +1109,25 @@ def parse_excel(input_filename: Path) -> Tuple[List[Node], List[Link], List[Eqpt
         if n.node_type not in expected_node_types:
             n.node_type = 'ILA'
 
-    links = [Link(**link) for link in parse_sheet(links_sheet, is_xlsx, link_headers,
-                                                  LINKS_LINE, LINKS_LINE + 2, LINKS_COLUMN)]
+    links = [Link(**link, row_id=i)
+             for i, link in enumerate(parse_sheet(links_sheet, is_xlsx, link_headers,
+                                                  LINKS_LINE, LINKS_LINE + 2, LINKS_COLUMN))]
+
     eqpts = []
     if eqpt_sheet is not None:
-        eqpts = [Eqpt(**eqpt) for eqpt in parse_sheet(eqpt_sheet, is_xlsx, eqpt_headers,
-                                                      EQPTS_LINE, EQPTS_LINE + 2, EQPTS_COLUMN)]
+        eqpts = [Eqpt(**eqpt, row_id=i)
+                 for i, eqpt in enumerate(parse_sheet(eqpt_sheet, is_xlsx, eqpt_headers,
+                                                      EQPTS_LINE, EQPTS_LINE + 2, EQPTS_COLUMN))]
     roadms = []
     if roadm_sheet is not None:
-        roadms = [Roadm(**roadm) for roadm in parse_sheet(roadm_sheet, is_xlsx, roadm_headers,
-                                                          ROADMS_LINE, ROADMS_LINE + 2, ROADMS_COLUMN)]
+        roadms = [Roadm(**roadm, row_id=i)
+                  for i, roadm in enumerate(parse_sheet(roadm_sheet, is_xlsx, roadm_headers,
+                                                        ROADMS_LINE, ROADMS_LINE + 2, ROADMS_COLUMN))]
 
     # sanity check
     all_cities = Counter(n.city for n in nodes if n.city)
     if len(all_cities) != len(nodes):
-        msg = f'Duplicate city: {all_cities}'
+        msg = f'XLS error: Duplicate city: {all_cities}'
         raise NetworkTopologyError(msg)
     bad_links = []
     for lnk in links:
@@ -1000,14 +1138,327 @@ def parse_excel(input_filename: Path) -> Tuple[List[Node], List[Link], List[Eqpt
         msg = 'XLS error: ' \
               + 'The Links sheet references nodes that ' \
               + 'are not defined in the Nodes sheet:\n' \
-              + _format_items(f'{item[0]} -> {item[1]}' for item in bad_links)
+              + _format_items(bad_links)
         raise NetworkTopologyError(msg)
 
     return nodes, links, eqpts, roadms
 
 
+def endpoint_key(link: Link):
+    """Return the ordered endpoint key of a link.
+
+    The key preserves the direction stored in the link.
+
+    :param link: The link for which the endpoint key is generated.
+    :type link: Link
+    :return: A tuple containing the source and destination city names.
+    :rtype: tuple[str, str]
+    """
+    return (link.from_city, link.to_city)
+
+
+def rev_endpoint_key(link: Link):
+    """Return the reversed endpoint key of a link.
+
+    The key reverses the direction stored in the link.
+
+    :param link: The link for which the reversed endpoint key is generated.
+    :type link: Link
+    :return: A tuple containing the destination and source city names.
+    :rtype: tuple[str, str]
+    """
+    return (link.to_city, link.from_city)
+
+
+def assign_parallel_ids(nodes: list[Node], links: list[Link]) -> None:
+    """Assign pair identifiers to parallel links outside ILA or FUSED nodes.
+
+    Links connected to an ILA or FUSED node are handled separately by
+    :func:`assign_ila_fused_pair_ids`. Other links sharing the same ordered
+    endpoints are assigned incremental pair identifiers according to their
+    row order.
+
+    :param nodes: A list of network nodes.
+    :type nodes: list[Node]
+    :param links: A list of network links.
+    :type links: list[Link]
+    """
+    ila_cities = {
+        node.city
+        for node in nodes
+        if node.node_type.lower() in ['ila', 'fused']
+    }
+
+    groups = defaultdict(list)
+
+    for link in links:
+        # Les liens connectés à un ILA seront traités séparément.
+        if (link.from_city not in ila_cities
+                and link.to_city not in ila_cities):
+            groups[endpoint_key(link)].append(link)
+
+    for endpoints, group in groups.items():
+        group.sort(key=lambda link: link.row_id or 0)
+
+        for pair_id, link in enumerate(group):
+            if link.pair_id is None:
+                link.pair_id = str(pair_id)
+
+
+def assign_equipment_pair_ids(eqpts: list[Eqpt], links: list[Link], nodes: list[Node]) -> None:
+    """Assign link pair identifiers to equipment definitions.
+
+    Equipment definitions are matched with links using their endpoints.
+    Both link orientations are accepted. Equipment and links are sorted by
+    their source row before pair identifiers are assigned.
+
+    This function also checks that:
+
+    - equipment endpoints refer to existing nodes;
+    - equipment endpoints refer to existing links;
+    - the number of equipment definitions does not exceed the number of
+      corresponding links;
+    - an ILA is not assigned the same pair identifier more than once.
+
+    :param eqpts: A list of equipment definitions.
+    :type eqpts: list[Eqpt]
+    :param links: A list of network links.
+    :type links: list[Link]
+    :param nodes: A list of network nodes.
+    :type nodes: list[Node]
+    :raises NetworkTopologyError: If an equipment definition references an
+        unknown node or link, or if duplicate equipment definitions are found.
+    """
+    nodes_by_city_name = {n.city: n for n in nodes}
+    nodes_name = []
+    links_by_endpoints = defaultdict(list)
+    for link in links:
+        links_by_endpoints[endpoint_key(link)].append(link)
+        links_by_endpoints[rev_endpoint_key(link)].append(link)
+        nodes_name.append(link.from_city)
+        nodes_name.append(link.to_city)
+    eqpts_by_endpoints = defaultdict(list)
+
+    wrong_endpoints = []
+    wrong_nodes = []
+    for eqpt in eqpts:
+        key = (eqpt.from_city, eqpt.to_city)
+        for item in key:
+            if item not in nodes_name:
+                wrong_nodes.append(item)
+        if key not in links_by_endpoints:
+            wrong_endpoints.append(key)
+            continue
+        eqpts_by_endpoints[key].append(eqpt)
+
+    if wrong_nodes:
+        msg = 'XLS error: ' \
+            + 'The Eqpt sheet refers to nodes that ' \
+            + 'are not defined in the Nodes sheet:\n'\
+            + _format_items(wrong_nodes)
+        raise NetworkTopologyError(msg)
+    if wrong_endpoints:
+        msg = 'XLS error: ' \
+            + 'The Eqpt sheet refers to links that ' \
+            + 'are not defined in the Links sheet:\n'\
+            + _format_items(wrong_endpoints)
+        raise NetworkTopologyError(msg)
+
+    wrong_duplicate_equipment = []
+    for endpoints, eqpt_group in eqpts_by_endpoints.items():
+        link_group = sorted(links_by_endpoints.get(endpoints, []), key=lambda link: link.row_id or 0)
+
+        eqpt_group = sorted(eqpt_group, key=lambda eqpt: eqpt.row_id or 0)
+
+        if len(eqpt_group) > len(link_group):
+            wrong_duplicate_equipment.append(endpoints)
+            # collect all mistakes before raising an error
+            continue
+        for eqpt, link in zip(eqpt_group, link_group):
+            eqpt.pair_id = link.pair_id
+    if wrong_duplicate_equipment:
+        msg = 'XLS error: Duplicate eqpt definition in Eqpt for not duplicated links:\n' \
+              + _format_items(wrong_duplicate_equipment)
+        raise NetworkTopologyError(msg)
+
+    ilas_by_endpoint = defaultdict(list)
+    for eqpt in eqpts:
+        if nodes_by_city_name[eqpt.from_city].node_type.lower() == 'ila':
+            ilas_by_endpoint[eqpt.from_city].append(eqpt.pair_id)
+
+    wrong_reverse_duplicate_equipment = []
+    for endpoint, pair_ids in ilas_by_endpoint.items():
+        if len(pair_ids) != len(set(pair_ids)):
+            wrong_reverse_duplicate_equipment.append(endpoint)
+
+    if wrong_reverse_duplicate_equipment:
+        msg = (
+            'XLS error: Duplicate eqpt definition in Eqpt for the same ILA:\n'
+            + _format_items(wrong_reverse_duplicate_equipment)
+        )
+        raise NetworkTopologyError(msg)
+
+
+def assign_ila_fused_pair_ids(nodes: list[Node], links: list[Link]) -> None:
+    """Assign pair identifiers to links passing through ILA or FUSED nodes.
+
+    Each ILA or FUSED node must have exactly two neighboring nodes. The links
+    connected to both neighbors must have the same number of entries so that
+    they can be paired. Pair identifiers are assigned according to the link
+    row order.
+
+    Existing pair identifiers are preserved and checked for consistency.
+
+    :param nodes: A list of network nodes.
+    :type nodes: list[Node]
+    :param links: A list of network links.
+    :type links: list[Link]
+    :raises NetworkTopologyError: If an ILA or FUSED node is unreferenced, if
+        it does not have exactly two neighbors, or if the two sides contain
+        different numbers of links.
+    :raises ValueError: If an already assigned pair identifier is inconsistent
+        with the expected link order.
+    """
+    ila_fused_cities = {
+        node.city
+        for node in nodes
+        if node.node_type.lower() in ['ila', 'fused']
+    }
+    wrong_duplications = []
+    unreferenced_nodes = []
+    for ila_fused_city in ila_fused_cities:
+        links_by_neighbor = defaultdict(list)
+
+        for link in links:
+            if (link.from_city == ila_fused_city or link.to_city == ila_fused_city):
+                neighbor = (link.to_city if link.from_city == ila_fused_city else link.from_city)
+                links_by_neighbor[neighbor].append(link)
+
+        if len(links_by_neighbor) == 0:
+            unreferenced_nodes.append(ila_fused_city)
+            # collect all mistakes before raising an error
+            continue
+
+        if len(links_by_neighbor) != 2:
+            neighbor_list = [
+                (n.from_city, n.to_city) for n in links if n.from_city == ila_fused_city or n.to_city == ila_fused_city]
+            raise NetworkTopologyError(
+                f'XLS error: ILA {ila_fused_city} must have exactly two neighbors:\n{_format_items(neighbor_list)}')  # noqa E231
+
+        neighbors = list(links_by_neighbor)
+
+        side_a = sorted(
+            links_by_neighbor[neighbors[0]],
+            key=lambda link: link.row_id or 0,
+        )
+        side_b = sorted(
+            links_by_neighbor[neighbors[1]],
+            key=lambda link: link.row_id or 0,
+        )
+
+        if len(side_a) != len(side_b):
+            # duplication of links must be the same between two ROADMs
+            wrong_duplications.append(ila_fused_city)
+            # collect all mistakes before raising an error
+            continue
+
+        for pair_id, (link_a, link_b) in enumerate(zip(side_a, side_b)):
+            # link may have been processed already
+            if link_a.pair_id is None and link_b.pair_id is None:
+                link_a.pair_id = str(pair_id)
+                link_b.pair_id = str(pair_id)
+            elif link_a.pair_id is not None and link_b.pair_id is None:
+                # order should be kept
+                if link_a.pair_id != str(pair_id):
+                    raise ValueError(f'link_a pair_id should be {pair_id}')  # catching code mistake: this should never happen  # noqa E501
+                link_b.pair_id = str(pair_id)
+            elif link_a.pair_id is None and link_b.pair_id is not None:
+                # order should be kept
+                if link_b.pair_id != str(pair_id):
+                    raise ValueError(f'link_b pair_id should be {pair_id}')  # catching code mistake: this should never happen  # noqa E501
+                link_a.pair_id = str(pair_id)
+
+    # All errors have been collected, now raise errors
+    if unreferenced_nodes:
+        raise NetworkTopologyError(
+            'XLS error: The following nodes are not referenced from the Links sheet. '
+            + f'If unused, remove them from the Nodes sheet:\n{_format_items(unreferenced_nodes)}')  # noqa E231
+    if wrong_duplications:
+        raise NetworkTopologyError(
+            'XLS error: The following ILA or Fused have different numbers of links on their two sides:\n'
+            + f'{_format_items(wrong_duplications)}')
+
+
+def assign_roadm_degree_pair_ids(roadms: list[Roadm], links: list[Link]) -> None:
+    """Assign link pair identifiers to ROADM degree definitions.
+
+    ROADM degrees are matched with links using their endpoints. Both link
+    orientations are accepted. When several ROADM definitions or parallel
+    links share the same endpoints, entries are matched according to their
+    source row order.
+
+    :param roadms: A list of ROADM degree definitions.
+    :type roadms: list[Roadm]
+    :param links: A list of network links.
+    :type links: list[Link]
+    """
+    links_by_endpoints = defaultdict(list)
+
+    for link in links:
+        links_by_endpoints[endpoint_key(link)].append(link)
+        links_by_endpoints[rev_endpoint_key(link)].append(link)
+
+    roadm_by_endpoints = defaultdict(list)
+
+    for roadm in roadms:
+        key = (roadm.from_node, roadm.to_node)
+        roadm_by_endpoints[key].append(roadm)
+
+    for endpoints, roadm_group in roadm_by_endpoints.items():
+        link_group = sorted(
+            links_by_endpoints.get(endpoints, []),
+            key=lambda link: link.row_id or 0)
+
+        roadm_group = sorted(
+            roadm_group,
+            key=lambda roadm: roadm.row_id or 0)
+
+        for roadm, link in zip(roadm_group, link_group):
+            roadm.pair_id = link.pair_id
+
+
+def duplicate_ila_fused(nodes: list[Node], links: list[Link]) -> None:
+    """Create duplicated ILA or FUSED nodes for distinct link pair identifiers.
+
+    An ILA or FUSED node is duplicated when it is associated with several
+    different pair identifiers. The original node keeps its first pair
+    identifier and additional node instances are created for the others.
+
+    :param nodes: A list of network nodes. New duplicated nodes are appended
+        to this list.
+    :type nodes: list[Node]
+    :param links: A list of network links containing pair identifiers.
+    :type links: list[Link]
+    """
+    nodes_by_city = {n.city: n for n in nodes}
+    node_pair_by_city = {}
+    for link in links:
+        if (link.from_city, link.pair_id) not in node_pair_by_city:
+            node_pair_by_city[(link.from_city, link.pair_id)] = nodes_by_city[link.from_city]
+        if (link.to_city, link.pair_id) not in node_pair_by_city:
+            node_pair_by_city[(link.to_city, link.pair_id)] = nodes_by_city[link.to_city]
+    for (city, pair_id), node in node_pair_by_city.items():
+        if node.node_type.lower() in ["ila", "fused"]:
+            if node.pair_id is None:
+                node.pair_id = pair_id
+            else:
+                duplicate_node = deepcopy(node)
+                duplicate_node.pair_id = pair_id
+                nodes.append(duplicate_node)
+
+
 def eqpt_connection_by_city(city_name: str, eqpts_by_city: DefaultDict[str, List[Eqpt]],
-                            links_by_city: DefaultDict[str, List[Link]], nodes_by_city: Dict[str, Node]) -> list:
+                            links_by_city: DefaultDict[str, List[Link]], nodes_by_city: Dict[str, List[Node]]) -> list:
     """Returns the list of equipment installed in the specified city.
 
     :param city_name: The name of the city to check for equipment.
@@ -1017,31 +1468,43 @@ def eqpt_connection_by_city(city_name: str, eqpts_by_city: DefaultDict[str, List
     :param links_by_city: A defaultdict mapping city names to lists of Link objects.
     :type links_by_city: DefaultDict[str, List[Link]]
     :param nodes_by_city: A dictionary mapping city names to Node objects.
-    :type nodes_by_city: Dict[str, Node]
+    :type nodes_by_city: Dict[str, List[Node]]
     :return: A list of connection dictionaries for the specified city.
     :rtype: list
     """
     other_cities = fiber_dest_from_source(city_name, links_by_city)
     subdata = []
-    if nodes_by_city[city_name].node_type.lower() in {'ila', 'fused'}:
+    if nodes_by_city[city_name][0].node_type.lower() in {'ila', 'fused'}:
         # Then len(other_cities) == 2
-        direction = ['west', 'east']
-        for i in range(2):
-            from_ = fiber_link(other_cities[i], city_name, links_by_city)
-            in_ = eqpt_in_city_to_city(city_name, other_cities[0], eqpts_by_city, nodes_by_city, direction[i])
-            to_ = fiber_link(city_name, other_cities[1 - i], links_by_city)
-            subdata += connect_eqpt(from_, in_, to_)
-    elif nodes_by_city[city_name].node_type.lower() == 'roadm':
-        for other_city in other_cities:
-            from_ = f'roadm {city_name}'
-            in_ = eqpt_in_city_to_city(city_name, other_city, eqpts_by_city, nodes_by_city)
-            to_ = fiber_link(city_name, other_city, links_by_city)
-            subdata += connect_eqpt(from_, in_, to_)
+        other_cities_by_pair = defaultdict(list)
+        for (other_city, link) in other_cities:
+            other_cities_by_pair[link.pair_id].append((other_city, link))
+        for pair_id, other_cities in other_cities_by_pair.items():
+            for i, direction in enumerate(['west', 'east']):
+                incoming_city = other_cities[i][0]
+                outgoing_city = other_cities[1 - i][0]
+                from_ = fiber_link(incoming_city, city_name, links_by_city, pair_id)
+                in_ = eqpt_in_city_to_city(city_name, other_cities[0][0], eqpts_by_city, nodes_by_city, pair_id,
+                                           direction=direction)
+                to_ = fiber_link(city_name, outgoing_city, links_by_city, pair_id)
+                subdata += connect_eqpt(from_, in_, to_)
 
-            from_ = fiber_link(other_city, city_name, links_by_city)
-            in_ = eqpt_in_city_to_city(city_name, other_city, eqpts_by_city, nodes_by_city, "west")
-            to_ = f'roadm {city_name}'
+    elif nodes_by_city[city_name][0].node_type.lower() == 'roadm':
+        for (other_city, link) in other_cities:
+            from_ = nodes_by_city[city_name][0].roadm_uid
+            in_ = eqpt_in_city_to_city(city_name, other_city, eqpts_by_city, nodes_by_city, link.pair_id,
+                                       direction="east")
+            to_ = fiber_link(city_name, other_city, links_by_city, link.pair_id)
             subdata += connect_eqpt(from_, in_, to_)
+            degree = in_ if in_ else to_
+
+            from_ = fiber_link(other_city, city_name, links_by_city, link.pair_id)
+            in_ = eqpt_in_city_to_city(city_name, other_city, eqpts_by_city, nodes_by_city, link.pair_id,
+                                       direction="west")
+            to_ = nodes_by_city[city_name][0].roadm_uid
+            subdata += connect_eqpt(from_, in_, to_)
+            paired_degree = in_ if in_ else from_
+            nodes_by_city[city_name][0].degree_association.append((degree, paired_degree))
     return subdata
 
 
@@ -1066,9 +1529,27 @@ def connect_eqpt(from_: str, in_: str, to_: str) -> List[dict]:
     return connections
 
 
+def ila_direction(
+    city_name: str,
+    neighbor: str,
+    pair_id: str,
+    eqpts_by_city: DefaultDict[str, List[Eqpt]],
+) -> str:
+    """
+    Détermine la direction de l'équipement ILA correspondant
+    au voisin traversé.
+    """
+
+    for eqpt in eqpts_by_city.get(city_name, []):
+        if eqpt.pair_id == pair_id and eqpt.to_city == neighbor:
+            return 'west'
+
+    return 'east'
+
+
 def eqpt_in_city_to_city(in_city: str, to_city: str,
-                         eqpts_by_city: DefaultDict[str, List[Eqpt]], nodes_by_city: Dict[str, Node],
-                         direction: str = 'east') -> str:
+                         eqpts_by_city: DefaultDict[str, List[Eqpt]], nodes_by_city: Dict[str, List[Node]],
+                         pair_id: str, direction: str = 'east') -> str:
     """Returns the formatted string corresponding to in_city types and direction.
 
     :param in_city: The city where the equipment is located.
@@ -1078,7 +1559,7 @@ def eqpt_in_city_to_city(in_city: str, to_city: str,
     :param eqpts_by_city: A defaultdict mapping city names to lists of Eqpt objects.
     :type eqpts_by_city: DefaultDict[str, List[Eqpt]]
     :param nodes_by_city: A dictionary mapping city names to Node objects.
-    :type nodes_by_city: Dict[str, Node]
+    :type nodes_by_city: Dict[str, List[Node]]
     :param direction: The direction of the equipment (default is 'east').
     :type direction: str
     :return: A formatted string representing the equipment in the specified direction.
@@ -1088,17 +1569,22 @@ def eqpt_in_city_to_city(in_city: str, to_city: str,
     return_eqpt = ''
     if in_city in eqpts_by_city:
         for e in eqpts_by_city[in_city]:
-            if nodes_by_city[in_city].node_type.lower() == 'roadm':
-                if e.to_city == to_city:
-                    return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
-            elif nodes_by_city[in_city].node_type.lower() == 'ila':
-                if e.to_city != to_city:
+            if nodes_by_city[in_city][0].node_type.lower() == 'roadm':
+                if e.to_city == to_city and e.pair_id == pair_id:
+                    if direction == 'east':
+                        return e.east_uid
+                    elif direction == 'west' and e.pair_id == pair_id:
+                        return e.west_uid
+            elif nodes_by_city[in_city][0].node_type.lower() == 'ila':
+                if e.to_city != to_city and e.pair_id == pair_id:
                     direction = rev_direction
-                return_eqpt = f'{direction} edfa in {e.from_city} to {e.to_city}'
-    elif nodes_by_city[in_city].node_type.lower() == 'ila':
-        return_eqpt = f'{direction} edfa in {in_city}'
-    if nodes_by_city[in_city].node_type.lower() == 'fused':
-        return_eqpt = f'{direction} fused spans in {in_city}'
+                if direction == 'east':
+                    return e.east_uid
+                else:
+                    return e.west_uid
+    elif nodes_by_city[in_city][0].node_type.lower() in ['ila', 'fused']:
+        node = next(n for n in nodes_by_city[in_city] if n.pair_id == pair_id)
+        return node.east_uid if direction == 'east' else node.west_uid
     return return_eqpt
 
 
@@ -1177,27 +1663,29 @@ def corresp_next_node(network: DiGraph, corresp_ila: dict, corresp_roadm: dict) 
     return corresp_ila, next_node
 
 
-def fiber_dest_from_source(city_name: str, links_by_city: DefaultDict[str, List[Link]]) -> List[str]:
-    """Returns the list of cities connected to the specified city.
+def fiber_dest_from_source(city_name: str, links_by_city: DefaultDict[str, List[Link]]
+                           ) -> List[Tuple[str, Link]]:
+    """Return the neighboring cities and corresponding links.
 
-    :param city_name: The name of the city to check for connections.
+    :param city_name: The name of the city whose neighbors are searched.
     :type city_name: str
-    :param links_by_city: A defaultdict mapping city names to lists of Link objects.
+    :param links_by_city: A mapping from city names to connected links.
     :type links_by_city: DefaultDict[str, List[Link]]
-    :return: A list of city names that are connected to the specified city.
-    :rtype: List[str]
+    :return: A list of tuples containing the neighboring city and the
+        corresponding link.
+    :rtype: List[Tuple[str, Link]]
     """
     destinations = []
     links_from_city = links_by_city[city_name]
     for link in links_from_city:
         if link.from_city == city_name:
-            destinations.append(link.to_city)
+            destinations.append((link.to_city, link))
         else:
-            destinations.append(link.from_city)
+            destinations.append((link.from_city, link))
     return destinations
 
 
-def fiber_link(from_city: str, to_city: str, links_by_city: DefaultDict[str, List[Link]]) -> str:
+def fiber_link(from_city: str, to_city: str, links_by_city: DefaultDict[str, List[Link]], pair_id) -> str:
     """Returns the formatted UID for fibers between two cities.
 
     :param from_city: The starting city name.
@@ -1211,11 +1699,12 @@ def fiber_link(from_city: str, to_city: str, links_by_city: DefaultDict[str, Lis
     """
     source_dest = (from_city, to_city)
     links = links_by_city[from_city]
-    link = next(li for li in links if li.from_city in source_dest and li.to_city in source_dest)
+    link = next(li for li in links
+                if li.from_city in source_dest and li.to_city in source_dest and li.pair_id == pair_id)
     if link.from_city == from_city:
-        fiber = f'fiber ({link.from_city} -> {link.to_city})-{link.east_cable}'
+        fiber = link.east_uid
     else:
-        fiber = f'fiber ({link.to_city} -> {link.from_city})-{link.west_cable}'
+        fiber = link.west_uid
     return fiber
 
 
