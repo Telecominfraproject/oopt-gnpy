@@ -1,0 +1,1429 @@
+{
+  "elements": [
+    {
+      "uid": "trx Lannion",
+      "metadata": {
+        "location": {
+          "city": "Lannion",
+          "region": "",
+          "latitude": 2,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Brest",
+      "metadata": {
+        "location": {
+          "city": "Brest",
+          "region": "",
+          "latitude": 4,
+          "longitude": 0
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Rennes",
+      "metadata": {
+        "location": {
+          "city": "Rennes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 1
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "trx Vannes",
+      "metadata": {
+        "location": {
+          "city": "Vannes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 2
+        }
+      },
+      "type": "Transceiver"
+    },
+    {
+      "uid": "roadm Lannion",
+      "params": {
+        "per_degree_pch_out_db": {
+          "east edfa in Lannion to Morlaix": -18.6,
+          "east edfa in Lannion to Saint Brieuc": -23
+        }
+      },
+      "metadata": {
+        "location": {
+          "city": "Lannion",
+          "region": "",
+          "latitude": 2,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Brest",
+      "params": {
+        "per_degree_pch_out_db": {
+          "east edfa in Brest to Quimper-pair-1": -12
+        },
+        "degree-association": [
+          {
+            "degree": "east edfa in Brest to Quimper-pair-1",
+            "paired-degree": "west edfa in Brest to Quimper-pair-1"
+          }
+        ]
+      },
+      "metadata": {
+        "location": {
+          "city": "Brest",
+          "region": "",
+          "latitude": 4,
+          "longitude": 0
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Rennes",
+      "metadata": {
+        "location": {
+          "city": "Rennes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 1
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "roadm Vannes",
+      "params": {
+        "per_degree_pch_out_db": {
+          "fiber (Vannes -> Lorient)-F057-pair-1": -12
+        },
+        "degree-association": [
+          {
+            "degree": "fiber (Vannes -> Lorient)-F057-pair-1",
+            "paired-degree": "fiber (Lorient -> Vannes)-F057-pair-1"
+          }
+        ]
+      },
+      "metadata": {
+        "location": {
+          "city": "Vannes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 2
+        }
+      },
+      "type": "Roadm"
+    },
+    {
+      "uid": "west fused spans in Quimper",
+      "metadata": {
+        "location": {
+          "city": "Quimper",
+          "region": "",
+          "latitude": 2.5,
+          "longitude": 1
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "west fused spans in Quimper-pair-1",
+      "metadata": {
+        "location": {
+          "city": "Quimper",
+          "region": "",
+          "latitude": 2.5,
+          "longitude": 1
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "east fused spans in Quimper",
+      "metadata": {
+        "location": {
+          "city": "Quimper",
+          "region": "",
+          "latitude": 2.5,
+          "longitude": 1
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "east fused spans in Quimper-pair-1",
+      "metadata": {
+        "location": {
+          "city": "Quimper",
+          "region": "",
+          "latitude": 2.5,
+          "longitude": 1
+        }
+      },
+      "type": "Fused"
+    },
+    {
+      "uid": "fiber (Lannion -> Vannes)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 1.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lannion -> Morlaix)-",
+      "metadata": {
+        "location": {
+          "latitude": 2.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Morlaix -> Brest)-",
+      "metadata": {
+        "location": {
+          "latitude": 3.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lannion -> Saint Brieuc)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 0.25
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Quimper -> Lorient)-F061",
+      "metadata": {
+        "location": {
+          "latitude": 2.25,
+          "longitude": 1.25
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lorient -> Vannes)-F010",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 1.75
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Saint Brieuc -> Rennes)-F054",
+      "metadata": {
+        "location": {
+          "latitude": 1.0,
+          "longitude": 0.75
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Rennes -> Vannes)-F055",
+      "metadata": {
+        "location": {
+          "latitude": 1.0,
+          "longitude": 1.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Brest -> Quimper)-F056",
+      "metadata": {
+        "location": {
+          "latitude": 3.25,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Vannes -> Lorient)-F057-pair-1",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 1.75
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lorient -> Quimper)-F059-pair-1",
+      "metadata": {
+        "location": {
+          "latitude": 2.25,
+          "longitude": 1.25
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Quimper -> Brest)-F060-pair-1",
+      "metadata": {
+        "location": {
+          "latitude": 3.25,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Vannes -> Lannion)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 1.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Morlaix -> Lannion)-",
+      "metadata": {
+        "location": {
+          "latitude": 2.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Brest -> Morlaix)-",
+      "metadata": {
+        "location": {
+          "latitude": 3.5,
+          "longitude": 0.0
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Saint Brieuc -> Lannion)-",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 0.25
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lorient -> Quimper)-F061",
+      "metadata": {
+        "location": {
+          "latitude": 2.25,
+          "longitude": 1.25
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Vannes -> Lorient)-F010",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 1.75
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Rennes -> Saint Brieuc)-F054",
+      "metadata": {
+        "location": {
+          "latitude": 1.0,
+          "longitude": 0.75
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Vannes -> Rennes)-F055",
+      "metadata": {
+        "location": {
+          "latitude": 1.0,
+          "longitude": 1.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 100,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Quimper -> Brest)-F056",
+      "metadata": {
+        "location": {
+          "latitude": 3.25,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Lorient -> Vannes)-F057-pair-1",
+      "metadata": {
+        "location": {
+          "latitude": 1.5,
+          "longitude": 1.75
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Quimper -> Lorient)-F059-pair-1",
+      "metadata": {
+        "location": {
+          "latitude": 2.25,
+          "longitude": 1.25
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "fiber (Brest -> Quimper)-F060-pair-1",
+      "metadata": {
+        "location": {
+          "latitude": 3.25,
+          "longitude": 0.5
+        }
+      },
+      "type": "Fiber",
+      "type_variety": "SSMF",
+      "params": {
+        "length": 50,
+        "length_units": "km",
+        "loss_coef": 0.2,
+        "con_in": null,
+        "con_out": null
+      }
+    },
+    {
+      "uid": "west edfa in Saint Brieuc",
+      "metadata": {
+        "location": {
+          "city": "Saint Brieuc",
+          "region": "",
+          "latitude": 1,
+          "longitude": 0.5
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": null
+      }
+    },
+    {
+      "uid": "west edfa in Lorient",
+      "metadata": {
+        "location": {
+          "city": "Lorient",
+          "region": "",
+          "latitude": 2,
+          "longitude": 1.5
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": null
+      }
+    },
+    {
+      "uid": "west edfa in Lorient-pair-1",
+      "metadata": {
+        "location": {
+          "city": "Lorient",
+          "region": "",
+          "latitude": 2,
+          "longitude": 1.5
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": null
+      }
+    },
+    {
+      "uid": "east edfa in Saint Brieuc",
+      "metadata": {
+        "location": {
+          "city": "Saint Brieuc",
+          "region": "",
+          "latitude": 1,
+          "longitude": 0.5
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": null
+      }
+    },
+    {
+      "uid": "east edfa in Lorient",
+      "metadata": {
+        "location": {
+          "city": "Lorient",
+          "region": "",
+          "latitude": 2,
+          "longitude": 1.5
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": null
+      }
+    },
+    {
+      "uid": "east edfa in Lorient-pair-1",
+      "metadata": {
+        "location": {
+          "city": "Lorient",
+          "region": "",
+          "latitude": 2,
+          "longitude": 1.5
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "tilt_target": null
+      }
+    },
+    {
+      "uid": "east edfa in Lannion to Vannes",
+      "metadata": {
+        "location": {
+          "city": "Lannion",
+          "region": "",
+          "latitude": 2,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Lannion to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Lannion",
+          "region": "",
+          "latitude": 2,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Morlaix to Brest",
+      "metadata": {
+        "location": {
+          "city": "Morlaix",
+          "region": "",
+          "latitude": 3,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Lannion to Saint Brieuc",
+      "metadata": {
+        "location": {
+          "city": "Lannion",
+          "region": "",
+          "latitude": 2,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Vannes to Lannion",
+      "metadata": {
+        "location": {
+          "city": "Vannes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 2
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Vannes to Rennes",
+      "metadata": {
+        "location": {
+          "city": "Vannes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 2
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Vannes to Lorient",
+      "metadata": {
+        "location": {
+          "city": "Vannes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 2
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Brest to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Brest",
+          "region": "",
+          "latitude": 4,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Brest to Quimper",
+      "metadata": {
+        "location": {
+          "city": "Brest",
+          "region": "",
+          "latitude": 4,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "type_variety": "std_medium_gain",
+      "operational": {
+        "gain_target": null,
+        "delta_p": -2,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Brest to Quimper-pair-1",
+      "metadata": {
+        "location": {
+          "city": "Brest",
+          "region": "",
+          "latitude": 4,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "east edfa in Rennes to Vannes",
+      "metadata": {
+        "location": {
+          "city": "Rennes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 1
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Lannion to Vannes",
+      "metadata": {
+        "location": {
+          "city": "Lannion",
+          "region": "",
+          "latitude": 2,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Lannion to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Lannion",
+          "region": "",
+          "latitude": 2,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Morlaix to Brest",
+      "metadata": {
+        "location": {
+          "city": "Morlaix",
+          "region": "",
+          "latitude": 3,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Lannion to Saint Brieuc",
+      "metadata": {
+        "location": {
+          "city": "Lannion",
+          "region": "",
+          "latitude": 2,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Vannes to Lannion",
+      "metadata": {
+        "location": {
+          "city": "Vannes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 2
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Vannes to Rennes",
+      "metadata": {
+        "location": {
+          "city": "Vannes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 2
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Vannes to Lorient",
+      "metadata": {
+        "location": {
+          "city": "Vannes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 2
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Brest to Morlaix",
+      "metadata": {
+        "location": {
+          "city": "Brest",
+          "region": "",
+          "latitude": 4,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Brest to Quimper",
+      "metadata": {
+        "location": {
+          "city": "Brest",
+          "region": "",
+          "latitude": 4,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Brest to Quimper-pair-1",
+      "metadata": {
+        "location": {
+          "city": "Brest",
+          "region": "",
+          "latitude": 4,
+          "longitude": 0
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    },
+    {
+      "uid": "west edfa in Rennes to Vannes",
+      "metadata": {
+        "location": {
+          "city": "Rennes",
+          "region": "",
+          "latitude": 1,
+          "longitude": 1
+        }
+      },
+      "type": "Edfa",
+      "operational": {
+        "gain_target": null,
+        "delta_p": null,
+        "tilt_target": null,
+        "out_voa": null,
+        "in_voa": 0
+      }
+    }
+  ],
+  "connections": [
+    {
+      "from_node": "roadm Lannion",
+      "to_node": "east edfa in Lannion to Vannes"
+    },
+    {
+      "from_node": "east edfa in Lannion to Vannes",
+      "to_node": "fiber (Lannion -> Vannes)-"
+    },
+    {
+      "from_node": "fiber (Vannes -> Lannion)-",
+      "to_node": "west edfa in Lannion to Vannes"
+    },
+    {
+      "from_node": "west edfa in Lannion to Vannes",
+      "to_node": "roadm Lannion"
+    },
+    {
+      "from_node": "roadm Lannion",
+      "to_node": "east edfa in Lannion to Morlaix"
+    },
+    {
+      "from_node": "east edfa in Lannion to Morlaix",
+      "to_node": "fiber (Lannion -> Morlaix)-"
+    },
+    {
+      "from_node": "fiber (Morlaix -> Lannion)-",
+      "to_node": "west edfa in Lannion to Morlaix"
+    },
+    {
+      "from_node": "west edfa in Lannion to Morlaix",
+      "to_node": "roadm Lannion"
+    },
+    {
+      "from_node": "roadm Lannion",
+      "to_node": "east edfa in Lannion to Saint Brieuc"
+    },
+    {
+      "from_node": "east edfa in Lannion to Saint Brieuc",
+      "to_node": "fiber (Lannion -> Saint Brieuc)-"
+    },
+    {
+      "from_node": "fiber (Saint Brieuc -> Lannion)-",
+      "to_node": "west edfa in Lannion to Saint Brieuc"
+    },
+    {
+      "from_node": "west edfa in Lannion to Saint Brieuc",
+      "to_node": "roadm Lannion"
+    },
+    {
+      "from_node": "fiber (Lannion -> Morlaix)-",
+      "to_node": "east edfa in Morlaix to Brest"
+    },
+    {
+      "from_node": "east edfa in Morlaix to Brest",
+      "to_node": "fiber (Morlaix -> Brest)-"
+    },
+    {
+      "from_node": "fiber (Brest -> Morlaix)-",
+      "to_node": "west edfa in Morlaix to Brest"
+    },
+    {
+      "from_node": "west edfa in Morlaix to Brest",
+      "to_node": "fiber (Morlaix -> Lannion)-"
+    },
+    {
+      "from_node": "roadm Brest",
+      "to_node": "east edfa in Brest to Morlaix"
+    },
+    {
+      "from_node": "east edfa in Brest to Morlaix",
+      "to_node": "fiber (Brest -> Morlaix)-"
+    },
+    {
+      "from_node": "fiber (Morlaix -> Brest)-",
+      "to_node": "west edfa in Brest to Morlaix"
+    },
+    {
+      "from_node": "west edfa in Brest to Morlaix",
+      "to_node": "roadm Brest"
+    },
+    {
+      "from_node": "roadm Brest",
+      "to_node": "east edfa in Brest to Quimper"
+    },
+    {
+      "from_node": "east edfa in Brest to Quimper",
+      "to_node": "fiber (Brest -> Quimper)-F056"
+    },
+    {
+      "from_node": "fiber (Quimper -> Brest)-F056",
+      "to_node": "west edfa in Brest to Quimper"
+    },
+    {
+      "from_node": "west edfa in Brest to Quimper",
+      "to_node": "roadm Brest"
+    },
+    {
+      "from_node": "roadm Brest",
+      "to_node": "east edfa in Brest to Quimper-pair-1"
+    },
+    {
+      "from_node": "east edfa in Brest to Quimper-pair-1",
+      "to_node": "fiber (Brest -> Quimper)-F060-pair-1"
+    },
+    {
+      "from_node": "fiber (Quimper -> Brest)-F060-pair-1",
+      "to_node": "west edfa in Brest to Quimper-pair-1"
+    },
+    {
+      "from_node": "west edfa in Brest to Quimper-pair-1",
+      "to_node": "roadm Brest"
+    },
+    {
+      "from_node": "roadm Rennes",
+      "to_node": "fiber (Rennes -> Saint Brieuc)-F054"
+    },
+    {
+      "from_node": "fiber (Saint Brieuc -> Rennes)-F054",
+      "to_node": "roadm Rennes"
+    },
+    {
+      "from_node": "roadm Rennes",
+      "to_node": "east edfa in Rennes to Vannes"
+    },
+    {
+      "from_node": "east edfa in Rennes to Vannes",
+      "to_node": "fiber (Rennes -> Vannes)-F055"
+    },
+    {
+      "from_node": "fiber (Vannes -> Rennes)-F055",
+      "to_node": "west edfa in Rennes to Vannes"
+    },
+    {
+      "from_node": "west edfa in Rennes to Vannes",
+      "to_node": "roadm Rennes"
+    },
+    {
+      "from_node": "roadm Vannes",
+      "to_node": "east edfa in Vannes to Lannion"
+    },
+    {
+      "from_node": "east edfa in Vannes to Lannion",
+      "to_node": "fiber (Vannes -> Lannion)-"
+    },
+    {
+      "from_node": "fiber (Lannion -> Vannes)-",
+      "to_node": "west edfa in Vannes to Lannion"
+    },
+    {
+      "from_node": "west edfa in Vannes to Lannion",
+      "to_node": "roadm Vannes"
+    },
+    {
+      "from_node": "roadm Vannes",
+      "to_node": "east edfa in Vannes to Lorient"
+    },
+    {
+      "from_node": "east edfa in Vannes to Lorient",
+      "to_node": "fiber (Vannes -> Lorient)-F010"
+    },
+    {
+      "from_node": "fiber (Lorient -> Vannes)-F010",
+      "to_node": "west edfa in Vannes to Lorient"
+    },
+    {
+      "from_node": "west edfa in Vannes to Lorient",
+      "to_node": "roadm Vannes"
+    },
+    {
+      "from_node": "roadm Vannes",
+      "to_node": "east edfa in Vannes to Rennes"
+    },
+    {
+      "from_node": "east edfa in Vannes to Rennes",
+      "to_node": "fiber (Vannes -> Rennes)-F055"
+    },
+    {
+      "from_node": "fiber (Rennes -> Vannes)-F055",
+      "to_node": "west edfa in Vannes to Rennes"
+    },
+    {
+      "from_node": "west edfa in Vannes to Rennes",
+      "to_node": "roadm Vannes"
+    },
+    {
+      "from_node": "roadm Vannes",
+      "to_node": "fiber (Vannes -> Lorient)-F057-pair-1"
+    },
+    {
+      "from_node": "fiber (Lorient -> Vannes)-F057-pair-1",
+      "to_node": "roadm Vannes"
+    },
+    {
+      "from_node": "fiber (Lannion -> Saint Brieuc)-",
+      "to_node": "west edfa in Saint Brieuc"
+    },
+    {
+      "from_node": "west edfa in Saint Brieuc",
+      "to_node": "fiber (Saint Brieuc -> Rennes)-F054"
+    },
+    {
+      "from_node": "fiber (Rennes -> Saint Brieuc)-F054",
+      "to_node": "east edfa in Saint Brieuc"
+    },
+    {
+      "from_node": "east edfa in Saint Brieuc",
+      "to_node": "fiber (Saint Brieuc -> Lannion)-"
+    },
+    {
+      "from_node": "fiber (Lorient -> Quimper)-F061",
+      "to_node": "west fused spans in Quimper"
+    },
+    {
+      "from_node": "west fused spans in Quimper",
+      "to_node": "fiber (Quimper -> Brest)-F056"
+    },
+    {
+      "from_node": "fiber (Brest -> Quimper)-F056",
+      "to_node": "east fused spans in Quimper"
+    },
+    {
+      "from_node": "east fused spans in Quimper",
+      "to_node": "fiber (Quimper -> Lorient)-F061"
+    },
+    {
+      "from_node": "fiber (Lorient -> Quimper)-F059-pair-1",
+      "to_node": "west fused spans in Quimper-pair-1"
+    },
+    {
+      "from_node": "west fused spans in Quimper-pair-1",
+      "to_node": "fiber (Quimper -> Brest)-F060-pair-1"
+    },
+    {
+      "from_node": "fiber (Brest -> Quimper)-F060-pair-1",
+      "to_node": "east fused spans in Quimper-pair-1"
+    },
+    {
+      "from_node": "east fused spans in Quimper-pair-1",
+      "to_node": "fiber (Quimper -> Lorient)-F059-pair-1"
+    },
+    {
+      "from_node": "fiber (Quimper -> Lorient)-F061",
+      "to_node": "west edfa in Lorient"
+    },
+    {
+      "from_node": "west edfa in Lorient",
+      "to_node": "fiber (Lorient -> Vannes)-F010"
+    },
+    {
+      "from_node": "fiber (Vannes -> Lorient)-F010",
+      "to_node": "east edfa in Lorient"
+    },
+    {
+      "from_node": "east edfa in Lorient",
+      "to_node": "fiber (Lorient -> Quimper)-F061"
+    },
+    {
+      "from_node": "fiber (Vannes -> Lorient)-F057-pair-1",
+      "to_node": "west edfa in Lorient-pair-1"
+    },
+    {
+      "from_node": "west edfa in Lorient-pair-1",
+      "to_node": "fiber (Lorient -> Quimper)-F059-pair-1"
+    },
+    {
+      "from_node": "fiber (Quimper -> Lorient)-F059-pair-1",
+      "to_node": "east edfa in Lorient-pair-1"
+    },
+    {
+      "from_node": "east edfa in Lorient-pair-1",
+      "to_node": "fiber (Lorient -> Vannes)-F057-pair-1"
+    },
+    {
+      "from_node": "trx Lannion",
+      "to_node": "roadm Lannion"
+    },
+    {
+      "from_node": "roadm Lannion",
+      "to_node": "trx Lannion"
+    },
+    {
+      "from_node": "trx Brest",
+      "to_node": "roadm Brest"
+    },
+    {
+      "from_node": "roadm Brest",
+      "to_node": "trx Brest"
+    },
+    {
+      "from_node": "trx Rennes",
+      "to_node": "roadm Rennes"
+    },
+    {
+      "from_node": "roadm Rennes",
+      "to_node": "trx Rennes"
+    },
+    {
+      "from_node": "trx Vannes",
+      "to_node": "roadm Vannes"
+    },
+    {
+      "from_node": "roadm Vannes",
+      "to_node": "trx Vannes"
+    }
+  ]
+}

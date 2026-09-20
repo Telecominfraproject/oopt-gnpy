@@ -8,6 +8,39 @@ Each release introduces some changes and new features.
 
 (prepare text for next release)
 
+**Parallel links in Excel topologies**
+
+Excel topology files can now define several parallel bidirectional links
+between the same pair of nodes.
+
+Each row in the ``Links`` sheet still represents one bidirectional link. When
+several rows use the same endpoints, each row is treated as a distinct
+parallel link. The links are paired according to their row order and assigned
+an internal pair identifier.
+
+Pair identifiers are propagated to:
+
+- link fibers;
+- equipment definitions;
+- ROADM degree definitions;
+- ILA and FUSED nodes.
+
+Generated JSON UIDs include the pair identifier when required. ILA and FUSED
+nodes are duplicated when they are associated with different parallel link
+pairs. ROADM degree associations are also generated to preserve the relation
+between parallel degrees.
+
+The converter now validates inconsistent parallel definitions, including:
+
+- different numbers of parallel links on the two sides of an ILA or FUSED
+  node;
+- too many equipment definitions for the corresponding links;
+- duplicate equipment definitions on the same ILA;
+- invalid ROADM nodes or degrees.
+
+Existing Excel topologies containing only one link per pair of endpoints remain
+unchanged.
+
 v3.0
 ====
 
