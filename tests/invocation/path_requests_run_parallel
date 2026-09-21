@@ -1,0 +1,161 @@
+[1;34;40mList of disjunctions[0m
+[Disjunction 1
+	relaxable:    False
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['1', '0']
+, Disjunction 2
+	relaxable:    False
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['2', '1', '0']
+, Disjunction 4
+	relaxable:    False
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['4', '5']
+]
+[1;34;40mThe following services have been requested:[0m
+[PathRequest 0
+	source: 	trx Brest
+	destination:	trx Vannes
+	trx type:	Voyager
+	trx mode:	None
+	baud_rate:	None Gbaud
+	bit_rate:	None Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	80
+	path_bandwidth: 	100.0 Gbit/s
+	nodes-list:	['west edfa in Lorient', 'roadm Vannes']
+	loose-list:	['LOOSE', 'LOOSE']
+, PathRequest 1
+	source: 	trx Brest
+	destination:	trx Vannes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	96
+	path_bandwidth: 	200.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 2
+	source: 	trx Brest
+	destination:	trx Vannes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	96
+	path_bandwidth: 	200.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 3
+	source: 	trx Lannion
+	destination:	trx Rennes
+	trx type:	vendorA_trx-type1
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	96
+	path_bandwidth: 	60.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 4
+	source: 	trx Rennes
+	destination:	trx Lannion
+	trx type:	vendorA_trx-type1
+	trx mode:	None
+	baud_rate:	None Gbaud
+	bit_rate:	None Gb/s
+	spacing:	75.0 GHz
+	power:  	3.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	64
+	path_bandwidth: 	150.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 5
+	source: 	trx Rennes
+	destination:	trx Lannion
+	trx type:	vendorA_trx-type1
+	trx mode:	mode 2
+	baud_rate:	66.0 Gbaud
+	bit_rate:	200.0 Gb/s
+	spacing:	75.0 GHz
+	power:  	3.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	63
+	path_bandwidth: 	20.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 6
+	source: 	trx Lannion
+	destination:	trx Rennes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	76
+	path_bandwidth: 	300.0 Gbit/s
+	nodes-list:	['roadm Vannes']
+	loose-list:	['LOOSE']
+, PathRequest 7
+	source: 	trx Lannion
+	destination:	trx Rennes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	76
+	path_bandwidth: 	400.0 Gbit/s
+	nodes-list:	['roadm Brest']
+	loose-list:	['LOOSE']
+, PathRequest 7b
+	source: 	trx Lannion
+	destination:	trx Rennes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	75.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	50
+	path_bandwidth: 	400.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+]
+[1;34;40mResult summary[0m
++----------+----------------------------+------------------+--------------+------------------+--------------+------------+--------+----------+-------------+-------------------+
+|  req id  |           demand           |  GSNR@bandwidth  |  GSNR@0.1nm  |  OSNR@bandwidth  |  OSNR@0.1nm  |  Receiver  |  mode  |  Gbit/s  |   nb of     |      N,M or       |
+|          |                            |    A-Z (Z-A)     |  A-Z (Z-A)   |    A-Z (Z-A)     |  A-Z (Z-A)   |  minOSNR   |        |          |  tsp pairs  |  blocking reason  |
+|----------+----------------------------+------------------+--------------+------------------+--------------+------------+--------+----------+-------------+-------------------|
+|    0     |  trx Brest to trx Vannes:  |      21.27       |    25.35     |      21.67       |    25.76     |     14     | mode 1 |   100    |      1      |   ([-284],[4])    |
+|    1     |  trx Brest to trx Vannes:  |      22.86       |    26.94     |      24.26       |    28.34     |     14     | mode 1 |   200    |      2      |   ([-280],[8])    |
+|    2     |  trx Brest to trx Vannes:  |      20.55       |    24.63     |       21.5       |    25.59     |     14     | mode 1 |   200    |      2      |   ([-280],[8])    |
+|    3     | trx Lannion to trx Rennes: |      20.06       |    24.14     |       21.1       |    25.18     |     13     | mode 1 |    60    |      1      |   ([-284],[4])    |
+|    4     | trx Rennes to trx Lannion: |      17.56       |    24.79     |      17.74       |    24.96     |     17     | mode 2 |   150    |      1      |   ([-266],[6])    |
+|    5     | trx Rennes to trx Lannion: |      18.66       |    25.88     |      18.89       |    26.11     |     17     | mode 2 |    20    |      1      |   ([-274],[6])    |
+|    6     | trx Lannion to trx Rennes: |      19.95       |    24.03     |       20.9       |    24.98     |     14     | mode 1 |   300    |      3      |   ([-248],[12])   |
+|    7     | trx Lannion to trx Rennes: |      18.22       |    22.31     |      18.94       |    23.03     |     14     | mode 1 |   400    |      4      |   ([-220],[16])   |
+|    7b    | trx Lannion to trx Rennes: |      20.41       |    24.49     |      21.11       |     25.2     |     14     | mode 1 |   400    |      4      |   ([-244],[24])   |
++----------+----------------------------+------------------+--------------+------------------+--------------+------------+--------+----------+-------------+-------------------+
+Result summary shows mean GSNR and OSNR (average over all channels)

@@ -1,0 +1,210 @@
+INFO     gnpy.tools.cli_examples:cli_examples.py Computing path requests parallel_links.xlsx into JSON format
+WARNING  gnpy.tools.json_io:json_io.py 
+	WARNING missing type_variety attribute in eqpt_config.json[Roadm]
+	default value is type_variety = default
+
+INFO     gnpy.core.network:network.py 
+Reference used for design: (Input optical power reference in span = 0.00dBm
+                            spacing = 50.000GHz
+                            nb_channels = 76
+INFO     gnpy.tools.json_io:json_io.py Automatically converting requests from XLS to JSON
+INFO     gnpy.tools.service_sheet:service_sheet.py 0: Invalid route node specified:
+	'Lorient', replaced with 'west edfa in Lorient'
+INFO     gnpy.tools.service_sheet:service_sheet.py 0: Invalid route node specified:
+	'Vannes', replaced with 'roadm Vannes'
+INFO     gnpy.tools.service_sheet:service_sheet.py 6: Invalid route node specified:
+	'Vannes', replaced with 'roadm Vannes'
+INFO     gnpy.tools.service_sheet:service_sheet.py 7: Invalid route node specified:
+	'Brest', replaced with 'roadm Brest'
+INFO     gnpy.tools.worker_utils:worker_utils.py List of disjunctions:
+[Disjunction 1
+	relaxable:    False
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['1', '0']
+, Disjunction 2
+	relaxable:    False
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['2', '1', '0']
+, Disjunction 4
+	relaxable:    False
+	link-diverse: True
+	node-diverse: True
+	request-id-numbers: ['4', '5']
+]
+INFO     gnpy.tools.worker_utils:worker_utils.py Aggregating similar requests
+INFO     gnpy.tools.worker_utils:worker_utils.py The following services have been requested:
+[PathRequest 0
+	source: 	trx Brest
+	destination:	trx Vannes
+	trx type:	Voyager
+	trx mode:	None
+	baud_rate:	None Gbaud
+	bit_rate:	None Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	80
+	path_bandwidth: 	100.0 Gbit/s
+	nodes-list:	['west edfa in Lorient', 'roadm Vannes']
+	loose-list:	['LOOSE', 'LOOSE']
+, PathRequest 1
+	source: 	trx Brest
+	destination:	trx Vannes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	96
+	path_bandwidth: 	200.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 2
+	source: 	trx Brest
+	destination:	trx Vannes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	1.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	96
+	path_bandwidth: 	200.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 3
+	source: 	trx Lannion
+	destination:	trx Rennes
+	trx type:	vendorA_trx-type1
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	96
+	path_bandwidth: 	60.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 4
+	source: 	trx Rennes
+	destination:	trx Lannion
+	trx type:	vendorA_trx-type1
+	trx mode:	None
+	baud_rate:	None Gbaud
+	bit_rate:	None Gb/s
+	spacing:	75.0 GHz
+	power:  	3.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	64
+	path_bandwidth: 	150.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 5
+	source: 	trx Rennes
+	destination:	trx Lannion
+	trx type:	vendorA_trx-type1
+	trx mode:	mode 2
+	baud_rate:	66.0 Gbaud
+	bit_rate:	200.0 Gb/s
+	spacing:	75.0 GHz
+	power:  	3.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	63
+	path_bandwidth: 	20.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+, PathRequest 6
+	source: 	trx Lannion
+	destination:	trx Rennes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	76
+	path_bandwidth: 	300.0 Gbit/s
+	nodes-list:	['roadm Vannes']
+	loose-list:	['LOOSE']
+, PathRequest 7
+	source: 	trx Lannion
+	destination:	trx Rennes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	50.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	76
+	path_bandwidth: 	400.0 Gbit/s
+	nodes-list:	['roadm Brest']
+	loose-list:	['LOOSE']
+, PathRequest 7b
+	source: 	trx Lannion
+	destination:	trx Rennes
+	trx type:	Voyager
+	trx mode:	mode 1
+	baud_rate:	32.0 Gbaud
+	bit_rate:	100.0 Gb/s
+	spacing:	75.0 GHz
+	power:  	0.0 dBm
+	tx_power_dbm:  	0.0 dBm
+	nb channels: 	50
+	path_bandwidth: 	400.0 Gbit/s
+	nodes-list:	[]
+	loose-list:	[]
+]
+INFO     gnpy.tools.worker_utils:worker_utils.py Propagating on selected path
+INFO     gnpy.topology.request:request.py 
+	request 0
+	Computing path from trx Brest to trx Vannes
+	with path constraint: ['trx Brest', 'west edfa in Lorient', 'roadm Vannes', 'trx Vannes']
+	Computed path (roadms): ['roadm Brest', 'roadm Vannes']
+INFO     gnpy.topology.request:request.py 
+	request 1
+	Computing path from trx Brest to trx Vannes
+	with path constraint: ['trx Brest', 'trx Vannes']
+	Computed path (roadms): ['roadm Brest', 'roadm Vannes']
+INFO     gnpy.topology.request:request.py 
+	request 2
+	Computing path from trx Brest to trx Vannes
+	with path constraint: ['trx Brest', 'trx Vannes']
+	Computed path (roadms): ['roadm Brest', 'roadm Lannion', 'roadm Vannes']
+INFO     gnpy.topology.request:request.py 
+	request 3
+	Computing path from trx Lannion to trx Rennes
+	with path constraint: ['trx Lannion', 'trx Rennes']
+	Computed path (roadms): ['roadm Lannion', 'roadm Rennes']
+INFO     gnpy.topology.request:request.py 
+	request 4
+	Computing path from trx Rennes to trx Lannion
+	with path constraint: ['trx Rennes', 'trx Lannion']
+	Computed path (roadms): ['roadm Rennes', 'roadm Vannes', 'roadm Lannion']
+INFO     gnpy.topology.request:request.py 
+	request 5
+	Computing path from trx Rennes to trx Lannion
+	with path constraint: ['trx Rennes', 'trx Lannion']
+	Computed path (roadms): ['roadm Rennes', 'roadm Lannion']
+INFO     gnpy.topology.request:request.py 
+	request 6
+	Computing path from trx Lannion to trx Rennes
+	with path constraint: ['trx Lannion', 'roadm Vannes', 'trx Rennes']
+	Computed path (roadms): ['roadm Lannion', 'roadm Vannes', 'roadm Rennes']
+INFO     gnpy.topology.request:request.py 
+	request 7
+	Computing path from trx Lannion to trx Rennes
+	with path constraint: ['trx Lannion', 'roadm Brest', 'trx Rennes']
+	Computed path (roadms): ['roadm Lannion', 'roadm Brest', 'roadm Vannes', 'roadm Rennes']
+INFO     gnpy.topology.request:request.py 
+	request 7b
+	Computing path from trx Lannion to trx Rennes
+	with path constraint: ['trx Lannion', 'trx Rennes']
+	Computed path (roadms): ['roadm Lannion', 'roadm Rennes']
