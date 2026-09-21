@@ -916,30 +916,32 @@ def corresp_names(input_filename: Path, network: DiGraph) -> Tuple[dict, dict, d
     :return: A tuple containing dictionaries for ROADMs, fused nodes, and ILAs.
     :rtype: Tuple[dict, dict, dict]
     """
-    nodes, links, eqpts, _ = parse_excel(input_filename)
+    nodes, links, eqpts, roadms = parse_excel(input_filename)
+    assign_implicit_pair_ids(nodes, links, eqpts, roadms)
     fused = [n.uid for n in network.nodes() if isinstance(n, Fused)]
     ila = [n.uid for n in network.nodes() if isinstance(n, Edfa)]
 
     corresp_roadm = {x.city: [f'roadm {x.city}'] for x in nodes
                      if x.node_type.lower() == 'roadm'}
-    corresp_fused = {x.city: [f'west fused spans in {x.city}', f'east fused spans in {x.city}']
+    corresp_fused = {x.city: [f'west fused spans in {x.city}{pair_string(x)}',
+                              f'east fused spans in {x.city}{pair_string(x)}']
                      for x in nodes if x.node_type.lower() == 'fused'
-                     and f'west fused spans in {x.city}' in fused
-                     and f'east fused spans in {x.city}' in fused}
+                     and f'west fused spans in {x.city}{pair_string(x)}' in fused
+                     and f'east fused spans in {x.city}{pair_string(x)}' in fused}
     corresp_ila = defaultdict(list)
     # add the special cases when an ila is changed into a fused
     for my_e in eqpts:
-        name = f'east edfa in {my_e.from_city} to {my_e.to_city}'
+        name = f'east edfa in {my_e.from_city} to {my_e.to_city}{pair_string(my_e)}'
         if my_e.east_amp_type.lower() == 'fused' and name in fused:
             corresp_fused.get(my_e.from_city, []).append(name)
-        name = f'west edfa in {my_e.from_city} to {my_e.to_city}'
+        name = f'west edfa in {my_e.from_city} to {my_e.to_city}{pair_string(my_e)}'
         if my_e.west_amp_type.lower() == 'fused' and name in fused:
             corresp_fused.get(my_e.from_city, []).append(name)
     # build corresp ila based on eqpt sheet
     # start with east direction
     for my_e in eqpts:
-        for name in [f'east edfa in {my_e.from_city} to {my_e.to_city}',
-                     f'west edfa in {my_e.from_city} to {my_e.to_city}']:
+        for name in [f'east edfa in {my_e.from_city} to {my_e.to_city}{pair_string(my_e)}',
+                     f'west edfa in {my_e.from_city} to {my_e.to_city}{pair_string(my_e)}']:
             if name in ila:
                 corresp_ila[my_e.from_city].append(name)
     # complete with potential autodesign names: amplifiers
@@ -947,8 +949,8 @@ def corresp_names(input_filename: Path, network: DiGraph) -> Tuple[dict, dict, d
         # create names whatever the type and filter them out
         # from-to direction
         names = [
-            f'Edfa_preamp_roadm {my_l.from_city}_from_fiber ({my_l.to_city} -> {my_l.from_city})-{my_l.west_cable}',
-            f'Edfa_booster_roadm {my_l.from_city}_to_fiber ({my_l.from_city} -> {my_l.to_city})-{my_l.east_cable}']
+            f'Edfa_preamp_roadm {my_l.from_city}_from_fiber ({my_l.to_city} -> {my_l.from_city})-{my_l.west_cable}{pair_string(my_e)}',  # noqa E501
+            f'Edfa_booster_roadm {my_l.from_city}_to_fiber ({my_l.from_city} -> {my_l.to_city})-{my_l.east_cable}{pair_string(my_e)}']   # noqa E501
         for name in names:
             if name in ila:
                 # "east edfa in Stbrieuc to Rennes_STA"  is equivalent name as
@@ -958,13 +960,13 @@ def corresp_names(input_filename: Path, network: DiGraph) -> Tuple[dict, dict, d
                 # in case fibers are splitted the name here is a
                 corresp_ila[my_l.from_city].append(name)
         # to-from direction
-        names = [f'Edfa_preamp_roadm {my_l.to_city}_from_fiber ({my_l.from_city} -> {my_l.to_city})-{my_l.east_cable}',
-                 f'Edfa_booster_roadm {my_l.to_city}_to_fiber ({my_l.to_city} -> {my_l.from_city})-{my_l.west_cable}']
+        names = [f'Edfa_preamp_roadm {my_l.to_city}_from_fiber ({my_l.from_city} -> {my_l.to_city})-{my_l.east_cable}{pair_string(my_e)}',  # noqa E501
+                 f'Edfa_booster_roadm {my_l.to_city}_to_fiber ({my_l.to_city} -> {my_l.from_city})-{my_l.west_cable}{pair_string(my_e)}']   # noqa E501
         for name in names:
             if name in ila:
                 corresp_ila[my_l.to_city].append(name)
     for node in nodes:
-        names = [f'east edfa in {node.city}', f'west edfa in {node.city}']
+        names = [f'east edfa in {node.city}{pair_string(node)}', f'west edfa in {node.city}{pair_string(node)}']
         for name in names:
             if name in ila:
                 # "east edfa in Stbrieuc to Rennes_STA" (created with Eqpt) is equivalent name as

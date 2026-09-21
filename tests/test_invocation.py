@@ -69,7 +69,9 @@ SRC_ROOT = Path(__file__).parent.parent
     ('transmission_dark_fiber', None, transmission_main_example,
      ['tests/data/dark_fiber_links/dark_fiber_topo.json', '-r', 'dark fiber attached Transceiver', '-s', 'tests/data/dark_fiber_links/services.json']),
     ('path_requests_run_dark_fiber', None, path_requests_run,
-         ['tests/data/dark_fiber_links/dark_fiber_topo.json', 'tests/data/dark_fiber_links/services.json'])
+         ['tests/data/dark_fiber_links/dark_fiber_topo.json', 'tests/data/dark_fiber_links/services.json']),
+    ('path_requests_run_parallel', 'logs_path_requests_parallel', path_requests_run,
+         ['tests/data/parallel_omses/parallel_links.xlsx', 'tests/data/parallel_omses/parallel_links.xlsx', '-v']),
 ))
 def test_example_invocation(capfd, caplog, output, log, handler, args):
     """Make sure that our examples produce useful output"""
