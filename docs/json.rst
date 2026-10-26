@@ -437,7 +437,7 @@ The following fields are mandatory when ``detailed_rx`` is provided:
 +-------------------------------+-----------+-----------------------------------------------+
 
 The ``detailed_rx`` parameters are used to calculate the BER from the
-received SNR and then derive the Q-margin.
+received SNR and then derive the Q-margin (see :cite:`6158564` and :cite:`10526764`).
 
 The Q-margin is defined as the difference between:
 
