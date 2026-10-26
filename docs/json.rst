@@ -221,7 +221,6 @@ How to use the alternate frequency dependent loss coefficient model:
     "dispersion": "0.0000167",
     "effective_area": "0.000000000083",
     "pmd_coef": "0.000000000000001265",
-    "loss_coef_ripple":
       "loss_coef_ripple": [
           {"frequency": "185492341356674.0", "loss_coef_ripple_value": "0.0086276629224582"},
           {"frequency": "186052516411378.6", "loss_coef_ripple_value": "0.0058291554597716"},
@@ -531,6 +530,14 @@ The user can only modify the value of existing parameters:
 | ``roadm-path-impairments``    | (list of  | Optional. List of ROADM path category impairments. |
 |                               | dict)     |                                                    |
 +-------------------------------+-----------+----------------------------------------------------+
+| ``degree-association``        | (list of  | Optional. Associates an egress degree with the     |
+|                               | dict)     | ingress degree belonging to the same bidirectional |
+|                               |           | OMS. Each item contains ``degree`` (an egress      |
+|                               |           | degree UID) and ``paired-degree`` (the matching    |
+|                               |           | ingress degree UID). Required to disambiguate      |
+|                               |           | parallel OMSes when they connect the same pair of  |
+|                               |           | ROADMs.                                            |
++-------------------------------+-----------+----------------------------------------------------+
 
 In addition to these general impairment, the user may define detailed set of impairments for add,
 drop and express path within the the ROADM. The impairment description is inspired from the `IETF
@@ -711,6 +718,53 @@ It is not permitted to use a roadm-path-impairment-id for the wrong roadm path t
 If nothing is stated for impairments on roadm-paths, the program identifies the paths implicitly and assigns the first impairment_id that matches the type: if a transceiver is present on one degree, then it is an add/drop degree.
 
 On the previous example, all «implicit» express roadm-path are assigned roadm-path-impairment-id = 0
+
+Degree associations
+^^^^^^^^^^^^^^^^^^^
+
+A ROADM may have several OMSes connecting it to the same neighboring ROADM.
+In that case, endpoint names alone are not sufficient to identify which OMS
+in one direction is the reverse of an OMS in the other direction.
+
+The optional ``degree-association`` list explicitly pairs the two degrees of
+each bidirectional OMS. Each entry has the following fields:
+
+- ``degree``: UID of the egress degree from the ROADM;
+- ``paired-degree``: UID of the corresponding ingress degree to the same ROADM.
+
+For example:
+
+.. code-block:: json
+
+    {
+      "uid": "roadm A",
+      "type": "Roadm",
+      "params": {
+        "degree-association": [
+          {
+            "degree": "east edfa in A to B-pair-1",
+            "paired-degree": "west edfa in A to B-pair-1"
+          },
+          {
+            "degree": "east edfa in A to B-pair-2",
+            "paired-degree": "west edfa in A to B-pair-2"
+          }
+        ]
+      }
+    }
+
+Degree UIDs must identify existing egress and ingress degrees of that ROADM.
+The paired degrees must lead to the same remote ROADM and must identify
+opposite directions of the same OMS.
+
+When there is only one possible reverse OMS between two ROADMs, GNPy can
+associate the OMSes automatically. If several reverse OMS candidates exist,
+the association must be provided; otherwise OMS identification fails with a
+topology error.
+
+Associations may also be inferred from the association declared at the other
+end of the OMS when that information is sufficient to identify the pairing.
+
 
 .. _sim-params:
 
@@ -1282,8 +1336,9 @@ Topology file contains a list of elements and a list of connections between the 
 Elements can be:
 
 - Fiber
-- RamanFiber
+- RamanFiber (to enable the complete Raman modelling)
 - Edfa
+- Multiband_amplifier
 - Fused
 - Roadm
 - Transceiver
@@ -1295,8 +1350,8 @@ Common attributes
 All elements contain the followind attributes:
 
 - **"uid"**: mandatory, element unique identifier.
-- **"type"**: mandatory, element type among possible types (Fiber, RamanFiber, Edfa, Fused, Roadm, Transceiver).
-- **"metadata"**: optional data including goelocation.
+- **"type"**: mandatory, element type among possible types (Fiber, RamanFiber, Edfa, Multiband_amplifier, Fused, Roadm, Transceiver).
+- **"metadata"**: optional data including geolocation.
 
 
 Fiber attributes/ RamanFiber attributes
