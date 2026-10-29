@@ -45,6 +45,7 @@
     {
       "type_variety": "4pumps_raman",
       "type_def": "fixed_gain",
+      "raman": true,
       "gain_flatmax": 12,
       "gain_min": 12,
       "p_max": 21,
@@ -211,6 +212,8 @@
     },
     {
       "type_variety": "std_booster",
+      "f_min": 191.25e12,
+      "f_max": 196.15e12,
       "type_def": "fixed_gain",
       "gain_flatmax": 21,
       "gain_min": 20,

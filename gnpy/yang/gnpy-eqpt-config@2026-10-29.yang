@@ -34,9 +34,9 @@ module gnpy-eqpt-config {
 
   description "Base YANG model for gnpy equipment library input for path computation - 2020 - candi preversion";
 
-  revision 2026-05-28 {
+  revision 2026-10-29 {
     description
-      "Add detailed-rx and correct ranges names";
+      "Add more checks on data for equipment validation tool.";
     reference
       "Base YANG model for equipment library, libyang validation";
   }
@@ -106,7 +106,9 @@ module gnpy-eqpt-config {
     leaf nf_min {
       type decimal64 {
         fraction-digits 2;
+        range "3 .. 100";
       }
+      must ". <= ./../nf_max";
       units "dB";
       description
         "Minimum Noise figure for the maximum gain.";
@@ -132,6 +134,11 @@ module gnpy-eqpt-config {
     leaf nf0 {
       type decimal64 {
         fraction-digits 2;
+      }
+       must "../raman = 'true' or . >= 3" {
+        error-message
+          "Fixed_gain amplifiers with nf0 < 3, are supposed to be Raman
+          simplified amplifier model and thus raman must be true.";
       }
       units "dB";
       description
@@ -186,6 +193,29 @@ module gnpy-eqpt-config {
           path "../../Edfa/other_name";
         }
       }
+      must "not(../../Edfa[type_variety = current()]"
+        + "/type_def = 'gnpyeqpt:dual_stage') and "
+        + "not(../../Edfa[other_name = current()]"
+        + "/type_def = 'gnpyeqpt:dual_stage')" {
+        error-message
+          "preamp_variety must not reference a dual_stage amplifier.";
+      }
+      must "not(../../Edfa"
+        + "[gnpyeqpt:type_variety = current() "
+        + "or gnpyeqpt:other_name = current()]"
+        + "[gnpyeqpt:raman = 'true']) "
+        + "or ../raman = 'true'" {
+        error-message
+          "A dual_stage amplifier whose preamp has raman must have raman set to true.";
+      }
+      must "not(../raman = 'true') or "
+        + "../../Edfa"
+        + "[gnpyeqpt:type_variety = current() "
+        + "or gnpyeqpt:other_name = current()]"
+        + "[gnpyeqpt:raman = 'true']" {
+        error-message
+          "A dual_stage amplifier with raman set to true must have a preamp with raman set to true.";
+      }
       description
         "Valid reference of an Edfa type_variety for the preamp
         amplifier of the dual amplifiers.";
@@ -199,6 +229,20 @@ module gnpy-eqpt-config {
           path "../../Edfa/other_name";
         }
       }
+      must "not(../../Edfa[type_variety = current()]"
+        + "/type_def = 'gnpyeqpt:dual_stage') and "
+        + "not(../../Edfa[other_name = current()]"
+        + "/type_def = 'gnpyeqpt:dual_stage')" {
+        error-message
+          "booster_variety must not reference a dual_stage amplifier.";
+      }
+      must "not(../../Edfa"
+        + "[gnpyeqpt:type_variety = current() "
+        + "or gnpyeqpt:other_name = current()]"
+        + "[gnpyeqpt:raman = 'true'])" {
+        error-message
+          "A booster amplifier must not have raman set to true.";
+      }
       description
         "Valid reference of an Edfa type_variety for the preamp
         amplifier of the dual amplifiers.";
@@ -209,7 +253,32 @@ module gnpy-eqpt-config {
     description
       "Definition of this multiband amplifier sub amplifiers types.";
     leaf-list amplifiers {
-      type string;
+      type union {
+        type leafref {
+          path "../../Edfa"
+            + "/gnpyeqpt:type_variety";
+        }
+        type leafref {
+          path "../../Edfa"
+            + "/gnpyeqpt:other_name";
+        }
+      }
+      must "not(../../Edfa"
+        + "[gnpyeqpt:type_variety = current() "
+        + "or gnpyeqpt:other_name = current()]"
+        + "[gnpyeqpt:type_def = 'gnpyeqpt:variable_gain' "
+        + "or gnpyeqpt:type_def = 'gnpyeqpt:fixed_gain']"
+        + "[not(gnpyeqpt:f_min and gnpyeqpt:f_max)])" {
+        error-message
+          "Each variable_gain or fixed_gain amplifier referenced by a multi_band amplifier must have f_min and f_max defined.";
+      }
+      must "not(../../Edfa"
+        + "[gnpyeqpt:type_variety = current() "
+        + "or gnpyeqpt:other_name = current()]"
+        + "[gnpyeqpt:type_def = 'gnpyeqpt:multi_band'])" {
+        error-message
+          "An amplifier referenced by a multi_band amplifier must not be a multi_band amplifier.";
+      }
       description "list of amplifier type-variety picked in other type-def";
     }
   }
@@ -237,6 +306,7 @@ module gnpy-eqpt-config {
         fraction-digits 2;
         range "0 .. 60";
       }
+      must ". >= ./../gain_min";
       units "dB";
       description
         "Amplifier maximum gain in dB before its extended gain range: flat
@@ -294,6 +364,7 @@ module gnpy-eqpt-config {
       description
         "Boolean flag that indicates if this amplifier contains a Raman amplifier.";
     }
+
     leaf out_voa_auto{
       type boolean ;
       description "auto_design feature to optimize the amplifier output VOA. If true, output VOA is present 
@@ -316,10 +387,10 @@ module gnpy-eqpt-config {
     }
     leaf pmd {
       type decimal64 {
-        fraction-digits 16;
+        fraction-digits 15;
+        range "0 .. 0.0000000001";
       }
       units "s";
-      must ". >= 0 and . <= 0.000000001";
       description
         "Polarization mode dispersion contribution of the amplifier (PMD)";
     }
@@ -401,6 +472,10 @@ module gnpy-eqpt-config {
         }
         units "m-2";
         must ". >= 0 and . <= 0.00000001";
+        must "not(../gamma)" {
+          error-message
+            "gamma must not be defined when effective_area is defined.";
+        }
         description
           "Effective area of the fiber (not just the MFD circle). This is the
           A_eff parameter of this type_variety.";
@@ -517,12 +592,37 @@ module gnpy-eqpt-config {
       description
         "List of amplifiers authorized in this ROADM for autodesign.";
       leaf-list preamp_variety_list {
-        type string;
+        type union {
+          type leafref {
+            path "../../../Edfa"
+              + "/gnpyeqpt:type_variety";
+          }
+          type leafref {
+            path "../../../Edfa"
+              + "/gnpyeqpt:other_name";
+          }
+        }
         description 
           "List of authorized preamp type-variety";
       }
       leaf-list booster_variety_list {
-        type string;
+        type union {
+          type leafref {
+            path "../../../Edfa"
+              + "/gnpyeqpt:type_variety";
+          }
+          type leafref {
+            path "../../../Edfa"
+              + "/gnpyeqpt:other_name";
+          }
+        }
+        must "not(../../../Edfa"
+          + "[gnpyeqpt:type_variety = current() "
+          + "or gnpyeqpt:other_name = current()]"
+          + "[gnpyeqpt:raman = 'true'])" {
+          error-message
+            "A booster amplifier must not have raman set to true.";
+        }
         description 
           "List of authorized booster type-variety";
       }
@@ -582,6 +682,7 @@ module gnpy-eqpt-config {
         leaf target_pch_out_db {
           type decimal64 {
             fraction-digits 2;
+            range "-40 .. 0";
           }
           units "dBm";
           description
@@ -592,6 +693,7 @@ module gnpy-eqpt-config {
         leaf target_psd_out_mWperGHz {
           type decimal64 {
             fraction-digits 10;
+            range "0.000003125 .. 1";
           }
           units "mW/GHz";
           description
@@ -604,6 +706,7 @@ module gnpy-eqpt-config {
         leaf target_out_mWperSlotWidth {
           type decimal64 {
             fraction-digits 10;
+            range "0.000002 .. 1";
           }
           units "mW/GHz";
           description
@@ -619,17 +722,19 @@ module gnpy-eqpt-config {
     description
       "Common parameters for SI and transceivers.";
     leaf baud_rate {
+      mandatory true;
       type decimal64 {
           fraction-digits 2;
-          range "100000000 .. 2000000000000";
+          range "10000000000 .. 1000000000000";
         }
       units "baud";
       description "Baud rate of this mode.";
     }
     leaf tx_osnr {
+      mandatory true;
       type decimal64 {
           fraction-digits 2;
-          range "0 .. max";
+          range "0 .. 1000";
         }
       units "dB";
       description "OSNR contribution of the TX for this mode.";
@@ -668,6 +773,13 @@ module gnpy-eqpt-config {
       }
       leaf-list other_name {
         type string;
+        must "not(../../Edfa/"
+            + "gnpyeqpt:type_variety = .) and "
+            + "count(../../gnpyeqpt:Edfa/"
+            + "gnpyeqpt:other_name[. = current()]) = 1" {
+          error-message
+            "Each other_name must be unique and different of Edfas'keys.";
+        }
         description "a list of alternative names for the equipment";
       }
       uses frequency-band;
@@ -686,6 +798,26 @@ module gnpy-eqpt-config {
       description
         "List of RamanFiber type_varieties available in this library.";
       uses common-fiber;
+      must "../Fiber[type_variety = current()/type_variety]" {
+        error-message
+          "Each RamanFiber must have a Fiber entry with the same type_variety.";
+      }
+      must "(not(dispersion) and not(../Fiber[type_variety = current()/type_variety]/dispersion)) "
+        + "or dispersion = ../Fiber[type_variety = current()/type_variety]/dispersion" {
+        error-message "Fiber and RamanFiber must have the same dispersion.";
+      }
+      must "(not(gamma) and not(../Fiber[type_variety = current()/type_variety]/gamma)) "
+        + "or gamma = ../Fiber[type_variety = current()/type_variety]/gamma" {
+        error-message "Fiber and RamanFiber must have the same gamma, or none.";
+      }
+      must "(not(effective_area) and not(../Fiber[type_variety = current()/type_variety]/effective_area)) "
+        + "or effective_area = ../Fiber[type_variety = current()/type_variety]/effective_area" {
+        error-message "Fiber and RamanFiber must have the same effective_area, or none.";
+      }
+      must "(not(pmd_coef) and not(../Fiber[type_variety = current()/type_variety]/pmd_coef)) "
+        + "or pmd_coef = ../Fiber[type_variety = current()/type_variety]/pmd_coef" {
+        error-message "Fiber and RamanFiber must have the same pmd_coef.";
+      }
       list raman_efficiency {
         key "frequency_offset";
         description
@@ -865,7 +997,11 @@ module gnpy-eqpt-config {
           "Unique name to ID the ROADM variety in the JSON
           template topology input file.";
       }
-      uses roadm-equalization-params;
+      uses roadm-equalization-params {
+        refine target_type {
+          mandatory true;
+        }
+      }
       leaf add_drop_osnr {
         type decimal64 {
           fraction-digits 2;
@@ -1016,6 +1152,13 @@ module gnpy-eqpt-config {
       }
       leaf-list other_name {
         type string;
+        must "not(../../Transceiver/"
+            + "gnpyeqpt:type_variety = .) and "
+            + "count(../../gnpyeqpt:Transceiver/"
+            + "gnpyeqpt:other_name[. = current()]) = 1" {
+          error-message
+            "Each other_name must be unique and different of Transceivers'keys.";
+        }
         description "a list of alternative names for the equipment";
       }
       leaf comment {
@@ -1026,7 +1169,7 @@ module gnpy-eqpt-config {
         leaf min {
           type decimal64 {
               fraction-digits 2;
-              range "1000000000000 .. 1000000000000000";
+              range "180000000000000 .. 200000000000000";
             }
           units "Hz";
           description
@@ -1035,9 +1178,10 @@ module gnpy-eqpt-config {
         leaf max {
           type decimal64 {
               fraction-digits 2;
-              range "1000000000000 .. 1000000000000000";
+              range "180000000000000 .. 200000000000000";
             }
           units "Hz";
+          must ". >= ./../min";
           description
             "Upper central frequency for this transceiver.";
         }
@@ -1053,29 +1197,43 @@ module gnpy-eqpt-config {
         }
         leaf-list other_name {
           type string;
+          must "not(../../mode/format = current())" {
+            error-message
+              "mode/other_name must be different from all mode/format of this transceiver.";
+          }
+
+          must "count(../../mode/other_name[. = current()]) = 1" {
+            error-message
+              "mode/other_name must be unique amongst the other_names of this transceiver.";
+          }
+
           description "A list of alternative names for the mode.";
         }
         leaf OSNR {
+          mandatory true;
           type decimal64 {
               fraction-digits 2;
-              range "0 .. 200";
+              range "0 .. 40";
             }
           units "dB";
+          must ". <= ./../tx_osnr";
           description "Min required OSNR in 0.1nm (dB).";
         }
         leaf min_spacing {
+          mandatory true;
           type decimal64 {
             fraction-digits 2;
-            range "100000000 .. 20000000000000";
+            range "10000000000 .. 2000000000000";
           }
           units "Hz";
           must ". >= ./../baud_rate";
           description "Min required spacing for this mode.";
         }    
         leaf bit_rate {
+          mandatory true;
           type decimal64 {
               fraction-digits 2;
-              range "100000000 .. max";
+              range "1000000000 .. max";
             }
           units "bit/s" ;
           description "bit rate.";
@@ -1091,40 +1249,63 @@ module gnpy-eqpt-config {
           config false;
           description
             "Transceiver penalties due to impairments.";
-          leaf chromatic_dispersion {
-            type decimal64 {
-              fraction-digits 2;
-              range "-10000000 .. 10000000";
+          choice impairment {
+            mandatory true;
+            description
+              "Impairment associated with this penalty.";
+
+            case chromatic-dispersion {
+              leaf chromatic_dispersion {
+                type decimal64 {
+                  fraction-digits 2;
+                  range "-10000000 .. 10000000";
+                }
+
+                units "ps/nm";
+
+                description
+                  "Chromatic dispersion value.";
+              }
             }
-            units "ps/nm";
-            description "chromatic dispersion";
-          }
-          leaf pmd {
-            type decimal64 {
-              fraction-digits 15;
-              range "0 .. 1000";
+            case pmd {
+              leaf pmd {
+                type decimal64 {
+                  fraction-digits 2;
+                  range "0 .. 1000";
+                }
+
+                units "ps";
+
+                description
+                  "Polarization mode dispersion value.";
+              }
             }
-            units "ps";
-            description "Polarization mode dispersion";
-          }
-          leaf pdl {
-            type decimal64 {
-              fraction-digits 2;
-              range "0 .. 10";
+            case pdl {
+              leaf pdl {
+                type decimal64 {
+                  fraction-digits 2;
+                  range "0 .. 10";
+                }
+
+                units "dB";
+
+                description
+                  "Polarization-dependent loss value.";
+              }
             }
-            units "dB";
-            description "Polarization dependant loss";
           }
           leaf penalty_value {
+            mandatory true;
             type decimal64 {
               fraction-digits 2;
               range "0 .. 200";
             }
             units "dB";
             description
-              "OSNR penalty associated to this impairment.";
+              "OSNR penalty associated with this impairment.";
           }
         }
+
         container detailed_rx {
           presence "Enable detailed RX parameters.";
           leaf k1 {

@@ -24,6 +24,8 @@
         },
         {
             "type_variety": "std_low_gain_reduced",
+            "f_min": 192.25e12,
+            "f_max": 196.15e12,
             "type_def": "variable_gain",
             "gain_flatmax": 16,
             "gain_min": 8,
@@ -56,6 +58,7 @@
         {
             "type_variety": "4pumps_raman",
             "type_def": "fixed_gain",
+            "raman": true,
             "gain_flatmax": 12,
             "gain_min": 12,
             "p_max": 21,
@@ -223,6 +226,8 @@
         {
             "type_variety": "std_booster",
             "type_def": "fixed_gain",
+            "f_min": 191.25e12,
+            "f_max": 196.15e12,
             "gain_flatmax": 21,
             "gain_min": 20,
             "p_max": 21,

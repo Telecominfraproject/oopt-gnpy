@@ -108,8 +108,8 @@ module: gnpy-eqpt-config
      |  +--rw pmd?                               decimal64
      |  +--rw pdl?                               decimal64
      |  +--rw restrictions
-     |  |  +--rw preamp_variety_list*    string
-     |  |  +--rw booster_variety_list*   string
+     |  |  +--rw preamp_variety_list*    union
+     |  |  +--rw booster_variety_list*   union
      |  +--rw roadm-path-impairments* [roadm-path-impairments-id]
      |     +--rw roadm-path-impairments-id    uint32
      |     +--rw (impairment-type)?
@@ -189,10 +189,14 @@ module: gnpy-eqpt-config
            +--rw roll_off?                   union
            +--rw tx_power_dbm?               decimal64
            +--ro penalties* []
-           |  +--ro chromatic_dispersion?   decimal64
-           |  +--ro pmd?                    decimal64
-           |  +--ro pdl?                    decimal64
-           |  +--ro penalty_value?          decimal64
+           |  +--ro (impairment)
+           |  |  +--:(chromatic-dispersion)
+           |  |  |  +--ro chromatic_dispersion?   decimal64
+           |  |  +--:(pmd)
+           |  |  |  +--ro pmd?                    decimal64
+           |  |  +--:(pdl)
+           |  |     +--ro pdl?                    decimal64
+           |  +--ro penalty_value                 decimal64
            +--rw detailed_rx!
            |  +--rw k1                          decimal64
            |  +--rw k2                          decimal64
@@ -316,8 +320,8 @@ module: gnpy-eqpt-config
        |  +--rw pmd?                               decimal64
        |  +--rw pdl?                               decimal64
        |  +--rw restrictions
-       |  |  +--rw preamp_variety_list*    string
-       |  |  +--rw booster_variety_list*   string
+       |  |  +--rw preamp_variety_list*    union
+       |  |  +--rw booster_variety_list*   union
        |  +--rw roadm-path-impairments* [roadm-path-impairments-id]
        |     +--rw roadm-path-impairments-id    uint32
        |     +--rw (impairment-type)?
@@ -396,10 +400,14 @@ module: gnpy-eqpt-config
              +--rw roll_off?                   union
              +--rw tx_power_dbm?               decimal64
              +--ro penalties* []
-             |  +--ro chromatic_dispersion?   decimal64
-             |  +--ro pmd?                    decimal64
-             |  +--ro pdl?                    decimal64
-             |  +--ro penalty_value?          decimal64
+             |  +--ro (impairment)
+             |  |  +--:(chromatic-dispersion)
+             |  |  |  +--ro chromatic_dispersion?   decimal64
+             |  |  +--:(pmd)
+             |  |  |  +--ro pmd?                    decimal64
+             |  |  +--:(pdl)
+             |  |     +--ro pdl?                    decimal64
+             |  +--ro penalty_value                 decimal64
              +--rw detailed_rx!
              |  +--rw k1                          decimal64
              |  +--rw k2                          decimal64
@@ -522,8 +530,8 @@ module: gnpy-eqpt-config
        |  +--rw pmd?                               decimal64
        |  +--rw pdl?                               decimal64
        |  +--rw restrictions
-       |  |  +--rw preamp_variety_list*    string
-       |  |  +--rw booster_variety_list*   string
+       |  |  +--rw preamp_variety_list*    union
+       |  |  +--rw booster_variety_list*   union
        |  +--rw roadm-path-impairments* [roadm-path-impairments-id]
        |     +--rw roadm-path-impairments-id    uint32
        |     +--rw (impairment-type)?
@@ -602,10 +610,14 @@ module: gnpy-eqpt-config
              +--rw roll_off?                   union
              +--rw tx_power_dbm?               decimal64
              +--ro penalties* []
-             |  +--ro chromatic_dispersion?   decimal64
-             |  +--ro pmd?                    decimal64
-             |  +--ro pdl?                    decimal64
-             |  +--ro penalty_value?          decimal64
+             |  +--ro (impairment)
+             |  |  +--:(chromatic-dispersion)
+             |  |  |  +--ro chromatic_dispersion?   decimal64
+             |  |  +--:(pmd)
+             |  |  |  +--ro pmd?                    decimal64
+             |  |  +--:(pdl)
+             |  |     +--ro pdl?                    decimal64
+             |  +--ro penalty_value                 decimal64
              +--rw detailed_rx!
              |  +--rw k1                          decimal64
              |  +--rw k2                          decimal64

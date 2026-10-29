@@ -10,7 +10,7 @@ module gnpy-network-topology {
 
   import gnpy-eqpt-config {
     prefix "geqpt";
-    revision-date 2026-05-28;
+    revision-date 2026-10-29;
   }
 
   organization
@@ -21,11 +21,11 @@ module gnpy-network-topology {
      contact:  <mailto:esther.lerouzic@orange.com>
     ";
   description
-    "YANG model for gnpy network input for path computation - 2020 - candi preversion";
+    "YANG model for gnpy network input for path computation - 2026";
 
-  revision 2026-05-28 {
+  revision 2026-10-29 {
     description
-      "Add detailed-rx and correct ranges names";
+      "Fixes";
     reference
       "YANG model for network topology with gnpy";
   }
@@ -587,11 +587,30 @@ module gnpy-network-topology {
     }
   }
 
+  grouping restrictions {
+    description
+      "reusable grouping for restrictions definition";
+    container restrictions {
+      description
+        "List of amplifiers authorized in this ROADM for autodesign.";
+      leaf-list preamp_variety_list {
+        type string;
+        description 
+          "List of authorized preamp type-variety";
+      }
+      leaf-list booster_variety_list {
+        type string;
+        description 
+          "List of authorized booster type-variety";
+      }
+    }
+  }
+
   grouping roadm-params {
     description
       "Definition of ROADM configuration parameters.";
     uses geqpt:roadm-equalization-params;
-    uses geqpt:restrictions;
+    uses restrictions;
 
     list per_degree_power_targets {
       key "degree_uid";
