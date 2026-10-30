@@ -26,6 +26,7 @@ from gnpy.tools.default_edfa_config import DEFAULT_EXTRA_CONFIG
 from gnpy.topology.request import PathRequest
 from gnpy.tools.cli_examples import load_common_data, load_requests, designed_network, planning
 from gnpy.core.parameters import TransceiverRole
+from gnpy.core.science_utils import calc_q_db
 
 
 TEST_DIR = Path(__file__).parent
@@ -492,6 +493,10 @@ def test_receiver_noise_contribution(key: str, rx_power: float, expected_snr: fl
     assert_allclose(trx2.rx_power_dbm, rx_power, atol=1e-2)
     snr_after = trx2.snr_tot_01nm
     assert_allclose(snr_after, expected_snr, atol=1e-2)
+
+    # for QPSK the Q-factor in dB equals the SNR in dB: the Q-margin is the total SNR in the symbol-rate bandwidth
+    # less the Q-factor of the BER threshold
+    assert_allclose(trx2.q_margin, trx2.raw_snr_tot - calc_q_db(0.068), atol=1e-9)
 
 
 def test_detailed_rx():

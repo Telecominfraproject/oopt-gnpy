@@ -307,7 +307,7 @@ class Transceiver(_Node):
             # let's put ber close to the value that gives -infinite q_factor
             ber = 0.49999
             if not array_contains_infinite_value(self.total_penalty):
-                ber = ber_lin_ideal_transceiver(k1, k2, self.raw_snr_tot - self.total_penalty)
+                ber = ber_lin_ideal_transceiver(k1, k2, db2lin(self.raw_snr_tot - self.total_penalty))
             self.q_margin = calc_q_db(ber) - calc_q_db(ber_threshold)
 
     def _calc_snr(self, spectral_info):
