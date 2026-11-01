@@ -25,6 +25,7 @@ To learn how to contribute, please see CONTRIBUTING.md
 - Jenny L'Escop (Orange) <jenny.lescop@orange.com>
 - Jonas Mårtensson (RISE) <jonas.martensson@ri.se>
 - Mattia Cantono (Politecnico di Torino) <mattia.cantono@polito.it>
+- Michael Doherty (University College London) <mic.d.doh@gmail.com> <49191489+micdoh@users.noreply.github.com>
 - Miguel Garrich (University Catalunya) <miquel.garrich@upct.es>
 - Raj Nagarajan (Lumentum) <raj.nagarajan@lumentum.com>
 - Renato Ambrosone (Politecnico di Torino) <renato.ambrosone@polito.it>
