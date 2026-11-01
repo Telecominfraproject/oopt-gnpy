@@ -13,8 +13,15 @@ checks behaviour of gain mode
 """
 
 from pathlib import Path
+from copy import deepcopy
 
-from gnpy.tools.json_io import load_json, load_eqpt_topo_from_json, load_gnpy_json, _equipment_from_json
+import pytest
+from numpy.testing import assert_allclose
+
+from gnpy.core.elements import Fiber
+from gnpy.core.exceptions import EquipmentConfigError
+from gnpy.tools.json_io import load_json, load_eqpt_topo_from_json, load_gnpy_json, _equipment_from_json, \
+    network_from_json
 import networkx as nx
 
 
@@ -132,3 +139,62 @@ def test_equipment_other_name():
     # other_name should not be a key of trx
     for trx_type in equipment['Transceiver']:
         assert 'other_name' not in trx_type
+
+
+def _fiber_from_library(library_fiber, element_params=None):
+    """Build a single SSMF Fiber element using library_fiber as the SSMF entry of the equipment library"""
+    equipment_json = load_json(EQPT_FILENAME)
+    equipment_json['Fiber'] = [dict(library_fiber, type_variety='SSMF')]
+    equipment = _equipment_from_json(equipment_json, EXTRA_CONFIGS)
+    params = {'length': 80, 'length_units': 'km', 'loss_coef': 0.2, 'con_in': 0, 'con_out': 0}
+    params.update(element_params or {})
+    topology = {'elements': [{'uid': 'fiber', 'type': 'Fiber', 'type_variety': 'SSMF', 'params': params}],
+                'connections': []}
+    network = network_from_json(topology, equipment)
+    return next(n for n in network.nodes() if isinstance(n, Fiber))
+
+
+SSMF = {'dispersion': 1.67e-05, 'effective_area': 83e-12, 'pmd_coef': 1.265e-15}
+DISPERSION_PER_FREQUENCY = {'value': [1.6e-05, 1.7e-05], 'frequency': [191e12, 196e12]}
+
+
+def test_fiber_library_dispersion_slope():
+    """dispersion_slope defined in the equipment library must reach the Fiber element"""
+    fiber = _fiber_from_library(dict(SSMF, dispersion_slope=0.06e3))
+    assert_allclose(fiber.params.dispersion_slope, 0.06e3, rtol=1e-12)
+    assert fiber.beta3() != 0
+
+
+def test_fiber_element_dispersion_slope_overrides_library():
+    """dispersion_slope defined on the element pre-empts the library value"""
+    fiber = _fiber_from_library(dict(SSMF, dispersion_slope=0.06e3), {'dispersion_slope': 0.08e3})
+    assert_allclose(fiber.params.dispersion_slope, 0.08e3, rtol=1e-12)
+
+
+def test_fiber_library_dispersion_per_frequency():
+    """dispersion_per_frequency defined in the equipment library must reach the Fiber element"""
+    fiber = _fiber_from_library(dict(SSMF, dispersion_per_frequency=DISPERSION_PER_FREQUENCY))
+    assert_allclose(fiber.params.dispersion, DISPERSION_PER_FREQUENCY['value'], rtol=1e-12)
+    assert_allclose(fiber.params.f_dispersion_ref, DISPERSION_PER_FREQUENCY['frequency'], rtol=1e-12)
+
+
+def test_fiber_element_dispersion_overrides_library_dispersion_per_frequency():
+    """dispersion defined on the element pre-empts the dispersion_per_frequency of the library"""
+    fiber = _fiber_from_library(dict(SSMF, dispersion_per_frequency=DISPERSION_PER_FREQUENCY),
+                                {'dispersion': 2e-05})
+    assert_allclose(fiber.params.dispersion, 2e-05, rtol=1e-12)
+
+
+@pytest.mark.parametrize('attr, raman_value', [
+    ('dispersion_slope', 0.07e3),
+    ('pmd_coef', 2e-15)])
+def test_fiber_vs_raman_fiber_mismatch(attr, raman_value):
+    """Fiber and RamanFiber entries with the same type_variety must agree on common properties"""
+    equipment_json = load_json(EQPT_FILENAME)
+    fiber = dict(SSMF, type_variety='SSMF', dispersion_slope=0.06e3)
+    raman_fiber = deepcopy(fiber)
+    raman_fiber[attr] = raman_value
+    equipment_json['Fiber'] = [fiber]
+    equipment_json['RamanFiber'] = [raman_fiber]
+    with pytest.raises(EquipmentConfigError, match=f'disagrees for "{attr}"'):
+        _equipment_from_json(equipment_json, EXTRA_CONFIGS)

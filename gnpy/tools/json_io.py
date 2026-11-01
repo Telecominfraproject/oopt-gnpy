@@ -222,7 +222,8 @@ class Fiber(_JsonThing):
 
     def __init__(self, **kwargs):
         self.update_attr(self.default_values, kwargs, self.__class__.__name__)
-        for optional in ['gamma', 'raman_efficiency', 'loss_coef_ripple']:
+        for optional in ['gamma', 'raman_efficiency', 'loss_coef_ripple', 'dispersion_slope',
+                         'dispersion_per_frequency']:
             if optional in kwargs:
                 setattr(self, optional, kwargs[optional])
         if 'raman_efficiency' in kwargs:
@@ -552,7 +553,8 @@ def _check_fiber_vs_raman_fiber(equipment: dict):
     if 'RamanFiber' not in equipment:
         return
     for fiber_type in set(equipment['Fiber'].keys()) & set(equipment['RamanFiber'].keys()):
-        for attr in ('dispersion', 'dispersion-slope', 'effective_area', 'gamma', 'pmd-coefficient'):
+        for attr in ('dispersion', 'dispersion_slope', 'dispersion_per_frequency', 'effective_area', 'gamma',
+                     'pmd_coef'):
             fiber = equipment['Fiber'][fiber_type]
             raman = equipment['RamanFiber'][fiber_type]
             a = getattr(fiber, attr, None)
@@ -756,6 +758,10 @@ def network_from_json(json_data: dict, equipment: dict) -> DiGraph:
                     msg = f'ROADM {el_config["uid"]}: invalid equalization settings'
                     raise ConfigurationError(msg)
             if typ in ['Fiber', 'RamanFiber']:
+                # a dispersion defined in the element config pre-empts the dispersion_per_frequency of the
+                # library, which would otherwise take precedence over it in FiberParams
+                if 'dispersion' in temp and 'dispersion_per_frequency' not in temp:
+                    extra_params = {k: v for k, v in extra_params.items() if k != 'dispersion_per_frequency'}
                 # create the loss_coef vs frequency if a ripple is defined in the equipment library
                 if ('loss_coef_ripple' in extra_params) and not isinstance(temp['loss_coef'], dict):
                     _loss_coef_static = temp['loss_coef']
