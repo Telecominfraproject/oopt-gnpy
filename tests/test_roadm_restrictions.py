@@ -742,3 +742,37 @@ def test_impairment_initialization(path_type, type_variety, expected_pmd, expect
         else:
             assert_allclose(roadm.get_impairment('roadm-osnr', freq, from_degree='tata', degree='toto'),
                             expected_osnr, rtol=1e-12)
+
+
+def test_roadm_impairment_profile_without_pmd_pdl():
+    """Check that a ROADM whose impairment profile does not define roadm-pmd and roadm-pdl propagates with the
+    pmd and pdl of the ROADM type instead of failing
+    """
+    json_data = load_json(EQPT_FILENAME)
+    roadm_json = next(r for r in json_data['Roadm'] if r.get('type_variety') == 'example_detailed_impairments')
+    roadm_json['pmd'] = 1e-12
+    roadm_json['pdl'] = 0.5
+    roadm_json['roadm-path-impairments'] = [{
+        "roadm-path-impairments-id": 0,
+        "roadm-express-path": [{
+            "frequency-range": {
+                "lower-frequency": 191.3e12,
+                "upper-frequency": 196.1e12
+            },
+            "roadm-maxloss": 16.5
+        }]
+    }]
+    equipment = _equipment_from_json(json_data, EXTRA_CONFIGS)
+    roadm_config = {
+        "uid": "roadm Lannion_CAS",
+        "type_variety": "example_detailed_impairments",
+        "params": merge_amplifier_restrictions({}, equipment['Roadm']['example_detailed_impairments'].__dict__)
+    }
+    roadm = Roadm(**roadm_config)
+    roadm.set_roadm_paths(from_degree='tata', to_degree='toto', path_type='express')
+    roadm.ref_pch_in_dbm['tata'] = 0
+    si = create_input_spectral_information(f_min=191.4e12, f_max=196e12, roll_off=0.15, baud_rate=32e9,
+                                           spacing=50e9, tx_osnr=40, tx_power=1e-3)
+    si = roadm(si, degree='toto', from_degree='tata')
+    assert_allclose(si.pmd, 1e-12, rtol=1e-12)
+    assert_allclose(si.pdl, 0.5, rtol=1e-12)

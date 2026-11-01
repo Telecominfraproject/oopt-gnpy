@@ -751,11 +751,17 @@ class Roadm(_Node):
         spectral_info.apply_attenuation_db(delta_power)
 
         # Update the PMD information
+        # if the impairment profile does not define roadm-pmd, use the global pmd of the ROADM
         pmd_impairment = self.get_impairment('roadm-pmd', spectral_info.frequency, from_degree, degree)
+        if pmd_impairment is None:
+            pmd_impairment = self.params.pmd
         spectral_info.pmd = sqrt(spectral_info.pmd ** 2 + pmd_impairment ** 2)
 
-        # Update the PMD information
+        # Update the PDL information
+        # if the impairment profile does not define roadm-pdl, use the global pdl of the ROADM
         pdl_impairment = self.get_impairment('roadm-pdl', spectral_info.frequency, from_degree, degree)
+        if pdl_impairment is None:
+            pdl_impairment = self.params.pdl
         spectral_info.pdl = sqrt(spectral_info.pdl ** 2 + pdl_impairment ** 2)
 
         # Update the per channel power with the result of propagation
