@@ -553,7 +553,8 @@ def _check_fiber_vs_raman_fiber(equipment: dict):
     if 'RamanFiber' not in equipment:
         return
     for fiber_type in set(equipment['Fiber'].keys()) & set(equipment['RamanFiber'].keys()):
-        for attr in ('dispersion', 'dispersion-slope', 'effective_area', 'gamma', 'pmd-coefficient'):
+        for attr in ('dispersion', 'dispersion_slope', 'dispersion_per_frequency', 'effective_area', 'gamma',
+                     'pmd_coef'):
             fiber = equipment['Fiber'][fiber_type]
             raman = equipment['RamanFiber'][fiber_type]
             a = getattr(fiber, attr, None)

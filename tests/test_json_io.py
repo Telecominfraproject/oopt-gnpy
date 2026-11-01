@@ -13,10 +13,13 @@ checks behaviour of gain mode
 """
 
 from pathlib import Path
+from copy import deepcopy
 
+import pytest
 from numpy.testing import assert_allclose
 
 from gnpy.core.elements import Fiber
+from gnpy.core.exceptions import EquipmentConfigError
 from gnpy.tools.json_io import load_json, load_eqpt_topo_from_json, load_gnpy_json, _equipment_from_json, \
     network_from_json
 import networkx as nx
@@ -180,3 +183,18 @@ def test_fiber_element_dispersion_overrides_library_dispersion_per_frequency():
     fiber = _fiber_from_library(dict(SSMF, dispersion_per_frequency=DISPERSION_PER_FREQUENCY),
                                 {'dispersion': 2e-05})
     assert_allclose(fiber.params.dispersion, 2e-05, rtol=1e-12)
+
+
+@pytest.mark.parametrize('attr, raman_value', [
+    ('dispersion_slope', 0.07e3),
+    ('pmd_coef', 2e-15)])
+def test_fiber_vs_raman_fiber_mismatch(attr, raman_value):
+    """Fiber and RamanFiber entries with the same type_variety must agree on common properties"""
+    equipment_json = load_json(EQPT_FILENAME)
+    fiber = dict(SSMF, type_variety='SSMF', dispersion_slope=0.06e3)
+    raman_fiber = deepcopy(fiber)
+    raman_fiber[attr] = raman_value
+    equipment_json['Fiber'] = [fiber]
+    equipment_json['RamanFiber'] = [raman_fiber]
+    with pytest.raises(EquipmentConfigError, match=f'disagrees for "{attr}"'):
+        _equipment_from_json(equipment_json, EXTRA_CONFIGS)
