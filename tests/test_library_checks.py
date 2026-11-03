@@ -13,10 +13,12 @@ import pytest
 
 from gnpy.tools.library_checks import Axis, LIBRARY, TRANSCEIVER, score, validate
 from gnpy.tools.validate_library import to_json
+from gnpy.tools.proof import write_proof, SCHEMA_VERSION
 
 
 DATA_DIR = Path(__file__).parent / 'data' / 'library_checks'
 LIBRARIES = ['invalid_yang', 'invalid_bitrate', 'valid_yang', 'valid_legacy']
+SNAPSHOT = DATA_DIR / 'proof_schema_snapshot.json'
 
 
 def load_library(filename: str) -> dict:
@@ -218,3 +220,43 @@ def test_report_matches_expected(name):
         expected = json.load(stream)
 
     assert actual == expected
+
+
+def _shape(value, prefix=''):
+    """Return the sorted list of 'path: type' entries describing a JSON structure."""
+    if isinstance(value, dict):
+        out = []
+        for key, sub in value.items():
+            out.extend(_shape(sub, f'{prefix}/{key}'))
+        return out
+    return [f'{prefix}: {type(value).__name__}']
+
+
+def _current_schema(tmp_path):
+    profile = {'global_min_exclusive': 0, 'consistency_min': 98.0, 'completeness_min': 75.0}
+    _, proof_path = write_proof(b'{}', 'equipment.json', 87.3, profile,
+                                'Vendor', 'name@vendor.com', tmp_path)
+    content = json.loads(proof_path.read_text(encoding='utf-8'))
+    return sorted(_shape(content))
+
+
+def test_proof_schema_version_follows_format(tmp_path):
+    """The proof format must not change without a change of SCHEMA_VERSION."""
+    current = {'schema_version': SCHEMA_VERSION, 'schema': _current_schema(tmp_path)}
+    if not SNAPSHOT.exists():
+        SNAPSHOT.parent.mkdir(parents=True, exist_ok=True)
+        SNAPSHOT.write_text(json.dumps(current, indent=2) + '\n', encoding='utf-8')
+        raise AssertionError(f'Snapshot created: {SNAPSHOT}. Review it and commit it.')
+
+    expected = json.loads(SNAPSHOT.read_text(encoding='utf-8'))
+    if current['schema'] != expected['schema']:
+        if current['schema_version'] == expected['schema_version']:
+            raise AssertionError(
+                'The proof format changed but SCHEMA_VERSION is still '
+                f'{current["schema_version"]}. Increase SCHEMA_VERSION in proof.py '
+                'and update the snapshot.')
+        raise AssertionError(
+            'The proof format and SCHEMA_VERSION changed. Update the snapshot '
+            f'{SNAPSHOT.name} with the new schema and version.')
+    assert current['schema_version'] == expected['schema_version'], \
+        'SCHEMA_VERSION changed without any change of the proof format.'

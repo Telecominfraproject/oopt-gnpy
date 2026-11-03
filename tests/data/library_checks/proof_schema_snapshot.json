@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "schema": [
+    "/contact_email: str",
+    "/library/certified_filename: str",
+    "/library/original_filename: str",
+    "/library/sha256: str",
+    "/organization: str",
+    "/schema_version: str",
+    "/validation/date: str",
+    "/validation/glv_version: str",
+    "/validation/profile/completeness_min: float",
+    "/validation/profile/consistency_min: float",
+    "/validation/profile/global_min_exclusive: int",
+    "/validation/score: float"
+  ]
+}

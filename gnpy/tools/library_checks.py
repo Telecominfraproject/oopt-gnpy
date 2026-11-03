@@ -1389,3 +1389,36 @@ def format_score(score_result: Score) -> str:
         detail = ', '.join(f'{a.value}={"n/a" if v is None else f"{v: .1f}"}' for a, v in axes.items())
         lines.append(f'  {section}: {"n/a" if value is None else f"{value: .1f}"} ({detail})')
     return '\n'.join(lines)
+
+
+def _aggregate_axis(report: Report, axis: Axis) -> float:
+    """Score of one axis aggregated over all sections (100 if nothing was checked).
+
+    :param report: Validation report.
+    :param axis: Validation axis to score.
+    """
+    checks = sum(n for (_, a), n in report.checked.items() if a == axis)
+    if checks == 0:
+        return 100.0
+    penalty = sum(i.weight for i in report.issues if i.axis == axis)
+    return max(0.0, 100 * (1 - penalty / checks))
+
+
+def is_eligible(report: Report, min_consistency: float = 100.0,
+                min_completeness: float = 75.0) -> tuple[bool, list[str]]:
+    """Return whether a proof of validation can be issued, and the reasons if not.
+
+    :param report: Validation report.
+    :param min_consistency: consistency threshold.
+    :param min_completeness: completeness threshold.
+    """
+    reasons = []
+    if score(report).total <= 0:
+        reasons.append('Global score is zero')
+    consistency = _aggregate_axis(report, Axis.CONSISTENCY)
+    if consistency < min_consistency:
+        reasons.append(f'consistency {consistency:.1f} < {min_consistency:.1f}')
+    completeness = _aggregate_axis(report, Axis.COMPLETENESS)
+    if completeness < min_completeness:
+        reasons.append(f'completeness {completeness:.1f} < {min_completeness:.1f}')
+    return not reasons, reasons
