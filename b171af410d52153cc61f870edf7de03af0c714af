@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a00eabf6_dbd45b42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-11-04T12:25:37Z",
+      "side": 1,
+      "message": "Thanks for this submssion: would you mind checking my review ? I think that there is a confusion on the parameters.",
+      "revId": "b171af410d52153cc61f870edf7de03af0c714af",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ce36449_1cefb834",
+        "filename": "gnpy/tools/json_io.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-11-04T12:25:37Z",
+      "side": 1,
+      "message": "dispersion_per_frequency is not defined in eqpt but in topology neither dispersion_slope. So it should not be checked at this point. the change related to pmd_coef looks good to me.\n\nIf you agree with this comment could you please correct your proposal accordingly ?",
+      "revId": "b171af410d52153cc61f870edf7de03af0c714af",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
