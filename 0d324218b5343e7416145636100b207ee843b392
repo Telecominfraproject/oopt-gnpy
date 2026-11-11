@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf461ec2_3843f334",
+        "filename": "gnpy/core/science_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1017876
+      },
+      "writtenOn": "2026-11-11T15:28:32Z",
+      "side": 1,
+      "message": "just a comment on naming. Can you please avoid capital letters and give a longer clear name to the variable as in other parts of the code. E.g. G_ra_z -\u003e gain_raman_z",
+      "range": {
+        "startLine": 196,
+        "startChar": 8,
+        "endLine": 234,
+        "endChar": 20
+      },
+      "revId": "0d324218b5343e7416145636100b207ee843b392",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
