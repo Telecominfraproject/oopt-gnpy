@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "667cae44_21ddc728",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1039930
+      },
+      "writtenOn": "2026-11-18T21:28:42Z",
+      "side": 1,
+      "message": "Reviewed locally — full test suite OK and synthetic probes of the new parallel-links. The design is good: pair-0 UID back-compat, the degree-association export, and the ROADM parallel + Eqpt case all check out.\n \nRequesting changes: the top issue is that mixed-orientation rows (A→B and B→A between the same pair, case which I found that happening in my topology files) produce JSON the core rejects — a normalization sketch is in that comment. Two further correctness gaps in the parallel-ILA Eqpt wiring and the FUSED + Eqpt path. Details in the inline comments.",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eeb3a41_49388ff7",
+        "filename": "gnpy/tools/convert.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1039930
+      },
+      "writtenOn": "2026-11-18T21:28:42Z",
+      "side": 1,
+      "message": "Nits: _format_items uses len(items[0]) \u003d\u003d 2 as a list-vs-string test, which mangles 2-char city names and IndexErrors on an empty list; NODES/LINKS/EQPTS/ROADMS_COLUMN (lines 1799-1806) were all bumped to 18 with no note on why; and the Eqpt-endpoint error says \"not defined in the Nodes sheet\" but actually checks the Links sheet.",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e82645_9f2fae5b",
+        "filename": "gnpy/tools/convert.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1259,
+      "author": {
+        "id": 1039930
+      },
+      "writtenOn": "2026-11-18T21:28:42Z",
+      "side": 1,
+      "message": "[Blocker] Two links between the same city pair written in opposite orientations (A→B and B→A) get different orientation-preserving endpoint_keys, so each forms its own single-member group and both are assigned pair 0. The connection build then orphans the second cable, duplicates the first cable\u0027s roadm↔fiber connections, and emits a bogus degree-association pairing the same cable\u0027s east↔west; the resulting JSON is rejected by load_network \n(libyang: Duplicate instance of \"connections\").\n\nSince per-row A/Z order is arbitrary, real topologies hit this easily — and a hard error would just make such files fail to convert. I\u0027d suggest normalizing orientation: group by the unordered pair, pick a canonical direction, and rewrite rows that are against it. The rewrite must be value-aware — flip the node labels and swap the row\u0027s east/west parameter blocks (distance, loss, PMD, con in/out, cable) — otherwise an asymmetric row\u0027s per-direction \nvalues land on the wrong direction. Log a warning per normalized row so it\u0027s visible (and consistent with how this codebase previously auto-converted ILA→ROADM). Keep a clear XLS error only as the fallback for anything that can\u0027t be normalized safely.\n\nSuggestion of code to add:\n\n  def normalize_link_orientations(links: list[Link]) -\u003e None:\n      \"\"\"Make all rows of an unordered city pair share one direction (first row wins).\n      \n      Runs before pair-id assignment. The east/west value blocks are swapped\n      together with the node labels so per-direction parameters keep their\n      physical direction.\n      \"\"\"\n      fields \u003d (\u0027distance\u0027, \u0027fiber\u0027, \u0027lineic\u0027, \u0027con_in\u0027, \u0027con_out\u0027, \u0027pmd\u0027, \u0027cable\u0027)\n      canonical \u003d {}  # frozenset({a, b}) -\u003e first Link in row order\n      for link in sorted(links, key\u003dlambda l: l.row_id or 0):\n          pair \u003d frozenset((link.from_city, link.to_city))\n          ref \u003d canonical.setdefault(pair, link)\n          if link is not ref and (link.from_city, link.to_city) !\u003d (ref.from_city, ref.to_city):\n              orig \u003d (link.from_city, link.to_city)\n              link.from_city, link.to_city \u003d link.to_city, link.from_city\n              for f in fields:\n                  east, west \u003d getattr(link, f\u0027east_{f}\u0027), getattr(link, f\u0027west_{f}\u0027)\n                  setattr(link, f\u0027east_{f}\u0027, west)\n                  setattr(link, f\u0027west_{f}\u0027, east)\n              logger.warning(\u0027Links %s-\u003e%s (row %s) and %s-\u003e%s (row %s) between the same \u0027\n                             \u0027cities were re-oriented to %s-\u003e%s to form a parallel group\u0027,\n                             *orig, link.row_id, ref.from_city, ref.to_city, ref.row_id,\n                             link.from_city, link.to_city)\n                             \nSome considerations:  \n  - Canonical direction \u003d first row in file order (setdefault). Minimal surprise — the first row is never touched, and files that are already consistent produce zero warnings (the orientation !\u003d ref check skips them).\n  - Value-aware flip: labels and the east_*/west_* blocks swap together. This is correct even for rows whose west side  was blank — backfill (Link.update_attr) has already made them symmetric by the time this runs, so the swap is a no-op there; for genuinely asymmetric rows it keeps each direction\u0027s values attached to that direction.\n  - Run before the ILA/FUSED split, not just in assign_parallel_ids — the same collision exists for mixed-orientation rows touching an ILA (they go to assign_ila_fused_pair_ids).\n  - Warn, don\u0027t fail — consistent with how this codebase previously handled the ILA→ROADM auto-conversion, and it tells the user exactly which rows were touched.",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bcbe9f8_6c267d99",
+        "filename": "gnpy/tools/convert.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1407,
+      "author": {
+        "id": 1039930
+      },
+      "writtenOn": "2026-11-18T21:28:42Z",
+      "side": 1,
+      "message": "Behavior change: the previous code warned and auto-converted an ILA/FUSED with ≠2 neighbors into a ROADM; now it hard-errors. Reasonable, but it\u0027s a breaking change for topologies that relied on the auto-conversion and isn\u0027t mentioned in the commit message / release notes. Worth documenting.",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d7ab964_96f02352",
+        "filename": "gnpy/tools/convert.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1593,
+      "author": {
+        "id": 1039930
+      },
+      "writtenOn": "2026-11-18T21:28:42Z",
+      "side": 1,
+      "message": "ila_direction() is never called (dead code) and has a French docstring — can be removed.\n    tests/data/wrong_topo_no_header.xlsx also appears to be referenced by no test.",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "927669bf_254069b8",
+        "filename": "gnpy/tools/convert.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1611,
+      "author": {
+        "id": 1039930
+      },
+      "writtenOn": "2026-11-18T21:28:42Z",
+      "side": 1,
+      "message": "For a parallel ILA this branch returns the first eqpt row\u0027s amps for every pair — the pair id only flips direction, it doesn\u0027t select the row. Both pair-0 and pair-1 spans get wired through the same (pair-0) EDFA pair; any extra eqpt row\u0027s amp elements are created but orphaned (with a single row, pair-1 silently reuses pair-0\u0027s amps, no warning). GNPY would compute gain/OSNR as if the parallel OMSes shared one amplifier. No test covers parallel-ILA + Eqpt.",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
