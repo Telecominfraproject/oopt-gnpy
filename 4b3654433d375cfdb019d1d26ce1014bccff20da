@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "188f6f9c_542d6b7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-11-19T10:05:23Z",
+      "side": 1,
+      "message": "The test file dat.parallel/omses/parallel_links.xls contains links with this exact B/A , A/B case, and the feature  work OK for this case (I added the case on purpose): Brest\tQuimper, and Quimper\tBrest. this produces\n,\n        \"degree-association\": [\n          {\n            \"degree\": \"east edfa in Brest to Quimper-pair-1\",\n            \"paired-degree\": \"west edfa in Brest to Quimper-pair-1\"\n          }\n        ]\nin brest\n\nand the OMS Brest Vannes is correctly paired... Does your example have difference compared to this configuration ?",
+      "parentUuid": "667cae44_21ddc728",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6eeb3a41_49388ff7",
         "filename": "gnpy/tools/convert.py",
         "patchSetId": 4
