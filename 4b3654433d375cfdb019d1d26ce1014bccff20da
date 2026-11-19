@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ccc4d77_312b35cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1039930
+      },
+      "writtenOn": "2026-11-19T10:46:20Z",
+      "side": 1,
+      "message": "Thanks — that\u0027s a good point, and it highlights the actual difference between your case and the failing one.\n \nYour Brest→Quimper / Quimper→Brest pair works because Quimper is FUSED: those links are handled by assign_ila_fused_pair_ids, which groups links per neighbor city (direction-agnostic) and pairs them by row order. All the parallel \n  links in parallel_links.xlsx touch an ILA/FUSED node (Brest–Quimper, Quimper–Lorient, Vannes–Lorient), so the mixed-orientation case is indeed covered — and handled correctly — on that path.\n  \n  The failing case is ROADM↔ROADM, which goes through assign_parallel_ids. That function groups by the ordered endpoint_key (from_city, to_city), so A→B and B→A form two separate single-member groups, both get pair 0, and the connection build then orphans the second cable, duplicates the first cable\u0027s roadm↔fiber connections, and emits a degree-association pairing the same cable\u0027s east↔west. The generated JSON is rejected by load_network (libyang: \n  Duplicate instance of \"connections\").\n  \n   I reproduced it with a minimal 2-ROADM input (links A→B + B→A); there are no parallel ROADM–ROADM links in the current test file, so this path is untested. It also occurs on a real ~130-site topology where two parallel spans were entered in opposite orientations — the whole file failed to load.\n  \n  Since the ILA/FUSED path already treats orientation as irrelevant, making assign_parallel_ids group by the unordered pair (or a small normalization pre-pass, sketched in my earlier comment) would make the two paths consistent.",
+      "parentUuid": "188f6f9c_542d6b7b",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6eeb3a41_49388ff7",
         "filename": "gnpy/tools/convert.py",
         "patchSetId": 4
