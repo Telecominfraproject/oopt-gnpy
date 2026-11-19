@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e6f72c9f_6fee28a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1017751
+      },
+      "writtenOn": "2026-11-19T10:55:07Z",
+      "side": 1,
+      "message": "Thanks! I will do the corrections !",
+      "parentUuid": "0ccc4d77_312b35cb",
+      "revId": "4b3654433d375cfdb019d1d26ce1014bccff20da",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6eeb3a41_49388ff7",
         "filename": "gnpy/tools/convert.py",
         "patchSetId": 4
